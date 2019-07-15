@@ -1,0 +1,6 @@
+{
+  "database": "db_name",
+  "username": "user_db",
+  "password": "password_db",
+  "dialect": "mysql"
+}

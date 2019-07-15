@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 
 const passport = require('passport');
 const passportJWT = require('passport-jwt');
+let mysql = require('conf/mysql.conf');
 
 let ExtractJwt = passportJWT.ExtractJwt;
 let JwtStrategy = passportJWT.Strategy;
@@ -38,12 +39,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const Sequelize = require('sequelize');
 
 // initialze an instance of Sequelize
-const sequelize = new Sequelize({
-  database: 'test_sequelize',
-  username: 'root',
-  password: '',
-  dialect: 'mysql',
-});
+const sequelize = new Sequelize(mysql);
 
 // check the databse connection
 sequelize
@@ -108,7 +104,7 @@ app.post('/login', async function(req, res, next) {
       res.status(401).json({ message: 'No such user found' });
     }
     if (user.password === password) {
-      // from now on we'll identify the user by the id and the id is the 
+      // from now on we'll identify the user by the id and the id is the
       // only personalized value that goes into our token
       let payload = { id: user.id };
       let token = jwt.sign(payload, jwtOptions.secretOrKey);
@@ -128,4 +124,3 @@ app.get('/protected', passport.authenticate('jwt', { session: false }), function
 app.listen(3000, function() {
   console.log('Express is running on port 3000');
 });
-
