@@ -1,6 +1,6 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 # Conf 
-/conf/mysql.conf
+/conf/mysql.js
 # dependencies
 /node_modules
 /.pnp

@@ -4,8 +4,8 @@ const jwt = require('jsonwebtoken');
 
 const passport = require('passport');
 const passportJWT = require('passport-jwt');
-let mysql = require('conf/mysql.conf');
-
+let config = require('./conf/mysql');
+console.log(config);
 let ExtractJwt = passportJWT.ExtractJwt;
 let JwtStrategy = passportJWT.Strategy;
 
@@ -39,7 +39,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const Sequelize = require('sequelize');
 
 // initialze an instance of Sequelize
-const sequelize = new Sequelize(mysql);
+const sequelize = new Sequelize(config.mysql);
 
 // check the databse connection
 sequelize
