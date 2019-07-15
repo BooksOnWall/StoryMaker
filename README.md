@@ -19,4 +19,4 @@
    we make any change(s) to the file(s), so let’s install it and save it as a dev dependency.
     $ yarn add --dev  nodemon
     After then, we can run the app like so:
-    $ nodemon index.js
+    $ nodemon server.js
