@@ -6,7 +6,7 @@
 # Server 
     $ cd server 
     // create conf/mysql.conf from conf/mysql.conf.default 
-    $ cp conf/mysql.conf.default conf/mysql.conf
+    $ cp conf/mysql.js.default conf/mysql.js
     // open mysql.conf and set mysql db credentials
       database: 'test_sequelize',
       username: 'root',
@@ -14,6 +14,7 @@
       dialect: 'mysql',
     // launch the server 
     $ node server.js 
+    
 ## Server Nodemon 
    Actually, for development, I would recommend we use nodemon, this would always restart our app as soon as 
    we make any change(s) to the file(s), so let’s install it and save it as a dev dependency.
