@@ -5,13 +5,13 @@
     $ yarn start 
 # Server 
     $ cd server 
-    // open server.js and set mysql db credentials
-    `const sequelize = new Sequelize({
+    // create conf/mysql.conf from conf/mysql.conf.default 
+    $ cp conf/mysql.conf.default conf/mysql.conf
+    // open mysql.conf and set mysql db credentials
       database: 'test_sequelize',
       username: 'root',
       password: '',
       dialect: 'mysql',
-    });`
     // launch the server 
     $ node server.js 
 ## Server Nodemon 
