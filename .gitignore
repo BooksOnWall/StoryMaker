@@ -5,6 +5,10 @@
 /.pnp
 .pnp.js
 
+# Certificates
+server/server.cert
+server/server.key
+
 # testing
 /coverage
 
