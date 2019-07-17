@@ -46,7 +46,7 @@ class Login extends Component {
     this.setState(values);
     fetch(this.state.login, {
       method: 'post',
-      headers: {credentials: 'same-origin', 'Content-Type':'application/json'},
+      headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'},
       body:JSON.stringify({email:this.state.email, password:this.state.password})
     })
     .then(response => {

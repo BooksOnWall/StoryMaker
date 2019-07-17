@@ -46,7 +46,7 @@ class SignUp extends Component {
     this.setState(values);
     fetch(this.state.register, {
       method: 'post',
-      headers: {credentials: 'same-origin', 'Content-Type':'application/json'},
+      headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'},
       body:JSON.stringify({name: this.state.name, email:this.state.email, password:this.state.password})
     })
     .then(response => {
