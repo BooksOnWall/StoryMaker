@@ -8,7 +8,10 @@ import {
   Image,
   Header,
   Segment } from "semantic-ui-react";
-import Logo from '../logo.svg';
+import Logo from '../../logo.svg';
+import Auth from '../../module/Auth';
+
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -26,10 +29,6 @@ class Login extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleData = this.handleData.bind(this);
-    //this.userIsLoggedIn = this.userIsLoggedIn.bind(this);
-    //this.logout = this.logout.bind(this);
-    //this.log = this.log.bind(this);
-    //this.checkLogin = this.checkLogin.bind(this);
   }
   storeUserSession = async () => {
     localForage.config({
@@ -56,7 +55,9 @@ class Login extends Component {
     })
     .then(data => {
         if(data) {
-          this.setState(data);
+          console.log(data);
+          this.setState({accessToken : data.token});
+          Auth.authenticateUser(data.token);
           this.setState({userIsLoggedIn: true});
           // store this.state en localstorage
           this.storeUserSession();
@@ -93,7 +94,7 @@ class Login extends Component {
     return (
       <Grid id="login" textAlign='center' style={{ height: '60vh' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: 450 }}>
-          <Header as='h2' color='white' textAlign='center'>
+          <Header as='h2' color='orange' textAlign='center'>
             <Image className="App-logo" alt="logo" src={Logo} /> Log-in to your account
           </Header>
             <Segment stacked>

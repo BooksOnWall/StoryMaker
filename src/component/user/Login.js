@@ -8,8 +8,11 @@ import {
   Image,
   Header,
   Segment } from "semantic-ui-react";
-import Logo from '../logo.svg';
-class SignUp extends Component {
+import Logo from '../../logo.svg';
+import Auth from '../../module/Auth';
+
+
+class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,10 +29,6 @@ class SignUp extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleData = this.handleData.bind(this);
-    //this.userIsLoggedIn = this.userIsLoggedIn.bind(this);
-    //this.logout = this.logout.bind(this);
-    //this.log = this.log.bind(this);
-    //this.checkLogin = this.checkLogin.bind(this);
   }
   storeUserSession = async () => {
     localForage.config({
@@ -56,7 +55,9 @@ class SignUp extends Component {
     })
     .then(data => {
         if(data) {
-          this.setState(data);
+          console.log(data);
+          this.setState({accessToken : data.token});
+          Auth.authenticateUser(data.token);
           this.setState({userIsLoggedIn: true});
           // store this.state en localstorage
           this.storeUserSession();
@@ -93,8 +94,8 @@ class SignUp extends Component {
     return (
       <Grid id="login" textAlign='center' style={{ height: '60vh' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: 450 }}>
-          <Header as='h2' color='white' textAlign='center'>
-            <Image className="App-logo" alt="logo" src={Logo} /> Sign Up to your account
+          <Header as='h2' color='orange' textAlign='center'>
+            <Image className="App-logo" alt="logo" src={Logo} /> Log-in to your account
           </Header>
             <Segment stacked>
             <Formik
@@ -133,16 +134,6 @@ class SignUp extends Component {
                   <input
                     icon='user'
                     iconposition='left'
-                    placeholder='User name'
-                    type="text"
-                    name="user"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.user}
-                  />
-                  <input
-                    icon='user'
-                    iconposition='left'
                     placeholder='E-mail address'
                     type="email"
                     name="email"
@@ -162,16 +153,6 @@ class SignUp extends Component {
                     value={values.password}
                   />
                   {errors.password && touched.password && errors.password}
-                  <input
-                    icon='lock'
-                    iconposition='left'
-                    placeholder='Repeat password'
-                    type="password"
-                    name="password2"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.password2}
-                  />
                   <Button onClick={handleSubmit} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
                     Login
                   </Button>
@@ -185,12 +166,4 @@ class SignUp extends Component {
   }
 }
 
-
-SignUp.propTypes = {
-  //onSubmit: PropTypes.func.isRequired,
-  //onChange: PropTypes.func.isRequired,
-  //errors: PropTypes.object.isRequired,
-  //user: PropTypes.object.isRequired
-};
-
-export default SignUp;
+export default Login;

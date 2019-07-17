@@ -1,10 +1,18 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const jwt = require('jsonwebtoken');
+//CORS
+var cors = require('cors');
+//bcrypt
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
+// get mysql connection & credentials parameters
+let config = require('./conf/mysql');
+
+//jwt_payload & passport
+const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const passportJWT = require('passport-jwt');
-let config = require('./conf/mysql');
 let ExtractJwt = passportJWT.ExtractJwt;
 let JwtStrategy = passportJWT.Strategy;
 
@@ -27,9 +35,26 @@ let strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
 passport.use(strategy);
 
 const app = express();
+
 // initialize passport with express
 app.use(passport.initialize());
+// cors integration
+var allowedOrigins = ['http://localhost:3000',
+                      'http://yourapp.com'];
 
+app.use(cors({
+  origin: function(origin, callback){
+    // allow requests with no origin
+    // (like mobile apps or curl requests)
+    if(!origin) return callback(null, true);
+    if(allowedOrigins.indexOf(origin) === -1){
+      var msg = 'The CORS policy for this site does not ' +
+                'allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  }
+}));
 // parse application/json
 app.use(bodyParser.json());
 //parse application/x-www-form-urlencoded
@@ -37,7 +62,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const Sequelize = require('sequelize');
 
-// initialze an instance of Sequelize
+// initialze an instance of Sequelize with mysql conf parameters
 const sequelize = new Sequelize(config.mysql);
 
 // check the databse connection
@@ -47,12 +72,26 @@ sequelize
   .catch(err => console.error('Unable to connect to the database:', err));
 
 // create user model
+
 const User = sequelize.define('user', {
   name: {
     type: Sequelize.STRING,
+    allowNull: false,
+    unique: true,
+  },
+  email: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    unique: true,
   },
   password: {
     type: Sequelize.STRING,
+    allowNull: false,
+  },
+  active: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: false
   },
 });
 
@@ -62,9 +101,10 @@ User.sync()
   .catch(err => console.log('oooh, did you enter wrong database credentials?'));
 
 // create some helper functions to work on the database
-const createUser = async ({ name, password }) => {
-  return await User.create({ name, password });
-};
+const createUser = async ({ name, email, hash }) => {
+  let password = hash;
+  if(hash) return await User.create({ name, email, password });
+}
 
 const getAllUsers = async () => {
   return await User.findAll();
@@ -88,28 +128,49 @@ app.get('/users', function(req, res) {
 
 // register route
 app.post('/register', function(req, res, next) {
-  const { name, password } = req.body;
-  createUser({ name, password }).then(user =>
-    res.json({ user, msg: 'account created successfully' })
-  );
+  const { name, email, password } = req.body;
+  bcrypt
+  .genSalt(saltRounds)
+  .then(salt => {
+    return bcrypt.hash(password, salt);
+  })
+  .then(hash => {
+    createUser({ name, email, hash }).then(user =>
+      res.json({ user, msg: 'account created successfully' })
+    );
+    // Store hash in your password DB.
+  })
+  .catch(err => console.error(err.message));
 });
 
 //login route
 app.post('/login', async function(req, res, next) {
-  const { name, password } = req.body;
-  if (name && password) {
-    let user = await getUser({ name: name });
-    if (!user) {
-      res.status(401).json({ message: 'No such user found' });
-    }
-    if (user.password === password) {
-      // from now on we'll identify the user by the id and the id is the
-      // only personalized value that goes into our token
-      let payload = { id: user.id };
-      let token = jwt.sign(payload, jwtOptions.secretOrKey);
-      res.json({ msg: 'ok', token: token });
-    } else {
-      res.status(401).json({ msg: 'Password is incorrect' });
+  const { email, password } = req.body;
+  if (email && password) {
+    try {
+      let user = await getUser({ email: email });
+      if (!user) {
+        res.status(401).json({ message: 'No such user found' });
+      }
+      let hash = user.password;
+      bcrypt
+        .compare(password, hash)
+        .then(match => {
+          if(match) {
+           // Passwords match
+           // from now on we'll identify the user by the id and the id is the
+           // only personalized value that goes into our token
+           let payload = { id: user.id };
+           let token = jwt.sign(payload, jwtOptions.secretOrKey);
+           res.json({ msg: 'ok', token: token });
+          } else {
+           // Passwords don't match
+             res.status(401).json({ msg: 'Password is incorrect' });
+          }
+        })
+        .catch(err => console.error(err.message));
+    }catch(e) {
+      console.log(e);
     }
   }
 });
@@ -120,6 +181,6 @@ app.get('/protected', passport.authenticate('jwt', { session: false }), function
 });
 
 // start app
-app.listen(3000, function() {
-  console.log('Express is running on port 3000');
+app.listen(3010, function() {
+  console.log('Express is running on port 3010');
 });

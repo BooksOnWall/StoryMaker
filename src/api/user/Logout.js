@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Auth from '../module/Auth';
+import Auth from '../../module/Auth';
 
 
-class Logout extends React.Component {
+class Logout extends Component {
 
   componentDidMount() {
     // deauthenticate user

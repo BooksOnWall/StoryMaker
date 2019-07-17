@@ -3,7 +3,9 @@ import Auth from '../module/Auth';
 import {
   Menu,
   Container,
-  Image
+  Image,
+  Dropdown,
+  Icon,
 } from 'semantic-ui-react';
 import Logo from '../logo.svg';
 class AppMenu extends Component {
@@ -33,8 +35,30 @@ class AppMenu extends Component {
           </Menu.Item>
           {this.state.authenticated ? (
             <Menu.Menu position='right'>
-            <Menu.Item as='a'>Dasboard</Menu.Item>
-            <Menu.Item as='a'>Logout</Menu.Item>
+            <Menu.Item to='/dashboard' href='/dashboard' as='a'>Dasboard</Menu.Item>
+            <Dropdown item icon='content' simple>
+                <Dropdown.Menu className='left'>
+                  <Dropdown.Item>
+                    <Icon name='add' />
+                    <span className='text'>New</span>
+                    <Dropdown.Menu>
+                      <Dropdown.Item ><Icon name='add' />User</Dropdown.Item>
+                      <Dropdown.Item><Icon name='add' />Story</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown.Item>
+                  <Dropdown.Item>
+                    <Icon name='list' />
+                    <span className='text'>List</span>
+                    <Dropdown.Menu>
+                      <Dropdown.Item to='/users' href='/users' as='a'><Icon name='list' />Users</Dropdown.Item>
+                      <Dropdown.Item><Icon name='list' />Stories</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown.Item>
+                  <Dropdown.Divider />
+                    <Dropdown.Item  to='/profile' href='/profile' as='a'>Profile</Dropdown.Item>
+                  <Dropdown.Item  to='/logout' href='/logout' as='a'>Logout</Dropdown.Item>
+                </Dropdown.Menu>
+            </Dropdown>
             </Menu.Menu>
           ) : (
             <Menu.Menu position='right'>
