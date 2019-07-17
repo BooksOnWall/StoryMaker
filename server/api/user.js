@@ -5,5 +5,10 @@ class User {
    */
   constructor() {
     this.user = [];
-    this.users = [];
   }
+  use(fn) {
+     this.user.push(fn);
+  }
+
+}
+module.exports = User;

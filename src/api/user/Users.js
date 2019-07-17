@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import Auth from '../../module/Auth';
-import Profile from './Profile';
 import {
   Container,
   Segment,
   Table,
-  Icon,
 } from 'semantic-ui-react';
+
 import _ from 'lodash';
 
+const tableData = [
+  { id: 1, name: 'John', email: 'toto@toto.com', active: true },
+  { id: 2, name: 'Amber', email: 'bebe@bebe.org', active: true },
+  { id: 3, name: 'Leslie', email: 'lele@lele.uy', active: false },
+  { id: 4, name: 'Ben', email: 'benben@benben.com.uy', active: false },
+];
 
 class Users extends Component {
   constructor(props) {
@@ -36,8 +40,9 @@ class Users extends Component {
     })
     .then(data => {
         if(data) {
-          console.log(data);
           this.setState({data: data});
+        } else {
+          console.log('No Data received from the server');
         }
     })
     .catch((error) => {
@@ -66,62 +71,49 @@ class Users extends Component {
 
       return
     }
-
     this.setState({
       data: data.reverse(),
       direction: direction === 'ascending' ? 'descending' : 'ascending',
     });
   }
-  edit(id) {
-    this.props.history.push('/profile/'+id);
-  }
   render() {
-    const { id, name, email, active, profile, column, data, direction } = this.state;
-    return(
-          <Container>
-              <segment>
-                <Table sortable celled fixed>
-                <Table.header>
-                  <Table.row>
-                    <Table.headercell sorted="{column === 'id' ? direction : null}" onclick="{this.handleSort('id')}">
-                      <segment>Users list <link to='{`/profile/0`}' right /><icon name="user"> Add user</icon></segment>
-                      Id
-                    </Table.headercell>
-                    <Table.headercell sorted="{column === 'name' ? direction : null}" onclick="{this.handleSort('name')}">
-                      Name
-                    </Table.headercell>
-                    <Table.headercell sorted="{column === 'email' ? direction : null}" onclick="{this.handleSort('email')}">
-                      Email
-                    </Table.headercell>
-                    <Table.headercell sorted="{column === 'active' ? direction : null}" onclick="{this.handleSort('active')}">
-                      Active
-                    </Table.headercell>
-                    <Table.headercell>
-                      Edit
-                    </Table.headercell>
-                  </Table.row>
-                </Table.header>
-                <Table.body>
-                  {_.map(data, ({ id, name, email, active }) (
-                  <Table.row key="{id}">
-                    <Table.cell>{id}</Table.cell>
-                    <Table.cell>{name}</Table.cell>
-                    <Table.cell>{email}</Table.cell>
-                    <Table.cell>{active ? ( <icon name="check"/> ) : ( <icon name="close"/> )}</Table.cell>
-                    <Table.cell><icon name="edit" to="{`/profle/${id}`}" /><icon name="delete" /></Table.cell>
-                  </Table.row>
-                  ))}
-                </Table.body>
-                </Table>
-              </segment>
-              <Segment id='profil'>
-                {this.state.profile ? (<Profile id='profile' />) : null}
-                <Profile
-                  id='profile'
-                />
-              </Segment>
-          </Container>
+    const { id, name, email, active, column, data, direction } = this.state;
+    return (
+      <Table sortable celled fixed>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell
+              sorted={column === 'id' ? direction : null}
+              onClick={this.handleSort('id')}
+            >
+              Id
+            </Table.HeaderCell>
+            <Table.HeaderCell
+              sorted={column === 'name' ? direction : null}
+              onClick={this.handleSort('name')}
+            >
+              Name
+            </Table.HeaderCell>
+            <Table.HeaderCell
+              sorted={column === 'email' ? direction : null}
+              onClick={this.handleSort('email')}
+            >
+              Email
+            </Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {_.map(data, ({ id, name, email }) => (
+            <Table.Row key={id}>
+              <Table.Cell>{id}</Table.Cell>
+              <Table.Cell>{name}</Table.Cell>
+              <Table.Cell>{email}</Table.Cell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
     );
+
   }
 }
 export default Users;

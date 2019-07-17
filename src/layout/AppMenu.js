@@ -8,6 +8,7 @@ import {
   Icon,
 } from 'semantic-ui-react';
 import Logo from '../logo.svg';
+
 class AppMenu extends Component {
   constructor(props) {
     super(props);
@@ -36,23 +37,18 @@ class AppMenu extends Component {
           {this.state.authenticated ? (
             <Menu.Menu position='right'>
             <Menu.Item to='/dashboard' href='/dashboard' as='a'>Dasboard</Menu.Item>
-            <Dropdown item icon='content' simple>
+            <Dropdown text='' icon='code' color='orange' className='icon'
+              image = {{ avatar: true, src: '../assets/images/patrick.png'}}
+            >
                 <Dropdown.Menu className='left'>
-                  <Dropdown.Item>
-                    <Icon name='add' />
-                    <span className='text'>New</span>
-                    <Dropdown.Menu>
-                      <Dropdown.Item ><Icon name='add' />User</Dropdown.Item>
-                      <Dropdown.Item><Icon name='add' />Story</Dropdown.Item>
-                    </Dropdown.Menu>
+                  <Dropdown.Item  to='/users' href='/users' as='a'>
+                    <Icon name='address card' />
+                    <span className='text'>Users</span>
                   </Dropdown.Item>
-                  <Dropdown.Item>
+                  <Dropdown.Divider />
+                  <Dropdown.Item to='/stories' href='/stories' as='a'>
                     <Icon name='list' />
-                    <span className='text'>List</span>
-                    <Dropdown.Menu>
-                      <Dropdown.Item to='/users' href='/users' as='a'><Icon name='list' />Users</Dropdown.Item>
-                      <Dropdown.Item><Icon name='list' />Stories</Dropdown.Item>
-                    </Dropdown.Menu>
+                    <span className='text'>Stories</span>
                   </Dropdown.Item>
                   <Dropdown.Divider />
                     <Dropdown.Item  to='/profile' href='/profile' as='a'>Profile</Dropdown.Item>

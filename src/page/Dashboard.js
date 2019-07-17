@@ -7,9 +7,20 @@ import {
 
 
 class Dashboard extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      authenticated: false
+    }
+  };
   componentDidMount() {
-    // update authenticated state on logout
-    Auth.isUserAuthenticated()
+    // check if user is logged in on refresh
+    this.toggleAuthenticateStatus()
+  }
+
+  toggleAuthenticateStatus() {
+    // check authenticated status and toggle state based on that
+    this.setState({ authenticated: Auth.isUserAuthenticated() })
   }
   render() {
     return(

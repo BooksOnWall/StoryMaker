@@ -39,7 +39,7 @@ const app = express();
 // initialize passport with express
 app.use(passport.initialize());
 // cors integration
-var allowedOrigins = ['http://localhost:3000',
+var allowedOrigins = ['*','http://localhost:3000',
                       'http://yourapp.com'];
 
 app.use(cors({
@@ -64,7 +64,7 @@ const Sequelize = require('sequelize');
 
 // initialze an instance of Sequelize with mysql conf parameters
 const sequelize = new Sequelize(config.mysql);
-
+const usersList = require('./conf/db/users');
 // check the databse connection
 sequelize
   .authenticate()
@@ -73,45 +73,25 @@ sequelize
 
 // create user model
 
-const User = sequelize.define('user', {
-  name: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    unique: true,
-  },
-  email: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    unique: true,
-  },
-  password: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-  active: {
-    type: Sequelize.BOOLEAN,
-    allowNull: false,
-    defaultValue: false
-  },
-});
-
+const Users = sequelize.define('users', usersList.users);
 // create table with user model
-User.sync()
-  .then(() => console.log('User table created successfully'))
-  .catch(err => console.log('oooh, did you enter wrong database credentials?'));
+Users.sync()
+ .then(() => console.log('User table created successfully'))
+ .catch(err => console.log('oooh, did you enter wrong database credentials?'));
+
 
 // create some helper functions to work on the database
 const createUser = async ({ name, email, hash }) => {
   let password = hash;
-  if(hash) return await User.create({ name, email, password });
+  if(hash) return await Users.create({ name, email, password });
 }
 
 const getAllUsers = async () => {
-  return await User.findAll();
+  return await Users.findAll();
 };
 
 const getUser = async obj => {
-  return await User.findOne({
+  return await Users.findOne({
     where: obj,
   });
 };
