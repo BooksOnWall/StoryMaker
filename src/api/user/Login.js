@@ -16,9 +16,9 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        server : 'http://localhost:3010/users',
-        login: 'http://localhost:3010/login',
-        register: 'http://localhost:3010/register',
+        server : 'https://bow.animaespacio.org:3010/',
+        login: this.state.server + 'login',
+        register: this.state.server + 'register',
         userIsLoggedIn: false,
         userId: null,
         email: null,

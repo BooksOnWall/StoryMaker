@@ -1,4 +1,6 @@
 const express = require('express');
+var fs = require('fs');
+var https = require('https');
 const bodyParser = require('body-parser');
 //CORS
 var cors = require('cors');
@@ -170,6 +172,10 @@ app.get('/protected', passport.authenticate('jwt', { session: false }), function
 });
 
 // start app
-app.listen(3010, function() {
-  console.log('Express is running on port 3010');
+https.createServer({
+  key: fs.readFileSync('server.key'),
+  cert: fs.readFileSync('server.cert')
+}, app)
+.listen(3010, function () {
+  console.log('BooksOnWall RESTFULL Server listening on port 3010! Go to https://localhost:3000/')
 });
