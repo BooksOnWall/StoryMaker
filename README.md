@@ -5,6 +5,7 @@
     $ yarn start 
 # Server 
     $ cd server 
+    $ yarn 
     // create conf/mysql.conf from conf/mysql.conf.default 
     $ cp conf/mysql.js.default conf/mysql.js
     // open mysql.conf and set mysql db credentials
@@ -12,6 +13,8 @@
       username: 'root',
       password: '',
       dialect: 'mysql',
+    // generate https certificates for express server 
+    $ openssl req -nodes -new -x509 -keyout server.key -out server.cert
     // launch the server 
     $ node server.js 
     
