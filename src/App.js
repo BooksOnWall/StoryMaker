@@ -6,6 +6,7 @@ import {
   Redirect,
   Switch,
 } from 'react-router-dom';
+
 import Auth from './module/Auth';
 
 import AppMenu from './layout/AppMenu';
