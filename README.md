@@ -21,3 +21,13 @@
     $ yarn add --dev  nodemon
     After then, we can run the app like so:
     $ nodemon server.js
+    
+## Build
+    $ yarn build 
+    put this .htaccess file inside your deploy or build directory 
+    .htaccess
+
+    RewriteEngine on
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule . /index.html [L]
