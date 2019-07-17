@@ -13,10 +13,12 @@ import Logo from '../../logo.svg';
 class SignUp extends Component {
   constructor(props) {
     super(props);
+    let server = 'https://bow.animaespacio.org:3010/';
     this.state = {
-      server : 'https://bow.animaespacio.org:3010/',
-      login: this.state.server + 'login',
-      register: this.state.server + 'register',
+
+      server : server,
+      login: server + 'login',
+      register: server + 'register',
       userIsLoggedIn: false,
       userId: null,
       name: null,
@@ -26,6 +28,7 @@ class SignUp extends Component {
       accessToken: null,
       visible: true
     }
+    console.log(this.state.server);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleData = this.handleData.bind(this);

@@ -18,16 +18,17 @@ const tableData = [
 class Users extends Component {
   constructor(props) {
     super(props);
+    let server = 'https://bow.animaespacio.org:3010/';
     this.state = {
-      server : 'https://bow.animaespacio.org:3010/',
-      login: this.state.server + 'login',
-      register: this.state.server + 'register',
+      server : server,
+      login: server + 'login',
+      register: server + 'register',
       column: null,
       data: null,
       direction: null,
       authenticated: false,
       profile: false,
-      users: this.state.server + 'users',
+      users: server + 'users',
     };
     this.handleSort = this.handleSort.bind(this);
     this.listUsers = this.listUsers.bind(this);
