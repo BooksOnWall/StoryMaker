@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Auth from '../../module/Auth';
-import { Table } from 'semantic-ui-react';
+import { Table, Icon } from 'semantic-ui-react';
 
 import _ from 'lodash';
 
@@ -15,12 +15,12 @@ class Users extends Component {
       server: server,
       login: server + 'login',
       register: server + 'register',
+      users: server + 'users',
       column: null,
       data: null,
       direction: null,
       authenticated: false,
       profile: false,
-      users: server + 'users',
     };
     this.handleSort = this.handleSort.bind(this);
     this.listUsers = this.listUsers.bind(this);
@@ -104,6 +104,7 @@ class Users extends Component {
               <Table.Cell>{id}</Table.Cell>
               <Table.Cell>{name}</Table.Cell>
               <Table.Cell>{email}</Table.Cell>
+              <Table.Cell>{active ? ( <Icon  name='check' />) : ( <Icon  name='close' />) }</Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>
