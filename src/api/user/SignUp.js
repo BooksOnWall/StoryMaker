@@ -13,10 +13,9 @@ import Logo from '../../logo.svg';
 class SignUp extends Component {
   constructor(props) {
     super(props);
-    let protocol =  window.location.protocol.replace(/:/g,'');
-    protocol = (protocol === 'http') ? 'https' : protocol;
-    let domain = protocol + '//' + window.location.hostname;
-    let server = domain + ':3010/';
+    let protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
+    let domain = protocol + '://' + process.env.REACT_APP_SERVER_HOST;
+    let server = domain + ':'+ process.env.REACT_APP_SERVER_PORT+'/';
 
     this.state = {
 

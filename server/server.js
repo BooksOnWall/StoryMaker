@@ -1,22 +1,27 @@
 const express = require('express');
 var fs = require('fs');
+var http = require('http');
 var https = require('https');
 const bodyParser = require('body-parser');
 //CORS
 var cors = require('cors');
-var key = fs.readFileSync('./server.key');
-var cert = fs.readFileSync('./server.crt');
-var options = {
-    key: key,
-    cert: cert
-};
+// ENV set url(localhost/other) port (1234) and protocol (http/https)
+require('dotenv').config();
+const host = process.env.SERVER_HOST;
+const protocol = process.env.SERVER_PROTOCOL;
+const port = process.env.SERVER_PORT;
+
+
+
+
+// get mysql connection & credentials parameters
+let config = require('./conf/mysql');
+
+
 
 //bcrypt
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-
-// get mysql connection & credentials parameters
-let config = require('./conf/mysql');
 
 //jwt_payload & passport
 const jwt = require('jsonwebtoken');
@@ -75,7 +80,7 @@ app.use(bodyParser.json());
 
 var allowCrossDomain = function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methos', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
+  res.header('Access-Control-Allow-Method', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
   res.header('Access-Control-Allow-Headers', 'content-type');
   next();
 }
@@ -84,6 +89,7 @@ app.use(allowCrossDomain);
 //parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Define db and create tables
 const Sequelize = require('sequelize');
 
 // initialze an instance of Sequelize with mysql conf parameters
@@ -96,7 +102,6 @@ sequelize
   .catch(err => console.error('Unable to connect to the database:', err));
 
 // create user model
-
 const Users = sequelize.define('users', usersList.users);
 // create table with user model
 Users.sync()
@@ -185,7 +190,20 @@ app.get('/protected', passport.authenticate('jwt', { session: false }), function
 });
 
 // start app
-https.createServer(options, app)
-.listen(3010, function () {
-  console.log('BooksOnWall RESTFULL Server listening on port 3010! Go to https://localhost:3000/')
-});
+if (protocol === 'https') {
+  var key = fs.readFileSync('./server.key');
+  var cert = fs.readFileSync('./server.crt');
+  var options = {
+      key: key,
+      cert: cert
+  };
+  https.createServer(options, app)
+  .listen(port, function () {
+    console.log('BooksOnWall RESTFULL Server listening on port 3010! Go to https://localhost:3000/')
+  });
+} else {
+  http.createServer(app)
+  .listen(port, function () {
+    console.log('BooksOnWall RESTFULL Server listening on port 3010! Go to https://localhost:3000/')
+  });
+}
