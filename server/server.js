@@ -45,7 +45,7 @@ var allowedOrigins = ['*',
 		      'https://localhost:3000',
 		      'https://bow.animaespacio.org',
 		      'http://localhost:3000',
-                      'http://yourapp.com'];
+          'http://yourapp.com'];
 
 app.use(cors({
   origin: function(origin, callback){

@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import Auth from '../../module/Auth';
-import {
-  Table,
-} from 'semantic-ui-react';
+import { Table } from 'semantic-ui-react';
 
 import _ from 'lodash';
 
 class Users extends Component {
   constructor(props) {
     super(props);
-    let server = 'https://bow.animaespacio.org:3010/';
+    let protocol =  window.location.protocol.replace(/:/g,'');
+    protocol = (protocol === 'http') ? 'https' : 'http';
+    let domain = protocol + '//' +window.location.hostname;
+    let server = domain + ':3010/';
     this.state = {
       server: server,
       login: server + 'login',
@@ -27,7 +28,7 @@ class Users extends Component {
   listUsers() {
     fetch(this.state.users, {
       method: 'get',
-      headers: {credentials: 'same-origin', 'Content-Type':'application/json'}
+      headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'}
     })
     .then(response => {
       if (response && !response.ok) { throw new Error(response.statusText);}

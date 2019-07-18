@@ -15,7 +15,12 @@ import Auth from '../../module/Auth';
 class Login extends Component {
   constructor(props) {
     super(props);
-    let server = 'https://bow.animaespacio.org:3010/';
+    let protocol =  window.location.protocol.replace(/:/g,'');
+    protocol = (protocol === 'http') ? 'https' : 'http';
+    console.log(protocol);
+    let domain = protocol + '://' +window.location.hostname;
+    let server = domain + ':3010/';
+    console.log(server);
     this.state = {
         server : server,
         login: server + 'login',

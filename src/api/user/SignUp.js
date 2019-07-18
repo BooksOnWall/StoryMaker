@@ -13,7 +13,10 @@ import Logo from '../../logo.svg';
 class SignUp extends Component {
   constructor(props) {
     super(props);
-    let server = 'https://bow.animaespacio.org:3010/';
+    let protocol =  window.location.protocol.replace(/:/g,'');
+    protocol = (protocol === 'http') ? 'https' : 'http';
+    let domain = protocol + '//' +window.location.hostname;
+    let server = domain + ':3010/';
     this.state = {
 
       server : server,
