@@ -1,26 +1,17 @@
 import React, { Component } from 'react';
 import Auth from '../../module/Auth';
 import {
-  Container,
-  Segment,
   Table,
 } from 'semantic-ui-react';
 
 import _ from 'lodash';
-
-const tableData = [
-  { id: 1, name: 'John', email: 'toto@toto.com', active: true },
-  { id: 2, name: 'Amber', email: 'bebe@bebe.org', active: true },
-  { id: 3, name: 'Leslie', email: 'lele@lele.uy', active: false },
-  { id: 4, name: 'Ben', email: 'benben@benben.com.uy', active: false },
-];
 
 class Users extends Component {
   constructor(props) {
     super(props);
     let server = 'https://bow.animaespacio.org:3010/';
     this.state = {
-      server : server,
+      server: server,
       login: server + 'login',
       register: server + 'register',
       column: null,
