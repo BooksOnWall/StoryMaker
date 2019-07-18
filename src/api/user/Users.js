@@ -43,7 +43,7 @@ class Users extends Component {
     })
     .catch((error) => {
       // Your error is here!
-      console.log(error)
+      //console.log(error)
     });
   }
   componentDidMount() {
