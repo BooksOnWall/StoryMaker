@@ -41,7 +41,10 @@ const app = express();
 // initialize passport with express
 app.use(passport.initialize());
 // cors integration
-var allowedOrigins = ['*','http://localhost:3000',
+var allowedOrigins = ['*',
+		      'https://localhost:3000',
+		      'https://bow.animaespacio.org',
+		      'http://localhost:3000',
                       'http://yourapp.com'];
 
 app.use(cors({
