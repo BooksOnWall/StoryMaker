@@ -6,7 +6,7 @@
 .pnp.js
 
 # Certificates
-server/server.cert
+server/server.crt
 server/server.key
 
 # testing

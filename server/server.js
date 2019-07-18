@@ -4,6 +4,13 @@ var https = require('https');
 const bodyParser = require('body-parser');
 //CORS
 var cors = require('cors');
+var key = fs.readFileSync('./server.key');
+var cert = fs.readFileSync('./server.crt');
+var options = {
+    key: key,
+    cert: cert
+};
+
 //bcrypt
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
@@ -42,10 +49,10 @@ const app = express();
 app.use(passport.initialize());
 // cors integration
 var allowedOrigins = ['*',
-		      'https://localhost:3000',
-		      'https://bow.animaespacio.org',
-		      'http://localhost:3000',
-          'http://yourapp.com'];
+      'https://localhost:3000',
+      'https://bow.animaespacio.org',
+      'http://localhost:3000',
+      'http://yourapp.com'];
 
 app.use(cors({
   origin: function(origin, callback){
@@ -62,15 +69,18 @@ app.use(cors({
 }));
 // parse application/json
 app.use(bodyParser.json());
+
 //cors middleware causes express to reject connection
 // adding headers Allow-Cross-Domain
+
 var allowCrossDomain = function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methos', 'GET,PUT,POST,DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header('Access-Control-Allow-Methos', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'content-type');
   next();
 }
 app.use(allowCrossDomain);
+
 //parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -175,10 +185,7 @@ app.get('/protected', passport.authenticate('jwt', { session: false }), function
 });
 
 // start app
-https.createServer({
-  key: fs.readFileSync('./server.key'),
-  cert: fs.readFileSync('./server.cert')
-}, app)
+https.createServer(options, app)
 .listen(3010, function () {
   console.log('BooksOnWall RESTFULL Server listening on port 3010! Go to https://localhost:3000/')
 });
