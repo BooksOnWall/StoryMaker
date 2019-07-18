@@ -2,6 +2,16 @@
     $ git clone git@git.pulsar113.org:BooksOnWall/BooksOnWall_BackOffice.git
     $ cd BooksOnWall_BackOffice
     $ yarn 
+    // add a .env file at the root of your main directory 
+    // for developpement in localhost for both react client app and Express nodejs server 
+        REACT_APP_SERVER_HOST=localhost
+        REACT_APP_SERVER_PROTOCOL= http
+        REACT_APP_SERVER_PORT=3010
+    // production using https on both sides with a react application builded 
+        REACT_APP_SERVER_HOST=bow.animaespacio.org/
+        REACT_APP_SERVER_PROTOCOL= https
+        REACT_APP_SERVER_PORT=3010
+
     $ yarn start 
 # Server 
     $ cd server 
