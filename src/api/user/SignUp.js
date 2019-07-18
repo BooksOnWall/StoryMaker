@@ -14,7 +14,7 @@ class SignUp extends Component {
   constructor(props) {
     super(props);
     let protocol =  window.location.protocol.replace(/:/g,'');
-    protocol = (protocol === 'http') ? 'https' : 'https';
+    protocol = (protocol === 'http') ? 'https' : protocol;
     let domain = protocol + '//' + window.location.hostname;
     let server = domain + ':3010/';
 
