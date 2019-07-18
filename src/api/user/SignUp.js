@@ -14,10 +14,10 @@ class SignUp extends Component {
   constructor(props) {
     super(props);
     let protocol =  window.location.protocol.replace(/:/g,'');
-    protocol = (protocol === 'http') ? 'https' : 'http';
+    protocol = (protocol === 'http') ? 'https' : 'https';
     let domain = protocol + '//' + window.location.hostname;
     let server = domain + ':3010/';
-    console.log(server);
+
     this.state = {
 
       server : server,
@@ -32,7 +32,7 @@ class SignUp extends Component {
       accessToken: null,
       visible: true
     }
-    console.log(this.state.server);
+
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleData = this.handleData.bind(this);
@@ -51,8 +51,7 @@ class SignUp extends Component {
   }
   handleData(values) {
     this.setState(values);
-    console.log(values);
-    console.log(this.state.register);
+
     fetch(this.state.register, {
       method: 'post',
       headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'},

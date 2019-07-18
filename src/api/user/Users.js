@@ -96,6 +96,9 @@ class Users extends Component {
             >
               Email
             </Table.HeaderCell>
+            <Table.HeaderCell>
+              Active
+            </Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -104,7 +107,7 @@ class Users extends Component {
               <Table.Cell>{id}</Table.Cell>
               <Table.Cell>{name}</Table.Cell>
               <Table.Cell>{email}</Table.Cell>
-              <Table.Cell>{active ? ( <Icon  name='check' />) : ( <Icon  name='close' />) }</Table.Cell>
+              <Table.Cell>{active ? ( <Icon  name='check' /> ) : ( <Icon  name='close' /> ) }</Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>
