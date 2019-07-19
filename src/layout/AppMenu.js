@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Auth from '../module/Auth';
 import {
   Menu,
   Container,
@@ -7,24 +6,19 @@ import {
   Dropdown,
   Icon,
 } from 'semantic-ui-react';
+
+
+//import image
 import Logo from '../logo.svg';
+import Avatar from '../assets/images/patrick.png';
+
 
 class AppMenu extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      authenticated: false
+      authenticated: this.props.childProps.authenticated,
     }
-  };
-
-  componentDidMount() {
-    // check if user is logged in on refresh
-    this.toggleAuthenticateStatus()
-  }
-
-  toggleAuthenticateStatus() {
-    // check authenticated status and toggle state based on that
-    this.setState({ authenticated: Auth.isUserAuthenticated() })
   }
   render() {
     return (
@@ -34,11 +28,13 @@ class AppMenu extends Component {
             <Image className='App-logo' size='mini' src={Logo} style={{ marginRight: '1.5em' }} />
             Books On Wall
           </Menu.Item>
-          {this.state.authenticated ? (
+          {this.props.childProps.authenticated ? (
             <Menu.Menu position='right'>
             <Menu.Item to='/dashboard' href='/dashboard' as='a'>Dasboard</Menu.Item>
-            <Dropdown text='' icon='code' color='orange' className='icon'
-              image = {{ avatar: true, src: '../assets/images/patrick.png'}}
+            <Dropdown  icon='user' color='orange' className='icon'
+              image = {{ avatar: true, src: Avatar }}
+              text='Tom'
+              style={{verticalAlign: 'center', paddingTop: '1.2em' }}
             >
                 <Dropdown.Menu className='left'>
                   <Dropdown.Item  to='/users' href='/users' as='a'>

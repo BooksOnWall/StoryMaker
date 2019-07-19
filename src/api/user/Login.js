@@ -10,14 +10,16 @@ import {
   Segment } from "semantic-ui-react";
 import Logo from '../../logo.svg';
 import Auth from '../../module/Auth';
-console.log(process.env);
+import { Redirect } from 'react-router-dom';
 
 class Login extends Component {
   constructor(props) {
     super(props);
+    // define protocol domain and server url
     let protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
     let domain = protocol + '://' + process.env.REACT_APP_SERVER_HOST;
     let server = domain + ':'+ process.env.REACT_APP_SERVER_PORT+'/';
+
     this.state = {
         server : server,
         login: server + 'login',
@@ -33,44 +35,57 @@ class Login extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleData = this.handleData.bind(this);
   }
-  storeUserSession = async () => {
-    localForage.config({
-      driver: [localForage.INDEXEDDB, localForage.LOCALSTORAGE],
-      name: 'userSession',
-      storeName: 'user',
-      version: 1.0
-    });
-    localForage.setItem('email', this.state.email);
-    localForage.setItem('password', this.state.password);
-    localForage.setItem('userIsLoggedIn', this.state.userIsLoggedIn);
-    localForage.setItem('accessToken', this.state.accessToken);
+  async storeUserSession() {
+    try {
+      await localForage.config({
+        driver: [localForage.INDEXEDDB, localForage.LOCALSTORAGE],
+        name: 'userSession',
+        storeName: 'user',
+        version: 1.0
+      });
+      await localForage.setItem('email', this.state.email);
+      await localForage.setItem('password', this.state.password);
+      await localForage.setItem('userIsLoggedIn', this.state.userIsLoggedIn);
+      await localForage.setItem('accessToken', this.state.accessToken);
+    } catch(e) {
+      console.log(e.message);
+    }
   }
-  handleData(values) {
-    this.setState(values);
-    fetch(this.state.login, {
-      method: 'post',
-      headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'},
-      body:JSON.stringify({email:this.state.email, password:this.state.password})
-    })
-    .then(response => {
-      if (response && !response.ok) { throw new Error(response.statusText);}
-      return response.json();
-    })
-    .then(data => {
-        if(data) {
-          console.log(data);
-          this.setState({accessToken : data.token});
-          Auth.authenticateUser(data.token);
-          this.setState({userIsLoggedIn: true});
-          // store this.state en localstorage
-          this.storeUserSession();
-          this.props.history.push("/dashboard");
-        }
-    })
-    .catch((error) => {
-      // Your error is here!
-      console.log(error)
-    });
+  async logUser(data) {
+    try {
+      this.setState({accessToken : data.token});
+
+       await Auth.authenticateUser(data.token);
+       this.setState({userIsLoggedIn: true});
+       this.storeUserSession();
+
+    } catch(e) {
+      alert(e.message);
+    }
+    this.props.history.push('/');
+  }
+  async handleData(values) {
+    try {
+      this.setState(values);
+      await fetch(this.state.login, {
+        method: 'post',
+        headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'},
+        body:JSON.stringify({email:this.state.email, password:this.state.password})
+      })
+      .then(response => {
+        if (response && !response.ok) { throw new Error(response.statusText);}
+        return response.json();
+      })
+      .then(data => {
+          if(data) this.logUser(data);
+      })
+      .catch((error) => {
+        // Your error is here!
+        console.log(error)
+      });
+    } catch(e) {
+      alert(e.message);
+    }
   }
   handleChange(e) {
     let change = {};
@@ -94,6 +109,9 @@ class Login extends Component {
     }
   }
   render() {
+    if (this.state.isLoggedIn) {
+      return <Redirect to={{ pathname: `/dashboard` }} />
+    }
     return (
       <Grid id="login" textAlign='center' style={{ height: '60vh' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: 450 }}>

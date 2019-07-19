@@ -4,6 +4,7 @@ import Auth from '../../module/Auth';
 import {
   Segment,
   Header,
+  Divider,
   Form,
   Image,
   Grid,
@@ -12,6 +13,7 @@ import {
 } from 'semantic-ui-react';
 import { Formik } from 'formik';
 import Logo from '../../logo.svg';
+import UserPref from './userPreferences';
 
 class Profile extends Component {
   constructor(props) {
@@ -31,7 +33,8 @@ class Profile extends Component {
   }
   render() {
     return (
-      <Grid id="profile" textAlign='center' style={{ height: '60vh' }} verticalAlign='middle'>
+      <Grid id="profile" textAlign='center' columns={2} divided verticalAlign='top'>
+        <Grid.Row>
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as='h2' color='orange' textAlign='center'>
             <Image className="App-logo" alt="logo" src={Logo} />My Profile
@@ -81,7 +84,7 @@ class Profile extends Component {
                     value={values.name}
                   />
                   {errors.name && touched.name && errors.name}
-
+                  <Divider horizontal>...</Divider>
                   <input
                     icon='user'
                     iconposition='left'
@@ -93,6 +96,7 @@ class Profile extends Component {
                     value={values.email}
                   />
                   {errors.email && touched.email && errors.email}
+                  <Divider horizontal>...</Divider>
                   <input
                     icon='lock'
                     iconposition='left'
@@ -104,6 +108,7 @@ class Profile extends Component {
                     value={values.password}
                   />
                   {errors.password && touched.password && errors.password}
+                  <Divider horizontal>...</Divider>
                   <Checkbox
                     icon='user'
                     iconposition='left'
@@ -117,7 +122,7 @@ class Profile extends Component {
                     toggle
                   />
                   {errors.active && touched.active && errors.active}
-
+                  <Divider horizontal>...</Divider>
                   <Button onClick={handleSubmit} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
                     Update
                   </Button>
@@ -126,6 +131,13 @@ class Profile extends Component {
             </Formik>
             </Segment>
         </Grid.Column>
+        <Grid.Column>
+          <Header as='h2' color='orange' textAlign='center'>
+            <Image className="App-logo" alt="logo" src={Logo} />User Preferences
+          </Header>
+          <UserPref toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
+        </Grid.Column>
+        </Grid.Row>
       </Grid>
     );
   }

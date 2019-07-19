@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import Auth from '../../module/Auth';
 
 
 class Logout extends Component {
-
-  componentDidMount() {
+  logout() {
     // deauthenticate user
     Auth.deauthenticateUser();
     // change the current URL to / after logout
     this.props.history.push('/');
+  }
+  componentDidMount() {
+    this.logout();
   }
 
   render() {
@@ -20,9 +21,4 @@ class Logout extends Component {
     )
   }
 }
-
-Logout.contextTypes = {
-  router: PropTypes.object.isRequired
-};
-
 export default Logout;
