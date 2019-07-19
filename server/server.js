@@ -134,7 +134,11 @@ app.get('/', function(req, res) {
 app.get('/users', function(req, res) {
   getAllUsers().then(user => res.json(user));
 });
-
+//get user
+app.get('/users/:userId', (req, res) => {
+  let uid = req.params.userId;
+  getUser(uid).then(user => res.json(user));
+});
 // register route
 app.post('/register', function(req, res, next) {
   const { name, email, password } = req.body;

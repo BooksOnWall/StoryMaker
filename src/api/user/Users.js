@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import Auth from '../../module/Auth';
-import { Table, Icon, Menu } from 'semantic-ui-react';
+import { Segment, Header, Table, Icon, Menu } from 'semantic-ui-react';
 import Moment from 'moment';
+import { Link } from 'react-router-dom';
+
 
 import _ from 'lodash';
 
@@ -25,8 +27,8 @@ class Users extends Component {
     this.handleSort = this.handleSort.bind(this);
     this.listUsers = this.listUsers.bind(this);
   }
-  listUsers() {
-    fetch(this.state.users, {
+  async listUsers() {
+    await fetch(this.state.users, {
       method: 'get',
       headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'}
     })
@@ -46,10 +48,17 @@ class Users extends Component {
       //console.log(error)
     });
   }
-  componentDidMount() {
+
+  async componentDidMount() {
     // check if user is logged in on refresh
-    this.toggleAuthenticateStatus();
-    this.listUsers();
+    try {
+      await this.toggleAuthenticateStatus();
+      await this.listUsers();
+
+    } catch(e) {
+      console.log(e.message);
+    }
+
   }
   toggleAuthenticateStatus() {
     // check authenticated status and toggle state based on that
@@ -72,80 +81,91 @@ class Users extends Component {
       direction: direction === 'ascending' ? 'descending' : 'ascending',
     });
   }
+  tableRowClickFunc(user) {
+    return this.props.history.push('/users/'+user.id);
+  }
   render() {
     const { id, name, email, active, column, data, direction } = this.state;
     Moment.locale('en');
 
     return (
-      <Table sortable celled fixed>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell
-              sorted={column === 'id' ? direction : null}
-              onClick={this.handleSort('id')}
-            >
-              Id
-            </Table.HeaderCell>
-            <Table.HeaderCell
-              sorted={column === 'name' ? direction : null}
-              onClick={this.handleSort('name')}
-            >
-              Name
-            </Table.HeaderCell>
-            <Table.HeaderCell
-              sorted={column === 'email' ? direction : null}
-              onClick={this.handleSort('email')}
-            >
-              Email
-            </Table.HeaderCell>
-            <Table.HeaderCell
-              sorted={column === 'createdAt' ? direction : null}
-              onClick={this.handleSort('createdAt')}
-            >
-              Created
-            </Table.HeaderCell>
-            <Table.HeaderCell
-              sorted={column === 'updatedAt' ? direction : null}
-              onClick={this.handleSort('updatedAt')}
-            >
-              Updated
-            </Table.HeaderCell>
-            <Table.HeaderCell>
-              Active
-            </Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {_.map(data, ({ id, name, email, createdAt, updatedAt, active }) => (
-            <Table.Row key={id}>
-              <Table.Cell>{id}</Table.Cell>
-              <Table.Cell>{name}</Table.Cell>
-              <Table.Cell>{email}</Table.Cell>
-              <Table.Cell>{Moment(createdAt).format('LLL')}</Table.Cell>
-              <Table.Cell>{Moment(updatedAt).format('LLL')}</Table.Cell>
-              <Table.Cell>{active ? ( <Icon  name='check' /> ) : ( <Icon  name='close' /> ) }</Table.Cell>
+      <Segment>
+        <Header as='h5' icon floated='right'>
+          <Link to="/users/0">
+            <Icon name='add user' />
+            Add user
+          </Link>
+        </Header>
+        <Table sortable celled fixed selectable>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell
+                sorted={column === 'id' ? direction : null}
+                onClick={this.handleSort('id')}
+              >
+                Id
+              </Table.HeaderCell>
+              <Table.HeaderCell
+                sorted={column === 'name' ? direction : null}
+                onClick={this.handleSort('name')}
+              >
+                Name
+              </Table.HeaderCell>
+              <Table.HeaderCell
+                sorted={column === 'email' ? direction : null}
+                onClick={this.handleSort('email')}
+              >
+                Email
+              </Table.HeaderCell>
+              <Table.HeaderCell
+                sorted={column === 'createdAt' ? direction : null}
+                onClick={this.handleSort('createdAt')}
+              >
+                Created
+              </Table.HeaderCell>
+              <Table.HeaderCell
+                sorted={column === 'updatedAt' ? direction : null}
+                onClick={this.handleSort('updatedAt')}
+              >
+                Updated
+              </Table.HeaderCell>
+              <Table.HeaderCell>
+                Active
+              </Table.HeaderCell>
             </Table.Row>
-          ))}
-        </Table.Body>
-        <Table.Footer>
-     <Table.Row>
-       <Table.HeaderCell colSpan='6'>
-         <Menu floated='right' pagination>
-           <Menu.Item as='a' icon>
-             <Icon name='chevron left' />
-           </Menu.Item>
-           <Menu.Item as='a'>1</Menu.Item>
-           <Menu.Item as='a'>2</Menu.Item>
-           <Menu.Item as='a'>3</Menu.Item>
-           <Menu.Item as='a'>4</Menu.Item>
-           <Menu.Item as='a' icon>
-             <Icon name='chevron right' />
-           </Menu.Item>
-         </Menu>
-       </Table.HeaderCell>
-     </Table.Row>
-   </Table.Footer>
-      </Table>
+          </Table.Header>
+          <Table.Body>
+            {_.map(data, ({ id, name, email, createdAt, updatedAt, active }) => (
+              <Table.Row key={id} onClick={() => this.tableRowClickFunc({id})}>
+                <Table.Cell>{id}</Table.Cell>
+                <Table.Cell>{name}</Table.Cell>
+                <Table.Cell>{email}</Table.Cell>
+                <Table.Cell>{Moment(createdAt).format('LLL')}</Table.Cell>
+                <Table.Cell>{Moment(updatedAt).format('LLL')}</Table.Cell>
+                <Table.Cell>{active ? ( <Icon  name='check' /> ) : ( <Icon  name='close' /> ) }</Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+          <Table.Footer>
+           <Table.Row>
+             <Table.HeaderCell colSpan='6'>
+               <Menu floated='right' pagination>
+                 <Menu.Item as='a' icon>
+                   <Icon name='chevron left' />
+                 </Menu.Item>
+                 <Menu.Item as='a'>1</Menu.Item>
+                 <Menu.Item as='a'>2</Menu.Item>
+                 <Menu.Item as='a'>3</Menu.Item>
+                 <Menu.Item as='a'>4</Menu.Item>
+                 <Menu.Item as='a' icon>
+                   <Icon name='chevron right' />
+                 </Menu.Item>
+               </Menu>
+             </Table.HeaderCell>
+           </Table.Row>
+         </Table.Footer>
+        </Table>
+      </Segment>
     );
 
   }
