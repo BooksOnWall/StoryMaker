@@ -193,6 +193,17 @@ class User extends Component {
   handlePositionChange = position => {
       this.setState({...this.state.avatar,position: position })
   }
+  onClickSave = () => {
+    if (this.editor) {
+      // This returns a HTMLCanvasElement, it can be made into a data URL or a blob,
+      // drawn on another canvas, or added to the DOM.
+      const canvas = this.editor.getImage()
+
+      // If you want the image resized to the canvas size (also a HTMLCanvasElement)
+      const canvasScaled = this.editor.getImageScaledToCanvas()
+    }
+  }
+  setEditorRef = (editor) => this.editor = editor
   render() {
     // display render only afetr we get initialValues for update mode
     if (this.state.initialValues === null && this.state.mode === 'update') return null;
@@ -213,17 +224,17 @@ class User extends Component {
                   <Card.Content>
                     <Card.Header  color='violet'>{(this.state.mode === 'create') ? 'Create new User' : 'Edit User'}</Card.Header>
 
-                        <div>
                           <div>
                             <AvatarEditor
-                              scale={parseFloat(this.state.scale)}
-                              width={this.state.width}
-                              height={this.state.height}
-                              position={this.state.position}
+                              ref={this.setEditorRef}
+                              scale={parseFloat(this.state.avatar.scale)}
+                              width={this.state.avatar.width}
+                              height={this.state.avatar.height}
+                              position={this.state.avatar.position}
                               onPositionChange={this.handlePositionChange}
-                              rotate={parseFloat(this.state.rotate)}
-                              borderRadius={this.state.width / (100 / this.state.borderRadius)}
-                              image={this.state.image}
+                              rotate={parseFloat(this.state.avatar.rotate)}
+                              borderRadius={this.state.avatar.width / (100 / this.state.avatar.borderRadius)}
+                              image={src}
                               className="editor-canvas"
                             />
                           </div>
@@ -236,12 +247,12 @@ class User extends Component {
                           name="scale"
                           type="range"
                           onChange={this.handleScale}
-                          min={this.state.allowZoomOut ? '0.1' : '1'}
+                          min={this.state.avatar.allowZoomOut ? '0.1' : '1'}
                           max="2"
                           step="0.01"
                           defaultValue="1"
                         />
-                      </div>
+
 
                   </Card.Content>
                   <Card.Content>
