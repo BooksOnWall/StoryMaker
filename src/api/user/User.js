@@ -16,7 +16,7 @@ import {
 import { Formik } from 'formik';
 import UserPref from './userPreferences';
 import { Link } from 'react-router-dom';
-import Avatar from 'react-avatar-edit';
+import AvatarEditor from 'react-avatar-editor';
 import Dropzone from 'react-dropzone'
 import src from '../../assets/images/patrick.png';
 
@@ -40,13 +40,21 @@ class User extends Component {
       initialValues: {checked: false},
       authenticated: this.toggleAuthenticateStatus,
       profile: false,
-      preview: null,
-      src
+      avatar: {
+        image: 'avatar.jpg',
+        allowZoomOut: false,
+        position: { x: 0.5, y: 0.5 },
+        scale: 1,
+        rotate: 0,
+        borderRadius: 0,
+        preview: null,
+        width: 200,
+        height: 200,
+      }
     };
-
-    this.onCrop = this.onCrop.bind(this);
-    this.onClose = this.onClose.bind(this);
-    this.onBeforeFileLoad = this.onBeforeFileLoad.bind(this);
+    this.handleNewImage = this.handleNewImage.bind(this);
+    this.handleScale = this.handleScale.bind(this);
+    this.handlePositionChange = this.handlePositionChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleSubmitDelete = this.handleSubmitDelete.bind(this);
@@ -173,20 +181,17 @@ class User extends Component {
     }
 
   }
-  onClose() {
-    this.setState({preview: null})
+  handleNewImage = e => {
+      this.setState({...this.state.avatar, image: e.target.files[0] })
   }
 
-  onCrop(preview) {
-    this.setState({preview})
+  handleScale = e => {
+      const scale = parseFloat(e.target.value)
+      this.setState({...this.state.avatar, scale : scale })
   }
 
-  onBeforeFileLoad(elem) {
-    //71680
-    if(elem.target.files[0].size > 716800){
-      alert("File is too big!");
-      elem.target.value = "";
-    };
+  handlePositionChange = position => {
+      this.setState({...this.state.avatar,position: position })
   }
   render() {
     // display render only afetr we get initialValues for update mode
@@ -205,18 +210,38 @@ class User extends Component {
           <Grid.Row>
           <Grid.Column style={{ maxWidth: 450 }}>
                 <Card>
-
                   <Card.Content>
                     <Card.Header  color='violet'>{(this.state.mode === 'create') ? 'Create new User' : 'Edit User'}</Card.Header>
-                  <Avatar
-                    width={220}
-                    height={220}
-                    onCrop={this.onCrop}
-                    onClose={this.onClose}
-                    onBeforeFileLoad={this.onBeforeFileLoad}
-                    src={this.state.src}
-                    />
-                  <img src={this.state.preview} alt="Preview" />
+
+                        <div>
+                          <div>
+                            <AvatarEditor
+                              scale={parseFloat(this.state.scale)}
+                              width={this.state.width}
+                              height={this.state.height}
+                              position={this.state.position}
+                              onPositionChange={this.handlePositionChange}
+                              rotate={parseFloat(this.state.rotate)}
+                              borderRadius={this.state.width / (100 / this.state.borderRadius)}
+                              image={this.state.image}
+                              className="editor-canvas"
+                            />
+                          </div>
+                        <br />
+                        New File:
+                        <input name="newImage" type="file" onChange={this.handleNewImage} />
+                        <br />
+                        Zoom:
+                        <input
+                          name="scale"
+                          type="range"
+                          onChange={this.handleScale}
+                          min={this.state.allowZoomOut ? '0.1' : '1'}
+                          max="2"
+                          step="0.01"
+                          defaultValue="1"
+                        />
+                      </div>
 
                   </Card.Content>
                   <Card.Content>
