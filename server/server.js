@@ -114,7 +114,10 @@ const createUser = async ({ name, email, hash }) => {
   let password = hash;
   if(hash) return await Users.create({ name, email, password });
 }
-
+const updateUser = async ({ id, name, email, hash, active }) => {
+  let password = hash;
+  if(hash) return await Users.update({ id,name, email, password, active });
+}
 const getAllUsers = async () => {
   return await Users.findAll();
 };
@@ -137,7 +140,15 @@ app.get('/users', function(req, res) {
 //get user
 app.get('/users/:userId', (req, res) => {
   let uid = req.params.userId;
-  getUser(uid).then(user => res.json(user));
+  getUser({id: uid}).then(user => res.json(user));
+});
+app.patch('/users/:userId', function(req, res, next) {
+  const { id, name, email, active } = req.body;
+  let uid = req.params.userId;
+  console.log(id);
+  updateUser({ uid, name, email, active }).then(user =>
+      res.json({ user, msg: 'account updated successfully' })
+    );
 });
 // register route
 app.post('/register', function(req, res, next) {
@@ -166,22 +177,24 @@ app.post('/login', async function(req, res, next) {
         res.status(401).json({ message: 'No such user found' });
       }
       let hash = user.password;
-      bcrypt
-        .compare(password, hash)
-        .then(match => {
-          if(match) {
-           // Passwords match
-           // from now on we'll identify the user by the id and the id is the
-           // only personalized value that goes into our token
-           let payload = { id: user.id };
-           let token = jwt.sign(payload, jwtOptions.secretOrKey);
-           res.json({ msg: 'ok', token: token });
-          } else {
-           // Passwords don't match
-             res.status(401).json({ msg: 'Password is incorrect' });
-          }
-        })
-        .catch(err => console.error(err.message));
+      if(hash) {
+        bcrypt
+          .compare(password, hash)
+          .then(match => {
+            if(match) {
+             // Passwords match
+             // from now on we'll identify the user by the id and the id is the
+             // only personalized value that goes into our token
+             let payload = { id: user.id };
+             let token = jwt.sign(payload, jwtOptions.secretOrKey);
+             res.json({ msg: 'ok', token: token });
+            } else {
+             // Passwords don't match
+               res.status(401).json({ msg: 'Password is incorrect' });
+            }
+          })
+          .catch(err => console.error(err.message));
+      }
     }catch(e) {
       console.log(e);
     }

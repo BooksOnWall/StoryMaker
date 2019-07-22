@@ -87,10 +87,10 @@ class Users extends Component {
   render() {
     const { id, name, email, active, column, data, direction } = this.state;
     Moment.locale('en');
-
+    if(data === null) return null;
     return (
       <Segment>
-        <Header as='h5' icon floated='right'>
+        <Header as='h6' icon floated='right'>
           <Link to="/users/0">
             <Icon name='add user' />
             Add user
