@@ -1,5 +1,7 @@
-import React, { Component, createRef } from 'react';
+import React, { Component, createRef, useState } from 'react';
 import Auth from '../../module/Auth';
+import { Slider } from "react-semantic-ui-range";
+
 import {
   Segment,
   Header,
@@ -7,20 +9,21 @@ import {
   Container,
   Form,
   Grid,
-  Image,
   Icon,
   Button,
+  Label,
+  Input,
   Card,
   Checkbox,
 } from 'semantic-ui-react';
+
 import { Formik } from 'formik';
 import UserPref from './userPreferences';
 import { Link } from 'react-router-dom';
 import AvatarEditor from 'react-avatar-editor';
-import Dropzone from 'react-dropzone'
+
 import src from '../../assets/images/patrick.png';
 
-const dropzoneRef = createRef();
 
 class User extends Component {
   constructor(props) {
@@ -200,10 +203,10 @@ class User extends Component {
       const canvas = this.editor.getImage()
 
       // If you want the image resized to the canvas size (also a HTMLCanvasElement)
-      const canvasScaled = this.editor.getImageScaledToCanvas()
+      //const canvasScaled = this.editor.getImageScaledToCanvas()
     }
   }
-  setEditorRef = (editor) => this.editor = editor
+  setEditorRef = (editor) => this.editor = editor;
   render() {
     // display render only afetr we get initialValues for update mode
     if (this.state.initialValues === null && this.state.mode === 'update') return null;
@@ -222,39 +225,99 @@ class User extends Component {
           <Grid.Column style={{ maxWidth: 450 }}>
                 <Card>
                   <Card.Content>
-                    <Card.Header  color='violet'>{(this.state.mode === 'create') ? 'Create new User' : 'Edit User'}</Card.Header>
 
-                          <div>
-                            <AvatarEditor
-                              ref={this.setEditorRef}
-                              scale={parseFloat(this.state.avatar.scale)}
-                              width={this.state.avatar.width}
-                              height={this.state.avatar.height}
-                              position={this.state.avatar.position}
-                              onPositionChange={this.handlePositionChange}
-                              rotate={parseFloat(this.state.avatar.rotate)}
-                              borderRadius={this.state.avatar.width / (100 / this.state.avatar.borderRadius)}
-                              image={src}
-                              className="editor-canvas"
-                            />
-                          </div>
-                        <br />
-                        New File:
-                        <input name="newImage" type="file" onChange={this.handleNewImage} />
-                        <br />
-                        Zoom:
-                        <input
-                          name="scale"
-                          type="range"
-                          onChange={this.handleScale}
-                          min={this.state.avatar.allowZoomOut ? '0.1' : '1'}
-                          max="2"
-                          step="0.01"
-                          defaultValue="1"
-                        />
-
+                    <div>
+                      <div>
+                        <AvatarEditor
+                          ref={this.setEditorRef}
+                          scale={parseFloat(this.state.avatar.scale)}
+                          width={this.state.avatar.width}
+                          height={this.state.avatar.height}
+                          position={this.state.avatar.position}
+                          onPositionChange={this.handlePositionChange}
+                          rotate={parseFloat(this.state.avatar.rotate)}
+                          borderRadius={this.state.avatar.width / (100 / this.state.avatar.borderRadius)}
+                          image={src}
+                          className="editor-canvas"
+                          />
+                      </div>
+                    <br />
+                    New File:
+                    <input name="newImage" type="file" onChange={this.handleNewImage} />
+                    <br />
+                    Zoom:
+                    <Slider color="red" settings={{
+                      name: 'scale',
+                      type: 'range',
+                      onChange: this.handleScale,
+                      min: this.state.avatar.allowZoomOut ? '0.1' : '1',
+                      max: '20',
+                      step: '0.01',
+                      defaultValue: '1'
+                    }} />
+                
+                    Allow Scale &lt; 1
+                    <input
+                      type="checkbox"
+                      name="allowZoomOut"
+                      value="on"
+                    />
+                    Border radius:
+                    <input
+                      type="range"
+                      step="1"
+                      min="0"
+                      max="50"
+                      name="scale"
+                      value="0"
+                    />
+                    Avatar Width:
+                    <input
+                      type="number"
+                      step="10"
+                      min="50"
+                      max="400"
+                      name="width"
+                      value="150"
+                    />
+                    Avatar Height:
+                    <input
+                      type="number"
+                      step="10"
+                      min="50"
+                      max="400"
+                      name="height"
+                      value="150"
+                    />
+                    X Position:
+                    <input
+                      type="range"
+                      step="0.01"
+                      min="0"
+                      max="1"
+                      name="scale"
+                      value="0.5"
+                    />
+                    Y Position:
+                    <input
+                      type="range"
+                      step="0.01"
+                      min="0"
+                      max="1"
+                      name="scale"
+                      value="0.5"
+                    />
+                    Rotate:
+                    <button>Left</button>
+                    <button>Right</button>
+                    </div>
 
                   </Card.Content>
+                </Card>
+                </Grid.Column>
+                <Grid.Column>
+                  <Card>
+                    <Card.Header  color='violet'>{(this.state.mode === 'create') ? 'Create new User' : ''}</Card.Header>
                   <Card.Content>
                   <Formik
                     initialValues={this.state.initialValues}
