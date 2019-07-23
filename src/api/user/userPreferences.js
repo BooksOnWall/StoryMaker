@@ -35,9 +35,9 @@ const themes = [
     image: { avatar: true, src: '/images/avatar/small/jenny.jpg' },
   },
   {
-    key: 'White',
-    text: 'White theme',
-    value: 'white',
+    key: 'Light',
+    text: 'Light theme',
+    value: 'light',
     image: { avatar: true, src: '/images/avatar/small/elliot.jpg' },
   }
 ]
