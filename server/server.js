@@ -109,10 +109,7 @@ const createUser = async ({ name, email, hash, active }) => {
   let password = hash;
   if(hash) return await Users.create({ name, email, password, active });
 }
-const updateUser = async ({ id, name, email, hash, active }) => {
-  let password = hash;
-  if(hash) return await Users.update({ id,name, email, password, active });
-}
+
 const patchUser = async ({ id, name, email, active }) => {
   return await Users.update({ id, name, email, active },
     { where: {id : id}}
