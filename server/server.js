@@ -90,6 +90,7 @@ const Sequelize = require('sequelize');
 // initialze an instance of Sequelize with mysql conf parameters
 const sequelize = new Sequelize(config.mysql);
 const usersList = require('./conf/db/users');
+const artistsList = require('./conf/db/artists');
 // check the databse connection
 sequelize
   .authenticate()
@@ -101,6 +102,12 @@ const Users = sequelize.define('users', usersList.users);
 // create table with user model
 Users.sync()
  .then(() => console.log('User table created successfully'))
+ .catch(err => console.log('oooh, did you enter wrong database credentials?'));
+// create Artists model
+const Artists = sequelize.define('artists', artistsList.artists);
+// create table with user model
+Artists.sync()
+ .then(() => console.log('Artists table created successfully'))
  .catch(err => console.log('oooh, did you enter wrong database credentials?'));
 
 
@@ -129,11 +136,35 @@ const deleteUser = async (uid) => {
     where: {id : uid}
     });
 };
+
+// artist db requests
+const getAllArtists = async () => {
+  return await Artists.findAll();
+}
+const createArtist = async ({ name, email, description }) => {
+  return await Artists.create({ name, email, description });
+}
+const getArtist = async obj => {
+  return await Artists.findOne({
+    where: obj,
+  });
+};
+const patchArtist = async ({ id, name, email, description }) => {
+  return await Artists.update({ id, name, email, description },
+    { where: {id : id}}
+  );
+}
+const deleteArtist = async (aid) => {
+  return await Artists.destroy({
+    where: {id : aid}
+    });
+};
+
 // set some basic routes
 app.get('/', function(req, res) {
   res.json({ message: 'Express is up!' });
 });
-
+// user URI requests
 // get all users
 app.get('/users', function(req, res) {
   getAllUsers().then(user => res.json(user));
@@ -158,7 +189,6 @@ app.delete('/users/:userId', function(req, res, next) {
   deleteUser(uid).then(user =>
     res.json({ user, msg: 'account destroyed successfully' })
   );
-
 });
 // register route register create the new user but set it as inactive
 app.post('/register', function(req, res, next) {
@@ -225,7 +255,33 @@ app.post('/login', async function(req, res, next) {
     }
   }
 });
-
+// Artists URI requests
+app.get('/artists', function(req, res) {
+  getAllArtists().then(user => res.json(user));
+});
+app.post('/artists/0', function(req, res, next) {
+  const { name, email, description } = req.body;
+  createArtist({ name, email, description }).then(user =>
+    res.json({ user, msg: 'artist created successfully' })
+  );
+});
+app.get('/artists/:artistId', (req, res) => {
+  let aid = req.params.artistId;
+  getArtist({id: aid}).then(user => res.json(user));
+});
+app.patch('/artists/:artistId', function(req, res, next) {
+  const { name, email, description } = req.body;
+  let id = req.params.artistId;
+  patchArtist({ id, name, email, description }).then(user =>
+      res.json({ user, msg: 'artist updated successfully' })
+    );
+});
+app.delete('/artists/:artistId', function(req, res, next) {
+  let aid = req.params.artistId;
+  deleteArtist(aid).then(user =>
+    res.json({ user, msg: 'artist destroyed successfully' })
+  );
+});
 // protected route
 app.get('/protected', passport.authenticate('jwt', { session: false }), function(req, res) {
   res.json('Success! You can now see this without a token.');

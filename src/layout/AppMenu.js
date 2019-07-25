@@ -35,13 +35,17 @@ class AppMenu extends Component {
               image = {{ avatar: true, src: Avatar }}
               text='Tom'
               style={{verticalAlign: 'center', paddingTop: '1.2em' }}
-            > 
+            >
                 <Dropdown.Menu className='left'>
                   <Dropdown.Item  to='/users' href='/users' as='a'>
                     <Icon name='address card' />
                     <span className='text'>Users</span>
                   </Dropdown.Item>
                   <Dropdown.Divider />
+                    <Dropdown.Item to='/artists' href='/artists' as='a'>
+                      <Icon name='list' />
+                      <span className='text'>Artists</span>
+                    </Dropdown.Item>
                   <Dropdown.Item to='/stories' href='/stories' as='a'>
                     <Icon name='list' />
                     <span className='text'>Stories</span>

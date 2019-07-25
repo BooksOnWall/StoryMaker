@@ -135,9 +135,7 @@ class User extends Component {
   }
 
   async createUser(values) {
-
     this.setState(values);
-    console.log(this.state.name);
     try {
       await fetch(this.state.user+0, {
         method: 'post',
