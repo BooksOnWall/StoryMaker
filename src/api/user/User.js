@@ -12,6 +12,9 @@ import {
   Button,
   Card,
   Checkbox,
+  Confirm,
+  Dimmer,
+  Loader,
 } from 'semantic-ui-react';
 
 import { Formik } from 'formik';
@@ -32,35 +35,39 @@ class User extends Component {
       users: server + 'users',
       uid: (!this.props.match.params.id) ? (0) : (parseInt(this.props.match.params.id)),
       mode: (parseInt(this.props.match.params.id) === 0) ? ('create') : ('update'),
+      name: null,
+      loading: null,
+      checked: false,
+      active: false,
       user: server + 'users/',
       data: null,
-      initialValues: {checked: false},
+      initialValues: { name: '', email: '', password: '', password2: '', active: 0, checked: false },
       authenticated: this.toggleAuthenticateStatus,
       profile: false,
-      avatar: {
-        image: 'avatar.jpg',
-        allowZoomOut: false,
-        position: { x: 0.5, y: 0.5 },
-        scale: 1,
-        rotate: 0,
-        borderRadius: 0,
-        preview: null,
-        width: 200,
-        height: 200,
-      }
+      open: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleSubmitDelete = this.handleSubmitDelete.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
     //this.handleData = this.handleData.bind(this);
 
     this.toggleAuthenticateStatus = this.toggleAuthenticateStatus.bind(this);
   }
+  // toggle user active slider
+  toggle = () => this.setState( prevState => ({ checked: !prevState.checked }))
+  // confirm functions for user delete
+  show = () => this.setState({ open: true })
+  handleConfirm = () => this.setState({ open: false })
+  handleCancel = () => this.setState({ open: false })
+
   toggleAuthenticateStatus() {
-    // check authenticated status and toggle state based on that
-    this.setState({ authenticated: Auth.isUserAuthenticated() })
+  // check authenticated status and toggle state based on that
+  this.setState({ authenticated: Auth.isUserAuthenticated() })
   }
+
   async getUser() {
+    // set loading
+    this.setState({loading: true});
     try {
       await fetch(this.state.user+this.state.uid, {
         method: 'get',
@@ -75,7 +82,13 @@ class User extends Component {
             console.log(data);
             console.log(data.active);
             data.checked = (data.active) ? true : false;
+            // removed unwanted password hash
+            delete data.password;
+
+            data.checked = data.active;
+            this.setState({uid: data.id, name: data.name});
             this.setState({initialValues: data});
+            this.setState({loading: false});
           } else {
             console.log('No Data received from the server');
           }
@@ -89,16 +102,17 @@ class User extends Component {
     }
   }
 
-  async updateUser() {
+  async updateUser(values) {
+    console.log(values.name)
     try {
       await fetch(this.state.user+this.state.uid, {
-        method: 'patch',
+        method: 'PATCH',
         headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json', charset:'utf-8' },
         body:JSON.stringify({
-          name: this.state.name,
-          email:this.state.email,
-          password:this.state.password,
-          active: this.state.active
+          name: values.name,
+          email:values.email,
+          password:values.password,
+          active: values.active
         })
       })
       .then(response => {
@@ -120,30 +134,78 @@ class User extends Component {
     }
   }
 
-  async createUser() {
-    try {
+  async createUser(values) {
 
+    this.setState(values);
+    console.log(this.state.name);
+    try {
+      await fetch(this.state.user+0, {
+        method: 'post',
+        headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'},
+        body:JSON.stringify({
+          name: this.state.name,
+          email:this.state.email,
+          password:this.state.password,
+          active: this.state.active
+        })
+      })
+      .then(response => {
+        if (response && !response.ok) { throw new Error(response.statusText);}
+        return response.json();
+      })
+      .then(data => {
+          if(data) {
+            // redirect to user edit page
+            this.setState({uid: data.user.id })
+            this.props.history.push('/users');
+          }
+      })
+      .catch((error) => {
+        // Your error is here!
+        console.log(error)
+      });
     } catch(e) {
       console.log(e.message);
     }
   }
   async deleteUser() {
     try {
-
+        await fetch(this.state.user + this.state.uid, {
+        method: 'delete',
+        headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'},
+        body:JSON.stringify({ id: this.state.uid })
+      })
+      .then(response => {
+        if (response && !response.ok) { throw new Error(response.statusText);}
+        return response.json();
+      })
+      .then(data => {
+          if(data) {
+            // redirect to user edit page
+            this.props.history.push('/users');
+          }
+      })
+      .catch((error) => {
+        // Your error is here!
+        console.log(error)
+      });
     } catch(e) {
       console.log(e.message);
     }
   }
   handleChange(e) {
+    console.log(e.target);
     const target = e.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     let change = {};
     change[e.target.name] = value ;
-    this.setState(change);
+    this.setState({initialValues: change});
+    console.log(this.state.initialValues.checked)
   }
 
   async handleSubmit(e) {
     let mode = this.state.mode;
+
     try {
       if (mode ==='create') {
         await this.createUser();
@@ -154,7 +216,9 @@ class User extends Component {
       console.log(e.message);
     }
   }
-  async handleSubmitDelete(e) {
+  async handleDelete(e) {
+    e.preventDefault(); // Let's stop this event.
+
     let mode = this.state.mode;
     try {
       if (mode ==='update') {
@@ -163,7 +227,6 @@ class User extends Component {
     } catch(e) {
       console.log(e.message);
     }
-    this.handleData(this.state.mode);
   }
   async componentDidMount() {
     try {
@@ -173,16 +236,16 @@ class User extends Component {
     } catch(e) {
       console.log(e.message);
     }
-
   }
 
   render() {
     // display render only afetr we get initialValues for update mode
     if (this.state.initialValues === null && this.state.mode === 'update') return null;
-    let checked = (this.state.mode === 'create') ? false : this.state.initialValues.checked;
-
     return (
       <Container>
+        <Dimmer active={this.state.loading}>
+          <Loader active={this.state.loading} >Get user info</Loader>
+        </Dimmer>
       <Segment>
         <Header as='h6' icon floated='left'>
             <Link to="/users">
@@ -193,19 +256,13 @@ class User extends Component {
         <Grid id="profile" textAlign='left' columns={3} divided verticalAlign='top'>
           <Grid.Row>
             <Grid.Column>
+              <Header as='h3' color='violet' textAlign='center'>
+                {(this.state.mode === 'create') ? 'Create new User' : 'Edit user'}
+              </Header>
               <Card>
                 <Card.Content>
-                  <UserAvatar />
-
-                </Card.Content>
-              </Card>
-            </Grid.Column>
-            <Grid.Column>
-              <Card>
-                <Card.Header  color='violet'>{(this.state.mode === 'create') ? 'Create new User' : ''}</Card.Header>
-                <Card.Content>
-
                   <Formik
+                    enableReinitialize={true}
                     initialValues={this.state.initialValues}
                     validate={values => {
                       let errors = {};
@@ -302,9 +359,9 @@ class User extends Component {
                           ref = "active"
                           label = "Active"
                           name="active"
-                          defaultChecked={checked}
-                          onChange={handleChange('active')}
-                          onBlur={handleBlur}
+                          defaultChecked= {this.state.initialValues.checked}
+                          onChange = {(e, { checked }) => handleChange(checked)}
+                          onBlur = {handleBlur}
                           value={(values.active === true) ? 1 : 0 }
                           toggle
                         />
@@ -314,9 +371,19 @@ class User extends Component {
                           {(this.state.mode === 'create') ? 'Create' : 'Update'}
                         </Button>
                         {(this.state.mode === 'update') ? (
-                          <Button onClick={handleSubmitDelete} color='red' fluid size='large' type="submit" disabled={isSubmitting}>
-                            Delete
-                          </Button>
+                          <div>
+                            <Button onClick={this.show} color='red' fluid size='large' type="submit" disabled={isSubmitting}>
+                              Delete
+                            </Button>
+                            <Confirm
+
+                               open={this.state.open}
+                               cancelButton='Never mind'
+                               confirmButton="Delete User"
+                               onCancel={this.handleCancel}
+                               onConfirm={this.handleDelete}
+                             />
+                          </div>
                         ) : '' }
                       </Form>
                     )}
@@ -324,87 +391,96 @@ class User extends Component {
               </Card.Content>
             </Card>
           </Grid.Column>
-          <Grid.Column>
+          {(this.state.mode === 'update') ? (
+            <Grid.Column>
+              <Segment>
+                <Header as='h3' color='violet' textAlign='center'>
+                  Change password
+                </Header>
+                <Formik
+                  initialValues={this.state.initialValues}
+                  validate={values => {
+                    let errors = {};
+                    if (!values.email) {
+                      errors.email = 'Required';
+                    } else if (
+                      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+                    ) {
+                      errors.email = 'Invalid email address';
+                    }
+                    return errors;
+                  }}
+                  onSubmit={(values, { setSubmitting }) => {
+                    if(this.state.mode === 'update') {
+                      this.updateUserPassword(values);
+                    }
+
+                    setTimeout(() => {
+                      //alert(JSON.stringify(values, null, 2));
+
+                      setSubmitting(false);
+                    }, 400);
+                  }}
+                >
+                  {({
+                    values,
+                    errors,
+                    touched,
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    handleSubmitDelete,
+                    isSubmitting,
+                    /* and other goodies */
+                  }) => (
+                    <Form size='large' onSubmit={this.handleSubmit}>
+                      <Divider horizontal>...</Divider>
+                      <input
+                        icon='lock'
+                        iconposition='left'
+                        placeholder='Password'
+                        type="password"
+                        name="password"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.password}
+                      />
+                      <Divider horizontal>...</Divider>
+                      <input
+                        icon='lock'
+                        iconposition='left'
+                        placeholder='Repeat Password'
+                        type="password"
+                        name="password2"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.password2}
+                      />
+                      <Divider horizontal>...</Divider>
+                      <Button onClick={handleSubmit} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
+                        {(this.state.mode === 'create') ? 'Create' : 'Update'}
+                      </Button>
+                    </Form>
+                  )}
+                </Formik>
+              </Segment>
+              <Segment>
+                <Header as='h3' color='violet' textAlign='center'>
+                  User Preferences
+                </Header>
+                <UserPref toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
+              </Segment>
+            </Grid.Column>
+            ) : ''}
             {(this.state.mode === 'update') ? (
-            <Segment>
-              <Header as='h3' color='violet' textAlign='center'>
-                Change password
-              </Header>
-              <Formik
-                initialValues={this.state.initialValues}
-                validate={values => {
-                  let errors = {};
-                  if (!values.email) {
-                    errors.email = 'Required';
-                  } else if (
-                    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-                  ) {
-                    errors.email = 'Invalid email address';
-                  }
-                  return errors;
-                }}
-                onSubmit={(values, { setSubmitting }) => {
-                  if(this.state.mode === 'update') {
-                    this.updateUserPassword(values);
-                  }
-
-                  setTimeout(() => {
-                    //alert(JSON.stringify(values, null, 2));
-
-                    setSubmitting(false);
-                  }, 400);
-                }}
-              >
-                {({
-                  values,
-                  errors,
-                  touched,
-                  handleChange,
-                  handleBlur,
-                  handleSubmit,
-                  handleSubmitDelete,
-                  isSubmitting,
-                  /* and other goodies */
-                }) => (
-                  <Form size='large' onSubmit={this.handleSubmit}>
-                <Divider horizontal>...</Divider>
-                <input
-                  icon='lock'
-                  iconposition='left'
-                  placeholder='Password'
-                  type="password"
-                  name="password"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.password}
-                />
-                <Divider horizontal>...</Divider>
-                <input
-                  icon='lock'
-                  iconposition='left'
-                  placeholder='Repeat Password'
-                  type="password"
-                  name="password2"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.password2}
-                />
-                <Divider horizontal>...</Divider>
-                <Button onClick={handleSubmit} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
-                  {(this.state.mode === 'create') ? 'Create' : 'Update'}
-                </Button>
-              </Form>
-            )}
-          </Formik>
-            </Segment>
-          ) : ''}
-            <Segment>
-              <Header as='h3' color='violet' textAlign='center'>
-                User Preferences
-              </Header>
-              <UserPref toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
-            </Segment>
-          </Grid.Column>
+            <Grid.Column>
+              <Card>
+                <Card.Content>
+                  <UserAvatar />
+                </Card.Content>
+              </Card>
+            </Grid.Column>
+            ) : ''}
           </Grid.Row>
           </Grid>
         </Segment>

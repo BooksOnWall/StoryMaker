@@ -11,13 +11,8 @@ const host = process.env.SERVER_HOST;
 const protocol = process.env.SERVER_PROTOCOL;
 const port = process.env.SERVER_PORT;
 
-
-
-
 // get mysql connection & credentials parameters
 let config = require('./conf/mysql');
-
-
 
 //bcrypt
 const bcrypt = require('bcrypt');
@@ -110,13 +105,18 @@ Users.sync()
 
 
 // create some helper functions to work on the database
-const createUser = async ({ name, email, hash }) => {
+const createUser = async ({ name, email, hash, active }) => {
   let password = hash;
-  if(hash) return await Users.create({ name, email, password });
+  if(hash) return await Users.create({ name, email, password, active });
 }
 const updateUser = async ({ id, name, email, hash, active }) => {
   let password = hash;
   if(hash) return await Users.update({ id,name, email, password, active });
+}
+const patchUser = async ({ id, name, email, active }) => {
+  return await Users.update({ id, name, email, active },
+    { where: {id : id}}
+  );
 }
 const getAllUsers = async () => {
   return await Users.findAll();
@@ -127,7 +127,11 @@ const getUser = async obj => {
     where: obj,
   });
 };
-
+const deleteUser = async (uid) => {
+  return await Users.destroy({
+    where: {id : uid}
+    });
+};
 // set some basic routes
 app.get('/', function(req, res) {
   res.json({ message: 'Express is up!' });
@@ -142,15 +146,24 @@ app.get('/users/:userId', (req, res) => {
   let uid = req.params.userId;
   getUser({id: uid}).then(user => res.json(user));
 });
+//update user exept password
 app.patch('/users/:userId', function(req, res, next) {
-  const { id, name, email, active } = req.body;
-  let uid = req.params.userId;
-  console.log(id);
-  updateUser({ uid, name, email, active }).then(user =>
+  const { name, email, active } = req.body;
+  let id = req.params.userId;
+  patchUser({ id, name, email, active }).then(user =>
       res.json({ user, msg: 'account updated successfully' })
     );
 });
-// register route
+//delete user
+app.delete('/users/:userId', function(req, res, next) {
+  let uid = req.params.userId;
+  console.log(uid);
+  deleteUser(uid).then(user =>
+    res.json({ user, msg: 'account destroyed successfully' })
+  );
+
+});
+// register route register create the new user but set it as inactive
 app.post('/register', function(req, res, next) {
   const { name, email, password } = req.body;
   bcrypt
@@ -166,7 +179,22 @@ app.post('/register', function(req, res, next) {
   })
   .catch(err => console.error(err.message));
 });
-
+// register route create new user
+app.post('/users/0', function(req, res, next) {
+  const { name, email, password, active } = req.body;
+  bcrypt
+  .genSalt(saltRounds)
+  .then(salt => {
+    return bcrypt.hash(password, salt);
+  })
+  .then(hash => {
+    createUser({ name, email, hash, active }).then(user =>
+      res.json({ user, msg: 'account created successfully' })
+    );
+    // Store hash in your password DB.
+  })
+  .catch(err => console.error(err.message));
+});
 //login route
 app.post('/login', async function(req, res, next) {
   const { email, password } = req.body;

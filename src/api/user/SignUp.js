@@ -18,7 +18,6 @@ class SignUp extends Component {
     let server = domain + ':'+ process.env.REACT_APP_SERVER_PORT+'/';
 
     this.state = {
-
       server : server,
       login: server + 'login',
       register: server + 'register',

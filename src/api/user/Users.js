@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Auth from '../../module/Auth';
-import { Segment, Header, Table, Icon, Menu } from 'semantic-ui-react';
+import { Dimmer, Loader, Segment, Header, Table, Icon, Menu } from 'semantic-ui-react';
 import Moment from 'moment';
 import { Link } from 'react-router-dom';
 
@@ -21,6 +21,7 @@ class Users extends Component {
       column: null,
       data: null,
       direction: null,
+      loading: null,
       authenticated: false,
       profile: false,
     };
@@ -28,6 +29,8 @@ class Users extends Component {
     this.listUsers = this.listUsers.bind(this);
   }
   async listUsers() {
+    // set loading
+    this.setState({loading: true});
     await fetch(this.state.users, {
       method: 'get',
       headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'}
@@ -39,6 +42,8 @@ class Users extends Component {
     .then(data => {
         if(data) {
           this.setState({data: data});
+          // set loading
+          this.setState({loading: false});
         } else {
           console.log('No Data received from the server');
         }
@@ -89,7 +94,11 @@ class Users extends Component {
     Moment.locale('en');
     if(data === null) return null;
     return (
+
       <Segment>
+        <Dimmer active={this.state.loading}>
+          <Loader active={this.state.loading} >Get users info</Loader>
+        </Dimmer>
         <Header as='h6' icon floated='right'>
           <Link to="/users/0">
             <Icon name='add user' />
@@ -129,7 +138,10 @@ class Users extends Component {
               >
                 Updated
               </Table.HeaderCell>
-              <Table.HeaderCell>
+              <Table.HeaderCell
+                sorted={column === 'active' ? direction : null}
+                onClick={this.handleSort('active')}
+                >
                 Active
               </Table.HeaderCell>
             </Table.Row>
