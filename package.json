@@ -16,6 +16,7 @@
     "react-draft-wysiwyg": "^1.13.2",
     "react-dropzone": "^10.1.6",
     "react-icons": "^3.7.0",
+    "react-map-gl": "^5.0.7",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
     "react-semantic-ui-range": "^0.7.0",
