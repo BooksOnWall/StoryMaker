@@ -22,6 +22,19 @@ import { Formik } from 'formik';
 
 import { Link } from 'react-router-dom';
 
+//wysiwyg editor for textarea form fields
+import { EditorState } from 'draft-js';
+import { Editor } from 'react-draft-wysiwyg';
+import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+
+let options = {
+    inline: { inDropdown: true },
+    list: { inDropdown: true },
+    textAlign: { inDropdown: true },
+    link: { inDropdown: true },
+    history: { inDropdown: true },
+  };
+
 class Artist extends Component {
   constructor(props) {
     super(props);
@@ -40,6 +53,7 @@ class Artist extends Component {
       initialValues: { name: '', email: '', description: ''},
       authenticated: this.toggleAuthenticateStatus,
       open: false,
+      editorState: EditorState.createEmpty(),
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -212,7 +226,13 @@ class Artist extends Component {
       console.log(e.message);
     }
   }
+  onEditorStateChange: Function = (editorState) => {
+    this.setState({
+      editorState,
+    });
+  };
   render() {
+    const { editorState } = this.state;
     return (
       <Container>
         <Dimmer active={this.state.loading}>
@@ -228,7 +248,7 @@ class Artist extends Component {
           <Header as='h6' icon >
             <Icon name='meh' />
             Edit Artist
-    
+
           </Header>
           <Formik
             enableReinitialize={true}
@@ -295,13 +315,17 @@ class Artist extends Component {
                     />
                     {errors.email && touched.email && errors.email}
                     <Divider horizontal>...</Divider>
-                     <TextArea
-                      placeholder='Description'
-                      name="description"
-                      onChange={handleChange('description')}
-                      onBlur={handleBlur}
-                      value={values.description}
-                     />
+                     <Editor
+                       toolbarOnFocus
+                        editorState={editorState}
+                        wrapperClassName="demo-wrapper"
+                        editorClassName="demo-editor"
+                        onEditorStateChange={this.onEditorStateChange}
+                        toolbar={options}
+                        name="sinopsys"
+                        placeholder='Sinopsys'
+                        value={values.sinopsys}
+                      />
                     <Divider horizontal>...</Divider>
                     <Button onClick={handleSubmit} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
                       {(this.state.mode === 'create') ? 'Create' : 'Update'}
