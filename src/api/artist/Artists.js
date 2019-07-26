@@ -88,7 +88,7 @@ class Artists extends Component {
     return this.props.history.push('/artists/'+artist.id);
   }
   render() {
-    const { id, name, email, description, column, data, direction } = this.state;
+    const { column, data, direction } = this.state;
     Moment.locale('en');
     if(data === null) return null;
     return (

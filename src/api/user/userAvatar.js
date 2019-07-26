@@ -7,7 +7,6 @@ import {
   Form,
   Button,
   Checkbox,
-  Input,
   Progress,
 } from 'semantic-ui-react';
 

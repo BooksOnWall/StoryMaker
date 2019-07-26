@@ -90,7 +90,7 @@ class Users extends Component {
     return this.props.history.push('/users/'+user.id);
   }
   render() {
-    const { id, name, email, active, column, data, direction } = this.state;
+    const { column, data, direction } = this.state;
     Moment.locale('en');
     if(data === null) return null;
     return (
