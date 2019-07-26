@@ -21,7 +21,6 @@ class Stories extends Component {
       direction: null,
       loading: null,
       authenticated: false,
-      profile: false,
     };
     this.handleSort = this.handleSort.bind(this);
     this.listStories = this.listStories.bind(this);
@@ -113,22 +112,28 @@ class Stories extends Component {
                 Id
               </Table.HeaderCell>
               <Table.HeaderCell
-                sorted={column === 'name' ? direction : null}
-                onClick={this.handleSort('name')}
+                sorted={column === 'title' ? direction : null}
+                onClick={this.handleSort('title')}
               >
-                Name
+                Title
               </Table.HeaderCell>
               <Table.HeaderCell
-                sorted={column === 'email' ? direction : null}
-                onClick={this.handleSort('email')}
+                sorted={column === 'artist' ? direction : null}
+                onClick={this.handleSort('artist')}
               >
-                Email
+                Artist
               </Table.HeaderCell>
               <Table.HeaderCell
-                sorted={column === 'description' ? direction : null}
-                onClick={this.handleSort('description')}
+                sorted={column === 'state' ? direction : null}
+                onClick={this.handleSort('state')}
               >
-                Description
+                State
+              </Table.HeaderCell>
+              <Table.HeaderCell
+                sorted={column === 'city' ? direction : null}
+                onClick={this.handleSort('city')}
+              >
+                City
               </Table.HeaderCell>
               <Table.HeaderCell
                 sorted={column === 'createdAt' ? direction : null}
@@ -145,12 +150,13 @@ class Stories extends Component {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {_.map(data, ({ id, name, email, createdAt, updatedAt, description }) => (
+            {_.map(data, ({ id, title, artist, state, city, createdAt, updatedAt }) => (
               <Table.Row key={id} onClick={() => this.tableRowClickFunc({id})}>
                 <Table.Cell>{id}</Table.Cell>
-                <Table.Cell>{name}</Table.Cell>
-                <Table.Cell>{email}</Table.Cell>
-                <Table.Cell>{description}</Table.Cell>
+                <Table.Cell>{title}</Table.Cell>
+                <Table.Cell>{artist}</Table.Cell>
+                <Table.Cell>{state}</Table.Cell>
+                <Table.Cell>{city}</Table.Cell>
                 <Table.Cell>{Moment(createdAt).format('LLL')}</Table.Cell>
                 <Table.Cell>{Moment(updatedAt).format('LLL')}</Table.Cell>
               </Table.Row>

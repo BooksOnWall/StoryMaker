@@ -27,7 +27,6 @@ module.exports.stories = {
   },
   active: {
     type: Sequelize.BOOLEAN,
-    allowNull: false,
     defaultValue: false
   },
 };

@@ -6,6 +6,7 @@ import {
   Header,
   Divider,
   Container,
+  Checkbox,
   Form,
   Icon,
   Button,
@@ -44,7 +45,7 @@ class Story extends Component {
       name: null,
       loading: null,
       data: null,
-      initialValues: { name: '', email: '', description: ''},
+      initialValues: { title: '', state: '', city: '', sinopsys: '', credits: '', artist: '', active: true, checked: true},
       authenticated: this.toggleAuthenticateStatus,
       open: false,
       editorState: EditorState.createEmpty(),
@@ -62,13 +63,11 @@ class Story extends Component {
   this.setState({ authenticated: Auth.isUserAuthenticated() })
   }
   handleChange(e) {
-    console.log(e.target);
     const target = e.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     let change = {};
     change[e.target.name] = value ;
     this.setState({initialValues: change});
-    console.log(this.state.initialValues.checked)
   }
 
   async handleSubmit(e) {
@@ -98,14 +97,19 @@ class Story extends Component {
   }
   async createStory(values) {
     this.setState(values);
+    console.log(values);
     try {
-      await fetch(this.state.artist+0, {
+      await fetch(this.state.stories +'/'+ 0, {
         method: 'post',
         headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'},
         body:JSON.stringify({
-          name: this.state.name,
-          email:this.state.email,
-          description:this.state.description,
+          title: this.state.title,
+          artist:parseInt(this.state.artist),
+          state:this.state.state,
+          city: this.state.city,
+          sinopsys: this.state.sinopsys,
+          credits: this.state.credits,
+          active: parseInt(this.state.active),
         })
       })
       .then(response => {
@@ -116,7 +120,7 @@ class Story extends Component {
           if(data) {
             // redirect to user edit page
             this.setState({uid: data.user.id })
-            this.props.history.push('/artists');
+            this.props.history.push('/stories');
           }
       })
       .catch((error) => {
@@ -129,7 +133,7 @@ class Story extends Component {
   }
   async updateStory(values) {
     try {
-      await fetch(this.state.artist+this.state.aid, {
+      await fetch(this.state.stories+'/'+this.state.sid, {
         method: 'PATCH',
         headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json', charset:'utf-8' },
         body:JSON.stringify({
@@ -160,7 +164,7 @@ class Story extends Component {
     // set loading
     this.setState({loading: true});
     try {
-      await fetch(this.state.artist+this.state.aid, {
+      await fetch(this.state.stories+'/'+this.state.sid, {
         method: 'get',
         headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'}
       })
@@ -171,7 +175,7 @@ class Story extends Component {
       .then(data => {
           if(data) {
 
-            this.setState({aid: data.id, name: data.name, email: data.email, description: data.description});
+            this.setState({aid: data.id, title: data.title, artist: data.artist});
             this.setState({initialValues: data});
             this.setState({loading: false});
           } else {
@@ -188,10 +192,10 @@ class Story extends Component {
   }
   async deleteStory() {
     try {
-        await fetch(this.state.artist + this.state.aid, {
+        await fetch(this.state.stories +'/'+ this.state.sid, {
         method: 'delete',
         headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'},
-        body:JSON.stringify({ id: this.state.aid })
+        body:JSON.stringify({ id: this.state.sid })
       })
       .then(response => {
         if (response && !response.ok) { throw new Error(response.statusText);}
@@ -200,7 +204,7 @@ class Story extends Component {
       .then(data => {
           if(data) {
             // redirect to user edit page
-            this.props.history.push('/artists');
+            this.props.history.push('/stories');
           }
       })
       .catch((error) => {
@@ -249,13 +253,6 @@ class Story extends Component {
             initialValues={this.state.initialValues}
             validate={values => {
               let errors = {};
-              if (!values.email) {
-                errors.email = 'Required';
-              } else if (
-                !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-              ) {
-                errors.email = 'Invalid email address';
-              }
               return errors;
             }}
             onSubmit={(values, { setSubmitting }) => {
@@ -279,35 +276,50 @@ class Story extends Component {
                   handleChange,
                   handleBlur,
                   handleSubmit,
-                  handleSubmitDelete,
+                  handleDelete,
                   isSubmitting,
                   /* and other goodies */
                 }) => (
                   <Form size='large' onSubmit={this.handleSubmit}>
                     <input
-                      icon='user'
-                      iconposition='left'
-                      placeholder='Name'
+                      placeholder='Title'
                       autoFocus={true}
                       type="text"
-                      name="name"
+                      name="title"
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      value={values.name}
+                      value={values.title}
                     />
-                    {errors.name && touched.name && errors.name}
+                  {errors.title && touched.title && errors.title}
                     <Divider horizontal>...</Divider>
                     <input
-                      icon='user'
-                      iconposition='left'
-                      placeholder='E-mail address'
-                      type="email"
-                      name="email"
+                      placeholder='State'
+                      type="text"
+                      name="state"
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      value={values.email}
+                      value={values.state}
                     />
-                    {errors.email && touched.email && errors.email}
+                  {errors.state && touched.state && errors.state}
+                    <Divider horizontal>...</Divider>
+                    <input
+                      placeholder='City'
+                      type="text"
+                      name="city"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.city}
+                    />
+                  {errors.city && touched.city && errors.city}
+                    <Divider horizontal>...</Divider>
+                      <input
+                        placeholder='Artist'
+                        type="text"
+                        name="artist"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.artist}
+                      />
                     <Divider horizontal>...</Divider>
                     <Editor
                       toolbarOnFocus
@@ -320,6 +332,31 @@ class Story extends Component {
                        placeholder='Sinopsys'
                        value={values.sinopsys}
                      />
+                     <Divider horizontal>...</Divider>
+                     <Editor
+                       toolbarOnFocus
+                        editorState={editorState}
+                        wrapperClassName="demo-wrapper"
+                        editorClassName="demo-editor"
+                        onEditorStateChange={this.onEditorStateChange}
+                        toolbar={options}
+                        name="credits"
+                        placeholder='Credits'
+                        value={values.credits}
+                      />
+                      <Divider horizontal>...</Divider>
+                      <Checkbox
+                        placeholder='Active'
+                        ref = "active"
+                        label = "Active"
+                        name="active"
+                        defaultChecked= {this.state.initialValues.checked}
+                        onChange = {(e, { checked }) => handleChange(checked)}
+                        onBlur = {handleBlur}
+                        value={(values.active === true) ? 1 : 0 }
+                        toggle
+                      />
+                      {errors.active && touched.active && errors.active}
                     <Divider horizontal>...</Divider>
                     <Button onClick={handleSubmit} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
                       {(this.state.mode === 'create') ? 'Create' : 'Update'}
@@ -330,7 +367,6 @@ class Story extends Component {
                           Delete
                         </Button>
                         <Confirm
-
                            open={this.state.open}
                            cancelButton='Never mind'
                            confirmButton="Delete Story"

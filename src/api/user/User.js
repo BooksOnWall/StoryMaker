@@ -294,7 +294,7 @@ class User extends Component {
                       handleChange,
                       handleBlur,
                       handleSubmit,
-                      handleSubmitDelete,
+                      handleDelete,
                       isSubmitting,
                       /* and other goodies */
                     }) => (

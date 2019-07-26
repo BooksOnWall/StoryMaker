@@ -169,8 +169,8 @@ const deleteArtist = async (aid) => {
 const getAllStories = async () => {
   return await Stories.findAll();
 }
-const createStory = async ({ name, email, description }) => {
-  return await Stories.create({ name, email, description });
+const createStory = async ({ title, artist, state, city, sinopsys, credits, active }) => {
+  return await Stories.create({ title, artist, state, city, sinopsys, credits, active });
 }
 const getStory = async obj => {
   return await Stories.findOne({
@@ -314,25 +314,25 @@ app.get('/stories', function(req, res) {
   getAllStories().then(user => res.json(user));
 });
 app.post('/stories/0', function(req, res, next) {
-  const { name, email, description } = req.body;
-  createStory({ name, email, description }).then(user =>
+  const { title, artist, state, city, sinopsys, credits, active } = req.body;
+  createStory({ title, artist, state, city, sinopsys, credits, active }).then(user =>
     res.json({ user, msg: 'story created successfully' })
   );
 });
 app.get('/stories/:storyId', (req, res) => {
   let sid = req.params.storyId;
-  getArtist({id: sid}).then(user => res.json(user));
+  getStory({id: sid}).then(user => res.json(user));
 });
 app.patch('/stories/:storytId', function(req, res, next) {
-  const { name, email, description } = req.body;
+  const { title, artist, state, city, sinopsys, credits, active } = req.body;
   let id = req.params.storyId;
-  patchArtist({ id, name, email, description }).then(user =>
+  patchStory({ id, title, artist, state, city, sinopsys, credits, active }).then(user =>
       res.json({ user, msg: 'Story updated successfully' })
     );
 });
 app.delete('/stories/:storyId', function(req, res, next) {
   let sid = req.params.storyId;
-  deleteArtist(sid).then(user =>
+  deleteStory(sid).then(user =>
     res.json({ user, msg: 'Story destroyed successfully' })
   );
 });
