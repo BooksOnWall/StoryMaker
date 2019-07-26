@@ -29,7 +29,7 @@ let options = {
     textAlign: { inDropdown: true },
     link: { inDropdown: true },
     history: { inDropdown: true },
-  };
+};
 
 class Artist extends Component {
   constructor(props) {

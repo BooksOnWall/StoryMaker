@@ -11,7 +11,9 @@ import {
   Icon,
   Button,
   Confirm,
+  Menu,
   Dimmer,
+  Tab,
   Loader,
 } from 'semantic-ui-react';
 
@@ -29,7 +31,7 @@ let options = {
     textAlign: { inDropdown: true },
     link: { inDropdown: true },
     history: { inDropdown: true },
-  };
+};
 
 class Story extends Component {
   constructor(props) {
@@ -43,6 +45,8 @@ class Story extends Component {
       sid: (!this.props.match.params.id) ? (0) : (parseInt(this.props.match.params.id)),
       mode: (parseInt(this.props.match.params.id) === 0) ? ('create') : ('update'),
       name: null,
+      stages: '/stories/' + this.props.match.params.id + '/stages',
+      map:  '/stories/' + this.props.match.params.id + '/map',
       loading: null,
       data: null,
       initialValues: { title: '', state: '', city: '', sinopsys: '', credits: '', artist: '', active: true, checked: true},
@@ -153,7 +157,7 @@ class Story extends Component {
       .then(data => {
           if(data) {
             // redirect to users list page
-            this.props.history.push('/artists');
+            this.props.history.push('/stories');
           }
       })
       .catch((error) => {
@@ -179,7 +183,7 @@ class Story extends Component {
       .then(data => {
           if(data) {
 
-            this.setState({aid: data.id, title: data.title, artist: data.artist});
+            this.setState({sid: data.id, title: data.title, artist: data.artist});
             this.setState({initialValues: data});
             this.setState({loading: false});
           } else {
@@ -247,6 +251,18 @@ class Story extends Component {
             List stories
           </Link>
           </Header>
+          <Header as='h6' icon floated='right'>
+            <Menu secondary size='mini'>
+              <Menu.Item href={this.state.stages} to={this.state.stages} name='stages'>
+                <Icon name='google wallet' />
+                Stages
+              </Menu.Item>
+              <Menu.Item href={this.state.map} to={this.state.map}>
+                <Icon name='map' />
+                Map
+              </Menu.Item>
+            </Menu>
+          </Header>
           <Header as='h6' icon >
             <Icon name='meh' />
             Edit Story
@@ -284,83 +300,94 @@ class Story extends Component {
                   isSubmitting,
                   /* and other goodies */
                 }) => (
+
                   <Form size='large' onSubmit={this.handleSubmit}>
-                    <input
-                      placeholder='Title'
-                      autoFocus={true}
-                      type="text"
-                      name="title"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      value={values.title}
-                    />
-                  {errors.title && touched.title && errors.title}
-                    <Divider horizontal>...</Divider>
-                    <input
-                      placeholder='State'
-                      type="text"
-                      name="state"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      value={values.state}
-                    />
-                  {errors.state && touched.state && errors.state}
-                    <Divider horizontal>...</Divider>
-                    <input
-                      placeholder='City'
-                      type="text"
-                      name="city"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      value={values.city}
-                    />
-                  {errors.city && touched.city && errors.city}
-                    <Divider horizontal>...</Divider>
-                      <input
-                        placeholder='Artist'
-                        type="text"
-                        name="artist"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.artist}
-                      />
-                    <Divider horizontal>...</Divider>
-                    <Editor
-                      toolbarOnFocus
-                       editorState={editorState}
-                       wrapperClassName="demo-wrapper"
-                       editorClassName="demo-editor"
-                       onEditorStateChange={this.onEditorStateChange}
-                       toolbar={options}
-                       name="sinopsys"
-                       placeholder='Sinopsys'
-                       value={values.sinopsys}
-                     />
-                     <Divider horizontal>...</Divider>
-                     <Editor
-                       toolbarOnFocus
-                        editorState={editorState}
-                        wrapperClassName="demo-wrapper"
-                        editorClassName="demo-editor"
-                        onEditorStateChange={this.onEditorStateChange}
-                        toolbar={options}
-                        name="credits"
-                        placeholder='Credits'
-                        value={values.credits}
-                      />
-                      <Divider horizontal>...</Divider>
-                      <Checkbox
-                        placeholder='Active'
-                        ref = "active"
-                        label = "Active"
-                        name="active"
-                        defaultChecked= {this.state.initialValues.checked}
-                        onChange = {(e, { checked }) => handleChange(checked)}
-                        onBlur = {handleBlur}
-                        value={(values.active === true) ? 1 : 0 }
-                        toggle
-                      />
-                      {errors.active && touched.active && errors.active}
+                    <Tab panes={[
+                        {menuItem: 'Story', render:() => <Tab.Pane>
+                          <input
+                            placeholder='Title'
+                            autoFocus={true}
+                            type="text"
+                            name="title"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.title}
+                          />
+                        {errors.title && touched.title && errors.title}
+                          <Divider horizontal>...</Divider>
+                          <input
+                            placeholder='State'
+                            type="text"
+                            name="state"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.state}
+                          />
+                        {errors.state && touched.state && errors.state}
+                          <Divider horizontal>...</Divider>
+                          <input
+                            placeholder='City'
+                            type="text"
+                            name="city"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.city}
+                          />
+                        {errors.city && touched.city && errors.city}
+                          <Divider horizontal>...</Divider>
+                            <input
+                              placeholder='Artist'
+                              type="text"
+                              name="artist"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.artist}
+                            />
+                            <Divider horizontal>...</Divider>
+                            <Checkbox
+                              placeholder='Active'
+                              ref = "active"
+                              label = "Active"
+                              name="active"
+                              defaultChecked= {this.state.initialValues.checked}
+                              onChange = {(e, { checked }) => handleChange(checked)}
+                              onBlur = {handleBlur}
+                              value={(values.active === true) ? 1 : 0 }
+                              toggle
+                            />
+                            {errors.active && touched.active && errors.active}
+                          </Tab.Pane>},
+                        {menuItem: 'Sinopsys', render:() => <Tab.Pane>
+                          <Divider horizontal>...</Divider>
+                          <Editor
+                            toolbarOnFocus
+                             editorState={editorState}
+                             wrapperClassName="demo-wrapper"
+                             editorClassName="demo-editor"
+                             onEditorStateChange={this.onEditorStateChange}
+                             toolbar={options}
+                             name="sinopsys"
+                             placeholder='Sinopsys'
+                             value={values.sinopsys}
+                           />
+                        </Tab.Pane>},
+                        {menuItem: 'Credits', render:() => <Tab.Pane>
+                          <Divider horizontal>...</Divider>
+                          <Editor
+                            toolbarOnFocus
+                             editorState={editorState}
+                             wrapperClassName="demo-wrapper"
+                             editorClassName="demo-editor"
+                             onEditorStateChange={this.onEditorStateChange}
+                             toolbar={options}
+                             name="credits"
+                             placeholder='Credits'
+                             value={values.credits}
+                           />
+                        </Tab.Pane>},
+                      ]} />
+
+
                     <Divider horizontal>...</Divider>
                     <Button onClick={handleSubmit} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
                       {(this.state.mode === 'create') ? 'Create' : 'Update'}
