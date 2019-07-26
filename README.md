@@ -11,6 +11,8 @@
         REACT_APP_SERVER_HOST=bow.animaespacio.org
         REACT_APP_SERVER_PROTOCOL= https
         REACT_APP_SERVER_PORT=3010
+    //maptoken for mapbox display 
+        REACT_APP_MAT=pk.eyJ1IjoiY3JvbGwiLCJhIjoiY2p4cWVmZDA2MDA0aTNkcnQxdXhldWxwZCJ9.3pr6-2NQQDd59UBRCEeenA
 
     $ yarn start 
 # Server 
@@ -28,7 +30,7 @@
         SERVER_HOST=localhost
         SERVER_PROTOCOL=http
         SERVER_PORT=3010
-
+        
     // production using https on both sides with a react application builded 
         SERVER_HOST=bow.animaespacio.org
         SERVER_PROTOCOL=https
