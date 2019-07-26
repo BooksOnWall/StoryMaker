@@ -91,6 +91,7 @@ const Sequelize = require('sequelize');
 const sequelize = new Sequelize(config.mysql);
 const usersList = require('./conf/db/users');
 const artistsList = require('./conf/db/artists');
+const storiesList = require('./conf/db/stories');
 // check the databse connection
 sequelize
   .authenticate()
@@ -105,11 +106,16 @@ Users.sync()
  .catch(err => console.log('oooh, did you enter wrong database credentials?'));
 // create Artists model
 const Artists = sequelize.define('artists', artistsList.artists);
-// create table with user model
+// create table with artist model
 Artists.sync()
  .then(() => console.log('Artists table created successfully'))
  .catch(err => console.log('oooh, did you enter wrong database credentials?'));
-
+ // create Artists model
+ const Stories = sequelize.define('stories', storiesList.stories);
+ // create table with stories model
+ Stories.sync()
+  .then(() => console.log('Stories table created successfully'))
+  .catch(err => console.log('oooh, did you enter wrong database credentials?'));
 
 // create some helper functions to work on the database
 const createUser = async ({ name, email, hash, active }) => {
@@ -159,7 +165,28 @@ const deleteArtist = async (aid) => {
     where: {id : aid}
     });
 };
-
+// stories db requests
+const getAllStories = async () => {
+  return await Stories.findAll();
+}
+const createStory = async ({ name, email, description }) => {
+  return await Stories.create({ name, email, description });
+}
+const getStory = async obj => {
+  return await Stories.findOne({
+    where: obj,
+  });
+};
+const patchStory = async ({ id, name, email, description }) => {
+  return await Stories.update({ id, name, email, description },
+    { where: {id : id}}
+  );
+}
+const deleteStory = async (sid) => {
+  return await Stories.destroy({
+    where: {id : sid}
+    });
+};
 // set some basic routes
 app.get('/', function(req, res) {
   res.json({ message: 'Express is up!' });
@@ -280,6 +307,33 @@ app.delete('/artists/:artistId', function(req, res, next) {
   let aid = req.params.artistId;
   deleteArtist(aid).then(user =>
     res.json({ user, msg: 'artist destroyed successfully' })
+  );
+});
+// Stories URI requests
+app.get('/stories', function(req, res) {
+  getAllStories().then(user => res.json(user));
+});
+app.post('/stories/0', function(req, res, next) {
+  const { name, email, description } = req.body;
+  createStory({ name, email, description }).then(user =>
+    res.json({ user, msg: 'story created successfully' })
+  );
+});
+app.get('/stories/:storyId', (req, res) => {
+  let sid = req.params.storyId;
+  getArtist({id: sid}).then(user => res.json(user));
+});
+app.patch('/stories/:storytId', function(req, res, next) {
+  const { name, email, description } = req.body;
+  let id = req.params.storyId;
+  patchArtist({ id, name, email, description }).then(user =>
+      res.json({ user, msg: 'Story updated successfully' })
+    );
+});
+app.delete('/stories/:storyId', function(req, res, next) {
+  let sid = req.params.storyId;
+  deleteArtist(sid).then(user =>
+    res.json({ user, msg: 'Story destroyed successfully' })
   );
 });
 // protected route

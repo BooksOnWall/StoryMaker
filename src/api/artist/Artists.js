@@ -145,7 +145,7 @@ class Artists extends Component {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {_.map(data, ({ id, name, email, createdAt, updatedAt, active }) => (
+            {_.map(data, ({ id, name, email, createdAt, updatedAt, description }) => (
               <Table.Row key={id} onClick={() => this.tableRowClickFunc({id})}>
                 <Table.Cell>{id}</Table.Cell>
                 <Table.Cell>{name}</Table.Cell>

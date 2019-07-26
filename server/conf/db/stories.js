@@ -1,13 +1,29 @@
 const Sequelize = require('sequelize');
 module.exports.stories = {
-  name: {
+  title: {
     type: Sequelize.STRING,
     allowNull: false,
     unique: true,
   },
-  description: {
-    type: Sequelize.STRING(1234),
+  state: {
+    type: Sequelize.STRING(256),
     defaultValue: ''
+  },
+  city :{
+    type: Sequelize.STRING(256),
+    defaultValue: ''
+  },
+  sinopsys: {
+    type: Sequelize.TEXT,
+    defaultValue: ''
+  },
+  credits: {
+    type: Sequelize.TEXT,
+    defaultValue: ''
+  },
+  artist: {
+    type: Sequelize.INTEGER,
+    allowNull: false
   },
   active: {
     type: Sequelize.BOOLEAN,
