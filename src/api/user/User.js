@@ -40,10 +40,11 @@ class User extends Component {
       checked: false,
       active: false,
       user: server + 'users/',
+      userPref: server + 'userPref/',
       data: null,
+      userPrefs: {},
       initialValues: { name: '', email: '', password: '', password2: '', active: 0, checked: false },
       authenticated: this.toggleAuthenticateStatus,
-      profile: false,
       open: false,
     };
     this.handleChange = this.handleChange.bind(this);
@@ -64,7 +65,40 @@ class User extends Component {
   // check authenticated status and toggle state based on that
   this.setState({ authenticated: Auth.isUserAuthenticated() })
   }
+  async getUserPref() {
+    try {
+      await fetch(this.state.userPref+this.state.uid, {
+        method: 'get',
+        headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'}
+      })
+      .then(response => {
+        if (response && !response.ok) { throw new Error(response.statusText);}
+        return response.json();
+      })
+      .then(data => {
+          if(data) {
+            console.log(data);
+            console.log(data.active);
+            data.checked = (data.active) ? true : false;
+            // removed unwanted password hash
+            delete data.password;
 
+            data.checked = data.active;
+            this.setState({uid: data.id, name: data.name});
+            this.setState({userPrefs: data});
+            this.setState({loading: false});
+          } else {
+            console.log('No Data received from the server');
+          }
+      })
+      .catch((error) => {
+        // Your error is here!
+        console.log(error)
+      });
+    } catch(e) {
+      console.log(e.message);
+    }
+  }
   async getUser() {
     // set loading
     this.setState({loading: true});

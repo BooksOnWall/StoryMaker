@@ -137,9 +137,13 @@ class Story extends Component {
         method: 'PATCH',
         headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json', charset:'utf-8' },
         body:JSON.stringify({
-          name: values.name,
-          email:values.email,
-          description:values.description
+          title: this.state.title,
+          artist:parseInt(this.state.artist),
+          state:this.state.state,
+          city: this.state.city,
+          sinopsys: this.state.sinopsys,
+          credits: this.state.credits,
+          active: parseInt(this.state.active),
         })
       })
       .then(response => {

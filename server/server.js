@@ -90,6 +90,7 @@ const Sequelize = require('sequelize');
 // initialze an instance of Sequelize with mysql conf parameters
 const sequelize = new Sequelize(config.mysql);
 const usersList = require('./conf/db/users');
+const userPref = require('./conf/db/userPref');
 const artistsList = require('./conf/db/artists');
 const storiesList = require('./conf/db/stories');
 // check the databse connection
@@ -104,6 +105,14 @@ const Users = sequelize.define('users', usersList.users);
 Users.sync()
  .then(() => console.log('User table created successfully'))
  .catch(err => console.log('oooh, did you enter wrong database credentials?'));
+
+ // create user preferences model
+ const UserPref = sequelize.define('userPref', userPref.userPref);
+ // create table with user model
+ UserPref.sync()
+  .then(() => console.log('User preference table created successfully'))
+  .catch(err => console.log('oooh, did you enter wrong database credentials?'));
+
 // create Artists model
 const Artists = sequelize.define('artists', artistsList.artists);
 // create table with artist model
