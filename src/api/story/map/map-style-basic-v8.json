@@ -6,8 +6,12 @@
     },
     "sources": {
         "mapbox": {
-            "url": "mapbox://mapbox.mapbox-streets-v7",
+            "url": "mapbox://mapbox.mapbox-streets-v8",
             "type": "vector"
+        },
+        "mapbox-terrain": {
+          "type": "vector",
+          "url": "mapbox://mapbox.mapbox-terrain-v2"
         }
     },
     "sprite": "mapbox://sprites/mapbox/basic-v8",
@@ -21,6 +25,35 @@
             },
             "interactive": true
         },
+        {
+          "id": "landcover",
+          "source": "mapbox-terrain",
+          "source-layer": "landcover",
+          "type": "fill",
+          "paint": {
+            "fill-color": "rgba(66,100,251, 0.3)",
+            "fill-outline-color": "rgba(66,100,251, 1)"
+          }
+        },
+        {
+          "id": "hillshade",
+          "source": "mapbox-terrain",
+          "source-layer": "hillshade",
+          "type": "fill",
+          "paint": {
+            "fill-color": "rgba(66,100,251, 0.3)",
+            "fill-outline-color": "rgba(66,100,251, 1)"
+            }
+        },
+        {
+            "id": "contour",
+            "source": "mapbox-terrain",
+            "source-layer": "contour",
+            "type": "line",
+            "paint": {
+              "line-color": "#ffffff"
+            }
+          },
         {
             "id": "landuse_overlay_national_park",
             "type": "fill",
