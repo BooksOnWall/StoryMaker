@@ -217,18 +217,26 @@ class Artist extends Component {
     try {
       await this.toggleAuthenticateStatus();
       if(this.state.mode === 'update')  await this.getArtist();
-
+      this.focusEditor();
     } catch(e) {
       console.log(e.message);
     }
   }
   onEditorStateChange: Function = (editorState) => {
+    console.log(editorState);
     this.setState({
       editorState,
     });
-  };
+  }
+  setEditor = (editor) => {
+      this.editor = editor;
+  }
+  focusEditor = () => {
+      if (this.editor) {
+        this.editor.focus();
+      }
+  }
   render() {
-    const { editorState } = this.state;
     return (
       <Container>
         <Dimmer active={this.state.loading}>
@@ -282,6 +290,7 @@ class Artist extends Component {
                   handleBlur,
                   handleSubmit,
                   handleDelete,
+                  onEditorStateChange,
                   isSubmitting,
                   /* and other goodies */
                 }) => (
@@ -313,14 +322,15 @@ class Artist extends Component {
                     <Divider horizontal>...</Divider>
                      <Editor
                        toolbarOnFocus
-                        editorState={editorState}
+                        ref={this.setEditor}
+                        editorState={this.state.editorState}
                         wrapperClassName="demo-wrapper"
                         editorClassName="demo-editor"
                         onEditorStateChange={this.onEditorStateChange}
                         toolbar={options}
-                        name="sinopsys"
-                        placeholder='Sinopsys'
-                        value={values.sinopsys}
+                        name="description"
+                        placeholder='Description'
+                        value={values.description}
                       />
                     <Divider horizontal>...</Divider>
                     <Button onClick={handleSubmit} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>

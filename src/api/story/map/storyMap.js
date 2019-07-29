@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import Auth from '../../../module/Auth';
 import {
-  Segment,
-  Divider,
-  Dropdown,
+  Dimmer,
+  Loader,
 } from 'semantic-ui-react';
 import MapGL from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -16,19 +15,21 @@ class storyMap extends Component {
     super(props);
     this.state = {
       authenticated: false,
+      loading: null,
       mapStyle: '',
       viewport: {
         latitude: -34.9022229,
         longitude: -56.1670182,
-        zoom: 11,
-        bearing: 0,
-        pitch: 0
+        zoom: 13,
+        bearing: -60, // bearing in degrees
+        pitch: 60  // pitch in degrees
       }
     }
   };
   componentDidMount() {
     // check if user is logged in on refresh
-    this.toggleAuthenticateStatus()
+    this.toggleAuthenticateStatus();
+    //this.setState({loading: true});
   }
 
   toggleAuthenticateStatus() {
@@ -40,6 +41,10 @@ class storyMap extends Component {
   render() {
     const {viewport, mapStyle} = this.state;
     return (
+      <div>
+      <Dimmer active={this.state.loading}>
+        <Loader active={this.state.loading} >Get map info</Loader>
+      </Dimmer>
       <MapGL
         {...viewport}
         width="80vw"
@@ -53,6 +58,7 @@ class storyMap extends Component {
           onChange={this.onStyleChange}
         />
       </MapGL>
+      </div>
     );
   }
 }
