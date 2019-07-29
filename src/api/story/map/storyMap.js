@@ -26,24 +26,26 @@ class storyMap extends Component {
       }
     }
   };
-  componentDidMount() {
+  async componentDidMount() {
     // check if user is logged in on refresh
-    this.toggleAuthenticateStatus();
-    //this.setState({loading: true});
+    await this.toggleAuthenticateStatus();
+    //await this.setState({loading: true});
   }
-
+  toggleLoading(val) {
+    this.setState({loading: false});
+  }
   toggleAuthenticateStatus() {
     // check authenticated status and toggle state based on that
-    this.setState({ authenticated: Auth.isUserAuthenticated() })
+    this.setState({ authenticated: Auth.isUserAuthenticated() });
   }
   onViewportChange = viewport => this.setState({viewport});
   onStyleChange = mapStyle => this.setState({mapStyle});
   render() {
-    const {viewport, mapStyle} = this.state;
+    const {viewport, mapStyle, loading} = this.state;
     return (
       <div>
-      <Dimmer active={this.state.loading}>
-        <Loader active={this.state.loading} >Get map info</Loader>
+      <Dimmer active={loading}>
+        <Loader active={loading} >Get map info</Loader>
       </Dimmer>
       <MapGL
         {...viewport}

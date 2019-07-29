@@ -4,10 +4,7 @@ import MAP_STYLE from './map-style-basic-v8.json';
 import {
   Input,
   Label,
-  Container,
   Segment,
-  Divider,
-  Dropdown,
 } from 'semantic-ui-react';
 const defaultMapStyle = fromJS(MAP_STYLE);
 
