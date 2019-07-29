@@ -137,6 +137,11 @@ const patchUser = async ({ id, name, email, active }) => {
     { where: {id : id}}
   );
 }
+const patchUserPasswd = async ({ id, password }) => {
+  return await Users.update({ id, password },
+    { where: {id : id}}
+  );
+}
 const getAllUsers = async () => {
   return await Users.findAll();
 };
@@ -212,11 +217,32 @@ app.get('/users/:userId', (req, res) => {
 });
 //update user exept password
 app.patch('/users/:userId', function(req, res, next) {
-  const { name, email, active } = req.body;
   let id = req.params.userId;
-  patchUser({ id, name, email, active }).then(user =>
-      res.json({ user, msg: 'account updated successfully' })
+  const {uid, password } = req.body;
+  if (!uid) {
+    const { name, email, active } = req.body;
+
+    patchUser({ id, name, email, active }).then(user =>
+        res.json({ user, msg: 'account updated successfully' })
     );
+  } else {
+    bcrypt
+    .genSalt(saltRounds)
+    .then(salt => {
+      return bcrypt.hash(password, salt);
+    })
+    .then(hash => {
+      // Store hash in your password DB.
+      patchUserPasswd({ id, hash }).then(user =>
+          res.json({ user, msg: 'password updated successfully' })
+        );
+
+    })
+    .catch(err => console.error(err.message));
+
+  }
+  console.log(uid);
+
 });
 //delete user
 app.delete('/users/:userId', function(req, res, next) {

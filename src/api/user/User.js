@@ -43,11 +43,13 @@ class User extends Component {
       data: null,
       userPrefs: {},
       initialValues: { name: '', email: '', password: '', password2: '', active: 0, checked: false },
+      initialPValues: { password: '', password2: '' },
       authenticated: this.toggleAuthenticateStatus,
       open: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSubmitP = this.handleSubmitP.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     //this.handleData = this.handleData.bind(this);
 
@@ -76,14 +78,6 @@ class User extends Component {
       })
       .then(data => {
           if(data) {
-            console.log(data);
-            console.log(data.active);
-            data.checked = (data.active) ? true : false;
-            // removed unwanted password hash
-            delete data.password;
-
-            data.checked = data.active;
-            this.setState({uid: data.id, name: data.name});
             this.setState({userPrefs: data});
             this.setState({loading: false});
           } else {
@@ -112,8 +106,6 @@ class User extends Component {
       })
       .then(data => {
           if(data) {
-            console.log(data);
-            console.log(data.active);
             data.checked = (data.active) ? true : false;
             // removed unwanted password hash
             delete data.password;
@@ -224,6 +216,34 @@ class User extends Component {
       console.log(e.message);
     }
   }
+  async setPassword(values) {
+    try {
+      await fetch(this.state.user+this.state.uid, {
+        method: 'PATCH',
+        headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json', charset:'utf-8' },
+        body:JSON.stringify({
+          uid: this.state.uid,
+          password:values.password,
+        })
+      })
+      .then(response => {
+        if (response && !response.ok) { throw new Error(response.statusText);}
+        return response.json();
+      })
+      .then(data => {
+          if(data) {
+            // redirect to users list page
+            this.props.history.push('/users');
+          }
+      })
+      .catch((error) => {
+        // Your error is here!
+        console.log(error)
+      });
+    } catch(e) {
+      console.log(e.message);
+    }
+  }
   handleChange(e) {
     console.log(e.target);
     const target = e.target;
@@ -243,6 +263,13 @@ class User extends Component {
       } else {
         await this.updateUser();
       }
+    } catch(e) {
+      console.log(e.message);
+    }
+  }
+  async handleSubmitP(e) {
+    try {
+        await this.setPassword();
     } catch(e) {
       console.log(e.message);
     }
@@ -351,6 +378,7 @@ class User extends Component {
                   onBlur={handleBlur}
                   value={values.password}
                 />
+              {errors.password && touched.password && errors.password}
               <Divider horizontal>...</Divider>
                 <input
                   icon='lock'
@@ -362,6 +390,7 @@ class User extends Component {
                   onBlur={handleBlur}
                   value={values.password2}
                 />
+              {errors.password2 && touched.password2 && errors.password2}
             </div>
               ) : ''}
             <Divider horizontal>...</Divider>
@@ -411,21 +440,21 @@ class User extends Component {
         Change password
       </Header>
       <Formik
-        initialValues={this.state.initialValues}
+        initialValues={this.state.initialPValues}
         validate={values => {
           let errors = {};
-          if (!values.email) {
-            errors.email = 'Required';
+          if (!values.password) {
+            errors.password = 'Required';
           } else if (
-            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+            values.password !== values.password2
           ) {
-            errors.email = 'Invalid email address';
+            errors.password = 'Invalid repeat password';
           }
           return errors;
         }}
         onSubmit={(values, { setSubmitting }) => {
           if(this.state.mode === 'update') {
-            this.updateUserPassword(values);
+            this.setPassword(values);
           }
 
           setTimeout(() => {
@@ -442,7 +471,6 @@ class User extends Component {
           handleChange,
           handleBlur,
           handleSubmit,
-          handleSubmitDelete,
           isSubmitting,
           /* and other goodies */
         }) => (
@@ -458,6 +486,7 @@ class User extends Component {
               onBlur={handleBlur}
               value={values.password}
             />
+            {errors.password && touched.password && errors.password}
             <Divider horizontal>...</Divider>
             <input
               icon='lock'
@@ -469,6 +498,7 @@ class User extends Component {
               onBlur={handleBlur}
               value={values.password2}
             />
+          {errors.password2 && touched.password2 && errors.password2}
             <Divider horizontal>...</Divider>
             <Button onClick={handleSubmit} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
               {(this.state.mode === 'create') ? 'Create' : 'Update'}

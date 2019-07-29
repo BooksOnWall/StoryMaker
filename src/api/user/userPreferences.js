@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Auth from '../../module/Auth';
 import {
   Segment,
+  Form,
   Divider,
   Dropdown,
 } from 'semantic-ui-react';
@@ -46,7 +47,11 @@ class userPreferences extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      authenticated: false
+      authenticated: false,
+      selected: 'en',
+      selected2: 'en',
+      lang: null,
+      theme: null,
     }
   };
   componentDidMount() {
@@ -58,21 +63,39 @@ class userPreferences extends Component {
     // check authenticated status and toggle state based on that
     this.setState({ authenticated: Auth.isUserAuthenticated() })
   }
+  handleSelectChange=(e,{value})=> {
+      console.log(value);
+
+      this.setState({value});
+
+  }
+  setPreference(e) {
+    //  console.log({e.value});
+    console.log(this.state);
+  }
   render() {
     return (
-      <Segment stacked>
+      <Segment >
+        <Form>
         <Dropdown
+          name='languagePrefs'
           text='Choose language'
           icon='flag'
           floating
           labeled
           button
+          fluid
+          selection
           className='icon'
+          value={this.state.selected2}
+          defaultValue={this.state.selected2}
+          onChange={this.handleSelectChange}
+          onClick={this.setPreference}
         >
         <Dropdown.Menu>
         <Dropdown.Header content='Select your language' />
         {languages.map(option => (
-          <Dropdown.Item key={option.value} {...option} />
+          <Dropdown.Item  name='lang' key={option.value} {...option} />
         ))}
         </Dropdown.Menu>
         </Dropdown>
@@ -80,10 +103,17 @@ class userPreferences extends Component {
         <Dropdown
         text='Choose theme'
         icon='theme'
+        name='theme'
         floating
         labeled
         button
+        fluid
+        selection
         className='icon'
+        value={this.state.selected}
+        defaultValue={this.state.selected}
+        onChange={this.handleSelectChange}
+        onClick={this.setPreference}
         >
         <Dropdown.Menu>
         <Dropdown.Header content='Select your theme' />
@@ -92,6 +122,7 @@ class userPreferences extends Component {
         ))}
         </Dropdown.Menu>
       </Dropdown>
+      </Form>
     </Segment>
     );
   }
