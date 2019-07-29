@@ -4,6 +4,10 @@ const initialState = {
     name: '',
     avatar: false,
     authenticated: false,
+    preferences: {
+      language: 'en',
+      theme: 'light'
+    }
   },
   themes: {
     'dark': {
