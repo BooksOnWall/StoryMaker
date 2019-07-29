@@ -6,11 +6,10 @@ import {
   Header,
   Divider,
   Container,
+  Tab,
   Form,
-  Grid,
   Icon,
   Button,
-  Card,
   Checkbox,
   Confirm,
   Dimmer,
@@ -269,7 +268,232 @@ class User extends Component {
       console.log(e.message);
     }
   }
+  editForm() {
+    return (
+      <Segment>
+      <Header as='h3' color='violet' textAlign='center'>
+        {(this.state.mode === 'create') ? 'Create new User' : 'Edit user'}
+      </Header>
+      <Formik
+        enableReinitialize={true}
+        initialValues={this.state.initialValues}
+        validate={values => {
+          let errors = {};
+          if (!values.email) {
+            errors.email = 'Required';
+          } else if (
+            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+          ) {
+            errors.email = 'Invalid email address';
+          }
+          return errors;
+        }}
+        onSubmit={(values, { setSubmitting }) => {
+          if(this.state.mode === 'update') {
+            this.updateUser(values);
+          } else {
+            this.createUser(values);
+          }
 
+          setTimeout(() => {
+            //alert(JSON.stringify(values, null, 2));
+
+            setSubmitting(false);
+          }, 400);
+        }}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          handleDelete,
+          isSubmitting,
+          /* and other goodies */
+        }) => (
+          <Form size='large' onSubmit={this.handleSubmit}>
+            <input
+              icon='user'
+              iconposition='left'
+              placeholder='Name'
+              autoFocus={true}
+              type="text"
+              name="name"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.name}
+            />
+            {errors.name && touched.name && errors.name}
+            <Divider horizontal>...</Divider>
+            <input
+              icon='user'
+              iconposition='left'
+              placeholder='E-mail address'
+              type="email"
+              name="email"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.email}
+            />
+            {errors.email && touched.email && errors.email}
+              {(this.state.mode === 'create') ? (
+              <div>
+                <Divider horizontal>...</Divider>
+                <input
+                  icon='lock'
+                  iconposition='left'
+                  placeholder='Password'
+                  type="password"
+                  name="password"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.password}
+                />
+              <Divider horizontal>...</Divider>
+                <input
+                  icon='lock'
+                  iconposition='left'
+                  placeholder='Repeat Password'
+                  type="password"
+                  name="password2"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.password2}
+                />
+            </div>
+              ) : ''}
+            <Divider horizontal>...</Divider>
+            <Checkbox
+              icon='user'
+              iconposition='left'
+              placeholder='Active'
+              ref = "active"
+              label = "Active"
+              name="active"
+              defaultChecked= {this.state.initialValues.checked}
+              onChange = {(e, { checked }) => handleChange(checked)}
+              onBlur = {handleBlur}
+              value={(values.active === true) ? 1 : 0 }
+              toggle
+            />
+            {errors.active && touched.active && errors.active}
+            <Divider horizontal>...</Divider>
+            <Button onClick={handleSubmit} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
+              {(this.state.mode === 'create') ? 'Create' : 'Update'}
+            </Button>
+            {(this.state.mode === 'update') ? (
+              <div>
+                <Button onClick={this.show} color='red' fluid size='large' type="submit" disabled={isSubmitting}>
+                  Delete
+                </Button>
+                <Confirm
+
+                   open={this.state.open}
+                   cancelButton='Never mind'
+                   confirmButton="Delete User"
+                   onCancel={this.handleCancel}
+                   onConfirm={this.handleDelete}
+                 />
+              </div>
+            ) : '' }
+          </Form>
+        )}
+      </Formik>
+      </Segment>
+    )
+  }
+  editPasswd() {
+    return(
+    <Segment>
+      <Header as='h3' color='violet' textAlign='center'>
+        Change password
+      </Header>
+      <Formik
+        initialValues={this.state.initialValues}
+        validate={values => {
+          let errors = {};
+          if (!values.email) {
+            errors.email = 'Required';
+          } else if (
+            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+          ) {
+            errors.email = 'Invalid email address';
+          }
+          return errors;
+        }}
+        onSubmit={(values, { setSubmitting }) => {
+          if(this.state.mode === 'update') {
+            this.updateUserPassword(values);
+          }
+
+          setTimeout(() => {
+            //alert(JSON.stringify(values, null, 2));
+
+            setSubmitting(false);
+          }, 400);
+        }}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          handleSubmitDelete,
+          isSubmitting,
+          /* and other goodies */
+        }) => (
+          <Form size='large' onSubmit={this.handleSubmit}>
+            <Divider horizontal>...</Divider>
+            <input
+              icon='lock'
+              iconposition='left'
+              placeholder='Password'
+              type="password"
+              name="password"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.password}
+            />
+            <Divider horizontal>...</Divider>
+            <input
+              icon='lock'
+              iconposition='left'
+              placeholder='Repeat Password'
+              type="password"
+              name="password2"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.password2}
+            />
+            <Divider horizontal>...</Divider>
+            <Button onClick={handleSubmit} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
+              {(this.state.mode === 'create') ? 'Create' : 'Update'}
+            </Button>
+          </Form>
+        )}
+      </Formik>
+    </Segment>
+    );
+  }
+  editPrefs() {
+    return (
+      <Segment>
+        <Header as='h3' color='violet' textAlign='center'>
+          User Preferences
+        </Header>
+        <UserPref toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
+      </Segment>
+    );
+  }
+  editAvatar() {
+    return (
+      <UserAvatar />
+    );
+  }
   render() {
     // display render only afetr we get initialValues for update mode
     if (this.state.initialValues === null && this.state.mode === 'update') return null;
@@ -278,244 +502,28 @@ class User extends Component {
         <Dimmer active={this.state.loading}>
           <Loader active={this.state.loading} >Get user info</Loader>
         </Dimmer>
-      <Segment>
+
         <Header as='h6' icon floated='left'>
             <Link to="/users">
               <Icon name='list' />
                List user
             </Link>
         </Header>
-        <Grid id="profile" textAlign='left' columns={3} divided verticalAlign='top'>
-          <Grid.Row>
-            <Grid.Column>
-              <Header as='h3' color='violet' textAlign='center'>
-                {(this.state.mode === 'create') ? 'Create new User' : 'Edit user'}
-              </Header>
-              <Card>
-                <Card.Content>
-                  <Formik
-                    enableReinitialize={true}
-                    initialValues={this.state.initialValues}
-                    validate={values => {
-                      let errors = {};
-                      if (!values.email) {
-                        errors.email = 'Required';
-                      } else if (
-                        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-                      ) {
-                        errors.email = 'Invalid email address';
-                      }
-                      return errors;
-                    }}
-                    onSubmit={(values, { setSubmitting }) => {
-                      if(this.state.mode === 'update') {
-                        this.updateUser(values);
-                      } else {
-                        this.createUser(values);
-                      }
-
-                      setTimeout(() => {
-                        //alert(JSON.stringify(values, null, 2));
-
-                        setSubmitting(false);
-                      }, 400);
-                    }}
-                  >
-                    {({
-                      values,
-                      errors,
-                      touched,
-                      handleChange,
-                      handleBlur,
-                      handleSubmit,
-                      handleDelete,
-                      isSubmitting,
-                      /* and other goodies */
-                    }) => (
-                      <Form size='large' onSubmit={this.handleSubmit}>
-                        <input
-                          icon='user'
-                          iconposition='left'
-                          placeholder='Name'
-                          autoFocus={true}
-                          type="text"
-                          name="name"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value={values.name}
-                        />
-                        {errors.name && touched.name && errors.name}
-                        <Divider horizontal>...</Divider>
-                        <input
-                          icon='user'
-                          iconposition='left'
-                          placeholder='E-mail address'
-                          type="email"
-                          name="email"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value={values.email}
-                        />
-                        {errors.email && touched.email && errors.email}
-                          {(this.state.mode === 'create') ? (
-                          <div>
-                            <Divider horizontal>...</Divider>
-                            <input
-                              icon='lock'
-                              iconposition='left'
-                              placeholder='Password'
-                              type="password"
-                              name="password"
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.password}
-                            />
-                          <Divider horizontal>...</Divider>
-                            <input
-                              icon='lock'
-                              iconposition='left'
-                              placeholder='Repeat Password'
-                              type="password"
-                              name="password2"
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.password2}
-                            />
-                        </div>
-                          ) : ''}
-                        <Divider horizontal>...</Divider>
-                        <Checkbox
-                          icon='user'
-                          iconposition='left'
-                          placeholder='Active'
-                          ref = "active"
-                          label = "Active"
-                          name="active"
-                          defaultChecked= {this.state.initialValues.checked}
-                          onChange = {(e, { checked }) => handleChange(checked)}
-                          onBlur = {handleBlur}
-                          value={(values.active === true) ? 1 : 0 }
-                          toggle
-                        />
-                        {errors.active && touched.active && errors.active}
-                        <Divider horizontal>...</Divider>
-                        <Button onClick={handleSubmit} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
-                          {(this.state.mode === 'create') ? 'Create' : 'Update'}
-                        </Button>
-                        {(this.state.mode === 'update') ? (
-                          <div>
-                            <Button onClick={this.show} color='red' fluid size='large' type="submit" disabled={isSubmitting}>
-                              Delete
-                            </Button>
-                            <Confirm
-
-                               open={this.state.open}
-                               cancelButton='Never mind'
-                               confirmButton="Delete User"
-                               onCancel={this.handleCancel}
-                               onConfirm={this.handleDelete}
-                             />
-                          </div>
-                        ) : '' }
-                      </Form>
-                    )}
-                  </Formik>
-              </Card.Content>
-            </Card>
-          </Grid.Column>
-          {(this.state.mode === 'update') ? (
-            <Grid.Column>
-              <Segment>
-                <Header as='h3' color='violet' textAlign='center'>
-                  Change password
-                </Header>
-                <Formik
-                  initialValues={this.state.initialValues}
-                  validate={values => {
-                    let errors = {};
-                    if (!values.email) {
-                      errors.email = 'Required';
-                    } else if (
-                      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-                    ) {
-                      errors.email = 'Invalid email address';
-                    }
-                    return errors;
-                  }}
-                  onSubmit={(values, { setSubmitting }) => {
-                    if(this.state.mode === 'update') {
-                      this.updateUserPassword(values);
-                    }
-
-                    setTimeout(() => {
-                      //alert(JSON.stringify(values, null, 2));
-
-                      setSubmitting(false);
-                    }, 400);
-                  }}
-                >
-                  {({
-                    values,
-                    errors,
-                    touched,
-                    handleChange,
-                    handleBlur,
-                    handleSubmit,
-                    handleSubmitDelete,
-                    isSubmitting,
-                    /* and other goodies */
-                  }) => (
-                    <Form size='large' onSubmit={this.handleSubmit}>
-                      <Divider horizontal>...</Divider>
-                      <input
-                        icon='lock'
-                        iconposition='left'
-                        placeholder='Password'
-                        type="password"
-                        name="password"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.password}
-                      />
-                      <Divider horizontal>...</Divider>
-                      <input
-                        icon='lock'
-                        iconposition='left'
-                        placeholder='Repeat Password'
-                        type="password"
-                        name="password2"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.password2}
-                      />
-                      <Divider horizontal>...</Divider>
-                      <Button onClick={handleSubmit} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
-                        {(this.state.mode === 'create') ? 'Create' : 'Update'}
-                      </Button>
-                    </Form>
-                  )}
-                </Formik>
-              </Segment>
-              <Segment>
-                <Header as='h3' color='violet' textAlign='center'>
-                  User Preferences
-                </Header>
-                <UserPref toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
-              </Segment>
-            </Grid.Column>
-            ) : ''}
-            {(this.state.mode === 'update') ? (
-            <Grid.Column>
-              <Card>
-                <Card.Content>
-                  <UserAvatar />
-                </Card.Content>
-              </Card>
-            </Grid.Column>
-            ) : ''}
-          </Grid.Row>
-          </Grid>
-        </Segment>
+        <Tab menu={{  color: 'violet', inverted: true, borderless: true, attached: false, tabular: false , secondary: true, pointing: true }} panes={[
+            { menuItem: 'Edit User',
+              render: () => <Tab.Pane>{this.editForm()}</Tab.Pane>,
+            },
+            { menuItem: 'Password',
+              render: () => <Tab.Pane>{this.editPasswd()}</Tab.Pane>,
+            },
+            { menuItem: 'Preferences',
+              render: () => <Tab.Pane>{this.editPrefs()}</Tab.Pane>,
+            },
+            { menuItem: 'Avatar',
+              render: () => <Tab.Pane>{this.editAvatar()}</Tab.Pane>,
+            }
+          ]}
+        />
       </Container>
     );
   }
