@@ -196,6 +196,11 @@ const patchStory = async ({ id, name, email, description }) => {
     { where: {id : id}}
   );
 }
+const patchUserPrefs = async ({ uid, name, value }) => {
+  return await UserPref.update({ name, value },
+    { where: {uid : uid, name: name }}
+  );
+}
 const deleteStory = async (sid) => {
   return await Stories.destroy({
     where: {id : sid}
@@ -215,17 +220,28 @@ app.get('/users/:userId', (req, res) => {
   let uid = req.params.userId;
   getUser({id: uid}).then(user => res.json(user));
 });
-//update user exept password
+app.patch('/users/:userId/prefs', function(req, res, next) {
+  let uid = req.params.userId;
+  let name ;
+  const { value , pref  } = req.body;
+  name = (pref === 'locale') ? pref : 'theme';
+
+  patchUserPrefs({ uid, name, value }).then(user =>
+      res.json({ user, msg: 'user preference updated successfully' })
+  );
+
+});
 app.patch('/users/:userId', function(req, res, next) {
   let id = req.params.userId;
   const {uid, password } = req.body;
   if (!uid) {
+    //update user exept password
     const { name, email, active } = req.body;
-
     patchUser({ id, name, email, active }).then(user =>
         res.json({ user, msg: 'account updated successfully' })
     );
   } else {
+    //update user password
     bcrypt
     .genSalt(saltRounds)
     .then(salt => {

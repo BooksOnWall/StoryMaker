@@ -16,6 +16,7 @@
     "react-draft-wysiwyg": "^1.13.2",
     "react-dropzone": "^10.1.6",
     "react-icons": "^3.7.0",
+    "react-intl": "^2.9.0",
     "react-map-gl": "^5.0.7",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
@@ -27,7 +28,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "extract:messages": "extract-messages --locales=es,pt,en --output src/i18n/locales/ 'src/**/*.js'"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -43,5 +45,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "extract-react-intl-messages": "^1.0.2",
+    "react-intl-translations-manager": "^5.0.3"
   }
 }

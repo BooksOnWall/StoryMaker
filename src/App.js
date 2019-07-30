@@ -34,6 +34,7 @@ import ThemeContext from './context/ThemeContext';
 import LocaleContext from './context/LocaleContext';
 import initialState from './context/initialState';
 
+
 import './App.css';
 import {
   Container,
@@ -88,6 +89,7 @@ class App extends Component {
       authenticated: false,
       theme: themes.light,
       toggleTheme: this.toggleTheme,
+      locale: 'en'
     }
     this.updateState = this.updateState.bind(this);
   }

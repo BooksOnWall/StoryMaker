@@ -20,6 +20,7 @@ import { Formik } from 'formik';
 import UserPref from './userPreferences';
 import UserAvatar from './userAvatar';
 import { Link } from 'react-router-dom';
+import { injectIntl, FormattedMessage } from 'react-intl';
 
 class User extends Component {
   constructor(props) {
@@ -299,7 +300,7 @@ class User extends Component {
     return (
       <Segment>
       <Header as='h3' color='violet' textAlign='center'>
-        {(this.state.mode === 'create') ? 'Create new User' : 'Edit user'}
+        {(this.state.mode === 'create') ? <FormattedMessage id="app.user.create" defaultMessage={`Create user`}/> : <FormattedMessage id="app.user.edit" defaultMessage={`Edit user`}/> }
       </Header>
       <Formik
         enableReinitialize={true}
@@ -307,11 +308,11 @@ class User extends Component {
         validate={values => {
           let errors = {};
           if (!values.email) {
-            errors.email = 'Required';
+            errors.email =   <FormattedMessage id="app.user.required" defaultMessage={`Required`}/>;
           } else if (
             !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
           ) {
-            errors.email = 'Invalid email address';
+            errors.email = <FormattedMessage id="app.user.invalidEmail" defaultMessage={`Invalid email`}/>;
           }
           return errors;
         }}
@@ -344,7 +345,7 @@ class User extends Component {
             <input
               icon='user'
               iconposition='left'
-              placeholder='Name'
+              placeholder=<FormattedMessage id="app.user.name" defaultMessage={`Name`}/>
               autoFocus={true}
               type="text"
               name="name"
@@ -357,7 +358,7 @@ class User extends Component {
             <input
               icon='user'
               iconposition='left'
-              placeholder='E-mail address'
+              placeholder=<FormattedMessage id="app.user.email" defaultMessage={`Email`}/>
               type="email"
               name="email"
               onChange={handleChange}
@@ -371,7 +372,7 @@ class User extends Component {
                 <input
                   icon='lock'
                   iconposition='left'
-                  placeholder='Password'
+                  placeholder=<FormattedMessage id="app.user.password" defaultMessage={`Password`}/>
                   type="password"
                   name="password"
                   onChange={handleChange}
@@ -383,7 +384,7 @@ class User extends Component {
                 <input
                   icon='lock'
                   iconposition='left'
-                  placeholder='Repeat Password'
+                  placeholder=<FormattedMessage id="app.user.repeatpassword" defaultMessage={`Repeat Password`}/>
                   type="password"
                   name="password2"
                   onChange={handleChange}
@@ -399,7 +400,7 @@ class User extends Component {
               iconposition='left'
               placeholder='Active'
               ref = "active"
-              label = "Active"
+              label = <FormattedMessage id="app.user.active" defaultMessage={`Active`}/>
               name="active"
               defaultChecked= {this.state.initialValues.checked}
               onChange = {(e, { checked }) => handleChange(checked)}
@@ -410,18 +411,17 @@ class User extends Component {
             {errors.active && touched.active && errors.active}
             <Divider horizontal>...</Divider>
             <Button onClick={handleSubmit} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
-              {(this.state.mode === 'create') ? 'Create' : 'Update'}
+              {(this.state.mode === 'create') ? <FormattedMessage id="app.user.created" defaultMessage={`Create`}/> : <FormattedMessage id="app.user.update" defaultMessage={`Update`}/>}
             </Button>
             {(this.state.mode === 'update') ? (
               <div>
                 <Button onClick={this.show} color='red' fluid size='large' type="submit" disabled={isSubmitting}>
-                  Delete
+                  <FormattedMessage id="app.user.delete" defaultMessage={`Delete`}/>
                 </Button>
                 <Confirm
-
                    open={this.state.open}
-                   cancelButton='Never mind'
-                   confirmButton="Delete User"
+                   cancelButton=<FormattedMessage id="app.user.cancel" defaultMessage={`Never Mind`}/>
+                   confirmButton=<FormattedMessage id="app.user.deleteUser" defaultMessage={`Delete User`}/>
                    onCancel={this.handleCancel}
                    onConfirm={this.handleDelete}
                  />
@@ -437,18 +437,18 @@ class User extends Component {
     return(
     <Segment>
       <Header as='h3' color='violet' textAlign='center'>
-        Change password
+        <FormattedMessage id="app.user.passwdTitle" defaultMessage={`Change password`}/>
       </Header>
       <Formik
         initialValues={this.state.initialPValues}
         validate={values => {
           let errors = {};
           if (!values.password) {
-            errors.password = 'Required';
+            errors.password =  <FormattedMessage id="app.user.required" defaultMessage={`Required`}/>;
           } else if (
             values.password !== values.password2
           ) {
-            errors.password = 'Invalid repeat password';
+            errors.password =  <FormattedMessage id="app.user.wrongPasswd" defaultMessage={`Invalid repeat password`}/>;
           }
           return errors;
         }}
@@ -515,7 +515,7 @@ class User extends Component {
         <Header as='h3' color='violet' textAlign='center'>
           User Preferences
         </Header>
-        <UserPref toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
+        <UserPref props={{id: parseInt(this.props.match.params.id)}} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
       </Segment>
     );
   }
@@ -530,7 +530,9 @@ class User extends Component {
     return (
       <Container>
         <Dimmer active={this.state.loading}>
-          <Loader active={this.state.loading} >Get user info</Loader>
+          <Loader active={this.state.loading} >
+            <FormattedMessage id="app.user.loading" defaultMessage={`Get user info`}/>
+          </Loader>
         </Dimmer>
 
         <Header as='h6' icon floated='left'>
@@ -558,4 +560,4 @@ class User extends Component {
     );
   }
 }
-export default User;
+export default injectIntl(User);
