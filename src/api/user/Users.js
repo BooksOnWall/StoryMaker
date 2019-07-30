@@ -3,7 +3,7 @@ import Auth from '../../module/Auth';
 import { Dimmer, Loader, Segment, Header, Table, Icon, Menu } from 'semantic-ui-react';
 import Moment from 'moment';
 import { Link } from 'react-router-dom';
-
+import { injectIntl, FormattedMessage } from 'react-intl';
 
 import _ from 'lodash';
 
@@ -23,7 +23,6 @@ class Users extends Component {
       direction: null,
       loading: null,
       authenticated: false,
-      profile: false,
     };
     this.handleSort = this.handleSort.bind(this);
     this.listUsers = this.listUsers.bind(this);
@@ -97,12 +96,14 @@ class Users extends Component {
 
       <Segment>
         <Dimmer active={this.state.loading}>
-          <Loader active={this.state.loading} >Get users info</Loader>
+          <Loader active={this.state.loading} >
+            <FormattedMessage id="app.users.loading" defaultMessage={`Get users info`}/>
+          </Loader>
         </Dimmer>
         <Header as='h6' icon floated='right'>
           <Link to="/users/0">
             <Icon name='add user' />
-            Add user
+              <FormattedMessage id="app.users.adduser" defaultMessage={`Add user`}/>
           </Link>
         </Header>
         <Table sortable celled fixed selectable>
@@ -112,37 +113,42 @@ class Users extends Component {
                 sorted={column === 'id' ? direction : null}
                 onClick={this.handleSort('id')}
               >
-                Id
+                <FormattedMessage id="app.users.id" defaultMessage={`Id`} />
+
               </Table.HeaderCell>
               <Table.HeaderCell
                 sorted={column === 'name' ? direction : null}
                 onClick={this.handleSort('name')}
               >
-                Name
+                  <FormattedMessage id="app.users.name" defaultMessage={`Name`} />
+
               </Table.HeaderCell>
               <Table.HeaderCell
                 sorted={column === 'email' ? direction : null}
                 onClick={this.handleSort('email')}
               >
-                Email
+                  <FormattedMessage id="app.users.email" defaultMessage={`Email`} />
+
               </Table.HeaderCell>
               <Table.HeaderCell
                 sorted={column === 'createdAt' ? direction : null}
                 onClick={this.handleSort('createdAt')}
               >
-                Created
+                  <FormattedMessage id="app.users.created" defaultMessage={`Created`} />
+
               </Table.HeaderCell>
               <Table.HeaderCell
                 sorted={column === 'updatedAt' ? direction : null}
                 onClick={this.handleSort('updatedAt')}
               >
-                Updated
+                  <FormattedMessage id="app.users.updated" defaultMessage={`Updated`} />
+
               </Table.HeaderCell>
               <Table.HeaderCell
                 sorted={column === 'active' ? direction : null}
                 onClick={this.handleSort('active')}
                 >
-                Active
+                  <FormattedMessage id="app.users.active" defaultMessage={`Active`} />
               </Table.HeaderCell>
             </Table.Row>
           </Table.Header>
@@ -182,4 +188,4 @@ class Users extends Component {
 
   }
 }
-export default Users;
+export default injectIntl(Users);
