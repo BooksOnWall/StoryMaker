@@ -1,0 +1,39 @@
+{
+  "app": {
+    "users": {
+      "id": "Id",
+      "name": "Name",
+      "email": "Email",
+      "active": "Active",
+      "adduser": "Add user",
+      "created": "Created",
+      "loading": "Get users info",
+      "updated": "Updated"
+    },
+    "user": {
+      "edit": "Edit user",
+      "name": "Name",
+      "email": "Email",
+      "active": "Active",
+      "cancel": "Never Mind",
+      "create": "Create user",
+      "delete": "Delete",
+      "update": "Update",
+      "created": "Create",
+      "loading": "Get user info",
+      "password": "Password",
+      "required": "Required",
+      "deleteUser": "Delete User",
+      "passwdTitle": "Change password",
+      "wrongPasswd": "Invalid repeat password",
+      "invalidEmail": "Invalid email",
+      "repeatpassword": "Repeat Password"
+    },
+    "home": {
+      "title": "Books on Wall",
+      "logged": "You are  logged in.!",
+      "subtitle": "This is the home page.",
+      "unlogged": "You are not logged in.!"
+    }
+  }
+}

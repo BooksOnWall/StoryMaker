@@ -1,0 +1,39 @@
+{
+  "app": {
+    "users": {
+      "id": "",
+      "name": "",
+      "email": "",
+      "active": "",
+      "adduser": "",
+      "created": "",
+      "loading": "",
+      "updated": ""
+    },
+    "user": {
+      "edit": "",
+      "name": "",
+      "email": "",
+      "active": "",
+      "cancel": "",
+      "create": "",
+      "delete": "",
+      "update": "",
+      "created": "",
+      "loading": "",
+      "password": "",
+      "required": "",
+      "deleteUser": "",
+      "passwdTitle": "",
+      "wrongPasswd": "",
+      "invalidEmail": "",
+      "repeatpassword": ""
+    },
+    "home": {
+      "title": "",
+      "logged": "",
+      "subtitle": "",
+      "unlogged": ""
+    }
+  }
+}
