@@ -6,7 +6,7 @@ module.exports.userPref = {
   },
   value: {
     type: Sequelize.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   uid: {
     type: Sequelize.INTEGER,

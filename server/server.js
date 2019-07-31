@@ -196,15 +196,28 @@ const patchStory = async ({ id, name, email, description }) => {
     { where: {id : id}}
   );
 }
-const patchUserPrefs = async ({ uid, name, value }) => {
-  return await UserPref.update({ name, value },
-    { where: {uid : uid, name: name }}
-  );
-}
 const deleteStory = async (sid) => {
   return await Stories.destroy({
     where: {id : sid}
     });
+};
+const patchUserPrefs = async ({ uid, pref, value }) => {
+  console.log(value);
+  return await UserPref.findOrCreate({ where: {uid : uid, name: pref }})
+    .then(([uid, created]) => {
+      console.log(uid.get({
+        plain: true
+      }))
+      console.log(created)
+    });
+
+
+}
+const getUserPreferences = async ({id}) => {
+  console.log(id);
+  return await UserPref.findAll({
+    where: {uid : id },
+  });
 };
 // set some basic routes
 app.get('/', function(req, res) {
@@ -220,16 +233,16 @@ app.get('/users/:userId', (req, res) => {
   let uid = req.params.userId;
   getUser({id: uid}).then(user => res.json(user));
 });
+app.get('/users/:userId/prefs', (req, res) => {
+  let uid = req.params.userId;
+  getUserPreferences({id: uid}).then(user => res.json(user));
+});
 app.patch('/users/:userId/prefs', function(req, res, next) {
   let uid = req.params.userId;
-  let name ;
   const { value , pref  } = req.body;
-  name = (pref === 'locale') ? pref : 'theme';
-
-  patchUserPrefs({ uid, name, value }).then(user =>
+  patchUserPrefs({ uid, pref, value }).then(user =>
       res.json({ user, msg: 'user preference updated successfully' })
   );
-
 });
 app.patch('/users/:userId', function(req, res, next) {
   let id = req.params.userId;

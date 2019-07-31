@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import Auth from '../../module/Auth';
 import {
   Segment,
-  Form,
   Label,
   Divider,
   Dropdown,
 } from 'semantic-ui-react';
+
 import { injectIntl, FormattedMessage } from 'react-intl';
 
 const languages = [
@@ -48,21 +48,31 @@ const themes = [
 class userPreferences extends Component {
   constructor(props) {
     super(props);
+    let protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
+    let domain = protocol + '://' + process.env.REACT_APP_SERVER_HOST;
+    let server = domain + ':'+ process.env.REACT_APP_SERVER_PORT+'/';
+    let uid = this.props.id;
+    let users = server + 'users';
+    let userPreferences = users + '/' + uid + '/prefs';
     this.state = {
+      server: server,
+      uid: uid,
+      users: users,
+      userPreferences : userPreferences,
       authenticated: false,
-      uid: this.props.match.params.id,
       selected: 'en',
       selected2: 'en',
       pref: null,
       locale: 'en',
       theme: 'light',
-    }
+    };
     this.setPreference = this.setPreference.bind(this);
   };
   async componentDidMount() {
     // check if user is logged in on refresh
     await this.toggleAuthenticateStatus();
     await this.getPreferences();
+
   }
 
   toggleAuthenticateStatus() {
@@ -71,18 +81,41 @@ class userPreferences extends Component {
   }
   handleSelectChange=(e,{active,text,value})=> {
       (!active) ? this.setState({locale: value}) : this.setState({locale: 'en'});
-
   }
   async getPreferences() {
-
+      try {
+        await fetch(this.state.userPreferences , {
+          method: 'get',
+          headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json', charset:'utf-8' }
+        })
+        .then(response => {
+          if (response && !response.ok) { throw new Error(response.statusText);}
+          return response.json();
+        })
+        .then(data => {
+            if(data && data.length > 0) {
+              console.log({data});
+              // redirect to users list page
+              //this.props.history.push('/users/' + this.state.uid);
+            }
+        })
+        .catch((error) => {
+          // Your error is here!
+          console.log(error)
+        });
+      } catch(e) {
+        console.log(e.message);
+      }
 
   }
   async setPreference(e,{pref,value}) {
       this.setState({pref: pref});
       console.log(pref);
       console.log(value);
+      let uid = this.state.uid;
+      console.log(uid);
       try {
-        await fetch(this.state.user+this.state.uid+'/prefs', {
+        await fetch(this.state.userPreferences , {
           method: 'PATCH',
           headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json', charset:'utf-8' },
           body:JSON.stringify({
@@ -116,12 +149,12 @@ class userPreferences extends Component {
         <Label><FormattedMessage id="app.user.theme" defaultMessage={`Choose your theme`}/></Label>
         <Dropdown
            fluid
+           name='theme'
            pref='theme'
            selection
            simple
            item
            onChange={this.setPreference}
-           onClick={this.setPreference}
            options={themes}
            defaultValue={this.state.theme}
          />
@@ -130,12 +163,13 @@ class userPreferences extends Component {
           <Dropdown
              fluid
              pref='locale'
+             name='locale'
              selection
              simple
              item
-             defaultValue={this.state.locale}
              onChange={this.setPreferences}
              options={languages}
+             defaultValue={this.state.locale}
            />
 
     </Segment>
