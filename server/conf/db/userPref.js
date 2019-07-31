@@ -3,13 +3,16 @@ module.exports.userPref = {
   name: {
     type: Sequelize.STRING,
     allowNull: false,
+    unique: 'compositeIndex'
   },
   value: {
-    type: Sequelize.STRING,
-    allowNull: true,
+    type: Sequelize.JSON,
+    allowNull: false,
+    unique: 'compositeIndex'
   },
   uid: {
     type: Sequelize.INTEGER,
     allowNull: false,
+    unique: 'compositeIndex'
   }
 };

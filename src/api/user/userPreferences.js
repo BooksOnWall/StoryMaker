@@ -4,8 +4,12 @@ import {
   Segment,
   Label,
   Divider,
+  Dimmer,
+  Loader,
   Dropdown,
 } from 'semantic-ui-react';
+
+import _ from 'lodash';
 
 import { injectIntl, FormattedMessage } from 'react-intl';
 
@@ -60,29 +64,33 @@ class userPreferences extends Component {
       users: users,
       userPreferences : userPreferences,
       authenticated: false,
-      selected: 'en',
-      selected2: 'en',
+      loading: false,
       pref: null,
-      locale: 'en',
-      theme: 'light',
+      locale: {value: 'en'},
+      theme: {value: 'light'},
+      avatar: null,
     };
     this.setPreference = this.setPreference.bind(this);
   };
+
   async componentDidMount() {
-    // check if user is logged in on refresh
-    await this.toggleAuthenticateStatus();
-    await this.getPreferences();
-
+    try  {
+      // check if user is logged in on refresh
+      await this.toggleAuthenticateStatus();
+      //get user preferences
+      await this.getPreferences;
+      console.log(this.state);
+    } catch(e) {
+      console.log(e.message);
+    }
+    //console.log(this.state);
   }
-
   toggleAuthenticateStatus() {
     // check authenticated status and toggle state based on that
     this.setState({ authenticated: Auth.isUserAuthenticated() })
   }
-  handleSelectChange=(e,{active,text,value})=> {
-      (!active) ? this.setState({locale: value}) : this.setState({locale: 'en'});
-  }
   async getPreferences() {
+      this.setState({loading: true});
       try {
         await fetch(this.state.userPreferences , {
           method: 'get',
@@ -94,10 +102,13 @@ class userPreferences extends Component {
         })
         .then(data => {
             if(data && data.length > 0) {
-              console.log({data});
-              // redirect to users list page
-              //this.props.history.push('/users/' + this.state.uid);
+              _.map(data, ({ id, name, value }) => {
+                value= JSON.parse(value);
+                this.setState({ [name]: value});
+              });
             }
+            this.setState({loading: false});
+            return data
         })
         .catch((error) => {
           // Your error is here!
@@ -106,20 +117,17 @@ class userPreferences extends Component {
       } catch(e) {
         console.log(e.message);
       }
-
   }
   async setPreference(e,{pref,value}) {
       this.setState({pref: pref});
-      console.log(pref);
-      console.log(value);
+      this.setState({ [pref]: {value: value} });
       let uid = this.state.uid;
-      console.log(uid);
       try {
         await fetch(this.state.userPreferences , {
           method: 'PATCH',
           headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json', charset:'utf-8' },
           body:JSON.stringify({
-            uid: this.state.ui,
+            uid: uid,
             pref: pref,
             value: value,
           })
@@ -131,7 +139,9 @@ class userPreferences extends Component {
         .then(data => {
             if(data) {
               // redirect to users list page
-              this.props.history.push('/users/' + this.state.uid);
+              console.log(this.state);
+              //this.props.history.push('/users/' + this.state.uid);
+              return data
             }
         })
         .catch((error) => {
@@ -144,8 +154,15 @@ class userPreferences extends Component {
     //console.log(this.state.locale);
   }
   render() {
+    if (this.state.theme.value === null && this.state.locale.value === null) return null;
+    console.log(this.state.locale.value);
     return (
       <Segment >
+        <Dimmer active={this.state.loading}>
+          <Loader active={this.state.loading} >
+            <FormattedMessage id="app.userPrefs.loading" defaultMessage={`Get users preferences`}/>
+          </Loader>
+        </Dimmer>
         <Label><FormattedMessage id="app.user.theme" defaultMessage={`Choose your theme`}/></Label>
         <Dropdown
            fluid
@@ -156,7 +173,7 @@ class userPreferences extends Component {
            item
            onChange={this.setPreference}
            options={themes}
-           defaultValue={this.state.theme}
+           defaultValue={this.state.theme.value}
          />
           <Divider horizontal>...</Divider>
           <Label><FormattedMessage id="app.user.locale" defaultMessage={`Choose your Language`}/></Label>
@@ -167,9 +184,9 @@ class userPreferences extends Component {
              selection
              simple
              item
-             onChange={this.setPreferences}
+             onChange={this.setPreference}
              options={languages}
-             defaultValue={this.state.locale}
+             defaultValue={this.state.locale.value}
            />
 
     </Segment>
