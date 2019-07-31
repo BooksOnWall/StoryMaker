@@ -107,7 +107,10 @@ Users.sync()
  .catch(err => console.log('oooh, error creating database User , did you enter wrong database credentials?'));
 
  // create user preferences model
- const UserPref = sequelize.define('userPref', userPref.userPref, { indexes: [{unique: true, fields: ['uid', 'name']}] });
+ const UserPref = sequelize.define('userPref',
+    userPref.userPref,
+    { indexes: [{ unique: true, fields: ['uid', 'pname']}]}
+  );
  // create table with user model
  UserPref.sync()
   .then(() => console.log('User preference table created successfully'))
@@ -201,12 +204,11 @@ const deleteStory = async (sid) => {
     where: {id : sid}
     });
 };
-const patchUserPrefs = async ({ uid, pref, value }) => {
+const patchUserPrefs = async ({ uid, pref, pvalue }) => {
   return await UserPref.upsert(
-    { uid: uid, name: pref, value: {value: value}},
+    { uid: uid, pname: pref, pvalue: {value: pvalue}},
     { where: {uid : uid, name: pref }}
   );
-
 };
 
 const getUserPreferences = async ({id}) => {

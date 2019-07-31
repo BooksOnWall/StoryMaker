@@ -1,14 +1,13 @@
 const Sequelize = require('sequelize');
 module.exports.userPref = {
-  name: {
+  pname: {
     type: Sequelize.STRING,
     allowNull: false,
     unique: 'compositeIndex'
   },
-  value: {
+  pvalue: {
     type: Sequelize.JSON,
     allowNull: false,
-    unique: 'compositeIndex'
   },
   uid: {
     type: Sequelize.INTEGER,
