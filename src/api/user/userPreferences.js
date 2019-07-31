@@ -102,9 +102,9 @@ class userPreferences extends Component {
         })
         .then(data => {
             if(data && data.length > 0) {
-              _.map(data, ({ id, name, value }) => {
-                value= JSON.parse(value);
-                this.setState({ [name]: value});
+              _.map(data, ({ id, pname, pvalue }) => {
+                pvalue= JSON.parse(pvalue);
+                this.setState({ [pname]: pvalue});
               });
             }
             this.setState({loading: false});
@@ -129,7 +129,7 @@ class userPreferences extends Component {
           body:JSON.stringify({
             uid: uid,
             pref: pref,
-            value: value,
+            pvalue: value,
           })
         })
         .then(response => {

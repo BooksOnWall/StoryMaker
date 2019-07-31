@@ -114,7 +114,7 @@ Users.sync()
  // create table with user model
  UserPref.sync()
   .then(() => console.log('User preference table created successfully'))
-  .catch(err => console.log('oooh, error creating database UserPrefs ,did you enter wrong database credentials?'));
+  .catch(err => console.log('oooh, error creating database UserPrefs ,did you enter wrong database credentials?'+err));
 
 // create Artists model
 const Artists = sequelize.define('artists', artistsList.artists);
@@ -237,8 +237,8 @@ app.get('/users/:userId/prefs', (req, res) => {
 });
 app.patch('/users/:userId/prefs', function(req, res, next) {
   let uid = req.params.userId;
-  const { value , pref  } = req.body;
-  patchUserPrefs({ uid, pref, value }).then(user =>
+  const { pvalue , pref  } = req.body;
+  patchUserPrefs({ uid, pref, pvalue }).then(user =>
       res.json({ user, msg: 'user preference updated successfully' })
   );
 });
