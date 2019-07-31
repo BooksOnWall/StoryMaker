@@ -104,29 +104,27 @@ const Users = sequelize.define('users', usersList.users);
 // create table with user model
 Users.sync()
  .then(() => console.log('User table created successfully'))
- .catch(err => console.log('oooh, did you enter wrong database credentials?'));
+ .catch(err => console.log('oooh, error creating database User , did you enter wrong database credentials?'));
 
  // create user preferences model
- const UserPref = sequelize.define('userPref', userPref.userPref, {
-    indexes: [{unique: true, fields: ['uid', 'name']}]
-  });
+ const UserPref = sequelize.define('userPref', userPref.userPref, { indexes: [{unique: true, fields: ['uid', 'name']}] });
  // create table with user model
  UserPref.sync()
   .then(() => console.log('User preference table created successfully'))
-  .catch(err => console.log('oooh, did you enter wrong database credentials?'));
+  .catch(err => console.log('oooh, error creating database UserPrefs ,did you enter wrong database credentials?'));
 
 // create Artists model
 const Artists = sequelize.define('artists', artistsList.artists);
 // create table with artist model
 Artists.sync()
  .then(() => console.log('Artists table created successfully'))
- .catch(err => console.log('oooh, did you enter wrong database credentials?'));
+ .catch(err => console.log('oooh,error creating database Artists , did you enter wrong database credentials?'));
  // create Artists model
  const Stories = sequelize.define('stories', storiesList.stories);
  // create table with stories model
  Stories.sync()
   .then(() => console.log('Stories table created successfully'))
-  .catch(err => console.log('oooh, did you enter wrong database credentials?'));
+  .catch(err => console.log('oooh, error creating database Stories ,did you enter wrong database credentials?'));
 
 // create some helper functions to work on the database
 const createUser = async ({ name, email, hash, active }) => {
