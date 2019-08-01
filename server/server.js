@@ -5,6 +5,8 @@ var https = require('https');
 const bodyParser = require('body-parser');
 //CORS
 var cors = require('cors');
+//fileupload
+const fileUpload = require('express-fileupload');
 // ENV set url(localhost/other) port (1234) and protocol (http/https)
 require('dotenv').config();
 const host = process.env.SERVER_HOST;
@@ -67,6 +69,7 @@ app.use(cors({
     return callback(null, true);
   }
 }));
+app.use(fileUpload());
 // parse application/json
 app.use(bodyParser.json());
 
@@ -241,6 +244,25 @@ app.patch('/users/:userId/prefs', function(req, res, next) {
   patchUserPrefs({ uid, pref, pvalue }).then(user =>
       res.json({ user, msg: 'user preference updated successfully' })
   );
+});
+app.post('/users/:userId/avatar', function(req, res) {
+  if(!req) return res.status(500).send('no file received');
+  console.log(req);
+  if (Object.keys(req.files).length === 0) {
+    return res.status(400).send('No files were uploaded.');
+  }
+
+  // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+  let sampleFile = req.files.sampleFile;
+
+  // Use the mv() method to place the file somewhere on your server
+  sampleFile.mv('/somewhere/on/your/server/filename.jpg', function(err) {
+    if (err)
+      return res.status(500).send(err);
+
+    res.send('File uploaded!');
+  });
+  console.log(req.files.foo); // the uploaded file object
 });
 app.patch('/users/:userId', function(req, res, next) {
   let id = req.params.userId;

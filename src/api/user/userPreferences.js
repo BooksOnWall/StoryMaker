@@ -121,7 +121,7 @@ class userPreferences extends Component {
   async setPreference(e,{pref,value}) {
       this.setState({pref: pref});
       this.setState({ [pref]: {value: value} });
-      let uid = this.state.uid;
+      let uid = this.props.id;
       try {
         await fetch(this.state.userPreferences , {
           method: 'PATCH',

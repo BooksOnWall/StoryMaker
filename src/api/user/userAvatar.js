@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import Auth from '../../module/Auth';
 import AvatarEditor from 'react-avatar-editor';
+import Dropzone from 'react-dropzone';
+import Preview from './avatarPreview.js';
 import { Slider } from "react-semantic-ui-range";
-
+import { Formik } from 'formik';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import {
   Form,
   Button,
@@ -13,8 +16,10 @@ import {
 import src from '../../assets/images/patrick.png';
 
 class userAvatar extends Component {
+  editor: AvatarEditor;
   constructor(props) {
     super(props);
+    let uid = this.props.id;
     let protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
     let domain = protocol + '://' + process.env.REACT_APP_SERVER_HOST;
     let server = domain + ':'+ process.env.REACT_APP_SERVER_PORT+'/';
@@ -22,9 +27,9 @@ class userAvatar extends Component {
       server: server,
       users: server + 'users',
       user: server + 'users/',
+      uid: uid,
       data: null,
       authenticated: this.toggleAuthenticateStatus,
-      image: src,
       allowZoomOut: true,
       position: { x: 0.2, y: 0.2 },
       scale: 1,
@@ -33,192 +38,245 @@ class userAvatar extends Component {
       preview: null,
       width: 180,
       height: 180,
+      initialAValues: {},
+      image: src,
       file: null,
       fileName: '',
       isUploading: false,
       statusCode: ''
     };
-
-    this.handleScale = this.handleScale.bind(this);
-    this.handlePositionChange = this.handlePositionChange.bind(this);
+    this.handleDrop = this.handleDrop.bind(this);
     this.toggleAuthenticateStatus = this.toggleAuthenticateStatus.bind(this);
   }
   toggleAuthenticateStatus() {
     // check authenticated status and toggle state based on that
     this.setState({ authenticated: Auth.isUserAuthenticated() })
   }
-  handleScale = scale => {
-    try {
-      this.setState({ scale : parseFloat(scale) });
-    } catch(e) {
-      console.log(e.message);
-    }
+  handleNewImage = e => {
+    this.setState({ image: e.target.files[0] });
   }
-  handleBorderRadius = borderRadius => {
-    try {
-      this.setState({ borderRadius : parseFloat(borderRadius) });
-    } catch(e) {
-      console.log(e.message);
-    }
+
+  handleSave = data => {
+    const img = this.editor.getImageScaledToCanvas().toDataURL();
+    const rect = this.editor.getCroppingRect();
+
+    this.setState({
+      preview: {
+        img,
+        rect,
+        scale: this.state.scale,
+        width: this.state.width,
+        height: this.state.height,
+        borderRadius: this.state.borderRadius,
+      },
+    });
   }
-  toggleZoomOut = zoomout => {
-    this.setState({ allowZoomOut: zoomout })
+
+  handleScale = e => {
+    const scale = parseFloat(e.target.value);
+    this.setState({ scale });
   }
+
+  handleAllowZoomOut = ({ target: { checked: allowZoomOut } }) => {
+    this.setState({ allowZoomOut });
+  }
+
+  rotateLeft = e => {
+    e.preventDefault();
+
+    this.setState({
+      rotate: this.state.rotate - 90,
+    });
+  }
+
+  rotateRight = e => {
+    e.preventDefault();
+    this.setState({
+      rotate: this.state.rotate + 90,
+    });
+  }
+
+  handleBorderRadius = e => {
+    const borderRadius = parseInt(e.target.value)
+    this.setState({ borderRadius })
+  }
+
+  handleXPosition = e => {
+    const x = parseFloat(e.target.value);
+    this.setState({ position: { ...this.state.position, x } });
+  }
+
+  handleYPosition = e => {
+    const y = parseFloat(e.target.value);
+    this.setState({ position: { ...this.state.position, y } });
+  }
+
+  handleWidth = e => {
+    const width = parseInt(e.target.value);
+    this.setState({ width });
+  }
+
+  handleHeight = e => {
+    const height = parseInt(e.target.value);
+    this.setState({ height });
+  }
+
+  logCallback(e) {
+    // eslint-disable-next-line
+    console.log('callback', e);
+  }
+
+  setEditorRef = editor => {
+    if (editor) this.editor = editor;
+  }
+
   handlePositionChange = position => {
-      this.setState({position: position });
+    this.setState({ position });
   }
-  onClickSave = () => {
-    if (this.editor) {
-      // This returns a HTMLCanvasElement, it can be made into a data URL or a blob,
-      // drawn on another canvas, or added to the DOM.
-      const canvas = this.editor.getImage()
 
-      // If you want the image resized to the canvas size (also a HTMLCanvasElement)
-      const canvasScaled = this.editor.getImageScaledToCanvas()
-    }
+  handleDrop = acceptedFiles => {
+    this.setState({ image: acceptedFiles[0] });
   }
-  fileInputRef = React.createRef();
-
-  onFormSubmit = e => {
-    e.preventDefault(); // Stop form submit
-    //this.fileUpload(this.state.file).then(response => {
-      //console.log(response.data);
-    //});
-  };
-
-  fileChange = e => {
-    this.setState(
-      { image: e.target.files[0], file: e.target.files[0], fileName: e.target.files[0].name },
-      () => {
-        console.log(
-          "File chosen --->",
-          this.state.file,
-          console.log("File name  --->", this.state.fileName)
-        );
-      }
-    );
-  };
-
-  fileUpload = async file => {
-      const formData = new FormData();
-      formData.append("file", file);
-      try {
-        fetch.post("/file/upload/enpoint").then(response => {
-          console.log(response);
-          console.log(response.status);
-          this.setState({ statusCode: response.status }, () => {
-            console.log(
-              "This is the response status code --->",
-              this.state.statusCode
-            );
-          });
-        });
-      } catch (error) {
-        console.error(Error(`Error uploading file ${error.message}`));
-      }
-
-      const data = JSON.stringify({
-        uploadData: file
-      });
-      console.log(data);
-    };
-
-  // Export Schedules Tab 2
-  fileExport = file => {
-    // handle save for export button function
-  };
-  setEditorRef = (editor) => this.editor = editor;
   render() {
-    const { statusCode } = this.state;
     return (
       <div>
-        <div>
-          <AvatarEditor
-            ref={this.setEditorRef}
-            scale={parseFloat(this.state.scale)}
-            width={this.state.width}
-            height={this.state.height}
-            position={this.state.position}
-            onPositionChange={this.handlePositionChange}
-            rotate={parseFloat(this.state.rotate)}
-            borderRadius={this.state.width / (100 / this.state.borderRadius)}
-            image={this.state.image}
-            className="editor-canvas"
-            />
-        </div>
-      <br />
-        <Form onSubmit={this.onClickSave}>
-                <Form.Field>
-                  <Button
-                    content="Choose Avatar"
-                    labelPosition="left"
-                    icon="file"
-                    onClick={() => this.fileInputRef.current.click()}
-                  />
-                <input
-                    ref={this.fileInputRef}
-                    type="file"
-                    hidden
-                    onChange={this.fileChange}
-                  />
-                </Form.Field>
-                <Button  type="submit">Upload</Button>
-                  {statusCode && statusCode === "200" ? (
-                    <Progress
-                      style={{ marginTop: "20px" }}
-                      percent={100}
-                      success
-                      active
-                      progress
-                    />
-                  ) : statusCode && statusCode === "500" ? (
-                    <Progress
-                      style={{ marginTop: "20px" }}
-                      percent={100}
-                      error
-                      active
-                      progress
-                    />
-                  ) : null}
-          </Form>
-      <br />
-      Zoom:
-      <Slider color="red"
-        settings={{
-          name: 'scale',
-          type: 'range',
-          onChange: this.handleScale,
-          min: this.state.allowZoomOut ? parseFloat(1) : parseFloat(2) ,
-          max: 10,
-          step: 1,
-          defaultValue: this.state.scale,
-      }} />
-      <br />
-      <Checkbox
-        placeholder='Allow Scale < 1'
-        ref = "allowZoomOut"
-        label = "Allow Scale < 1"
-        name="allowZoomOut"
-        defaultChecked = {true}
-        onChange= {this.toggleZoomOut}
-        toggle
-      />
-      <br />
-      Corner radius:
-      <Slider color="red"
-        settings={{
-          name: 'borderRadius',
-          type: 'range',
-          onChange: this.handleBorderRadius,
-          min: 0,
-          max: 50,
-          step: parseFloat(1),
-          defaultValue: this.state.borderRadius,
-      }} />
-      <br />
+        <Dropzone
+          onDrop={this.handleDrop}
+          disableClick
+          multiple={false}
+          style={{ width: this.state.width, height: this.state.height, marginBottom:'35px' }}
+        >
+          {({getRootProps}) => <AvatarEditor {...getRootProps()}
+
+              ref={this.setEditorRef}
+              scale={parseFloat(this.state.scale)}
+              width={this.state.width}
+              height={this.state.height}
+              position={this.state.position}
+              onPositionChange={this.handlePositionChange}
+              rotate={parseFloat(this.state.rotate)}
+              borderRadius={this.state.width / (100 / this.state.borderRadius)}
+              onLoadFailure={this.logCallback.bind(this, 'onLoadFailed')}
+              onLoadSuccess={this.logCallback.bind(this, 'onLoadSuccess')}
+              onImageReady={this.logCallback.bind(this, 'onImageReady')}
+              image={this.state.image}
+              className="editor-canvas"
+            />}
+        </Dropzone>
+        <br />
+        New File:
+        <input name="newImage" type="file" onChange={this.handleNewImage} />
+        <br />
+        Zoom:
+        <input
+          name="scale"
+          type="range"
+          onChange={this.handleScale}
+          min={this.state.allowZoomOut ? '0.1' : '1'}
+          max="2"
+          step="0.01"
+          defaultValue="1"
+        />
+        <br />
+        {'Allow Scale < 1'}
+        <input
+          name="allowZoomOut"
+          type="checkbox"
+          onChange={this.handleAllowZoomOut}
+          checked={this.state.allowZoomOut}
+        />
+        <br />
+        Border radius:
+        <input
+          name="scale"
+          type="range"
+          onChange={this.handleBorderRadius}
+          min="0"
+          max="50"
+          step="1"
+          defaultValue="0"
+        />
+        <br />
+        Avatar Width:
+        <input
+          name="width"
+          type="number"
+          onChange={this.handleWidth}
+          min="50"
+          max="400"
+          step="10"
+          value={this.state.width}
+        />
+        <br />
+        Avatar Height:
+        <input
+          name="height"
+          type="number"
+          onChange={this.handleHeight}
+          min="50"
+          max="400"
+          step="10"
+          value={this.state.height}
+        />
+        <br />
+        X Position:
+        <input
+          name="scale"
+          type="range"
+          onChange={this.handleXPosition}
+          min="0"
+          max="1"
+          step="0.01"
+          value={this.state.position.x}
+        />
+        <br />
+        Y Position:
+        <input
+          name="scale"
+          type="range"
+          onChange={this.handleYPosition}
+          min="0"
+          max="1"
+          step="0.01"
+          value={this.state.position.y}
+        />
+        <br />
+        Rotate:
+        <button onClick={this.rotateLeft}>Left</button>
+        <button onClick={this.rotateRight}>Right</button>
+        <br />
+        <br />
+        <input type="button" onClick={this.handleSave} value="Preview" />
+        <br />
+        {!!this.state.preview && (
+          <img
+            alt='avatar preview'
+            src={this.state.preview.img}
+            style={{
+              borderRadius: `${(Math.min(
+                this.state.preview.height,
+                this.state.preview.width
+              ) +
+                10) *
+                (this.state.preview.borderRadius / 2 / 100)}px`,
+            }}
+          />
+        )}
+        {!!this.state.preview && (
+          <Preview
+            width={
+              this.state.preview.scale < 1
+                ? this.state.preview.width
+                : this.state.preview.height * 478 / 270
+            }
+            height={this.state.preview.height}
+            image="avatar.jpg"
+            rect={this.state.preview.rect}
+          />
+        )}
       </div>
     );
   }
 }
 
-export default userAvatar;
+export default injectIntl(userAvatar);
