@@ -97,8 +97,8 @@ class userAvatar extends Component {
   }
 
   handleBorderRadius = e => {
-    const borderRadius = parseInt(e.target.value)
-    this.setState({ borderRadius })
+    const borderRadius = parseInt(e.target.value);
+    this.setState({ borderRadius });
   }
 
   handleXPosition = e => {
