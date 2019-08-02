@@ -4,7 +4,7 @@ import { Container, Dimmer, Loader, Segment, Header, Table, Icon, Menu } from 's
 import Moment from 'moment';
 import { Link } from 'react-router-dom';
 import { injectIntl, FormattedMessage } from 'react-intl';
-import PageElm from '../../page/animPage';
+
 
 import _ from 'lodash';
 
@@ -94,8 +94,8 @@ class Users extends Component {
     Moment.locale('en');
     if(data === null) return null;
     return (
-      <PageElm>
-        <Container>
+
+        <Container  className="view">
       <Segment >
         <Dimmer active={this.state.loading}>
           <Loader active={this.state.loading} >
@@ -187,7 +187,7 @@ class Users extends Component {
         </Table>
       </Segment>
     </Container>
-    </PageElm>
+
     );
 
   }

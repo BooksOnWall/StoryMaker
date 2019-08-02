@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { Card } from 'semantic-ui-react';
+import { Container, Card } from 'semantic-ui-react';
 import Auth from '../module/Auth';
 import { injectIntl, FormattedMessage } from 'react-intl';
-import styled, { keyframes } from "styled-components";
-import { TransitionGroup, CSSTransition } from "react-transition-group";
-import PageElm from './animPage';
+
 
 class HomePage extends Component {
 
@@ -15,7 +13,7 @@ class HomePage extends Component {
 
   render() {
     return (
-      <PageElm style={{ marginTop: '46px'}}>
+      <Container className="view">
       <Card className="container">
         <Card.Content>
         <Card.Header
@@ -41,7 +39,7 @@ class HomePage extends Component {
           )}
           </Card.Content>
       </Card>
-      </PageElm>
+    </Container>
     )
   }
 };

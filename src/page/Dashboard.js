@@ -4,7 +4,7 @@ import {
   Container,
   Segment,
 } from 'semantic-ui-react';
-import PageElm from './animPage';
+
 
 class Dashboard extends Component {
   constructor(props) {
@@ -24,16 +24,14 @@ class Dashboard extends Component {
   }
   render() {
     return(
-      <PageElm>
-        <Container>
-          <Segment.Group>
-            <Segment>Content1</Segment>
-            <Segment>Content2</Segment>
-            <Segment>Content3</Segment>
-            <Segment>Content4</Segment>
-          </Segment.Group>
-        </Container>
-      </PageElm>
+      <Container className="view">
+        <Segment.Group>
+          <Segment>Content1</Segment>
+          <Segment>Content2</Segment>
+          <Segment>Content3</Segment>
+          <Segment>Content4</Segment>
+        </Segment.Group>
+      </Container>
     );
   }
 }

@@ -113,7 +113,7 @@ class Login extends Component {
       return <Redirect to={{ pathname: `/dashboard` }} />
     }
     return (
-      <Grid id="login" textAlign='center' style={{ height: '60vh' }} verticalAlign='middle'>
+      <Grid  className="view" id="login" textAlign='center' style={{ height: '60vh' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as='h2' color='orange' textAlign='center'>
             <Image className="App-logo" alt="logo" src={Logo} /> Log-in to your account

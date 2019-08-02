@@ -96,7 +96,7 @@ class SignUp extends Component {
   }
   render() {
     return (
-      <Grid id="login" textAlign='center' style={{ height: '60vh' }} verticalAlign='middle'>
+      <Grid  className="view" id="signup" textAlign='center' style={{ height: '60vh' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as='h2' color='orange' textAlign='center'>
             <Image className="App-logo" alt="logo" src={Logo} /> Sign Up to your account

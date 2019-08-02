@@ -3,7 +3,7 @@ import Auth from '../../module/Auth';
 import { Container, Dimmer, Loader, Segment, Header, Table, Icon, Menu } from 'semantic-ui-react';
 import Moment from 'moment';
 import { Link } from 'react-router-dom';
-import PageElm from '../../page/animPage';
+
 
 import _ from 'lodash';
 
@@ -92,7 +92,7 @@ class Artists extends Component {
     Moment.locale('en');
     if(data === null) return null;
     return (
-      <PageElm>
+
         <Container>
       <Segment>
         <Dimmer active={this.state.loading}>
@@ -178,7 +178,7 @@ class Artists extends Component {
         </Table>
       </Segment>
       </Container>
-      </PageElm>
+
     );
 
   }

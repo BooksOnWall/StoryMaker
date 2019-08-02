@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Auth from '../../module/Auth';
 import {
-  Segment,
+  Container,
   Label,
   Divider,
   Dimmer,
@@ -157,7 +157,7 @@ class userPreferences extends Component {
     if (this.state.theme.value === null && this.state.locale.value === null) return null;
     console.log(this.state.locale.value);
     return (
-      <Segment >
+      <Container className="view" >
         <Dimmer active={this.state.loading}>
           <Loader active={this.state.loading} >
             <FormattedMessage id="app.userPrefs.loading" defaultMessage={`Get users preferences`}/>
@@ -189,7 +189,7 @@ class userPreferences extends Component {
              defaultValue={this.state.locale.value}
            />
 
-    </Segment>
+       </Container>
     );
   }
 }

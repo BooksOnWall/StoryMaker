@@ -21,9 +21,7 @@ import UserPref from './userPreferences';
 import UserAvatar from './userAvatar';
 import { Link } from 'react-router-dom';
 import { injectIntl, FormattedMessage } from 'react-intl';
-import styled, { keyframes } from "styled-components";
-import { TransitionGroup, CSSTransition } from "react-transition-group";
-import PageElm from '../../page/animPage';
+
 
 class User extends Component {
   constructor(props) {
@@ -531,8 +529,8 @@ class User extends Component {
     // display render only afetr we get initialValues for update mode
     if (this.state.initialValues === null && this.state.mode === 'update') return null;
     return (
-      <PageElm>
-      <Container>
+
+      <Container  className="view">
         <Dimmer active={this.state.loading}>
           <Loader active={this.state.loading} >
             <FormattedMessage id="app.user.loading" defaultMessage={`Get user info`}/>
@@ -561,7 +559,7 @@ class User extends Component {
           ]}
         />
       </Container>
-      </PageElm>
+
     );
   }
 }

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import Auth from '../../../module/Auth';
 import {
+  Segment,
   Dimmer,
   Loader,
 } from 'semantic-ui-react';
-import PageElm from '../../../page/animPage';
+
 import MapGL from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import StylePanel from './stylePanel';
@@ -44,7 +45,7 @@ class storyMap extends Component {
   render() {
     const {viewport, mapStyle, loading} = this.state;
     return (
-      <PageElm>
+      <Segment inverted color="violet" className="view map">
       <Dimmer active={loading}>
         <Loader active={loading} >Get map info</Loader>
       </Dimmer>
@@ -61,7 +62,7 @@ class storyMap extends Component {
           onChange={this.onStyleChange}
         />
       </MapGL>
-      </PageElm>
+    </Segment>
     );
   }
 }
