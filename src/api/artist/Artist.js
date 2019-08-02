@@ -238,11 +238,11 @@ class Artist extends Component {
   }
   render() {
     return (
-      <Container>
+      <Container className="main">
         <Dimmer active={this.state.loading}>
           <Loader active={this.state.loading} >Get artist info</Loader>
         </Dimmer>
-        <Segment>
+        <Segment className="view">
           <Header as='h6' icon floated='left'>
             <Link to="/artists">
             <Icon name='list' />

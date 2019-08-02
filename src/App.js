@@ -9,9 +9,6 @@ import {
 } from 'react-router-dom';
 
 import Auth from './module/Auth';
-import styled, { keyframes } from "styled-components";
-import { Transition, TransitionGroup } from 'react-transition-group';
-import { play, exit } from './timelines';
 
 import AppMenu from './layout/AppMenu';
 import Login from './api/user/Login';
@@ -41,7 +38,7 @@ import initialState from './context/initialState';
 import './App.css';
 import {
   Segment,
-  Container,
+  Transition,
 } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 
@@ -133,15 +130,10 @@ class App extends Component {
                             <AppMenu childProps={childProps} user={user} locale={locale} theme={theme} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
                             <Segment className="main" inverted vertical color='violet' >
                               <Route render={({ location }) => {
-                                  const { pathname, key } = location;
                                   return (
-
                                       <Transition
-                                        key={key}
-                                        appear={true}
-                                        onEnter={(node, appears) => play(pathname, node, appears)}
-                                        onExit={(node, appears) => exit(node, appears)}
-                                        timeout={{enter: 750, exit: 150}}
+                                        animation='scale'
+                                        duration={500}
                                       >
                                       <Switch location={location}>
                                         <PropsRoute exact path="/"  component={Home} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
@@ -159,7 +151,6 @@ class App extends Component {
                                         <Route path="/logout"  component={Logout} childProps={childProps} />
                                       </Switch>
                                     </Transition>
-
                                   );
                                 }}/>
                             </Segment>

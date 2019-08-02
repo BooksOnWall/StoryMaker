@@ -92,9 +92,8 @@ class Artists extends Component {
     Moment.locale('en');
     if(data === null) return null;
     return (
-
-        <Container>
-      <Segment>
+    <Container className="main">
+      <Segment className="view">
         <Dimmer active={this.state.loading}>
           <Loader active={this.state.loading} >Get users info</Loader>
         </Dimmer>

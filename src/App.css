@@ -41,13 +41,64 @@
   opacity: 0;
 
 }
-body {
-  background-color: 'violet';
+#root {
+  background-color: '#6435c9';
 }
 .main {
   padding-top: 6vh!important;
   height: 100vh;
-  background-color: 'violet';
+}
+.view {
+  animation: slide-out 1s forwards;
+  -webkit-animation: slide-out 1s forwards;
+}
+@keyframes slide-out {
+  0% {
+      transform: translateX(100%);
+  }
+  100% {
+      transform: translateX(0);
+ }
+}
+
+@-webkit-keyframes slide-out {
+  0% {
+      -webkit-transform: translateX(100%);
+  }
+  100% {
+      -webkit-transform: translateX(0);
+ }
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes fadeInRight {
+  0% {
+    opacity: 0;
+    transform: translate3d(100%, 0, 0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: none;
+  }
 }
 .view {
   margin: 0;
