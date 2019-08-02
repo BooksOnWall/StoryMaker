@@ -48,9 +48,13 @@
   padding-top: 6vh!important;
   height: 100vh;
 }
-.view {
-  animation: slide-out 1s forwards;
-  -webkit-animation: slide-out 1s forwards;
+.view, .slide-out {
+  animation: slide-out 0.5s forwards;
+  -webkit-animation: slide-out 0.5s forwards;
+}
+.fadeInRight {
+  animation: fadeInRight 0.5s forwards;
+  -webkit-animation: fadeInRight 0.5s forwards;
 }
 @keyframes slide-out {
   0% {

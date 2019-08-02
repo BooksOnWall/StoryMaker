@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Auth from '../../../module/Auth';
 import {
+  Button,
   Segment,
   Dimmer,
   Loader,
@@ -46,6 +47,7 @@ class storyMap extends Component {
     const {viewport, mapStyle, loading} = this.state;
     return (
       <Segment inverted color="violet" className="view map">
+
       <Dimmer active={loading}>
         <Loader active={loading} >Get map info</Loader>
       </Dimmer>
@@ -57,6 +59,7 @@ class storyMap extends Component {
         onViewportChange={this.onViewportChange}
         mapboxApiAccessToken={MapboxAccessToken}
       >
+        <Button floated primary right onClick={this.props.history.goBack}>Back</Button>
         <StylePanel
           containerComponent={this.props.containerComponent}
           onChange={this.onStyleChange}

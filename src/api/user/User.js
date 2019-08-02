@@ -342,7 +342,7 @@ class User extends Component {
           isSubmitting,
           /* and other goodies */
         }) => (
-          <Form size='large' onSubmit={this.handleSubmit}>
+          <Form className='slide-out' size='large' onSubmit={this.handleSubmit}>
             <input
               icon='user'
               iconposition='left'
@@ -441,6 +441,7 @@ class User extends Component {
         <FormattedMessage id="app.user.passwdTitle" defaultMessage={`Change password`}/>
       </Header>
       <Formik
+
         initialValues={this.state.initialPValues}
         validate={values => {
           let errors = {};
@@ -475,7 +476,7 @@ class User extends Component {
           isSubmitting,
           /* and other goodies */
         }) => (
-          <Form size='large' onSubmit={this.handleSubmit}>
+          <Form className='slide-out' size='large' onSubmit={this.handleSubmit}>
             <Divider horizontal>...</Divider>
             <input
               icon='lock'

@@ -26,10 +26,10 @@ class Dashboard extends Component {
     return(
       <Container className="view">
         <Segment.Group>
-          <Segment>Content1</Segment>
-          <Segment>Content2</Segment>
-          <Segment>Content3</Segment>
-          <Segment>Content4</Segment>
+          <Segment className='slide-out'>Content1</Segment>
+          <Segment className='slide-out'>Content2</Segment>
+          <Segment className='slide-out'>Content3</Segment>
+          <Segment className='slide-out'>Content4</Segment>
         </Segment.Group>
       </Container>
     );

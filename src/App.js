@@ -38,7 +38,6 @@ import initialState from './context/initialState';
 import './App.css';
 import {
   Segment,
-  Transition,
 } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 
@@ -131,10 +130,6 @@ class App extends Component {
                             <Segment className="main" inverted vertical color='violet' >
                               <Route render={({ location }) => {
                                   return (
-                                      <Transition
-                                        animation='scale'
-                                        duration={500}
-                                      >
                                       <Switch location={location}>
                                         <PropsRoute exact path="/"  component={Home} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
                                         <PrivateRoute path="/dashboard"   component={Dashboard} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
@@ -150,7 +145,6 @@ class App extends Component {
                                         <LoggedOutRoute path="/signup"  component={SignUp} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} />
                                         <Route path="/logout"  component={Logout} childProps={childProps} />
                                       </Switch>
-                                    </Transition>
                                   );
                                 }}/>
                             </Segment>
