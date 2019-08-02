@@ -45,9 +45,13 @@ body {
   background-color: 'violet';
 }
 .main {
-  top: 5vh;
-  height: 95vh;
+  padding-top: 6vh!important;
+  height: 100vh;
   background-color: 'violet';
+}
+.view {
+  margin: 0;
+  padding: 0!important;
 }
 @media screen and (max-width: 768px) {
   .menu {
