@@ -9,7 +9,17 @@ import { injectIntl, FormattedMessage } from 'react-intl';
 import {
   Form,
   Button,
+  Input,
   Checkbox,
+  Divider,
+  Tab,
+  Icon,
+  Modal,
+  Image,
+  Header,
+  Container,
+  Placeholder,
+  Segment,
   Progress,
 } from 'semantic-ui-react';
 
@@ -43,9 +53,12 @@ class userAvatar extends Component {
       file: null,
       fileName: '',
       isUploading: false,
-      statusCode: ''
+      statusCode: '',
+      modalOpen: false
     };
     this.handleDrop = this.handleDrop.bind(this);
+    this.handleOpen = this.handleOpen.bind(this);
+    this.handleClose = this.handleClose.bind(this);
     this.toggleAuthenticateStatus = this.toggleAuthenticateStatus.bind(this);
   }
   toggleAuthenticateStatus() {
@@ -61,6 +74,7 @@ class userAvatar extends Component {
     const rect = this.editor.getCroppingRect();
 
     this.setState({
+      modalOpen: true,
       preview: {
         img,
         rect,
@@ -137,38 +151,42 @@ class userAvatar extends Component {
   handleDrop = acceptedFiles => {
     this.setState({ image: acceptedFiles[0] });
   }
+  handleOpen = () => this.setState({ modalOpen: true })
+  handleClose = () => this.setState({ modalOpen: false })
   render() {
     return (
-      <div>
-        <Dropzone
-          onDrop={this.handleDrop}
-          disableClick
-          multiple={false}
-          style={{ width: this.state.width, height: this.state.height, marginBottom:'35px' }}
-        >
-          {({getRootProps}) => <AvatarEditor {...getRootProps()}
+      <Container style={{textAlign: 'left'}}>
+        <Segment>
+          <Dropzone
+            onDrop={this.handleDrop}
+            disableClick
+            multiple={false}
+            style={{ width: this.state.width, height: this.state.height, marginBottom:'35px' }}
+          >
+            {({getRootProps}) => <AvatarEditor {...getRootProps()}
 
-              ref={this.setEditorRef}
-              scale={parseFloat(this.state.scale)}
-              width={this.state.width}
-              height={this.state.height}
-              position={this.state.position}
-              onPositionChange={this.handlePositionChange}
-              rotate={parseFloat(this.state.rotate)}
-              borderRadius={this.state.width / (100 / this.state.borderRadius)}
-              onLoadFailure={this.logCallback.bind(this, 'onLoadFailed')}
-              onLoadSuccess={this.logCallback.bind(this, 'onLoadSuccess')}
-              onImageReady={this.logCallback.bind(this, 'onImageReady')}
-              image={this.state.image}
-              className="editor-canvas"
-            />}
-        </Dropzone>
-        <br />
-        New File:
-        <input name="newImage" type="file" onChange={this.handleNewImage} />
+                ref={this.setEditorRef}
+                scale={parseFloat(this.state.scale)}
+                width={this.state.width}
+                height={this.state.height}
+                position={this.state.position}
+                onPositionChange={this.handlePositionChange}
+                rotate={parseFloat(this.state.rotate)}
+                borderRadius={this.state.width / (100 / this.state.borderRadius)}
+                onLoadFailure={this.logCallback.bind(this, 'onLoadFailed')}
+                onLoadSuccess={this.logCallback.bind(this, 'onLoadSuccess')}
+                onImageReady={this.logCallback.bind(this, 'onImageReady')}
+                image={this.state.image}
+                className="editor-canvas"
+              />}
+          </Dropzone>
+          <br />
+          New File:
+          <Input name="newImage" type="file" onChange={this.handleNewImage} />
+
         <br />
         Zoom:
-        <input
+        <Input
           name="scale"
           type="range"
           onChange={this.handleScale}
@@ -179,7 +197,7 @@ class userAvatar extends Component {
         />
         <br />
         {'Allow Scale < 1'}
-        <input
+        <Input
           name="allowZoomOut"
           type="checkbox"
           onChange={this.handleAllowZoomOut}
@@ -187,7 +205,7 @@ class userAvatar extends Component {
         />
         <br />
         Border radius:
-        <input
+        <Input
           name="scale"
           type="range"
           onChange={this.handleBorderRadius}
@@ -198,7 +216,7 @@ class userAvatar extends Component {
         />
         <br />
         Avatar Width:
-        <input
+        <Input
           name="width"
           type="number"
           onChange={this.handleWidth}
@@ -209,7 +227,7 @@ class userAvatar extends Component {
         />
         <br />
         Avatar Height:
-        <input
+        <Input
           name="height"
           type="number"
           onChange={this.handleHeight}
@@ -220,7 +238,7 @@ class userAvatar extends Component {
         />
         <br />
         X Position:
-        <input
+        <Input
           name="scale"
           type="range"
           onChange={this.handleXPosition}
@@ -231,7 +249,7 @@ class userAvatar extends Component {
         />
         <br />
         Y Position:
-        <input
+        <Input
           name="scale"
           type="range"
           onChange={this.handleYPosition}
@@ -242,39 +260,58 @@ class userAvatar extends Component {
         />
         <br />
         Rotate:
-        <button onClick={this.rotateLeft}>Left</button>
-        <button onClick={this.rotateRight}>Right</button>
+        <Button onClick={this.rotateLeft}>Left</Button>
+        <Button onClick={this.rotateRight}>Right</Button>
         <br />
-        <br />
-        <input type="button" onClick={this.handleSave} value="Preview" />
-        <br />
-        {!!this.state.preview && (
-          <img
-            alt='avatar preview'
-            src={this.state.preview.img}
-            style={{
-              borderRadius: `${(Math.min(
-                this.state.preview.height,
-                this.state.preview.width
-              ) +
-                10) *
-                (this.state.preview.borderRadius / 2 / 100)}px`,
-            }}
-          />
-        )}
-        {!!this.state.preview && (
-          <Preview
-            width={
-              this.state.preview.scale < 1
-                ? this.state.preview.width
-                : this.state.preview.height * 478 / 270
-            }
-            height={this.state.preview.height}
-            image="avatar.jpg"
-            rect={this.state.preview.rect}
-          />
-        )}
-      </div>
+          <Modal
+            trigger={<Button primary onClick={this.handleSave}
+            open={this.state.modalOpen}
+            onClose={this.handleClose}
+             >Preview</Button>}>
+              <Modal.Header>Preview Avatar</Modal.Header>
+              <Modal.Content image>
+                {!!this.state.preview && (
+                  <Image
+                    circular
+                    wrapped
+                    alt='avatar preview'
+                    size='medium'
+                    src={this.state.preview.img}
+                    style={{ borderRadius: this.state.borderRadius }}
+                  />
+                )}
+                {!!this.state.preview && (
+                  <Modal.Description>
+                      <Image
+                        avatar
+                        alt='avatar preview'
+                        src={this.state.preview.img}
+                        style={{ borderRadius: this.state.borderRadius }}
+                      />
+                    <span>User name </span>
+                      <Placeholder style={{ height: 150, width: 150 }}>
+                        <Placeholder.Image >
+                          <Image
+                            alt='avatar preview'
+                            src={this.state.preview.img}
+                            style={{ borderRadius: this.state.borderRadius }}
+                          />
+                        </Placeholder.Image>
+                      </Placeholder>
+                  </Modal.Description>
+                )}
+              </Modal.Content>
+              <Modal.Actions>
+                <Button  onClick={this.handleClose} color='red' >
+                  <Icon name='cancel' /> cancel
+                </Button>
+                <Button onClick={this.handleSave} primary inverted>
+                  <Icon name='save' /> Save
+                </Button>
+              </Modal.Actions>
+          </Modal>
+        </Segment>
+      </Container>
     );
   }
 }
