@@ -14,7 +14,7 @@ addLocaleData(ptLocaleData);
 
 ReactDOM.render(
   <IntlProvider locale='en' >
-    <BrowserRouter>
+    <BrowserRouter >
       <App />
     </BrowserRouter>
 </IntlProvider>, document.getElementById('root'));

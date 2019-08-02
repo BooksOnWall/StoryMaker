@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Auth from '../../module/Auth';
-
+import PageElm from '../../page/animPage';
 import {
   Segment,
   Header,
@@ -238,6 +238,7 @@ class Artist extends Component {
   }
   render() {
     return (
+      <PageElm>
       <Container>
         <Dimmer active={this.state.loading}>
           <Loader active={this.state.loading} >Get artist info</Loader>
@@ -356,6 +357,7 @@ class Artist extends Component {
               </Formik>
         </Segment>
       </Container>
+      </PageElm>
     );
   }
 }

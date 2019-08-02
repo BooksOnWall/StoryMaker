@@ -9,6 +9,9 @@ import {
 } from 'react-router-dom';
 
 import Auth from './module/Auth';
+import styled, { keyframes } from "styled-components";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
+
 
 import AppMenu from './layout/AppMenu';
 import Login from './api/user/Login';
@@ -37,21 +40,21 @@ import initialState from './context/initialState';
 
 import './App.css';
 import {
-  Container,
   Segment,
+  Container,
 } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 
-const PrivateRoute = ({ component: Component, props: cProps, ...rest }) => (
-  <Route {...rest} render={props => (
-    Auth.isUserAuthenticated() ? (
-      <Component {...props} {...cProps} {...rest} />
-    ) : (
-      <Redirect to={{
-        pathname: '/',
-        state: { from: props.location }
-      }}/>
-    )
+const PrivateRoute = ({component: Component, props: cProps, ...rest }) =>(
+        <Route {...rest} render={props => (
+        Auth.isUserAuthenticated() ? (
+          <Component {...props} {...cProps} {...rest} />
+        ) : (
+          <Redirect to={{
+            pathname: '/',
+            state: { from: props.location }
+          }}/>
+        )
   )}/>
 );
 const LoggedOutRoute = ({ component: Component, props: cProps, ...rest }) => (
@@ -72,6 +75,14 @@ const PropsRoute = ({ component: Component, props: cProps, ...rest }) => (
     <Component {...props} {...cProps} {...rest} />
   )}/>
 );
+
+const PageContainer = styled.div`
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-color: "transparent";
+  font-family: "Open Sans", sans-serif;
+`;
 
 class App extends Component {
   constructor(props) {
@@ -127,26 +138,37 @@ class App extends Component {
                       {theme => (
                         <div>
                           <Router childProps={childProps} >
-                              <AppMenu childProps={childProps} user={user} locale={locale} theme={theme} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
-                              <Segment inverted vertical color='violet' style={{ height: '100vh', margin: '0em 0em 0em', padding: '5em 0em' }}>
-                                <Container textAlign='center'>
-                                  <Switch>
-                                    <PropsRoute exact path="/" component={Home} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
-                                    <PrivateRoute path="/dashboard" component={Dashboard} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
-                                    <PrivateRoute exact path="/users" component={Users} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
-                                    <PrivateRoute path="/users/:id" component={User} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
-                                    <PrivateRoute exact path="/artists" component={Artists} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
-                                    <PrivateRoute path="/artists/:id" component={Artist} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
-                                    <PrivateRoute exact path="/stories" component={Stories} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
-                                    <PrivateRoute exact path="/stories/:id" component={Story} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
-                                    <PrivateRoute exact path="/stories/:id/map" component={StoryMap} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
-                                    <PrivateRoute path="/profile" component={Profile} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
-                                    <LoggedOutRoute path="/login" component={Login} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
-                                    <LoggedOutRoute path="/signup" component={SignUp} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} />
-                                    <Route path="/logout" component={Logout} childProps={childProps} />
-                                  </Switch>
-                                </Container>
-                              </Segment>
+                            <AppMenu childProps={childProps} user={user} locale={locale} theme={theme} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
+                            <Segment inverted vertical color='violet' style={{ height: '100vh', margin: '0em 0em 0em', padding: '5em 0em' }}>
+                              <Route render={({ location }) => (
+                                  <Container>
+                                    <TransitionGroup component={null}>
+                                      <CSSTransition
+                                        timeout={300}
+                                        classNames="page"
+                                        key={location.key}
+                                      >
+                                    <Switch location={location}>
+                                      <PropsRoute exact path="/"  component={Home} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
+                                      <PrivateRoute path="/dashboard"   component={Dashboard} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
+                                      <PrivateRoute exact path="/users"  component={Users} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
+                                      <PrivateRoute path="/users/:id"   component={User} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
+                                      <PrivateRoute exact path="/artists"  component={Artists} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
+                                      <PrivateRoute path="/artists/:id"   component={Artist} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
+                                      <PrivateRoute exact path="/stories"   component={Stories} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
+                                      <PrivateRoute exact path="/stories/:id"  component={Story} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
+                                      <PrivateRoute exact path="/stories/:id/map"  component={StoryMap} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
+                                      <PrivateRoute path="/profile"  component={Profile} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
+                                      <LoggedOutRoute path="/login"  component={Login} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
+                                      <LoggedOutRoute path="/signup"  component={SignUp} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} />
+                                      <Route path="/logout"  component={Logout} childProps={childProps} />
+                                    </Switch>
+                                  </CSSTransition>
+                                  </TransitionGroup>
+                                  </Container>
+                                )}
+                              />
+                            </Segment>
                           </Router>
                         </div>
                       )}

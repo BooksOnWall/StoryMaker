@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import Auth from '../../module/Auth';
-import { Dimmer, Loader, Segment, Header, Table, Icon, Menu } from 'semantic-ui-react';
+import { Container, Dimmer, Loader, Segment, Header, Table, Icon, Menu } from 'semantic-ui-react';
 import Moment from 'moment';
 import { Link } from 'react-router-dom';
-
+import PageElm from '../../page/animPage';
 
 import _ from 'lodash';
 
@@ -91,7 +91,8 @@ class Stories extends Component {
     Moment.locale('en');
     if(data === null) return null;
     return (
-
+      <PageElm>
+        <Container>
       <Segment>
         <Dimmer active={this.state.loading}>
           <Loader active={this.state.loading} >Get users info</Loader>
@@ -182,6 +183,8 @@ class Stories extends Component {
          </Table.Footer>
         </Table>
       </Segment>
+      </Container>
+      </PageElm>
     );
 
   }

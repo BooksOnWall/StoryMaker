@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import Auth from '../../module/Auth';
-import { Dimmer, Loader, Segment, Header, Table, Icon, Menu } from 'semantic-ui-react';
+import { Container, Dimmer, Loader, Segment, Header, Table, Icon, Menu } from 'semantic-ui-react';
 import Moment from 'moment';
 import { Link } from 'react-router-dom';
 import { injectIntl, FormattedMessage } from 'react-intl';
+import PageElm from '../../page/animPage';
 
 import _ from 'lodash';
 
@@ -93,8 +94,9 @@ class Users extends Component {
     Moment.locale('en');
     if(data === null) return null;
     return (
-
-      <Segment>
+      <PageElm>
+        <Container>
+      <Segment >
         <Dimmer active={this.state.loading}>
           <Loader active={this.state.loading} >
             <FormattedMessage id="app.users.loading" defaultMessage={`Get users info`}/>
@@ -184,6 +186,8 @@ class Users extends Component {
          </Table.Footer>
         </Table>
       </Segment>
+    </Container>
+    </PageElm>
     );
 
   }

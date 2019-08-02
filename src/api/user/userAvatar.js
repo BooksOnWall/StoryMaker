@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useRef } from 'react';
 import Auth from '../../module/Auth';
 import AvatarEditor from 'react-avatar-editor';
 import Dropzone from 'react-dropzone';
@@ -25,6 +25,7 @@ import {
 
 import src from '../../assets/images/patrick.png';
 
+
 class userAvatar extends Component {
   editor: AvatarEditor;
   constructor(props) {
@@ -33,6 +34,7 @@ class userAvatar extends Component {
     let protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
     let domain = protocol + '://' + process.env.REACT_APP_SERVER_HOST;
     let server = domain + ':'+ process.env.REACT_APP_SERVER_PORT+'/';
+    this.inputOpenFileRef = React.createRef();
     this.state = {
       server: server,
       users: server + 'users',
@@ -68,7 +70,9 @@ class userAvatar extends Component {
   handleNewImage = e => {
     this.setState({ image: e.target.files[0] });
   }
-
+  showOpenFileDlg = () => {
+    this.inputOpenFileRef.current.click()
+  }
   handleSave = data => {
     const img = this.editor.getImageScaledToCanvas().toDataURL();
     const rect = this.editor.getCroppingRect();
@@ -153,6 +157,9 @@ class userAvatar extends Component {
   }
   handleOpen = () => this.setState({ modalOpen: true })
   handleClose = () => this.setState({ modalOpen: false })
+  showOpenFileDlg = () => {
+    this.inputOpenFileRef.current.click()
+  }
   render() {
     return (
       <Container style={{textAlign: 'left'}}>
@@ -181,9 +188,21 @@ class userAvatar extends Component {
               />}
           </Dropzone>
           <br />
-          New File:
-          <Input name="newImage" type="file" onChange={this.handleNewImage} />
-
+          <Input
+            ref={this.inputOpenFileRef}
+            id="avatar"
+            placeholder="New File"
+            name="newImage"
+            type="file"
+            onChange={this.handleNewImage}
+          />
+          <Button
+            animated="fade"
+            content="Choose File"
+            labelPosition="left"
+            icon="file"
+            onClick={this.handleNewImage}
+          />
         <br />
         Zoom:
         <Input

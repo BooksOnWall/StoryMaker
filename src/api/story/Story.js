@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Auth from '../../module/Auth';
-
+import PageElm from '../../page/animPage';
 import {
   Segment,
   Header,
@@ -240,13 +240,14 @@ class Story extends Component {
   render() {
     const { editorState } = this.state;
     return (
+      <PageElm>
       <Container>
         <Dimmer active={this.state.loading}>
           <Loader active={this.state.loading} >Get artist info</Loader>
         </Dimmer>
         <Segment>
           <Header as='h6' icon floated='left'>
-            <Link to="/stories">
+            <Link to="/stories" >
             <Icon name='list' />
             List stories
           </Link>
@@ -411,6 +412,7 @@ class Story extends Component {
               </Formik>
         </Segment>
       </Container>
+      </PageElm>
     );
   }
 }

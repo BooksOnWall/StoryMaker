@@ -4,6 +4,7 @@ import {
   Dimmer,
   Loader,
 } from 'semantic-ui-react';
+import PageElm from '../../../page/animPage';
 import MapGL from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import StylePanel from './stylePanel';
@@ -43,14 +44,14 @@ class storyMap extends Component {
   render() {
     const {viewport, mapStyle, loading} = this.state;
     return (
-      <div>
+      <PageElm>
       <Dimmer active={loading}>
         <Loader active={loading} >Get map info</Loader>
       </Dimmer>
       <MapGL
         {...viewport}
-        width="80vw"
-        height="80vh"
+        width="100vw"
+        height="100vh"
         mapStyle={mapStyle}
         onViewportChange={this.onViewportChange}
         mapboxApiAccessToken={MapboxAccessToken}
@@ -60,7 +61,7 @@ class storyMap extends Component {
           onChange={this.onStyleChange}
         />
       </MapGL>
-      </div>
+      </PageElm>
     );
   }
 }
