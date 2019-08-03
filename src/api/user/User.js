@@ -517,7 +517,7 @@ class User extends Component {
         <Header as='h3' color='violet' textAlign='center'>
           User Preferences
         </Header>
-        <UserPref id={parseInt(this.props.match.params.id)} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
+        <UserPref state={this.props.state} id={parseInt(this.props.match.params.id)} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
       </Segment>
     );
   }

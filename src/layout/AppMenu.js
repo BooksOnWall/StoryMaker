@@ -11,14 +11,29 @@ import {
 //import image
 import Logo from '../logo.svg';
 import Avatar from '../assets/images/patrick.png';
-
+import UserContext from '../context/UserContext';
 
 class AppMenu extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
+      locales: this.props.state.locales,
+      users: this.props.state.users,
+      themes: this.props.state.themes,
+      theme: this.props.state.theme,
+      user: this.props.state.user,
+      locale: this.props.state.locale,
       authenticated: this.props.childProps.authenticated,
     }
+  }
+  setUser(e){
+     let user = e.target.value;
+      this.setState({
+         user:user
+      });
+  //    user.state.user = user;
+      console.log(user);
   }
   render() {
     return (
@@ -31,30 +46,35 @@ class AppMenu extends Component {
           {this.props.childProps.authenticated ? (
             <Menu.Menu position='right'>
             <Menu.Item to='/dashboard' href='/dashboard' as='a'>Dasboard</Menu.Item>
-            <Dropdown  icon='user' color='orange' className='icon'
-              image = {{ avatar: true, src: Avatar }}
-              text='Tom'
-              style={{verticalAlign: 'center', paddingTop: '1.2em' }}
-            >
-                <Dropdown.Menu className='left'>
-                  <Dropdown.Item  to='/users' href='/users' as='a'>
-                    <Icon name='address card' />
-                    <span className='text'>Users</span>
-                  </Dropdown.Item>
-                  <Dropdown.Divider />
-                    <Dropdown.Item to='/artists' href='/artists' as='a'>
-                      <Icon name='list' />
-                      <span className='text'>Artists</span>
-                    </Dropdown.Item>
-                  <Dropdown.Item to='/stories' href='/stories' as='a'>
-                    <Icon name='list' />
-                    <span className='text'>Stories</span>
-                  </Dropdown.Item>
-                  <Dropdown.Divider />
-                    <Dropdown.Item  to='/profile' href='/profile' as='a'>Profile</Dropdown.Item>
-                  <Dropdown.Item  to='/logout' href='/logout' as='a'>Logout</Dropdown.Item>
-                </Dropdown.Menu>
-            </Dropdown>
+            <UserContext.Consumer>{(user) => {
+              return(
+                <Dropdown
+                  image = {{ avatar: true, src: this.props.state.user.avatar }}
+                  text= {this.props.state.user.name}
+                  style={{verticalAlign: 'center', paddingTop: '1.1em' }}
+                >
+                    <Dropdown.Menu className='left'>
+                      <Dropdown.Item  to='/users' href='/users' as='a'>
+                        <Icon name='address card' />
+                        <span className='text'>Users</span>
+                      </Dropdown.Item>
+                      <Dropdown.Divider />
+                        <Dropdown.Item to='/artists' href='/artists' as='a'>
+                          <Icon name='list' />
+                          <span className='text'>Artists</span>
+                        </Dropdown.Item>
+                      <Dropdown.Item to='/stories' href='/stories' as='a'>
+                        <Icon name='list' />
+                        <span className='text'>Stories</span>
+                      </Dropdown.Item>
+                      <Dropdown.Divider />
+                        <Dropdown.Item  to='/profile' href='/profile' as='a'>Profile</Dropdown.Item>
+                      <Dropdown.Item  to='/logout' href='/logout' as='a'>Logout</Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
+            )}}
+          </UserContext.Consumer>
+
             </Menu.Menu>
           ) : (
             <Menu.Menu position='right'>
@@ -62,6 +82,7 @@ class AppMenu extends Component {
             <Menu.Item to='/signup' href='/signup' as='a'>SignUp</Menu.Item>
             </Menu.Menu>
           )}
+
         </Container>
       </Menu>
     );

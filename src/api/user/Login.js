@@ -11,6 +11,7 @@ import {
 import Logo from '../../logo.svg';
 import Auth from '../../module/Auth';
 import { Redirect } from 'react-router-dom';
+import UserContext from '../../context/UserContext';
 
 class Login extends Component {
   constructor(props) {
@@ -35,6 +36,13 @@ class Login extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleData = this.handleData.bind(this);
   }
+  async setContext() {
+    try {
+      //context.state.user.name = this.state.name;
+    } catch(e) {
+      console.lo(e.message);
+    }
+  }
   async storeUserSession() {
     try {
       await localForage.config({
@@ -47,6 +55,7 @@ class Login extends Component {
       await localForage.setItem('password', this.state.password);
       await localForage.setItem('userIsLoggedIn', this.state.userIsLoggedIn);
       await localForage.setItem('accessToken', this.state.accessToken);
+      await this.setContext();
     } catch(e) {
       console.log(e.message);
     }

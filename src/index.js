@@ -7,6 +7,9 @@ import esLocaleData from 'react-intl/locale-data/es';
 import ptLocaleData from 'react-intl/locale-data/pt';
 import './index.css';
 import App from './App';
+import { ThemeProvider } from './context/ThemeContext';
+import { UserProvider } from './context/UserContext';
+import { LocaleProvider } from './context/LocaleContext';
 import * as serviceWorker from './serviceWorker';
 addLocaleData(enLocaleData);
 addLocaleData(esLocaleData);
@@ -14,8 +17,16 @@ addLocaleData(ptLocaleData);
 
 ReactDOM.render(
   <IntlProvider locale='en' >
+
     <BrowserRouter >
-      <App />
+
+      <UserProvider>
+        <LocaleProvider>
+          <ThemeProvider>
+            <App />
+          </ThemeProvider>
+        </LocaleProvider>
+      </UserProvider>
     </BrowserRouter>
 </IntlProvider>, document.getElementById('root'));
 

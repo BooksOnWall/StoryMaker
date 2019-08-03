@@ -8,46 +8,19 @@ import {
   Loader,
   Dropdown,
 } from 'semantic-ui-react';
+import { themes } from '../../theme/globalStyle';
+import { users } from '../../api/user/globalUser';
+import { locales } from '../../i18n/locales/globalLocales';
+import UserContext from '../../context/UserContext';
+import ThemeContext from '../../context/ThemeContext';
+import LocaleContext from '../../context/LocaleContext';
 
 import _ from 'lodash';
 
 import { injectIntl, FormattedMessage } from 'react-intl';
 
-const languages = [
-  {
-    key: 'En',
-    text: 'English',
-    value: 'en',
-    flag: 'us',
-  },
-  {
-    key: 'Es',
-    text: 'Espagnol',
-    value: 'es',
-    flag: 'es',
-  },
-  {
-    key: 'Pt',
-    text: 'Portuguese',
-    value: 'pt',
-    flag: 'br',
-  },
-];
-
-const themes = [
-  {
-    key: 'Dark',
-    text: 'Dark Theme',
-    value: 'dark',
-    image: { avatar: true, src: '/images/avatar/small/jenny.jpg' },
-  },
-  {
-    key: 'Light',
-    text: 'Light theme',
-    value: 'light',
-    image: { avatar: true, src: '/images/avatar/small/elliot.jpg' },
-  }
-]
+const ThemeOptions = Object.values(themes);
+const LocaleOptions = Object.values(locales.locale.languages);
 
 class userPreferences extends Component {
   constructor(props) {
@@ -68,8 +41,11 @@ class userPreferences extends Component {
       pref: null,
       locale: {value: 'en'},
       theme: {value: 'light'},
+      setTheme: this.props.state.setTheme,
+      setLocale: this.props.state.setLocale,
       avatar: null,
     };
+
     this.setPreference = this.setPreference.bind(this);
   };
 
@@ -79,7 +55,6 @@ class userPreferences extends Component {
       await this.toggleAuthenticateStatus();
       //get user preferences
       await this.getPreferences;
-      console.log(this.state);
     } catch(e) {
       console.log(e.message);
     }
@@ -121,6 +96,9 @@ class userPreferences extends Component {
   async setPreference(e,{pref,value}) {
       this.setState({pref: pref});
       this.setState({ [pref]: {value: value} });
+      if(pref === 'locale') this.state.setLocale(value);
+      if(pref === 'theme') this.state.setTheme(value);
+
       let uid = this.props.id;
       try {
         await fetch(this.state.userPreferences , {
@@ -155,7 +133,6 @@ class userPreferences extends Component {
   }
   render() {
     if (this.state.theme.value === null && this.state.locale.value === null) return null;
-    console.log(this.state.locale.value);
     return (
       <Container className="view" >
         <Dimmer active={this.state.loading}>
@@ -163,31 +140,45 @@ class userPreferences extends Component {
             <FormattedMessage id="app.userPrefs.loading" defaultMessage={`Get users preferences`}/>
           </Loader>
         </Dimmer>
-        <Label><FormattedMessage id="app.user.theme" defaultMessage={`Choose your theme`}/></Label>
-        <Dropdown
-           fluid
-           name='theme'
-           pref='theme'
-           selection
-           simple
-           item
-           onChange={this.setPreference}
-           options={themes}
-           defaultValue={this.state.theme.value}
-         />
+        <ThemeContext.Consumer>
+          {({theme, setTheme}) => (
+            <div>
+            <Label><FormattedMessage id="app.user.theme" defaultMessage={`Choose your theme`}/></Label>
+            <Dropdown
+               fluid
+               name='theme'
+               pref='theme'
+               selection
+               simple
+               item
+               onChange={this.setPreference}
+               options={ThemeOptions}
+               defaultValue={this.state.theme.value}
+             />
+           </div>
+          )}
+        </ThemeContext.Consumer>
+
           <Divider horizontal>...</Divider>
-          <Label><FormattedMessage id="app.user.locale" defaultMessage={`Choose your Language`}/></Label>
-          <Dropdown
-             fluid
-             pref='locale'
-             name='locale'
-             selection
-             simple
-             item
-             onChange={this.setPreference}
-             options={languages}
-             defaultValue={this.state.locale.value}
-           />
+            <LocaleContext.Consumer>
+              {({locale, setLocale}) => (
+                <div>
+                <Label><FormattedMessage id="app.user.locale" defaultMessage={`Choose your Language`}/></Label>
+                <Dropdown
+                   fluid
+                   pref='locale'
+                   name='locale'
+                   selection
+                   simple
+                   item
+                   onChange={this.setPreference}
+                   options={LocaleOptions}
+                   defaultValue={this.state.locale.value}
+                 />
+               </div>
+              )}
+            </LocaleContext.Consumer>
+
 
        </Container>
     );
