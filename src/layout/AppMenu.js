@@ -45,12 +45,14 @@ class AppMenu extends Component {
           </Menu.Item>
           {this.props.childProps.authenticated ? (
             <Menu.Menu position='right'>
+              <Image avatar src={this.props.state.user.avatar}
+                style={{verticalAlign: 'center', marginTop: '0.2em' }}
+                />
             <UserContext.Consumer>{(user) => {
               return(
                 <Dropdown
-                  image = {{ avatar: true, src: this.props.state.user.avatar }}
                   text= {this.props.state.user.name}
-                  style={{color: '#ffffff', verticalAlign: 'center', paddingTop: '1.1em' }}
+                  style={{color: '#ffffff', verticalAlign: 'center', paddingTop: '0.2em' }}
                 >
                     <Dropdown.Menu className='left'>
                       <Dropdown.Item  to='/users' href='/users' as='a'>

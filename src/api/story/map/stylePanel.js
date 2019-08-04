@@ -119,10 +119,16 @@ export default class StyleControls extends PureComponent {
     //const Container = this.props.containerComponent || defaultContainer;
 
     return (
-      <Segment style={{ width: '25vw', height: '25vh', float: 'right'}} inverted color="violet">
+      <Segment style={{ width: '25vw', height: '32vh', float: 'right'}} inverted color="violet">
         <h3>Map Styling</h3>
         <hr />
         {categories.map(name => this._renderLayerControl(name))}
+        <hr />
+        zoom:
+        <br/>
+        pitch:
+        <br/>
+        bear:
       </Segment>
     );
   }

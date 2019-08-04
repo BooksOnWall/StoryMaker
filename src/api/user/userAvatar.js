@@ -76,7 +76,7 @@ class userAvatar extends Component {
   handleSave = data => {
     const img = this.editor.getImageScaledToCanvas().toDataURL();
     const rect = this.editor.getCroppingRect();
-
+    this.props.state.avatar = img;
     this.setState({
       modalOpen: true,
       preview: {

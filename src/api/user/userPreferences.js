@@ -151,6 +151,7 @@ class userPreferences extends Component {
                selection
                simple
                item
+
                onChange={this.setPreference}
                options={ThemeOptions}
                defaultValue={this.state.theme.value}

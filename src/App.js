@@ -93,12 +93,29 @@ class App extends Component {
         locale: locales.$key,
       }));
     };
+    this.setAvatar = (avatar) => {
+      console.log(avatar);
+      this.setState(state => ({
+        avatar: avatar,
+      }));
+    };
+    this.setUser = (user) => {
+      console.log(user);
+      this.setState(state => ({
+        user: {
+          name: user.name,
+          uid: user.id,
+          avatar: this.state.avatar,
+        }
+      }));
+    };
     this.state = {
       authenticated: false,
       theme: 'light',
       themes: themes,
       users: users,
       locales: locales,
+      setUser: this.setUser,
       setTheme: this.setTheme,
       locale: locales.locale.language,
       setLocale: this.setLocale,
@@ -109,15 +126,7 @@ class App extends Component {
     this.setLocale = this.setLocale.bind(this);
     this.updateState = this.updateState.bind(this);
   }
-  setLocale = locale => {
-    this.setState({ locale });
-    console.log(locale);
-  }
-  setTheme = () => {
-    this.setState(state => ({
-      theme: state.theme,
-    }));
-  }
+
   async componentDidMount() {
     try {
       await Auth.isUserAuthenticated();

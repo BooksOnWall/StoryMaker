@@ -523,7 +523,7 @@ class User extends Component {
   }
   editAvatar() {
     return (
-      <UserAvatar id={parseInt(this.props.match.params.id)} />
+      <UserAvatar state={this.props.state} id={parseInt(this.props.match.params.id)} />
     );
   }
   render() {

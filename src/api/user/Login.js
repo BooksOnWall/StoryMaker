@@ -11,7 +11,6 @@ import {
 import Logo from '../../logo.svg';
 import Auth from '../../module/Auth';
 import { Redirect } from 'react-router-dom';
-import UserContext from '../../context/UserContext';
 
 class Login extends Component {
   constructor(props) {
@@ -20,7 +19,7 @@ class Login extends Component {
     let protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
     let domain = protocol + '://' + process.env.REACT_APP_SERVER_HOST;
     let server = domain + ':'+ process.env.REACT_APP_SERVER_PORT+'/';
-
+    console.log(this.props.state.user);
     this.state = {
         server : server,
         login: server + 'login',
@@ -36,14 +35,7 @@ class Login extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleData = this.handleData.bind(this);
   }
-  async setContext() {
-    try {
-      //context.state.user.name = this.state.name;
-    } catch(e) {
-      console.lo(e.message);
-    }
-  }
-  async storeUserSession() {
+  async storeUserSession(data) {
     try {
       await localForage.config({
         driver: [localForage.INDEXEDDB, localForage.LOCALSTORAGE],
@@ -52,10 +44,10 @@ class Login extends Component {
         version: 1.0
       });
       await localForage.setItem('email', this.state.email);
-      await localForage.setItem('password', this.state.password);
-      await localForage.setItem('userIsLoggedIn', this.state.userIsLoggedIn);
+      await localForage.setItem('userIsLoggedIn', true);
       await localForage.setItem('accessToken', this.state.accessToken);
-      await this.setContext();
+      await localForage.setItem('name', data.name);
+      await localForage.setItem('uid', data.id);
     } catch(e) {
       console.log(e.message);
     }
@@ -65,11 +57,16 @@ class Login extends Component {
       this.setState({accessToken : data.token});
 
        await Auth.authenticateUser(data.token);
+       await this.props.state.setUser({
+         name:(data.name) ? data.name : '',
+         uid: data.id,
+       });
+       console.log(this.props.state.user)
        this.setState({userIsLoggedIn: true});
-       this.storeUserSession();
+       await this.storeUserSession(data);
 
     } catch(e) {
-      alert(e.message);
+      console.log(e.message);
     }
     this.props.history.push('/');
   }
@@ -105,17 +102,6 @@ class Login extends Component {
   handleSubmit(e) {
     this.handleData();
 
-  }
-  componentDidMount() {
-    this.timeout = setTimeout(() => this.setState({ visible: false }), 3000);
-  }
-  clearTimeouts() {
-    this.timeouts.forEach(clearTimeout);
-   }
-  componentWillUnmount() {
-    if (this.timeout) {
-      clearTimeout(this.timeout)
-    }
   }
   render() {
     if (this.state.isLoggedIn) {

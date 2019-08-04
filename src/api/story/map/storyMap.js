@@ -14,8 +14,8 @@ import StylePanel from './stylePanel';
 let MapboxAccessToken = process.env.REACT_APP_MAT;
 // Set bounds toMontevideo
 var bounds = [
-[-74.04728500751165, 40.68392799015035], // Southwest coordinates
-[-73.91058699000139, 40.87764500765852]  // Northeast coordinates
+  [-34.9036749, -56.2189153], // Southwest coordinates
+  [-34.9068829, -56.211639]  // Northeast coordinates
 ];
 class storyMap extends Component {
   constructor(props) {
@@ -24,15 +24,18 @@ class storyMap extends Component {
       authenticated: false,
       loading: null,
       mapStyle: '',
+      bounds: bounds,
       viewport: {
         latitude: -34.9022229,
         longitude: -56.1670182,
+
         zoom: 13,
         bearing: -60, // bearing in degrees
         pitch: 60  // pitch in degrees
       }
     }
   };
+
   async componentDidMount() {
     // check if user is logged in on refresh
     await this.toggleAuthenticateStatus();
