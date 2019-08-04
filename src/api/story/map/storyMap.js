@@ -12,7 +12,11 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import StylePanel from './stylePanel';
 
 let MapboxAccessToken = process.env.REACT_APP_MAT;
-
+// Set bounds toMontevideo
+var bounds = [
+[-74.04728500751165, 40.68392799015035], // Southwest coordinates
+[-73.91058699000139, 40.87764500765852]  // Northeast coordinates
+];
 class storyMap extends Component {
   constructor(props) {
     super(props);
