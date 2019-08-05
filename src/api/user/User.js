@@ -47,8 +47,8 @@ class User extends Component {
       initialValues: { name: '', email: '', password: '', password2: '', active: 0, checked: false },
       initialPValues: { password: '', password2: '' },
       open: false,
-      toggleAuthenticateStatus: this.props.childProps.toggleAuthenticateStatus,
-      authenticated: this.props.childProps.authenticated,
+      toggleAuthenticateStatus: this.props.toggleAuthenticateStatus,
+      authenticated: this.props.authenticated,
       setUserPreferences: this.props.state.setUserPreferences,
     };
     this.handleChange = this.handleChange.bind(this);
@@ -547,7 +547,7 @@ class User extends Component {
         <Header as='h3' color='violet' textAlign='center'>
           User Preferences
         </Header>
-        <UserPref state={this.props.state} id={parseInt(this.props.match.params.id)} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
+        <UserPref state={this.props.state} id={parseInt(this.props.match.params.id)} toggleAuthenticateStatus={() => this.state.toggleAuthenticateStatus} />
       </Segment>
     );
   }
