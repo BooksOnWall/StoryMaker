@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Auth from '../../module/Auth';
 import { Container, Dimmer, Loader, Segment, Header, Table, Icon, Menu } from 'semantic-ui-react';
 import Moment from 'moment';
 import { Link } from 'react-router-dom';
@@ -62,10 +61,6 @@ class Artists extends Component {
     } catch(e) {
         console.log(e.message);
     }
-  }
-  toggleAuthenticateStatus() {
-    // check authenticated status and toggle state based on that
-    this.setState({ authenticated: Auth.isUserAuthenticated() })
   }
   handleSort = clickedColumn => () => {
     const { column, data, direction } = this.state;

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Auth from '../../module/Auth';
 import { Container, Dimmer, Loader, Segment, Header, Table, Icon, Menu } from 'semantic-ui-react';
 import Moment from 'moment';
 import { Link } from 'react-router-dom';

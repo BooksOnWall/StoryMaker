@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Auth from '../../module/Auth';
 import AvatarEditor from 'react-avatar-editor';
 import Dropzone from 'react-dropzone';
 import { injectIntl, FormattedMessage } from 'react-intl';
@@ -25,15 +24,18 @@ class userAvatar extends Component {
     let protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
     let domain = protocol + '://' + process.env.REACT_APP_SERVER_HOST;
     let server = domain + ':'+ process.env.REACT_APP_SERVER_PORT+'/';
+    let users = server + 'users';
+    let userPreferences = users + '/' + uid + '/prefs';
     this.inputOpenFileRef = React.createRef();
     this.state = {
       server: server,
-      users: server + 'users',
+      users: users,
       user: server + 'users/',
       uid: uid,
       data: null,
       toggleAuthenticateStatus: this.props.toggleAuthenticateStatus,
       authenticated: this.props.authenticated,
+      userPreferences: userPreferences,
       allowZoomOut: true,
       position: { x: 0.2, y: 0.2 },
       scale: 1,
@@ -61,6 +63,55 @@ class userAvatar extends Component {
     this.inputOpenFileRef.current.click()
   }
   handleSave = data => {
+    const img = this.editor.getImageScaledToCanvas().toDataURL();
+    const rect = this.editor.getCroppingRect();
+    this.props.state.avatar = img;
+    this.setState({
+      modalOpen: false,
+      preview: {
+        img,
+        rect,
+        scale: this.state.scale,
+        width: this.state.width,
+        height: this.state.height,
+        borderRadius: this.state.borderRadius,
+      },
+    });
+    this.saveAvatarPreference(img);
+  }
+  async saveAvatarPreference(img) {
+      this.setState({'avatar': img});
+      let uid = this.props.id;
+      try {
+        await fetch(this.state.userPreferences , {
+          method: 'PATCH',
+          headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json', charset:'utf-8' },
+          body:JSON.stringify({
+            uid: uid,
+            pref: 'avatar',
+            pvalue: img,
+          })
+        })
+        .then(response => {
+          if (response && !response.ok) { throw new Error(response.statusText);}
+          return response.json();
+        })
+        .then(data => {
+            if(data) {
+              // redirect to users list page
+              console.log(this.state);
+            }
+        })
+        .catch((error) => {
+          // Your error is here!
+          console.log(error)
+        });
+      } catch(e) {
+        console.log(e.message);
+    }
+    this.props.state.setAvatar(img);
+  }
+  handlePreview = data => {
     const img = this.editor.getImageScaledToCanvas().toDataURL();
     const rect = this.editor.getCroppingRect();
     this.props.state.avatar = img;
@@ -277,10 +328,12 @@ class userAvatar extends Component {
         <Button onClick={this.rotateRight}>Right</Button>
         <br />
           <Modal
-            trigger={<Button primary onClick={this.handleSave}
+            trigger={<Button primary onClick={this.handlePreview}>Preview</Button>}
             open={this.state.modalOpen}
             onClose={this.handleClose}
-             >Preview</Button>}>
+            basic
+            size='small'
+          >
               <Modal.Header>Preview Avatar</Modal.Header>
               <Modal.Content image>
                 {!!this.state.preview && (

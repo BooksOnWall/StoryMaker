@@ -6,10 +6,19 @@ class Auth {
    * @param {obj} data
    */
   static authenticateUser(data) {
+    console.log(data);
+    let prefs = data.prefs;
+    console.log(data.name);
+    console.log(data.id);
     localStorage.setItem('token', data.token);
     localStorage.setItem('name', data.name);
     localStorage.setItem('uid', data.id);
     localStorage.setItem('userIsLoggedIn', true);
+    let p = prefs.map( pref => ({ name: pref.pname, nvalue: pref.pvalue}));
+    for (var i = 0; i < p.length; i++) {
+      p[i].nvalue = JSON.parse(p[i].nvalue);
+      localStorage.setItem(p[i].name, p[i].nvalue.value);
+    }
   }
 
   /**
@@ -30,7 +39,10 @@ class Auth {
     let user = {
       name:  localStorage.getItem('name'),
       uid: localStorage.getItem('uid'),
-      userIsLoggedIn: localStorage.getItem('userIsLoggedIn')
+      userIsLoggedIn: localStorage.getItem('userIsLoggedIn'),
+      avatar: localStorage.getItem('avatar'),
+      theme: localStorage.getItem('theme'),
+      locale: localStorage.getItem('locale')
     };
     return user;
   }
@@ -44,6 +56,9 @@ class Auth {
     localStorage.removeItem('name');
     localStorage.removeItem('uid');
     localStorage.removeItem('userIsLoggedIn');
+    localStorage.removeItem('theme');
+    localStorage.removeItem('locale');
+    localStorage.removeItem('avatar');
   }
 
   /**

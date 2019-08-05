@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Auth from '../../module/Auth';
 
 import {
   Segment,

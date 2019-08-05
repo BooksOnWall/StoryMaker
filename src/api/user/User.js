@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Auth from '../../module/Auth';
 
 import {
   Segment,
@@ -40,10 +39,11 @@ class User extends Component {
       loading: null,
       checked: false,
       active: false,
-      user: server + 'users/',
+      userp: server + 'users/',
       userPref: server + 'userPref/',
       data: null,
       userPrefs: {},
+      user: this.props.state.user,
       initialValues: { name: '', email: '', password: '', password2: '', active: 0, checked: false },
       initialPValues: { password: '', password2: '' },
       open: false,
@@ -91,7 +91,7 @@ class User extends Component {
   }
   async getUserPreferences() {
     try {
-      await fetch(this.state.user + this.state.uid + '/prefs', {
+      await fetch(this.state.userp + this.state.uid + '/prefs', {
         method: 'get',
         headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'}
       })
@@ -108,8 +108,11 @@ class User extends Component {
                 pvalue = JSON.parse(pvalue);
                 userPrefs.push({[pname]: pvalue});
               });
-              this.state.setUserPreferences(userPrefs);
             }
+            // if edited user is the one that is connected
+            // then update it's preferences ,
+            // otherwise preferences will be updated at next session
+            if (this.props.state.user.uid === this.state.uid) this.data.setUserPreferences(userPrefs);
             //this.data.setUserPreferences({locale: data.locale, theme: data.theme, avatar: data.avatar});
           } else {
             console.log('No Data received from the server');
@@ -127,7 +130,7 @@ class User extends Component {
     // set loading
     this.setState({loading: true});
     try {
-      await fetch(this.state.user+this.state.uid, {
+      await fetch(this.state.userp+this.state.uid, {
         method: 'get',
         headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'}
       })
@@ -162,7 +165,7 @@ class User extends Component {
   async updateUser(values) {
     console.log(values.name)
     try {
-      await fetch(this.state.user+this.state.uid, {
+      await fetch(this.state.userp+this.state.uid, {
         method: 'PATCH',
         headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json', charset:'utf-8' },
         body:JSON.stringify({
@@ -194,7 +197,7 @@ class User extends Component {
   async createUser(values) {
     this.setState(values);
     try {
-      await fetch(this.state.user+0, {
+      await fetch(this.state.userp+0, {
         method: 'post',
         headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'},
         body:JSON.stringify({
@@ -225,7 +228,7 @@ class User extends Component {
   }
   async deleteUser() {
     try {
-        await fetch(this.state.user + this.state.uid, {
+        await fetch(this.state.userp + this.state.uid, {
         method: 'delete',
         headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'},
         body:JSON.stringify({ id: this.state.uid })
@@ -250,7 +253,7 @@ class User extends Component {
   }
   async setPassword(values) {
     try {
-      await fetch(this.state.user+this.state.uid, {
+      await fetch(this.state.userp+this.state.uid, {
         method: 'PATCH',
         headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json', charset:'utf-8' },
         body:JSON.stringify({
@@ -553,7 +556,7 @@ class User extends Component {
   }
   editAvatar() {
     return (
-      <UserAvatar state={this.props.state} id={parseInt(this.props.match.params.id)} />
+      <UserAvatar state={this.props.state} id={parseInt(this.props.match.params.id)} toggleAuthenticateStatus={() => this.state.toggleAuthenticateStatus}/>
     );
   }
   render() {

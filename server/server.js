@@ -353,7 +353,15 @@ app.post('/login', async function(req, res, next) {
              // only personalized value that goes into our token
              let payload = { id: user.id };
              let token = jwt.sign(payload, jwtOptions.secretOrKey);
-             res.json({ msg: 'ok', token: token, id: user.id, name: user.name });
+             let name = user.name;
+             let uid = user.id;
+             getUserPreferences({id: user.id}).then(users => res.json({
+               msg: 'ok',
+               token: token,
+               id: uid,
+               name: name,
+               prefs: users
+             }));
             } else {
              // Passwords don't match
                res.status(401).json({ msg: 'Password is incorrect' });

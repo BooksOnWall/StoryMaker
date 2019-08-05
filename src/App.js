@@ -93,16 +93,21 @@ class App extends Component {
     this.setAvatar = (avatar) => {
       console.log(avatar);
       this.setState(state => ({
-        avatar: avatar,
+        user: {user: Auth.getDatas()}
       }));
     };
     this.setUser = (user) => {
       console.log(user);
       this.setState(state => ({
+        user: {user: Auth.getDatas()}
+      }));
+    };
+    this.updateUserPreferences = (user) => {
+      this.setState(state => ({
         user: {
-          name: user.name,
-          uid: user.id,
-          avatar: this.state.avatar,
+          theme: user.theme,
+          locale: user.locale,
+          avatar: user.avatar,
         }
       }));
     };
@@ -129,6 +134,7 @@ class App extends Component {
       setUserPreferences: this.setUserPreferences,
       toggleAuthenticateStatus: this.toggleAuthenticateStatus,
       setUser: this.setUser,
+      setAvatar: this.setAvatar,
       setTheme: this.setTheme,
       locale: locales.locale.language,
       setLocale: this.setLocale,
