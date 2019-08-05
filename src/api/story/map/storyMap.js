@@ -21,14 +21,14 @@ class storyMap extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      authenticated: false,
+      toggleAuthenticateStatus: this.props.childProps.toggleAuthenticateStatus,
+      authenticated: this.props.childProps.authenticated,
       loading: null,
       mapStyle: '',
       bounds: bounds,
       viewport: {
         latitude: -34.9022229,
         longitude: -56.1670182,
-
         zoom: 13,
         bearing: -60, // bearing in degrees
         pitch: 60  // pitch in degrees
@@ -38,15 +38,16 @@ class storyMap extends Component {
 
   async componentDidMount() {
     // check if user is logged in on refresh
-    await this.toggleAuthenticateStatus();
-    //await this.setState({loading: true});
+    try {
+      await this.state.toggleAuthenticateStatus;
+      //await this.setState({loading: true});
+    } catch(e) {
+      console.log(e.message);
+    }
+
   }
   toggleLoading(val) {
     this.setState({loading: false});
-  }
-  toggleAuthenticateStatus() {
-    // check authenticated status and toggle state based on that
-    this.setState({ authenticated: Auth.isUserAuthenticated() });
   }
   onViewportChange = viewport => this.setState({viewport});
   onStyleChange = mapStyle => this.setState({mapStyle});

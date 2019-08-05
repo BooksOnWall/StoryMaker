@@ -29,15 +29,12 @@ import Dashboard from './page/Dashboard';
 // import context
 // directory conf
 // import Context (User, Theme, Locale)
-import PropTypes from 'prop-types';
-import styled, { keyframes } from 'styled-components';
 import { themes } from './theme/globalStyle';
 import { users } from './api/user//globalUser';
 import { locales } from './i18n/locales/globalLocales';
 import UserContext from './context/UserContext';
 import ThemeContext from './context/ThemeContext';
 import LocaleContext from './context/LocaleContext';
-import { StyledHyperLink as SHL, Button } from './theme/shared';
 import ThemeSelect from './theme/ThemeSelect';
 
 import './App.css';
@@ -46,7 +43,7 @@ import {
 } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 
-const PrivateRoute = ({component: Component, props: cProps, ...rest }) =>(
+const PrivateRoute = ({ component: Component, props: cProps, ...rest }) =>(
         <Route {...rest} render={props => (
         Auth.isUserAuthenticated() ? (
           <Component {...props} {...cProps} {...rest} />
@@ -109,40 +106,48 @@ class App extends Component {
         }
       }));
     };
+    this.setUserPreferences = (user) => {
+      this.setState(state => ({
+        user: {
+          theme: user.theme,
+          locale: user.locale,
+          avatar: user.avatar,
+        }
+      }));
+    };
+    this.toggleAuthenticateStatus= () =>  {
+      // check authenticated status and toggle state based on that
+      this.setState({ authenticated: Auth.isUserAuthenticated() });
+      this.setState({user: Auth.getDatas()});
+    };
     this.state = {
       authenticated: false,
       theme: 'light',
       themes: themes,
       users: users,
       locales: locales,
+      setUserPreferences: this.setUserPreferences,
+      toggleAuthenticateStatus: this.toggleAuthenticateStatus,
       setUser: this.setUser,
       setTheme: this.setTheme,
       locale: locales.locale.language,
       setLocale: this.setLocale,
-      user: users.user,
+      user: (this.authenticated) ? Auth.getDatas() : users.user,
     };
 
     this.setTheme = this.setTheme.bind(this);
     this.setLocale = this.setLocale.bind(this);
-    this.updateState = this.updateState.bind(this);
+    this.toggleAuthenticateStatus = this.toggleAuthenticateStatus.bind(this);
   }
 
   async componentDidMount() {
     try {
-      await Auth.isUserAuthenticated();
-      this.toggleAuthenticateStatus();
+      await this.toggleAuthenticateStatus();
     } catch(e) {
       if (e !== 'No current user') {
         console.log(e);
       }
     }
-  }
-  toggleAuthenticateStatus() {
-    // check authenticated status and toggle state based on that
-    this.setState({ authenticated: Auth.isUserAuthenticated() })
-  }
-  updateState(value) {
-    this.setState({ value });
   }
   render () {
     const childProps = {

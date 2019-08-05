@@ -19,7 +19,6 @@ class Login extends Component {
     let protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
     let domain = protocol + '://' + process.env.REACT_APP_SERVER_HOST;
     let server = domain + ':'+ process.env.REACT_APP_SERVER_PORT+'/';
-    console.log(this.props.state.user);
     this.state = {
         server : server,
         login: server + 'login',
@@ -54,17 +53,11 @@ class Login extends Component {
   }
   async logUser(data) {
     try {
-      this.setState({accessToken : data.token});
-
-       await Auth.authenticateUser(data.token);
-       await this.props.state.setUser({
-         name:(data.name) ? data.name : '',
-         uid: data.id,
-       });
-       console.log(this.props.state.user)
-       this.setState({userIsLoggedIn: true});
-       await this.storeUserSession(data);
-
+      await this.setState({accessToken : data.token});
+      await Auth.authenticateUser({data}.data);
+      await this.setState({userIsLoggedIn: true});
+      await this.storeUserSession(data);
+      await this.setState({user: Auth.getDatas()});
     } catch(e) {
       console.log(e.message);
     }

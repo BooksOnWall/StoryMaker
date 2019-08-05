@@ -7,10 +7,7 @@ import {
   Icon,
 } from 'semantic-ui-react';
 
-
-//import image
 import Logo from '../logo.svg';
-import Avatar from '../assets/images/patrick.png';
 import UserContext from '../context/UserContext';
 
 class AppMenu extends Component {
@@ -27,14 +24,7 @@ class AppMenu extends Component {
       authenticated: this.props.childProps.authenticated,
     }
   }
-  setUser(e){
-     let user = e.target.value;
-      this.setState({
-         user:user
-      });
-  //    user.state.user = user;
-      console.log(user);
-  }
+
   render() {
     return (
       <Menu fixed='top' inverted color='violet' pointing >

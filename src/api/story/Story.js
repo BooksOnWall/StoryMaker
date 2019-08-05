@@ -50,22 +50,19 @@ class Story extends Component {
       loading: null,
       data: null,
       initialValues: { title: '', state: '', city: '', sinopsys: '', credits: '', artist: '', active: true, checked: true},
-      authenticated: this.toggleAuthenticateStatus,
+      toggleAuthenticateStatus: this.props.childProps.toggleAuthenticateStatus,
+      authenticated: this.props.childProps.authenticated,
       open: false,
       editorState: EditorState.createEmpty(),
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
-    this.toggleAuthenticateStatus = this.toggleAuthenticateStatus.bind(this);
   }
   show = () => this.setState({ open: true })
   handleConfirm = () => this.setState({ open: false })
   handleCancel = () => this.setState({ open: false })
-  toggleAuthenticateStatus() {
-  // check authenticated status and toggle state based on that
-  this.setState({ authenticated: Auth.isUserAuthenticated() })
-  }
+
   handleChange(e) {
     const target = e.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -225,7 +222,7 @@ class Story extends Component {
   }
   async componentDidMount() {
     try {
-      await this.toggleAuthenticateStatus();
+      await this.state.toggleAuthenticateStatus;
       if(this.state.mode === 'update')  await this.getStory();
 
     } catch(e) {

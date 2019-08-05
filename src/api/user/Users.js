@@ -4,8 +4,6 @@ import { Container, Dimmer, Loader, Segment, Header, Table, Icon, Menu } from 's
 import Moment from 'moment';
 import { Link } from 'react-router-dom';
 import { injectIntl, FormattedMessage } from 'react-intl';
-
-
 import _ from 'lodash';
 
 class Users extends Component {
@@ -23,7 +21,8 @@ class Users extends Component {
       data: null,
       direction: null,
       loading: null,
-      authenticated: false,
+      toggleAuthenticateStatus: this.props.childProps.toggleAuthenticateStatus,
+      authenticated: this.props.childProps.authenticated,
     };
     this.handleSort = this.handleSort.bind(this);
     this.listUsers = this.listUsers.bind(this);
@@ -57,17 +56,13 @@ class Users extends Component {
   async componentDidMount() {
     // check if user is logged in on refresh
     try {
-      await this.toggleAuthenticateStatus();
+      await this.state.toggleAuthenticateStatus;
       await this.listUsers();
 
     } catch(e) {
       console.log(e.message);
     }
 
-  }
-  toggleAuthenticateStatus() {
-    // check authenticated status and toggle state based on that
-    this.setState({ authenticated: Auth.isUserAuthenticated() })
   }
   handleSort = clickedColumn => () => {
     const { column, data, direction } = this.state;
@@ -95,13 +90,13 @@ class Users extends Component {
     if(data === null) return null;
     return (
 
-        <Container  className="view">
+    <Container  className="view">
+      <Dimmer active={this.state.loading}>
+        <Loader active={this.state.loading} >
+          <FormattedMessage id="app.users.loading" defaultMessage={`Get users info`}/>
+        </Loader>
+      </Dimmer>
       <Segment >
-        <Dimmer active={this.state.loading}>
-          <Loader active={this.state.loading} >
-            <FormattedMessage id="app.users.loading" defaultMessage={`Get users info`}/>
-          </Loader>
-        </Dimmer>
         <Header as='h6' icon floated='right'>
           <Link to="/users/0">
             <Icon name='add user' />
@@ -155,6 +150,7 @@ class Users extends Component {
             </Table.Row>
           </Table.Header>
           <Table.Body>
+
             {_.map(data, ({ id, name, email, createdAt, updatedAt, active }) => (
               <Table.Row className='slide-out' key={id} onClick={() => this.tableRowClickFunc({id})}>
                 <Table.Cell>{id}</Table.Cell>

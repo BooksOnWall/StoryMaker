@@ -21,7 +21,7 @@ import UserPref from './userPreferences';
 import UserAvatar from './userAvatar';
 import { Link } from 'react-router-dom';
 import { injectIntl, FormattedMessage } from 'react-intl';
-
+import _ from 'lodash';
 
 class User extends Component {
   constructor(props) {
@@ -46,16 +46,15 @@ class User extends Component {
       userPrefs: {},
       initialValues: { name: '', email: '', password: '', password2: '', active: 0, checked: false },
       initialPValues: { password: '', password2: '' },
-      authenticated: this.toggleAuthenticateStatus,
       open: false,
+      toggleAuthenticateStatus: this.props.childProps.toggleAuthenticateStatus,
+      authenticated: this.props.childProps.authenticated,
+      setUserPreferences: this.props.state.setUserPreferences,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleSubmitP = this.handleSubmitP.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
-    //this.handleData = this.handleData.bind(this);
-
-    this.toggleAuthenticateStatus = this.toggleAuthenticateStatus.bind(this);
   }
   // toggle user active slider
   toggle = () => this.setState( prevState => ({ checked: !prevState.checked }))
@@ -64,10 +63,6 @@ class User extends Component {
   handleConfirm = () => this.setState({ open: false })
   handleCancel = () => this.setState({ open: false })
 
-  toggleAuthenticateStatus() {
-  // check authenticated status and toggle state based on that
-  this.setState({ authenticated: Auth.isUserAuthenticated() })
-  }
   async getUserPref() {
     try {
       await fetch(this.state.userPref+this.state.uid, {
@@ -94,6 +89,40 @@ class User extends Component {
       console.log(e.message);
     }
   }
+  async getUserPreferences() {
+    try {
+      await fetch(this.state.user + this.state.uid + '/prefs', {
+        method: 'get',
+        headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'}
+      })
+      .then(response => {
+        if (response && !response.ok) { throw new Error(response.statusText);}
+        return response.json();
+      })
+      .then(datas => {
+          if(datas) {
+            console.log(datas);
+            let userPrefs = [];
+            if(datas && datas.length > 0) {
+              _.map(datas, ({ id, pname, pvalue }) => {
+                pvalue = JSON.parse(pvalue);
+                userPrefs.push({[pname]: pvalue});
+              });
+              this.state.setUserPreferences(userPrefs);
+            }
+            //this.data.setUserPreferences({locale: data.locale, theme: data.theme, avatar: data.avatar});
+          } else {
+            console.log('No Data received from the server');
+          }
+      })
+      .catch((error) => {
+        // Your error is here!
+        console.log(error)
+      });
+    } catch(e) {
+
+    }
+  }
   async getUser() {
     // set loading
     this.setState({loading: true});
@@ -111,10 +140,10 @@ class User extends Component {
             data.checked = (data.active) ? true : false;
             // removed unwanted password hash
             delete data.password;
-
             data.checked = data.active;
             this.setState({uid: data.id, name: data.name});
             this.setState({initialValues: data});
+
             this.setState({loading: false});
           } else {
             console.log('No Data received from the server');
@@ -124,6 +153,7 @@ class User extends Component {
         // Your error is here!
         console.log(error)
       });
+      this.getUserPreferences();
     } catch(e) {
       console.log(e.message);
     }
@@ -290,7 +320,7 @@ class User extends Component {
   }
   async componentDidMount() {
     try {
-      await this.toggleAuthenticateStatus();
+      await this.state.toggleAuthenticateStatus;
       if(this.state.mode === 'update')  await this.getUser();
 
     } catch(e) {

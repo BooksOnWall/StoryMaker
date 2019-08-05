@@ -9,9 +9,7 @@ import {
   Dropdown,
 } from 'semantic-ui-react';
 import { themes } from '../../theme/globalStyle';
-import { users } from '../../api/user/globalUser';
 import { locales } from '../../i18n/locales/globalLocales';
-import UserContext from '../../context/UserContext';
 import ThemeContext from '../../context/ThemeContext';
 import LocaleContext from '../../context/LocaleContext';
 
@@ -36,7 +34,8 @@ class userPreferences extends Component {
       uid: uid,
       users: users,
       userPreferences : userPreferences,
-      authenticated: false,
+      toggleAuthenticateStatus: this.props.childProps.toggleAuthenticateStatus,
+      authenticated: this.props.childProps.authenticated,
       loading: false,
       pref: null,
       locale: {value: this.props.state.locale},
@@ -45,14 +44,13 @@ class userPreferences extends Component {
       setLocale: this.props.state.setLocale,
       avatar: null,
     };
-
     this.setPreference = this.setPreference.bind(this);
   };
 
   async componentDidMount() {
     try  {
       // check if user is logged in on refresh
-      await this.toggleAuthenticateStatus();
+      await this.state.toggleAuthenticateStatus;
       //get user preferences
       await this.getPreferences;
     } catch(e) {
@@ -60,10 +58,7 @@ class userPreferences extends Component {
     }
     //console.log(this.state);
   }
-  toggleAuthenticateStatus() {
-    // check authenticated status and toggle state based on that
-    this.setState({ authenticated: Auth.isUserAuthenticated() })
-  }
+
   async getPreferences() {
       this.setState({loading: true});
       try {

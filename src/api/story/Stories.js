@@ -20,7 +20,8 @@ class Stories extends Component {
       data: null,
       direction: null,
       loading: null,
-      authenticated: false,
+      toggleAuthenticateStatus: this.props.childProps.toggleAuthenticateStatus,
+      authenticated: this.props.childProps.authenticated,
     };
     this.handleSort = this.handleSort.bind(this);
     this.listStories = this.listStories.bind(this);
@@ -54,7 +55,7 @@ class Stories extends Component {
   async componentDidMount() {
     // check if user is logged in on refresh
     try {
-      await this.toggleAuthenticateStatus();
+      await this.state.toggleAuthenticateStatus;
       await this.listStories();
 
     } catch(e) {

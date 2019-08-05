@@ -20,7 +20,8 @@ class Artists extends Component {
       data: null,
       direction: null,
       loading: null,
-      authenticated: false,
+      toggleAuthenticateStatus: this.props.childProps.toggleAuthenticateStatus,
+      authenticated: this.props.childProps.authenticated,
       profile: false,
     };
     this.handleSort = this.handleSort.bind(this);
@@ -55,13 +56,12 @@ class Artists extends Component {
   async componentDidMount() {
     // check if user is logged in on refresh
     try {
-      await this.toggleAuthenticateStatus();
-      await this.listArtists();
+        await await this.state.toggleAuthenticateStatus;
+        await this.listArtists();
 
     } catch(e) {
-      console.log(e.message);
+        console.log(e.message);
     }
-
   }
   toggleAuthenticateStatus() {
     // check authenticated status and toggle state based on that

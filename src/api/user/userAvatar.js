@@ -1,26 +1,17 @@
-import React, { Component, useRef } from 'react';
+import React, { Component } from 'react';
 import Auth from '../../module/Auth';
 import AvatarEditor from 'react-avatar-editor';
 import Dropzone from 'react-dropzone';
-import Preview from './avatarPreview.js';
-import { Slider } from "react-semantic-ui-range";
-import { Formik } from 'formik';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import {
-  Form,
   Button,
   Input,
-  Checkbox,
-  Divider,
-  Tab,
   Icon,
   Modal,
   Image,
-  Header,
   Container,
   Placeholder,
   Segment,
-  Progress,
 } from 'semantic-ui-react';
 
 import src from '../../assets/images/patrick.png';
@@ -41,7 +32,8 @@ class userAvatar extends Component {
       user: server + 'users/',
       uid: uid,
       data: null,
-      authenticated: this.toggleAuthenticateStatus,
+      toggleAuthenticateStatus: this.props.childProps.toggleAuthenticateStatus,
+      authenticated: this.props.childProps.authenticated,
       allowZoomOut: true,
       position: { x: 0.2, y: 0.2 },
       scale: 1,
@@ -61,11 +53,6 @@ class userAvatar extends Component {
     this.handleDrop = this.handleDrop.bind(this);
     this.handleOpen = this.handleOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
-    this.toggleAuthenticateStatus = this.toggleAuthenticateStatus.bind(this);
-  }
-  toggleAuthenticateStatus() {
-    // check authenticated status and toggle state based on that
-    this.setState({ authenticated: Auth.isUserAuthenticated() })
   }
   handleNewImage = e => {
     this.setState({ image: e.target.files[0] });
@@ -159,6 +146,13 @@ class userAvatar extends Component {
   handleClose = () => this.setState({ modalOpen: false })
   showOpenFileDlg = () => {
     this.inputOpenFileRef.current.click()
+  }
+  async componentDidMount() {
+    try {
+      await this.state.toggleAuthenticateStatus;
+    } catch(e) {
+      console.log(e.message);
+    }
   }
   render() {
     return (
