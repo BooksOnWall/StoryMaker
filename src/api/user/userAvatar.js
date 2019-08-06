@@ -46,7 +46,7 @@ class userAvatar extends Component {
       width: 180,
       height: 180,
       initialAValues: {},
-      image: src,
+      image: (this.props.state.user.avatar) ? this.props.state.user.avatar : src,
       file: null,
       fileName: '',
       isUploading: false,
