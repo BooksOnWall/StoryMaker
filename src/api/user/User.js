@@ -33,19 +33,17 @@ class User extends Component {
       login: server + 'login',
       register: server + 'register',
       users: server + 'users',
-      uid: (!this.props.match.params.id) ? (0) : (parseInt(this.props.match.params.id)),
-      mode: (parseInt(this.props.match.params.id) === 0) ? ('create') : ('update'),
-      name: null,
       loading: null,
-      checked: false,
-      active: false,
       userp: server + 'users/',
       userPref: server + 'userPref/',
-      data: null,
-      userPrefs: {},
       user: this.props.state.user,
-      initialValues: { name: '', email: '', password: '', password2: '', active: 0, checked: false },
-      initialPValues: { password: '', password2: '' },
+      userEdit: {
+        mode: (parseInt(this.props.match.params.id) === 0) ? ('create') : ('update'),
+        uid: (!this.props.match.params.id) ? (0) : (parseInt(this.props.match.params.id)),
+        initialPValues: { password: '', password2: '' },
+        initialAValues: { avatar: '' },
+        initialValues: { name: '', email: '', password: '', password2: '', active: 0, checked: false },
+      },
       open: false,
       toggleAuthenticateStatus: this.props.toggleAuthenticateStatus,
       authenticated: this.props.authenticated,
@@ -65,7 +63,7 @@ class User extends Component {
 
   async getUserPref() {
     try {
-      await fetch(this.state.userPref+this.state.uid, {
+      await fetch(this.state.userPref+this.state.userEdit.uid, {
         method: 'get',
         headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'}
       })
@@ -75,7 +73,16 @@ class User extends Component {
       })
       .then(data => {
           if(data) {
-            this.setState({userPrefs: data});
+            this.setState({
+              userEdit: {
+                uid: this.state.userEdit.uid,
+                name: this.state.userEdit.name,
+                initialValues: this.state.userEdit.initialValues,
+                initialPValues: this.state.userEdit.initialPValues,
+                initialAValues: this.state.userEdit.initialAValues,
+                userPrefs: data,
+              }
+            });
             this.setState({loading: false});
           } else {
             console.log('No Data received from the server');
@@ -89,9 +96,9 @@ class User extends Component {
       console.log(e.message);
     }
   }
-  async getUserPreferences() {
+  async getUserPreferences(data) {
     try {
-      await fetch(this.state.userp + this.state.uid + '/prefs', {
+      await fetch(this.state.userp + this.state.userEdit.uid + '/prefs', {
         method: 'get',
         headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'}
       })
@@ -101,7 +108,6 @@ class User extends Component {
       })
       .then(datas => {
           if(datas) {
-            console.log(datas);
             let userPrefs = [];
             if(datas && datas.length > 0) {
               _.map(datas, ({ id, pname, pvalue }) => {
@@ -112,7 +118,17 @@ class User extends Component {
             // if edited user is the one that is connected
             // then update it's preferences ,
             // otherwise preferences will be updated at next session
-            if (this.props.state.user.uid === this.state.uid) this.data.setUserPreferences(userPrefs);
+            if(this.props.state.user.uid === this.state.userEdit.uid) this.props.state.setUserPreferences(userPrefs);
+            this.setState({
+              userEdit: {
+                uid: this.state.userEdit.uid,
+                name: this.state.userEdit.name,
+                initialValues: this.state.userEdit.initialValues,
+                initialPValues: this.state.userEdit.initialPValues,
+                initialAValues: this.state.userEdit.initialAValues,
+                userPrefs: userPrefs,
+              }
+            });
             //this.data.setUserPreferences({locale: data.locale, theme: data.theme, avatar: data.avatar});
           } else {
             console.log('No Data received from the server');
@@ -130,7 +146,7 @@ class User extends Component {
     // set loading
     this.setState({loading: true});
     try {
-      await fetch(this.state.userp+this.state.uid, {
+      await fetch(this.state.userp+this.state.userEdit.uid, {
         method: 'get',
         headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'}
       })
@@ -144,28 +160,35 @@ class User extends Component {
             // removed unwanted password hash
             delete data.password;
             data.checked = data.active;
-            this.setState({uid: data.id, name: data.name});
-            this.setState({initialValues: data});
-
-            this.setState({loading: false});
+            this.setState({
+              userEdit: {
+                uid: data.id,
+                name: data.name,
+                initialValues: data,
+                initialPValues: this.state.userEdit.initialPValues,
+                initialAValues: this.state.userEdit.initialAValues,
+              },
+              loading: false,
+            });
+            return this.getUserPreferences(data);
           } else {
             console.log('No Data received from the server');
           }
+
       })
       .catch((error) => {
         // Your error is here!
         console.log(error)
       });
-      this.getUserPreferences();
+
     } catch(e) {
       console.log(e.message);
     }
   }
 
   async updateUser(values) {
-    console.log(values.name)
     try {
-      await fetch(this.state.userp+this.state.uid, {
+      await fetch(this.state.userp+this.state.userEdit.uid, {
         method: 'PATCH',
         headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json', charset:'utf-8' },
         body:JSON.stringify({
@@ -214,7 +237,16 @@ class User extends Component {
       .then(data => {
           if(data) {
             // redirect to user edit page
-            this.setState({uid: data.user.id })
+            this.setState({
+              userEdit: {
+                uid: data.user.id ,
+                name: this.state.userEdit.name,
+                initialValues: this.state.userEdit.initialValues,
+                initialPValues: this.state.userEdit.initialPValues,
+                initialAValues: this.state.userEdit.initialAValues,
+                userPrefs: this.state.userEdit.userPrefs,
+              }
+            })
             this.props.history.push('/users');
           }
       })
@@ -228,10 +260,10 @@ class User extends Component {
   }
   async deleteUser() {
     try {
-        await fetch(this.state.userp + this.state.uid, {
+        await fetch(this.state.userp + this.state.userEdit.uid, {
         method: 'delete',
         headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'},
-        body:JSON.stringify({ id: this.state.uid })
+        body:JSON.stringify({ id: this.state.userEdit.uid })
       })
       .then(response => {
         if (response && !response.ok) { throw new Error(response.statusText);}
@@ -253,11 +285,11 @@ class User extends Component {
   }
   async setPassword(values) {
     try {
-      await fetch(this.state.userp+this.state.uid, {
+      await fetch(this.state.userp+this.state.userEdit.uid, {
         method: 'PATCH',
         headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json', charset:'utf-8' },
         body:JSON.stringify({
-          uid: this.state.uid,
+          uid: this.state.userEdit.uid,
           password:values.password,
         })
       })
@@ -285,12 +317,21 @@ class User extends Component {
     const value = target.type === 'checkbox' ? target.checked : target.value;
     let change = {};
     change[e.target.name] = value ;
-    this.setState({initialValues: change});
-    console.log(this.state.initialValues.checked)
+    this.setState({
+      userEdit: {
+        uid: this.state.userEdit.uid,
+        name: this.state.userEdit.name,
+        initialValues: change,
+        initialPValues: this.state.userEdit.initialPValues,
+        initialAValues: this.state.userEdit.initialAValues,
+        userPrefs: this.state.userEdit.userPrefs,
+      }
+    });
+    console.log(this.state.userEdit.initialValues.checked)
   }
 
   async handleSubmit(e) {
-    let mode = this.state.mode;
+    let mode = this.state.userEdit.mode;
 
     try {
       if (mode ==='create') {
@@ -312,7 +353,7 @@ class User extends Component {
   async handleDelete(e) {
     e.preventDefault(); // Let's stop this event.
 
-    let mode = this.state.mode;
+    let mode = this.state.userEdit.mode;
     try {
       if (mode ==='update') {
         await this.deleteUser();
@@ -323,8 +364,8 @@ class User extends Component {
   }
   async componentDidMount() {
     try {
-      await this.state.toggleAuthenticateStatus;
-      if(this.state.mode === 'update')  await this.getUser();
+      await this.props.state.toggleAuthenticateStatus;
+      if(this.state.userEdit.mode === 'update')  await this.getUser();
 
     } catch(e) {
       console.log(e.message);
@@ -334,11 +375,11 @@ class User extends Component {
     return (
       <Segment>
       <Header as='h3' color='violet' textAlign='center'>
-        {(this.state.mode === 'create') ? <FormattedMessage id="app.user.create" defaultMessage={`Create user`}/> : <FormattedMessage id="app.user.edit" defaultMessage={`Edit user`}/> }
+        {(this.state.userEdit.mode === 'create') ? <FormattedMessage id="app.user.create" defaultMessage={`Create user`}/> : <FormattedMessage id="app.user.edit" defaultMessage={`Edit user`}/> }
       </Header>
       <Formik
         enableReinitialize={true}
-        initialValues={this.state.initialValues}
+        initialValues={this.state.userEdit.initialValues}
         validate={values => {
           let errors = {};
           if (!values.email) {
@@ -351,7 +392,7 @@ class User extends Component {
           return errors;
         }}
         onSubmit={(values, { setSubmitting }) => {
-          if(this.state.mode === 'update') {
+          if(this.state.userEdit.mode === 'update') {
             this.updateUser(values);
           } else {
             this.createUser(values);
@@ -385,7 +426,7 @@ class User extends Component {
               name="name"
               onChange={handleChange}
               onBlur={handleBlur}
-              value={values.name}
+              value={(values && values.name) ? values.name : ''}
             />
             {errors.name && touched.name && errors.name}
             <Divider horizontal>...</Divider>
@@ -397,10 +438,10 @@ class User extends Component {
               name="email"
               onChange={handleChange}
               onBlur={handleBlur}
-              value={values.email}
+              value={(values && values.email) ? values.email : ''}
             />
             {errors.email && touched.email && errors.email}
-              {(this.state.mode === 'create') ? (
+              {(this.state.userEdit.mode === 'create') ? (
               <div>
                 <Divider horizontal>...</Divider>
                 <input
@@ -436,18 +477,18 @@ class User extends Component {
               ref = "active"
               label = <FormattedMessage id="app.user.active" defaultMessage={`Active`}/>
               name="active"
-              defaultChecked= {this.state.initialValues.checked}
+              defaultChecked= {(values && values.checked) ? values.checked : false }
               onChange = {(e, { checked }) => handleChange(checked)}
               onBlur = {handleBlur}
-              value={(values.active === true) ? 1 : 0 }
+              defaultValue={(values && values.active) ? values.active : 0}
               toggle
             />
             {errors.active && touched.active && errors.active}
             <Divider horizontal>...</Divider>
             <Button onClick={handleSubmit} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
-              {(this.state.mode === 'create') ? <FormattedMessage id="app.user.created" defaultMessage={`Create`}/> : <FormattedMessage id="app.user.update" defaultMessage={`Update`}/>}
+              {(this.state.userEdit.mode === 'create') ? <FormattedMessage id="app.user.created" defaultMessage={`Create`}/> : <FormattedMessage id="app.user.update" defaultMessage={`Update`}/>}
             </Button>
-            {(this.state.mode === 'update') ? (
+            {(this.state.userEdit.mode === 'update') ? (
               <div>
                 <Button onClick={this.show} color='red' fluid size='large' type="submit" disabled={isSubmitting}>
                   <FormattedMessage id="app.user.delete" defaultMessage={`Delete`}/>
@@ -488,7 +529,7 @@ class User extends Component {
           return errors;
         }}
         onSubmit={(values, { setSubmitting }) => {
-          if(this.state.mode === 'update') {
+          if(this.state.userEdit.mode === 'update') {
             this.setPassword(values);
           }
 
@@ -519,7 +560,7 @@ class User extends Component {
               name="password"
               onChange={handleChange}
               onBlur={handleBlur}
-              value={values.password}
+              value={(values && values.password) ? values.password : '' }
             />
             {errors.password && touched.password && errors.password}
             <Divider horizontal>...</Divider>
@@ -531,12 +572,12 @@ class User extends Component {
               name="password2"
               onChange={handleChange}
               onBlur={handleBlur}
-              value={values.password2}
+              value={(values && values.password2) ? values.password2 : '' }
             />
           {errors.password2 && touched.password2 && errors.password2}
             <Divider horizontal>...</Divider>
             <Button onClick={handleSubmit} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
-              {(this.state.mode === 'create') ? 'Create' : 'Update'}
+              {(this.state.userEdit.mode === 'create') ? 'Create' : 'Update'}
             </Button>
           </Form>
         )}
@@ -561,7 +602,7 @@ class User extends Component {
   }
   render() {
     // display render only afetr we get initialValues for update mode
-    if (this.state.initialValues === null && this.state.mode === 'update') return null;
+    if (this.state.userEdit.initialValues === null && this.state.userEdit.mode === 'update') return null;
     return (
 
       <Container  className="view">

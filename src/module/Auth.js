@@ -6,10 +6,7 @@ class Auth {
    * @param {obj} data
    */
   static authenticateUser(data) {
-    console.log(data);
     let prefs = data.prefs;
-    console.log(data.name);
-    console.log(data.id);
     localStorage.setItem('token', data.token);
     localStorage.setItem('name', data.name);
     localStorage.setItem('uid', data.id);
@@ -45,6 +42,14 @@ class Auth {
       locale: localStorage.getItem('locale')
     };
     return user;
+  }
+  /**
+   * Return Items stored in localStorage
+   *
+   * @returns {obj}
+   */
+  static updateAvatar(img) {
+    localStorage.setItem('avatar', img);
   }
 
   /**

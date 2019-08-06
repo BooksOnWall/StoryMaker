@@ -79,25 +79,24 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.setTheme = (key) => {
-      console.log(key);
+
       this.setState(state => ({
         theme:themes.$key,
       }));
     };
     this.setLocale = (key) => {
-      console.log(key);
+
       this.setState(state => ({
         locale: locales.$key,
       }));
     };
     this.setAvatar = (avatar) => {
-      console.log(avatar);
       this.setState(state => ({
-        user: {user: Auth.getDatas()}
+        user: Auth.getDatas()
       }));
     };
     this.setUser = (user) => {
-      console.log(user);
+
       this.setState(state => ({
         user: {user: Auth.getDatas()}
       }));

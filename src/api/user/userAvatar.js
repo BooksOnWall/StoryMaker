@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import AvatarEditor from 'react-avatar-editor';
 import Dropzone from 'react-dropzone';
+import Auth from '../../module/Auth';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import {
   Button,
@@ -65,7 +66,7 @@ class userAvatar extends Component {
   handleSave = data => {
     const img = this.editor.getImageScaledToCanvas().toDataURL();
     const rect = this.editor.getCroppingRect();
-    this.props.state.avatar = img;
+    //this.props.state.avatar = img;
     this.setState({
       modalOpen: false,
       preview: {
@@ -99,7 +100,13 @@ class userAvatar extends Component {
         .then(data => {
             if(data) {
               // redirect to users list page
-              console.log(this.state);
+              console.log(this.props.state);
+              if (this.props.state.user.uid === uid ) {
+                // store avatar in localStorage
+                Auth.updateAvatar(img);
+                // update user Preferences
+                this.props.state.setAvatar(img);
+              }
             }
         })
         .catch((error) => {
@@ -109,12 +116,13 @@ class userAvatar extends Component {
       } catch(e) {
         console.log(e.message);
     }
-    this.props.state.setAvatar(img);
+
+
   }
   handlePreview = data => {
     const img = this.editor.getImageScaledToCanvas().toDataURL();
     const rect = this.editor.getCroppingRect();
-    this.props.state.avatar = img;
+    //this.props.state.avatar = img;
     this.setState({
       modalOpen: true,
       preview: {
