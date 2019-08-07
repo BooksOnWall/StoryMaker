@@ -10,7 +10,7 @@
     "strongloop",
     "StrongLoop",
     "strong-pm",
-    "express",
+    "express"
   ],
   "author": "Tom Bouillut, Diego Strasser",
   "license": "ISC",
