@@ -209,17 +209,14 @@ class Artist extends Component {
     for(var x = 0; x < files.length; x++) {
       formData.append('file', files[x]);
     };
-
-    const numFiles = files.length;
-    console.log(numFiles);
     await fetch(this.state.artistUpload, {
       method: 'POST',
       credentials: 'same-origin',
       headers: {
         'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'Accept': 'application/json'
+        'Accept':'application/json; charset=utf-8'
       },
+      files: JSON.stringify(files),
       body: formData
      })
      .then(response => response.json())

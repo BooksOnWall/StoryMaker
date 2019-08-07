@@ -394,7 +394,10 @@ var artistImageUpload = multer({ storage: artist }).array('file');
 //Uploading multiple files
 app.post('/artists/:artistId/upload', artistImageUpload, function (req, res, next) {
   // req.files is array of `images` files
-
+  //console.log('FILES:');
+  //console.log(req.files);
+  //console.log('BODY:');
+  //console.log(req.body);
   // req.body will contain the text fields, if there were any
 });
 
