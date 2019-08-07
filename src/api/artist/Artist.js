@@ -208,6 +208,7 @@ class Artist extends Component {
   }
 
   onClickHandler = async (files) => {
+    this.state.loading =true;
     let formData = new FormData();
     for(var x = 0; x < files.length; x++) {
       formData.append('file', files[x]);
@@ -224,9 +225,9 @@ class Artist extends Component {
      })
      .then(response => response.json())
      .then(data => {
-
+        this.props.history.push('/artists');
      });
-     await this.props.history.push('/artists');
+
 
   }
   async getArtist() {
