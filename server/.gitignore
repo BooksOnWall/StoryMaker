@@ -10,8 +10,8 @@
 /coverage
 # env
 .env
-# production
-/build
+#images and files 
+/public
 
 # misc
 .DS_Store
