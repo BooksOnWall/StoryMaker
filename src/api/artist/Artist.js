@@ -219,10 +219,10 @@ class Artist extends Component {
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Accept': 'application/json',
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json',
         'charset':'utf-8'
       },
-      body: formData
+      body: JSON.stringify({file: files})
      })
      .then(response => response.json())
      .then(data => {

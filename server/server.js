@@ -8,15 +8,15 @@ const bodyParser = require('body-parser');
 var cors = require('cors');
 //fileupload
 
-var storage = multer.diskStorage({
+var artist = multer.diskStorage({
       destination: function (req, file, cb) {
-      cb(null, 'public')
+      cb(null, 'public/artist')
     },
     filename: function (req, file, cb) {
       cb(null, Date.now() + '-' +file.originalname )
     }
 })
-var upload = multer({ storage: storage }).array('file');
+var artistImageUpload = multer({ storage: artist }).array('file');
 // ENV set url(localhost/other) port (1234) and protocol (http/https)
 require('dotenv').config();
 const host = process.env.SERVER_HOST;
@@ -390,24 +390,14 @@ app.patch('/artists/:artistId', function(req, res, next) {
       res.json({ user, msg: 'artist updated successfully' })
     );
 });
-
-app.post('/artists/:artistId/upload',function(req, res, next) {
-    upload(req, res, function (err) {
-        if(!req) return res.status(500).send('no file received');
-
-        let files = req.body;
-        if (Object.keys(files).length === 0) {
-          return res.status(400).send('No files were uploaded.');
-        }
-
-        if (err instanceof multer.MulterError) {
-          return res.status(500).json(err)
-        } else if (err) {
-          return res.status(500).json(err)
-        }
-      return res.status(200).send(files)
-    })
+//Uploading multiple files
+app.post('/artists/:artistId/upload', artistImageUpload, function (req, res, next) {
+  // req.files is array of `photos` files
+  console.log(req.body);
+  // req.body will contain the text fields, if there were any
 });
+
+
 app.delete('/artists/:artistId', function(req, res, next) {
   let aid = req.params.artistId;
   deleteArtist(aid).then(user =>
