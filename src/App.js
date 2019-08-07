@@ -35,7 +35,6 @@ import { locales } from './i18n/locales/globalLocales';
 import UserContext from './context/UserContext';
 import ThemeContext from './context/ThemeContext';
 import LocaleContext from './context/LocaleContext';
-import ThemeSelect from './theme/ThemeSelect';
 
 import './App.css';
 import {
@@ -191,7 +190,6 @@ class App extends Component {
                                   );
                                 }}/>
                             </Segment>
-                            <ThemeSelect />
                           </Router>
 
                       )}
