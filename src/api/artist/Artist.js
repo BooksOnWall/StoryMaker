@@ -212,7 +212,7 @@ class Artist extends Component {
 
     const numFiles = files.length;
     console.log(numFiles);
-    fetch(this.state.artistUpload, {
+    await fetch(this.state.artistUpload, {
       method: 'POST',
       credentials: 'same-origin',
       headers: {
@@ -224,10 +224,9 @@ class Artist extends Component {
      })
      .then(response => response.json())
      .then(data => {
-        this.props.history.push('/artists');
-        //console.log(rdata);
-     });
 
+     });
+     await this.props.history.push('/artists');
 
   }
   async getArtist() {
