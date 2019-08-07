@@ -206,9 +206,8 @@ class Artist extends Component {
   }
   onClickHandler = async (files) => {
     let formData = new FormData();
-    let images = files;
-    for(var x = 0; x < images.length; x++) {
-      formData.append('file', images[x]);
+    for(var x = 0; x < files.length; x++) {
+      formData.append('file', files[x]);
     };
     for (var key of formData.entries()) {
         console.log(key[0] + ', ' + key[1]);

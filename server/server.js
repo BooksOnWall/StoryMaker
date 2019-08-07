@@ -391,7 +391,7 @@ app.patch('/artists/:artistId', function(req, res, next) {
     );
 });
 
-app.post('/artists/:artistId/upload',function(req, res) {
+app.post('/artists/:artistId/upload',function(req, res, next) {
     upload(req, res, function (err) {
         if(!req) return res.status(500).send('no file received');
 
