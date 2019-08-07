@@ -381,24 +381,32 @@ app.patch('/artists/:artistId', function(req, res, next) {
       res.json({ user, msg: 'artist updated successfully' })
     );
 });
-var artist = multer.diskStorage({
-      destination: function (req, file, cb) {
-      cb(null, './public/artists')
-    },
-    filename: function (req, file, cb) {
-      cb(null, file.originalname )
-    }
-});
-var artistImageUpload = multer({ storage: artist }).array('file');
+
 
 //Uploading multiple files
-app.post('/artists/:artistId/upload', artistImageUpload, function (req, res, next) {
+app.post('/artists/:artistId/upload', function (req, res, next) {
+  let aid = req.params.artistId;
+  var storage = multer.diskStorage({
+        destination: './public/artists/'+aid
+    });
+    var upload = multer({ storage : storage}).any();
+    upload(req,res,function(err) {
+      if(err) {
+        console.log(err);
+        return res.end("Error uploading file.");
+      } else {
+        req.files.forEach( function(f) {
+          // and move file to final destination...
+        });
+        return res.json({ user: aid, msg: 'artist images uploaded  successfully', files: req.files })
+      }
+    });
   // req.files is array of `images` files
   //console.log('FILES:');
   //console.log(req.files);
   //console.log('BODY:');
-  let aid = req.params.artistId;
-  return res.json({ user: aid, msg: 'artist images uploaded  successfully', files: req.files })
+
+  r
   //console.log(req.body);
   // req.body will contain the text fields, if there were any
 });

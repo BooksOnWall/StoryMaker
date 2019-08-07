@@ -210,6 +210,7 @@ class Artist extends Component {
       formData.append('file', files[x]);
     };
     await fetch(this.state.artistUpload, {
+      onUploadProgress: progressEvent => console.log(progressEvent.loaded),
       method: 'POST',
       credentials: 'same-origin',
       headers: {
