@@ -405,8 +405,6 @@ app.post('/artists/:artistId/upload', function (req, res, next) {
   //console.log('FILES:');
   //console.log(req.files);
   //console.log('BODY:');
-
-  r
   //console.log(req.body);
   // req.body will contain the text fields, if there were any
 });
