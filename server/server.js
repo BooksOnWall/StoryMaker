@@ -397,6 +397,8 @@ app.post('/artists/:artistId/upload', artistImageUpload, function (req, res, nex
   //console.log('FILES:');
   //console.log(req.files);
   //console.log('BODY:');
+  let aid = req.params.artistId;
+  return res.json({ user: aid, msg: 'artist images uploaded  successfully', files: req.files })
   //console.log(req.body);
   // req.body will contain the text fields, if there were any
 });
