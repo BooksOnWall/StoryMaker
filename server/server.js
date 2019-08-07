@@ -81,7 +81,10 @@ app.use(cors({
 }));
 
 // parse application/json
-app.use(bodyParser.json());
+// Tell the bodyparser middleware to accept more data
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+
 
 //cors middleware causes express to reject connection
 // adding headers Allow-Cross-Domain
@@ -255,25 +258,7 @@ app.patch('/users/:userId/prefs', function(req, res, next) {
       res.json({ user, msg: 'user preference updated successfully' })
   );
 });
-app.post('/users/:userId/avatar', function(req, res) {
-  if(!req) return res.status(500).send('no file received');
-  console.log(req);
-  if (Object.keys(req.files).length === 0) {
-    return res.status(400).send('No files were uploaded.');
-  }
 
-  // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
-  let sampleFile = req.files.sampleFile;
-
-  // Use the mv() method to place the file somewhere on your server
-  sampleFile.mv('/somewhere/on/your/server/filename.jpg', function(err) {
-    if (err)
-      return res.status(500).send(err);
-
-    res.send('File uploaded!');
-  });
-  console.log(req.files.foo); // the uploaded file object
-});
 app.patch('/users/:userId', function(req, res, next) {
   let id = req.params.userId;
   const {uid, password } = req.body;
@@ -405,6 +390,24 @@ app.patch('/artists/:artistId', function(req, res, next) {
       res.json({ user, msg: 'artist updated successfully' })
     );
 });
+
+app.post('/artists/:artistId/upload',function(req, res) {
+    upload(req, res, function (err) {
+        if(!req) return res.status(500).send('no file received');
+
+        let files = req.body;
+        if (Object.keys(files).length === 0) {
+          return res.status(400).send('No files were uploaded.');
+        }
+
+        if (err instanceof multer.MulterError) {
+          return res.status(500).json(err)
+        } else if (err) {
+          return res.status(500).json(err)
+        }
+      return res.status(200).send(files)
+    })
+});
 app.delete('/artists/:artistId', function(req, res, next) {
   let aid = req.params.artistId;
   deleteArtist(aid).then(user =>
@@ -442,16 +445,7 @@ app.delete('/stories/:storyId', function(req, res, next) {
 app.get('/protected', passport.authenticate('jwt', { session: false }), function(req, res) {
   res.json('Success! You can now see this without a token.');
 });
-app.post('/upload',function(req, res) {
-    upload(req, res, function (err) {
-           if (err instanceof multer.MulterError) {
-               return res.status(500).json(err)
-           } else if (err) {
-               return res.status(500).json(err)
-           }
-      return res.status(200).send(req.file)
-    })
-});
+
 // start app
 if (protocol === 'https') {
   var key = fs.readFileSync('./server.key');

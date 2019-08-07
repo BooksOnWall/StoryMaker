@@ -70,6 +70,8 @@ class Artist extends Component {
     let protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
     let domain = protocol + '://' + process.env.REACT_APP_SERVER_HOST;
     let server = domain + ':'+ process.env.REACT_APP_SERVER_PORT+'/';
+    let artist = server + 'artists/';
+    let artistUpload = artist + parseInt(this.props.match.params.id) + '/upload';
     this.state = {
       server: server,
       users: server + 'users',
@@ -77,7 +79,8 @@ class Artist extends Component {
       mode: (parseInt(this.props.match.params.id) === 0) ? ('create') : ('update'),
       name: null,
       loading: null,
-      artist: server + 'artists/',
+      artist: artist,
+      artistUpload: artistUpload,
       data: null,
       images: [],
       selectedFile: null,
@@ -179,6 +182,7 @@ class Artist extends Component {
         body:JSON.stringify({
           name: values.name,
           email:values.email,
+          images: values.images,
           description:values.description
         })
       })
@@ -199,6 +203,34 @@ class Artist extends Component {
     } catch(e) {
       console.log(e.message);
     }
+  }
+  onClickHandler = async (files) => {
+    let formData = new FormData();
+    let images = files;
+    for(var x = 0; x < images.length; x++) {
+      formData.append('file', images[x]);
+    };
+    for (var key of formData.entries()) {
+        console.log(key[0] + ', ' + key[1]);
+    }
+
+    fetch(this.state.artistUpload, {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Accept': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'charset':'utf-8'
+      },
+      body: formData
+     })
+     .then(response => response.json())
+     .then(data => {
+        //console.log(rdata);
+     });
+
+    //this.props.history.push('/artists');
   }
   async getArtist() {
     // set loading
@@ -280,34 +312,14 @@ class Artist extends Component {
   setImages = (files) => {
     // prep store artist images
 
-    console.log(files);
-    //this.setState({images: {images} });
+    this.setState({images: {files} });
   }
   onChangeHandler = event => {
     this.setState({
      selectedFile: event.target.files,
    });
   }
-  onClickHandler = async (files) => {
-    const data = new FormData();
-    let img = files;
-    for(var x = 0; x < img.length; x++) {
-      await data.append('file', img[x]);
-    };
-    console.log(data);
-    /*
-    fetch("http://localhost:3010/upload", {
-      method: 'POST',
-      body: JSON.stringify(data)
-      // receive two    parameter endpoint url ,form data
-    })
-     .then(response => response.json())
-     .then(rdata => {
-        console.log(rdata);
-     });
-     */
-    this.props.history.push('/artists');
-  }
+
   render() {
     return (
 
