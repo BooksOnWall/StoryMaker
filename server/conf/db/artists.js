@@ -10,6 +10,10 @@ module.exports.artists = {
     allowNull: false,
     unique: true,
   },
+  images: {
+    type: Sequelize.JSON,
+    allowNull: true,
+  },
   description : {
     type: Sequelize.TEXT,
     allowNull: true,

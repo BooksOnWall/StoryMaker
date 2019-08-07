@@ -2,10 +2,16 @@
   "name": "bowserver",
   "version": "1.0.0",
   "description": "Books on Wall Server",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [
+    "strongloop",
+    "StrongLoop",
+    "strong-pm",
+    "express",
+  ],
   "author": "Tom Bouillut, Diego Strasser",
   "license": "ISC",
   "dependencies": {
@@ -15,8 +21,8 @@
     "cors": "^2.8.5",
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
-    "express-fileupload": "^1.1.5",
     "jsonwebtoken": "^8.5.1",
+    "multer": "^1.4.2",
     "mysql2": "^1.6.5",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",

@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-
+import React, {Component, useEffect, useState} from 'react';
+import {useDropzone} from 'react-dropzone';
 import {
   Segment,
   Header,
@@ -7,6 +7,7 @@ import {
   Container,
   Form,
   Icon,
+  Input,
   Button,
   Confirm,
   Dimmer,
@@ -14,13 +15,44 @@ import {
 } from 'semantic-ui-react';
 
 import { Formik } from 'formik';
-
+import Previews from './preview';
 import { Link } from 'react-router-dom';
 
 //wysiwyg editor for textarea form fields
 import { EditorState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+
+
+const thumbsContainer = {
+  display: 'flex',
+  flexDirection: 'row',
+  flexWrap: 'wrap',
+  marginTop: 16
+};
+
+const thumb = {
+  display: 'inline-flex',
+  borderRadius: 2,
+  border: '1px solid #eaeaea',
+  marginBottom: 8,
+  marginRight: 8,
+  width: 100,
+  height: 100,
+  padding: 4,
+  boxSizing: 'border-box'
+};
+const thumbInner = {
+  display: 'flex',
+  minWidth: 0,
+  overflow: 'hidden'
+};
+
+const img = {
+  display: 'block',
+  width: 'auto',
+  height: '100%'
+};
 
 let options = {
     inline: { inDropdown: true },
@@ -30,8 +62,10 @@ let options = {
     history: { inDropdown: true },
 };
 
+
 class Artist extends Component {
   constructor(props) {
+
     super(props);
     let protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
     let domain = protocol + '://' + process.env.REACT_APP_SERVER_HOST;
@@ -45,21 +79,30 @@ class Artist extends Component {
       loading: null,
       artist: server + 'artists/',
       data: null,
+      images: [],
+      selectedFile: null,
+      setImages: this.setImages,
+      saveImages: this.saveArtistImages,
       initialValues: { name: '', email: '', description: ''},
       toggleAuthenticateStatus: this.props.childProps.toggleAuthenticateStatus,
       authenticated: this.props.childProps.authenticated,
       open: false,
       editorState: EditorState.createEmpty(),
     };
+    this.setImages = this.setImages.bind(this);
+    this.saveImages = this.saveImages.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
 
   }
+
   show = () => this.setState({ open: true })
   handleConfirm = () => this.setState({ open: false })
   handleCancel = () => this.setState({ open: false })
-
+  async saveImages(e) {
+    console.log(e);
+  }
   handleChange(e) {
     console.log(e.target);
     const target = e.target;
@@ -83,6 +126,7 @@ class Artist extends Component {
       console.log(e.message);
     }
   }
+
   async handleDelete(e) {
     e.preventDefault(); // Let's stop this event.
 
@@ -127,6 +171,7 @@ class Artist extends Component {
     }
   }
   async updateArtist(values) {
+    console.log(values);
     try {
       await fetch(this.state.artist+this.state.aid, {
         method: 'PATCH',
@@ -143,8 +188,8 @@ class Artist extends Component {
       })
       .then(data => {
           if(data) {
-            // redirect to users list page
-            this.props.history.push('/artists');
+            // redirect to users list page or batch upload images
+            (values.images) ? this.onClickHandler(values.images) : this.props.history.push('/artists');
           }
       })
       .catch((error) => {
@@ -212,7 +257,6 @@ class Artist extends Component {
   }
   async componentDidMount() {
     try {
-      await this.toggleAuthenticateStatus();
       if(this.state.mode === 'update')  await this.getArtist();
       this.focusEditor();
     } catch(e) {
@@ -233,8 +277,40 @@ class Artist extends Component {
         this.editor.focus();
       }
   }
+  setImages = (files) => {
+    // prep store artist images
+
+    console.log(files);
+    //this.setState({images: {images} });
+  }
+  onChangeHandler = event => {
+    this.setState({
+     selectedFile: event.target.files,
+   });
+  }
+  onClickHandler = async (files) => {
+    const data = new FormData();
+    let img = files;
+    for(var x = 0; x < img.length; x++) {
+      await data.append('file', img[x]);
+    };
+    console.log(data);
+    /*
+    fetch("http://localhost:3010/upload", {
+      method: 'POST',
+      body: JSON.stringify(data)
+      // receive two    parameter endpoint url ,form data
+    })
+     .then(response => response.json())
+     .then(rdata => {
+        console.log(rdata);
+     });
+     */
+    this.props.history.push('/artists');
+  }
   render() {
     return (
+
       <Container className="main">
         <Dimmer active={this.state.loading}>
           <Loader active={this.state.loading} >Get artist info</Loader>
@@ -263,6 +339,7 @@ class Artist extends Component {
               ) {
                 errors.email = 'Invalid email address';
               }
+              values.images = document.getElementById("artistFiles").files;
               return errors;
             }}
             onSubmit={(values, { setSubmitting }) => {
@@ -316,6 +393,8 @@ class Artist extends Component {
                       value={values.email}
                     />
                     {errors.email && touched.email && errors.email}
+                    <Divider horizontal>...</Divider>
+                    <Previews state={this.state} />
                     <Divider horizontal>...</Divider>
                      <Editor
                        toolbarOnFocus

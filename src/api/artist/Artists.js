@@ -55,7 +55,6 @@ class Artists extends Component {
   async componentDidMount() {
     // check if user is logged in on refresh
     try {
-        await await this.state.toggleAuthenticateStatus;
         await this.listArtists();
 
     } catch(e) {

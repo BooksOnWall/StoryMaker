@@ -2,11 +2,21 @@ const express = require('express');
 var fs = require('fs');
 var http = require('http');
 var https = require('https');
+var multer = require('multer');
 const bodyParser = require('body-parser');
 //CORS
 var cors = require('cors');
 //fileupload
-const fileUpload = require('express-fileupload');
+
+var storage = multer.diskStorage({
+      destination: function (req, file, cb) {
+      cb(null, 'public')
+    },
+    filename: function (req, file, cb) {
+      cb(null, Date.now() + '-' +file.originalname )
+    }
+})
+var upload = multer({ storage: storage }).array('file');
 // ENV set url(localhost/other) port (1234) and protocol (http/https)
 require('dotenv').config();
 const host = process.env.SERVER_HOST;
@@ -69,7 +79,7 @@ app.use(cors({
     return callback(null, true);
   }
 }));
-app.use(fileUpload());
+
 // parse application/json
 app.use(bodyParser.json());
 
@@ -432,7 +442,16 @@ app.delete('/stories/:storyId', function(req, res, next) {
 app.get('/protected', passport.authenticate('jwt', { session: false }), function(req, res) {
   res.json('Success! You can now see this without a token.');
 });
-
+app.post('/upload',function(req, res) {
+    upload(req, res, function (err) {
+           if (err instanceof multer.MulterError) {
+               return res.status(500).json(err)
+           } else if (err) {
+               return res.status(500).json(err)
+           }
+      return res.status(200).send(req.file)
+    })
+});
 // start app
 if (protocol === 'https') {
   var key = fs.readFileSync('./server.key');
