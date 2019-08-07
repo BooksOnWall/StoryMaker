@@ -222,7 +222,7 @@ class Artist extends Component {
         'Content-Type': 'application/json',
         'charset':'utf-8'
       },
-      body: JSON.stringify({file: files})
+      body: formData
      })
      .then(response => response.json())
      .then(data => {
