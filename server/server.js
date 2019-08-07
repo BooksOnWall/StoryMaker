@@ -70,7 +70,12 @@ app.use(cors({
     return callback(null, true);
   }
 }));
-
+// set headers
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 // parse application/json
 // Tell the bodyparser middleware to accept more data
 app.use(bodyParser.json({limit: '50mb'}));

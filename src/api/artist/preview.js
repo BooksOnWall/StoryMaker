@@ -88,7 +88,6 @@ function Previews(props) {
       <aside style={thumbsContainer}>
         {thumbs}
       </aside>
-      <Button  secondary >Clear</Button><Progress percent={props.state.percent} />
     </Segment>
   );
 }

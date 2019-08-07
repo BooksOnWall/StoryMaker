@@ -206,13 +206,13 @@ class Artist extends Component {
       console.log(e.message);
     }
   }
+
   onClickHandler = async (files) => {
     let formData = new FormData();
     for(var x = 0; x < files.length; x++) {
       formData.append('file', files[x]);
     };
     await fetch(this.state.artistUpload, {
-      onUploadProgress: progressEvent => (this.state.ppercent = progressEvent.loaded),
       method: 'POST',
       credentials: 'same-origin',
       headers: {
