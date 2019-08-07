@@ -209,27 +209,26 @@ class Artist extends Component {
     for(var x = 0; x < files.length; x++) {
       formData.append('file', files[x]);
     };
-    for (var key of formData.entries()) {
-        console.log(key[0] + ', ' + key[1]);
-    }
 
+    const numFiles = files.length;
+    console.log(numFiles);
     fetch(this.state.artistUpload, {
       method: 'POST',
       credentials: 'same-origin',
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Accept': 'application/json',
-        'Content-Type': 'application/json',
         'charset':'utf-8'
       },
       body: formData
      })
      .then(response => response.json())
      .then(data => {
+        this.props.history.push('/artists');
         //console.log(rdata);
      });
 
-    //this.props.history.push('/artists');
+
   }
   async getArtist() {
     // set loading
