@@ -176,6 +176,7 @@ class Artist extends Component {
   }
   async updateArtist(values) {
     console.log(values);
+    this.state.loading = true;
     try {
       await fetch(this.state.artist+this.state.aid, {
         method: 'PATCH',
@@ -208,7 +209,7 @@ class Artist extends Component {
   }
 
   onClickHandler = async (files) => {
-    this.state.loading =true;
+
     let formData = new FormData();
     for(var x = 0; x < files.length; x++) {
       formData.append('file', files[x]);

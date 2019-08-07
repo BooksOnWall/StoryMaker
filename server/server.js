@@ -392,7 +392,13 @@ app.patch('/artists/:artistId', function(req, res, next) {
 app.post('/artists/:artistId/upload', function (req, res, next) {
   let aid = req.params.artistId;
   var storage = multer.diskStorage({
-        destination: './public/artists/'+aid
+      destination: function(req, file, cb){
+        cb(null, './public/artists/'+aid);
+      },
+      filename: function (req, file, cb) {
+        console.log(file);
+        cb(null, file.originalname);
+      }
     });
     var upload = multer({ storage : storage}).any();
     upload(req,res,function(err) {
