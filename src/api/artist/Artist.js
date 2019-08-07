@@ -83,6 +83,7 @@ class Artist extends Component {
       artistUpload: artistUpload,
       data: null,
       images: [],
+      percent: 0,
       selectedFile: null,
       setImages: this.setImages,
       saveImages: this.saveArtistImages,
@@ -192,6 +193,7 @@ class Artist extends Component {
       })
       .then(data => {
           if(data) {
+            this.state.percent=15;
             // redirect to users list page or batch upload images
             (values.images) ? this.onClickHandler(values.images) : this.props.history.push('/artists');
           }
@@ -210,7 +212,7 @@ class Artist extends Component {
       formData.append('file', files[x]);
     };
     await fetch(this.state.artistUpload, {
-      onUploadProgress: progressEvent => console.log(progressEvent.loaded),
+      onUploadProgress: progressEvent => (this.state.ppercent = progressEvent.loaded),
       method: 'POST',
       credentials: 'same-origin',
       headers: {

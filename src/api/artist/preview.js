@@ -5,6 +5,7 @@ import {
   Segment,
   Input,
   Image,
+  Progress,
 } from 'semantic-ui-react';
 
 const thumbsContainer = {
@@ -87,7 +88,7 @@ function Previews(props) {
       <aside style={thumbsContainer}>
         {thumbs}
       </aside>
-      <Button  secondary >Clear</Button>
+      <Button  secondary >Clear</Button><Progress percent={props.state.percent} />
     </Segment>
   );
 }
