@@ -217,8 +217,8 @@ class Artist extends Component {
       credentials: 'same-origin',
       headers: {
         'Access-Control-Allow-Origin': '*',
-        'Accept': 'application/json',
-        'charset':'utf-8'
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'Accept': 'application/json'
       },
       body: formData
      })

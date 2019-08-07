@@ -386,7 +386,7 @@ var artist = multer.diskStorage({
       cb(null, './public/artists')
     },
     filename: function (req, file, cb) {
-      cb(null, Date.now() + '-' +file.originalname )
+      cb(null, file.originalname )
     }
 });
 var artistImageUpload = multer({ storage: artist }).array('file');
