@@ -4,6 +4,7 @@ import {
   Button,
   Segment,
   Input,
+  Image,
 } from 'semantic-ui-react';
 
 const thumbsContainer = {
@@ -57,7 +58,8 @@ function Previews(props) {
   const thumbs = files.map(file => (
     <div style={thumb} key={file.name} >
       <div style={thumbInner} className='slide-out'>
-        <img
+        <Image
+          circular
           className='fadeIn'
           alt='preview'
           src={file.preview}
