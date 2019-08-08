@@ -54,8 +54,7 @@ app.use(passport.initialize());
 var allowedOrigins = ['*',
       'https://localhost:3000',
       'https://bow.animaespacio.org',
-      'http://localhost:3000',
-      'http://yourapp.com'];
+      'http://localhost:3000'];
 
 app.use(cors({
   origin: function(origin, callback){
@@ -465,7 +464,7 @@ if (protocol === 'https') {
   };
   https.createServer(options, app)
   .listen(port, function () {
-    console.log('BooksOnWall RESTFULL Server listening on port 3010! Go to https://localhost:3000/')
+    console.log('BooksOnWall RESTFULL Server listening on port 3010! Go to https://localhost:3010/')
   });
 } else {
   http.createServer(app)
