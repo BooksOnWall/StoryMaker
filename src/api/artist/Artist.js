@@ -1,5 +1,5 @@
-import React, {Component, useEffect, useState} from 'react';
-import {useDropzone} from 'react-dropzone';
+import React, {Component } from 'react';
+
 import {
   Segment,
   Header,
@@ -7,8 +7,8 @@ import {
   Container,
   Form,
   Icon,
-  Input,
   Button,
+  Image,
   Confirm,
   Dimmer,
   Loader,
@@ -42,6 +42,7 @@ const thumb = {
   padding: 4,
   boxSizing: 'border-box'
 };
+
 const thumbInner = {
   display: 'flex',
   minWidth: 0,
@@ -61,8 +62,26 @@ let options = {
     link: { inDropdown: true },
     history: { inDropdown: true },
 };
+function Showimages(props) {
+  if (!props.images.length > 0) return null;
+  let images = JSON.parse(props.images);
+  //console.log(images)
+    const build = images.map((image, index) => (
+      <div  style={thumb} key={index} >
+        <div  style={thumbInner} key={index} className='slide-out'>
+          <Image
+            key={index}
+            circular
+            className='fadeIn'
+            alt={image.image.name}
+            src={props.server + image.image.path}
+            />
+        </div>
+      </div>
+    ));
 
-
+    return build;
+}
 class Artist extends Component {
   constructor(props) {
 
@@ -94,7 +113,6 @@ class Artist extends Component {
       editorState: EditorState.createEmpty(),
     };
     this.setImages = this.setImages.bind(this);
-    this.saveImages = this.saveImages.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
@@ -104,17 +122,15 @@ class Artist extends Component {
   show = () => this.setState({ open: true })
   handleConfirm = () => this.setState({ open: false })
   handleCancel = () => this.setState({ open: false })
-  async saveImages(e) {
-    console.log(e);
-  }
+
   handleChange(e) {
-    console.log(e.target);
+
     const target = e.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     let change = {};
     change[e.target.name] = value ;
     this.setState({initialValues: change});
-    console.log(this.state.initialValues.checked)
+
   }
 
   async handleSubmit(e) {
@@ -175,8 +191,17 @@ class Artist extends Component {
     }
   }
   async updateArtist(values) {
-    console.log(values);
     this.state.loading = true;
+    // prepare images name and path for store
+    let images =[];
+    Array.from(values.images).forEach(image => {
+      images.push({
+        'image': {
+          'name': image.name,
+          'path': './public/artists/'+ this.state.aid + '/' + image.path
+        }
+      });
+     });
     try {
       await fetch(this.state.artist+this.state.aid, {
         method: 'PATCH',
@@ -184,7 +209,7 @@ class Artist extends Component {
         body:JSON.stringify({
           name: values.name,
           email:values.email,
-          images: values.images,
+          images: images,
           description:values.description
         })
       })
@@ -245,8 +270,8 @@ class Artist extends Component {
       })
       .then(data => {
           if(data) {
-
-            this.setState({aid: data.id, name: data.name, email: data.email, description: data.description});
+            console.log(data.images);
+            this.setState({aid: data.id, name: data.name, email: data.email, description: data.description, images : data.images});
             this.setState({initialValues: data});
             this.setState({loading: false});
           } else {
@@ -288,7 +313,10 @@ class Artist extends Component {
   }
   async componentDidMount() {
     try {
-      if(this.state.mode === 'update')  await this.getArtist();
+      if(this.state.mode === 'update')  {
+        await this.getArtist();
+
+      }
       this.focusEditor();
     } catch(e) {
       console.log(e.message);
@@ -318,7 +346,6 @@ class Artist extends Component {
      selectedFile: event.target.files,
    });
   }
-
   render() {
     return (
 
@@ -405,6 +432,10 @@ class Artist extends Component {
                     />
                     {errors.email && touched.email && errors.email}
                     <Divider horizontal>...</Divider>
+                      <aside style={thumbsContainer}>
+                        <Showimages images={this.state.images} server={this.state.server}/>
+                      </aside>
+                      <Divider horizontal>...</Divider>
                     <Previews state={this.state} />
                     <Divider horizontal>...</Divider>
                      <Editor

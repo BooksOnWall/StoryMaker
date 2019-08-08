@@ -171,16 +171,16 @@ const deleteUser = async (uid) => {
 const getAllArtists = async () => {
   return await Artists.findAll();
 }
-const createArtist = async ({ name, email, description }) => {
-  return await Artists.create({ name, email, description });
+const createArtist = async ({ name, email, images, description }) => {
+  return await Artists.create({ name, email, images,  description });
 }
 const getArtist = async obj => {
   return await Artists.findOne({
     where: obj,
   });
 };
-const patchArtist = async ({ id, name, email, description }) => {
-  return await Artists.update({ id, name, email, description },
+const patchArtist = async ({ id, name, email, images, description }) => {
+  return await Artists.update({ id, name, email, images, description },
     { where: {id : id}}
   );
 }
@@ -365,8 +365,8 @@ app.get('/artists', function(req, res) {
   getAllArtists().then(user => res.json(user));
 });
 app.post('/artists/0', function(req, res, next) {
-  const { name, email, description } = req.body;
-  createArtist({ name, email, description }).then(user =>
+  const { name, email, images, description } = req.body;
+  createArtist({ name, email, images, description }).then(user =>
     res.json({ user, msg: 'artist created successfully' })
   );
 });
@@ -375,9 +375,9 @@ app.get('/artists/:artistId', (req, res) => {
   getArtist({id: aid}).then(user => res.json(user));
 });
 app.patch('/artists/:artistId', function(req, res, next) {
-  const { name, email, description } = req.body;
+  const { name, email, images, description } = req.body;
   let id = req.params.artistId;
-  patchArtist({ id, name, email, description }).then(user =>
+  patchArtist({ id, name, email, images, description }).then(user =>
       res.json({ user, msg: 'artist updated successfully' })
     );
 });
@@ -391,15 +391,13 @@ app.post('/artists/:artistId/upload', function (req, res, next) {
         cb(null, './public/artists/'+aid);
       },
       filename: function (req, file, cb) {
-        console.log(file);
         cb(null, file.originalname);
       }
     });
     var upload = multer({ storage : storage}).any();
     upload(req,res,function(err) {
       if(err) {
-        console.log(err);
-        return res.end("Error uploading file.");
+        return res.end("Error uploading file." + err);
       } else {
         req.files.forEach( function(f) {
           // and move file to final destination...

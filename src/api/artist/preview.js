@@ -1,11 +1,8 @@
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useEffect, useState } from 'react';
 import {useDropzone} from 'react-dropzone';
 import {
-  Button,
   Segment,
-  Input,
   Image,
-  Progress,
 } from 'semantic-ui-react';
 
 const thumbsContainer = {
