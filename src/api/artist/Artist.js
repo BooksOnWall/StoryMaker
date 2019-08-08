@@ -49,12 +49,6 @@ const thumbInner = {
   overflow: 'hidden'
 };
 
-const img = {
-  display: 'block',
-  width: 'auto',
-  height: '100%'
-};
-
 let options = {
     inline: { inDropdown: true },
     list: { inDropdown: true },
@@ -62,23 +56,32 @@ let options = {
     link: { inDropdown: true },
     history: { inDropdown: true },
 };
+
 function Showimages(props) {
-  if (!props.images.length > 0) return null;
-  let images = JSON.parse(props.images);
-  //console.log(images)
-    const build = images.map((image, index) => (
+
+  if (!props.images || props.images.length === 0 ) return null;
+  console.log(props.images);
+  console.log(props.mode);
+  let images = (props.mode === 'update' && !props.images.files) ? JSON.parse(props.images) : props.images.files ;
+  console.log(images);
+  const build = images.map((image, index) => {
+    // switch oject structure from create to update
+    image = (props.mode === 'update' && !props.images.files) ? image.image : image;
+
+    return (
       <div  style={thumb} key={index} >
         <div  style={thumbInner} key={index} className='slide-out'>
           <Image
             key={index}
             circular
             className='fadeIn'
-            alt={image.image.name}
-            src={props.server + image.image.path}
+            alt={image.name}
+            src={props.server + image.path}
             />
         </div>
       </div>
-    ));
+    );
+  });
 
     return build;
 }
@@ -433,7 +436,7 @@ class Artist extends Component {
                     {errors.email && touched.email && errors.email}
                     <Divider horizontal>...</Divider>
                       <aside style={thumbsContainer}>
-                        <Showimages images={this.state.images} server={this.state.server}/>
+                        <Showimages mode={this.state.mode} images={this.state.images} server={this.state.server}/>
                       </aside>
                       <Divider horizontal>...</Divider>
                     <Previews state={this.state} />

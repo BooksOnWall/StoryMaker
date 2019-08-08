@@ -3,6 +3,7 @@ var fs = require('fs');
 var http = require('http');
 var https = require('https');
 var multer = require('multer');
+var rimraf = require("rimraf");
 const bodyParser = require('body-parser');
 //CORS
 var cors = require('cors');
@@ -171,7 +172,13 @@ const getAllArtists = async () => {
   return await Artists.findAll();
 }
 const createArtist = async ({ name, email, images, description }) => {
-  return await Artists.create({ name, email, images,  description });
+  let response =  await Artists.create({ name, email, images,  description });
+  const aid = response.dataValues.id;
+  var dir = __dirname + '/public/artists/'+aid;
+  if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, 0o744);
+  }
+  return response;
 }
 const getArtist = async obj => {
   return await Artists.findOne({
@@ -184,9 +191,12 @@ const patchArtist = async ({ id, name, email, images, description }) => {
   );
 }
 const deleteArtist = async (aid) => {
-  return await Artists.destroy({
+  let response =  await Artists.destroy({
     where: {id : aid}
-    });
+  });
+  // delete artist files
+  rimraf.sync("./public/artists/"+aid);
+  return response;
 };
 // stories db requests
 const getAllStories = async () => {
@@ -224,8 +234,39 @@ const getUserPreferences = async ({id}) => {
   });
 };
 // get static route to serve images
-app.use(express.static('public'));
-app.use('/images/artists/:artistId', express.static('./public/artists/:artistId'));
+var staticoptions = {
+  dotfiles: 'ignore',
+  etag: false,
+  extensions: ['png', 'jpg'],
+  index: false,
+  maxAge: '1d',
+  redirect: false,
+  setHeaders: function (res, path, stat) {
+    res.set('x-timestamp', Date.now());
+  }
+}
+app.use('/images', express.static(__dirname + 'public', staticoptions));
+app.get('/images/artists/:artistId/:name', function (req, res, next) {
+  var aid = req.params.artistId;
+  var fileName = req.params.name;
+  var path = 'public/artists/'+aid+'/';
+  var options = {
+    root: path ,
+    dotfiles: 'deny',
+    headers: {
+      'x-timestamp': Date.now(),
+      'x-sent': true
+    }
+  }
+
+  res.sendFile(fileName, options, function (err) {
+    if (err) {
+      next(err)
+    } else {
+      console.log('Sent:', fileName)
+    }
+  })
+});
 // set some basic routes
 app.get('/', function(req, res) {
   res.json({ message: 'Express is up!' });
