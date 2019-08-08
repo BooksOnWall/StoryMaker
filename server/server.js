@@ -225,6 +225,7 @@ const getUserPreferences = async ({id}) => {
   });
 };
 // get static route to serve images
+app.use(express.static('public'));
 app.use('/images/artists/:artistId', express.static('./public/artists/:artistId'));
 // set some basic routes
 app.get('/', function(req, res) {
