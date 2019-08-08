@@ -91,7 +91,7 @@ app.use(allowCrossDomain);
 //parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Define db and create tables
+// Define db andD create tables
 const Sequelize = require('sequelize');
 
 // initialze an instance of Sequelize with mysql conf parameters
@@ -224,6 +224,8 @@ const getUserPreferences = async ({id}) => {
     where: {uid : id },
   });
 };
+// get static route to serve images
+app.use('/images/artists/:artistId', express.static('./public/artists/:artistId'));
 // set some basic routes
 app.get('/', function(req, res) {
   res.json({ message: 'Express is up!' });

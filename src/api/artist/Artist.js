@@ -198,7 +198,7 @@ class Artist extends Component {
       images.push({
         'image': {
           'name': image.name,
-          'path': './public/artists/'+ this.state.aid + '/' + image.path
+          'path': 'images/artists/'+ this.state.aid + '/' + image.path
         }
       });
      });
