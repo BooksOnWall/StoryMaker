@@ -13,8 +13,8 @@ class HomePage extends Component {
 
   render() {
     return (
-      <Container className="view">
-      <Card className="container">
+      <Container className="view" fluid>
+      <Card className="container" fluid>
         <Card.Content>
         <Card.Header
             title=<FormattedMessage id="app.home.title" defaultMessage={`Books on Wall`}/>

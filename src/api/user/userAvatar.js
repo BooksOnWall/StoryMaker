@@ -215,7 +215,7 @@ class userAvatar extends Component {
   }
   render() {
     return (
-      <Container  className="view" style={{textAlign: 'left'}}>
+      <Container  fluid className="view" style={{textAlign: 'left'}}>
         <Segment>
           <Dropzone
             onDrop={this.handleDrop}

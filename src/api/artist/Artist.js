@@ -7,6 +7,7 @@ import {
   Container,
   Form,
   Icon,
+  Tab,
   Button,
   Image,
   Confirm,
@@ -33,14 +34,9 @@ const thumbsContainer = {
 
 const thumb = {
   display: 'inline-flex',
-  borderRadius: 2,
-  border: '1px solid #eaeaea',
   marginBottom: 8,
   marginRight: 8,
-  width: 100,
-  height: 100,
-  padding: 4,
-  boxSizing: 'border-box'
+  padding: 4
 };
 
 const thumbInner = {
@@ -73,7 +69,8 @@ function Showimages(props) {
         <div  style={thumbInner} key={index} className='slide-out'>
           <Image
             key={index}
-            circular
+            rounded
+            size='large'
             className='fadeIn'
             alt={image.name}
             src={props.server + image.path}
@@ -109,7 +106,7 @@ class Artist extends Component {
       selectedFile: null,
       setImages: this.setImages,
       saveImages: this.saveArtistImages,
-      initialValues: { name: '', email: '', description: ''},
+      initialAValues: { name: '', email: '', description: '', images: null},
       toggleAuthenticateStatus: this.props.childProps.toggleAuthenticateStatus,
       authenticated: this.props.childProps.authenticated,
       open: false,
@@ -344,6 +341,139 @@ class Artist extends Component {
 
     this.setState({images: {files} });
   }
+  editArtist(values) {
+      return (
+        <div>
+        <Header as='h6' icon >
+          <Icon name='meh' />
+          Edit Artist
+
+        </Header>
+        <Formik
+          enableReinitialize={true}
+          initialValues={this.state.initialValues}
+          validate={values => {
+            let errors = {};
+            if (!values.email) {
+              errors.email = 'Required';
+            } else if (
+              !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+            ) {
+              errors.email = 'Invalid email address';
+            }
+            values.images = document.getElementById("artistFiles").files;
+            return errors;
+          }}
+          onSubmit={(values, { setSubmitting }) => {
+            if(this.state.mode === 'update') {
+              this.updateArtist(values);
+            } else {
+              this.createArtist(values);
+            }
+
+            setTimeout(() => {
+              //alert(JSON.stringify(values, null, 2));
+
+              setSubmitting(false);
+            }, 400);
+          }}
+          >
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            handleDelete,
+            onEditorStateChange,
+            isSubmitting,
+            /* and other goodies */
+          }) => (
+            <Form size='large' onSubmit={this.handleSubmit}>
+              <input
+                icon='user'
+                iconposition='left'
+                placeholder='Name'
+                autoFocus={true}
+                type="text"
+                name="name"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.name}
+                />
+              {errors.name && touched.name && errors.name}
+              <Divider horizontal>...</Divider>
+              <input
+                icon='user'
+                iconposition='left'
+                placeholder='E-mail address'
+                type="email"
+                name="email"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.email}
+                />
+              {errors.email && touched.email && errors.email}
+
+              <Divider horizontal>...</Divider>
+              <Button onClick={handleSubmit} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
+                {(this.state.mode === 'create') ? 'Create' : 'Update'}
+              </Button>
+              {(this.state.mode === 'update') ? (
+                <div>
+                  <Button onClick={this.show} color='red' fluid size='large' type="submit" disabled={isSubmitting}>
+                    Delete
+                  </Button>
+                  <Confirm
+
+                    open={this.state.open}
+                    cancelButton='Never mind'
+                    confirmButton="Delete Artist"
+                    onCancel={this.handleCancel}
+                    onConfirm={this.handleDelete}
+                    />
+                </div>
+              ) : '' }
+            </Form>
+          )}
+        </Formik>
+      </div>
+    );
+  }
+  editImages(values) {
+    return (
+      <div>
+        <aside style={thumbsContainer}>
+          <Showimages mode={this.state.mode} images={this.state.images} server={this.state.server}/>
+        </aside>
+        <Divider horizontal>...</Divider>
+        <Previews state={this.state} />
+      </div>
+    );
+  }
+  editBio(values) {
+    return (
+      <div>
+      <Divider horizontal>...</Divider>
+
+      <Editor
+        toolbarOnFocus
+        width= '80vw'
+        height= '60vh'
+        ref={this.setEditor}
+        editorState={this.state.editorState}
+        wrapperClassName="demo-wrapper"
+        editorClassName="demo-editor"
+        onEditorStateChange={this.onEditorStateChange}
+        toolbar={options}
+        name="description"
+        placeholder='Description'
+        value={values.description}
+        />
+      </div>
+    );
+  }
   onChangeHandler = event => {
     this.setState({
      selectedFile: event.target.files,
@@ -351,132 +481,30 @@ class Artist extends Component {
   }
   render() {
     return (
-
-      <Container className="main">
-        <Dimmer active={this.state.loading}>
-          <Loader active={this.state.loading} >Get artist info</Loader>
-        </Dimmer>
-        <Segment className="view">
+        <Segment inverted color='violet' className="view" fluid>
+          <Dimmer active={this.state.loading}>
+            <Loader active={this.state.loading} >Get artist info</Loader>
+          </Dimmer>
           <Header as='h6' icon floated='left'>
             <Link to="/artists">
-            <Icon name='list' />
-            List artists
-          </Link>
+              <Icon name='list' />
+              List artists
+            </Link>
           </Header>
-          <Header as='h6' icon >
-            <Icon name='meh' />
-            Edit Artist
-
-          </Header>
-          <Formik
-            enableReinitialize={true}
-            initialValues={this.state.initialValues}
-            validate={values => {
-              let errors = {};
-              if (!values.email) {
-                errors.email = 'Required';
-              } else if (
-                !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-              ) {
-                errors.email = 'Invalid email address';
+          <Tab menu={{  color: 'violet', inverted: true, borderless: true, attached: false, tabular: false , secondary: true, pointing: true }} panes={[
+              { menuItem: 'Edit Artist',
+                render: () => <Tab.Pane>{this.editArtist(this.state.initialAValues)}</Tab.Pane>,
+              },
+              { menuItem: 'Images',
+                render: () => <Tab.Pane>{this.editImages(this.state.initialAValues)}</Tab.Pane>,
+              },
+              { menuItem: 'Bio',
+                render: () => <Tab.Pane>{this.editBio(this.state.initialAValues)}</Tab.Pane>,
               }
-              values.images = document.getElementById("artistFiles").files;
-              return errors;
-            }}
-            onSubmit={(values, { setSubmitting }) => {
-              if(this.state.mode === 'update') {
-                this.updateArtist(values);
-              } else {
-                this.createArtist(values);
-              }
-
-              setTimeout(() => {
-                //alert(JSON.stringify(values, null, 2));
-
-                setSubmitting(false);
-              }, 400);
-            }}
-              >
-                {({
-                  values,
-                  errors,
-                  touched,
-                  handleChange,
-                  handleBlur,
-                  handleSubmit,
-                  handleDelete,
-                  onEditorStateChange,
-                  isSubmitting,
-                  /* and other goodies */
-                }) => (
-                  <Form size='large' onSubmit={this.handleSubmit}>
-                    <input
-                      icon='user'
-                      iconposition='left'
-                      placeholder='Name'
-                      autoFocus={true}
-                      type="text"
-                      name="name"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      value={values.name}
-                    />
-                    {errors.name && touched.name && errors.name}
-                    <Divider horizontal>...</Divider>
-                    <input
-                      icon='user'
-                      iconposition='left'
-                      placeholder='E-mail address'
-                      type="email"
-                      name="email"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      value={values.email}
-                    />
-                    {errors.email && touched.email && errors.email}
-                    <Divider horizontal>...</Divider>
-                      <aside style={thumbsContainer}>
-                        <Showimages mode={this.state.mode} images={this.state.images} server={this.state.server}/>
-                      </aside>
-                      <Divider horizontal>...</Divider>
-                    <Previews state={this.state} />
-                    <Divider horizontal>...</Divider>
-                     <Editor
-                       toolbarOnFocus
-                        ref={this.setEditor}
-                        editorState={this.state.editorState}
-                        wrapperClassName="demo-wrapper"
-                        editorClassName="demo-editor"
-                        onEditorStateChange={this.onEditorStateChange}
-                        toolbar={options}
-                        name="description"
-                        placeholder='Description'
-                        value={values.description}
-                      />
-                    <Divider horizontal>...</Divider>
-                    <Button onClick={handleSubmit} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
-                      {(this.state.mode === 'create') ? 'Create' : 'Update'}
-                    </Button>
-                    {(this.state.mode === 'update') ? (
-                      <div>
-                        <Button onClick={this.show} color='red' fluid size='large' type="submit" disabled={isSubmitting}>
-                          Delete
-                        </Button>
-                        <Confirm
-
-                           open={this.state.open}
-                           cancelButton='Never mind'
-                           confirmButton="Delete Artist"
-                           onCancel={this.handleCancel}
-                           onConfirm={this.handleDelete}
-                         />
-                      </div>
-                    ) : '' }
-                  </Form>
-                )}
-              </Formik>
+            ]}
+          />
         </Segment>
-      </Container>
+
 
     );
   }

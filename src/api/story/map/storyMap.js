@@ -53,7 +53,7 @@ class storyMap extends Component {
   render() {
     const {viewport, mapStyle, loading} = this.state;
     return (
-      <Segment inverted color="violet" className="view map">
+      <Segment inverted color="violet" className="view map" fluid>
 
       <Dimmer active={loading}>
         <Loader active={loading} >Get map info</Loader>

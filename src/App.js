@@ -168,7 +168,7 @@ class App extends Component {
 
                           <Router childProps={childProps} >
                             <AppMenu childProps={childProps} state={this.state} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
-                            <Segment className="main" inverted vertical color='violet' >
+                            <Segment className="main" inverted vertical fluid='true' color='violet' style={{fontSize: '1.8vw'}}>
                               <Route render={({ location }) => {
                                   return (
 

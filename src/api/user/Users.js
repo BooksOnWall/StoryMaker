@@ -89,7 +89,7 @@ class Users extends Component {
     if(data === null) return null;
     return (
 
-    <Container  className="view">
+    <Container  className="view" fluid>
       <Dimmer active={this.state.loading}>
         <Loader active={this.state.loading} >
           <FormattedMessage id="app.users.loading" defaultMessage={`Get users info`}/>

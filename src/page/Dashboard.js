@@ -24,7 +24,7 @@ class Dashboard extends Component {
   }
   render() {
     return(
-      <Container className="view">
+      <Container className="view" fluid>
         <Segment.Group>
           <Segment className='slide-out'>Content1</Segment>
           <Segment className='slide-out'>Content2</Segment>

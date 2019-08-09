@@ -373,7 +373,7 @@ class User extends Component {
   }
   editForm() {
     return (
-      <Segment>
+      <Segment >
       <Header as='h3' color='violet' textAlign='center'>
         {(this.state.userEdit.mode === 'create') ? <FormattedMessage id="app.user.create" defaultMessage={`Create user`}/> : <FormattedMessage id="app.user.edit" defaultMessage={`Edit user`}/> }
       </Header>
@@ -510,78 +510,78 @@ class User extends Component {
   }
   editPasswd() {
     return(
-    <Segment>
-      <Header as='h3' color='violet' textAlign='center'>
-        <FormattedMessage id="app.user.passwdTitle" defaultMessage={`Change password`}/>
-      </Header>
-      <Formik
+      <Segment>
+        <Header as='h3' color='violet' textAlign='center'>
+          <FormattedMessage id="app.user.passwdTitle" defaultMessage={`Change password`}/>
+        </Header>
+        <Formik
 
-        initialValues={this.state.initialPValues}
-        validate={values => {
-          let errors = {};
-          if (!values.password) {
-            errors.password =  <FormattedMessage id="app.user.required" defaultMessage={`Required`}/>;
-          } else if (
-            values.password !== values.password2
-          ) {
-            errors.password =  <FormattedMessage id="app.user.wrongPasswd" defaultMessage={`Invalid repeat password`}/>;
-          }
-          return errors;
-        }}
-        onSubmit={(values, { setSubmitting }) => {
-          if(this.state.userEdit.mode === 'update') {
-            this.setPassword(values);
-          }
+          initialValues={this.state.initialPValues}
+          validate={values => {
+            let errors = {};
+            if (!values.password) {
+              errors.password =  <FormattedMessage id="app.user.required" defaultMessage={`Required`}/>;
+            } else if (
+              values.password !== values.password2
+            ) {
+              errors.password =  <FormattedMessage id="app.user.wrongPasswd" defaultMessage={`Invalid repeat password`}/>;
+            }
+            return errors;
+          }}
+          onSubmit={(values, { setSubmitting }) => {
+            if(this.state.userEdit.mode === 'update') {
+              this.setPassword(values);
+            }
 
-          setTimeout(() => {
-            //alert(JSON.stringify(values, null, 2));
+            setTimeout(() => {
+              //alert(JSON.stringify(values, null, 2));
 
-            setSubmitting(false);
-          }, 400);
-        }}
-      >
-        {({
-          values,
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          isSubmitting,
-          /* and other goodies */
-        }) => (
-          <Form className='slide-out' size='large' onSubmit={this.handleSubmit}>
-            <Divider horizontal>...</Divider>
-            <input
-              icon='lock'
-              iconposition='left'
-              placeholder='Password'
-              type="password"
-              name="password"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={(values && values.password) ? values.password : '' }
-            />
-            {errors.password && touched.password && errors.password}
-            <Divider horizontal>...</Divider>
-            <input
-              icon='lock'
-              iconposition='left'
-              placeholder='Repeat Password'
-              type="password"
-              name="password2"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={(values && values.password2) ? values.password2 : '' }
-            />
-          {errors.password2 && touched.password2 && errors.password2}
-            <Divider horizontal>...</Divider>
-            <Button onClick={handleSubmit} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
-              {(this.state.userEdit.mode === 'create') ? 'Create' : 'Update'}
-            </Button>
-          </Form>
-        )}
-      </Formik>
+              setSubmitting(false);
+            }, 400);
+          }}
+          >
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            isSubmitting,
+            /* and other goodies */
+          }) => (
+            <Form className='slide-out' size='large' onSubmit={this.handleSubmit}>
+              <Divider horizontal>...</Divider>
+              <input
+                icon='lock'
+                iconposition='left'
+                placeholder='Password'
+                type="password"
+                name="password"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={(values && values.password) ? values.password : '' }
+                />
+              {errors.password && touched.password && errors.password}
+              <Divider horizontal>...</Divider>
+              <input
+                icon='lock'
+                iconposition='left'
+                placeholder='Repeat Password'
+                type="password"
+                name="password2"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={(values && values.password2) ? values.password2 : '' }
+                />
+              {errors.password2 && touched.password2 && errors.password2}
+              <Divider horizontal>...</Divider>
+              <Button onClick={handleSubmit} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
+                {(this.state.userEdit.mode === 'create') ? 'Create' : 'Update'}
+              </Button>
+            </Form>
+          )}
+        </Formik>
     </Segment>
     );
   }
@@ -605,7 +605,7 @@ class User extends Component {
     if (this.state.userEdit.initialValues === null && this.state.userEdit.mode === 'update') return null;
     return (
 
-      <Container  className="view">
+      <Container  className="view" fluid>
         <Dimmer active={this.state.loading}>
           <Loader active={this.state.loading} >
             <FormattedMessage id="app.user.loading" defaultMessage={`Get user info`}/>
@@ -618,6 +618,7 @@ class User extends Component {
                List user
             </Link>
         </Header>
+        <Divider horizontal>...</Divider>
         <Tab menu={{  color: 'violet', inverted: true, borderless: true, attached: false, tabular: false , secondary: true, pointing: true }} panes={[
             { menuItem: 'Edit User',
               render: () => <Tab.Pane>{this.editForm()}</Tab.Pane>,

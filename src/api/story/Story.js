@@ -237,7 +237,7 @@ class Story extends Component {
     const { editorState } = this.state;
     return (
 
-      <Container  className="view">
+      <Container  className="view" fluid>
         <Dimmer active={this.state.loading}>
           <Loader active={this.state.loading} >Get artist info</Loader>
         </Dimmer>
