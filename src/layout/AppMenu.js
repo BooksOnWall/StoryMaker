@@ -6,6 +6,7 @@ import {
   Dropdown,
   Icon,
 } from 'semantic-ui-react';
+import {Link} from 'react-router-dom';
 
 import Logo from '../logo.svg';
 import UserContext from '../context/UserContext';
@@ -29,7 +30,7 @@ class AppMenu extends Component {
     return (
       <Menu fixed='top' fluid inverted color='violet' pointing style={{padding: 0}}>
         <Container fluid>
-          <Menu.Item as='a' header to='/' href='/' style={{fontSize:'1.8vw', padding: 0}}>
+          <Menu.Item as={Link} header to='/'  style={{fontSize:'1.8vw', padding: 0}}>
             <Image className='App-logo'  fluid  src={Logo} style={{ height: '5vw', width: '5vw',  marginRight: '1.5em' }} />
             Books On Wall
           </Menu.Item>
@@ -45,25 +46,25 @@ class AppMenu extends Component {
                   style={{fontSize: '1.8vw', color: '#ffffff', verticalAlign: 'center', paddingTop: '0.2em' }}
                 >
                     <Dropdown.Menu className='left'>
-                      <Dropdown.Item  to='/users' href='/users' as='a'>
+                      <Dropdown.Item  to='/users'  as={Link}>
                         <Icon name='address card' />
                         <span className='text'>Users</span>
                       </Dropdown.Item>
                       <Dropdown.Divider />
-                        <Dropdown.Item to='/artists' href='/artists' as='a'>
+                        <Dropdown.Item to='/artists' as={Link}>
                           <Icon name='list' />
                           <span className='text'>Artists</span>
                         </Dropdown.Item>
-                      <Dropdown.Item to='/stories' href='/stories' as='a'>
+                      <Dropdown.Item to='/stories' as={Link}>
                         <Icon name='list' />
                         <span className='text'>Stories</span>
                       </Dropdown.Item>
                       <Dropdown.Divider />
-                        <Dropdown.Item  to='/dashboard' href='/dashboard' as='a'>
+                        <Dropdown.Item  to='/dashboard' as={Link}>
                           <Icon name='dashboard' />
                           <span className='text'>Dashboard</span>
                         </Dropdown.Item>
-                      <Dropdown.Item  to='/logout' href='/logout' as='a'>Logout</Dropdown.Item>
+                      <Dropdown.Item  to='/logout' as={Link}>Logout</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
             )}}
@@ -72,8 +73,8 @@ class AppMenu extends Component {
             </Menu.Menu>
           ) : (
             <Menu.Menu position='right'>
-            <Menu.Item to='/login' href='/login' as='a'>Login</Menu.Item>
-            <Menu.Item to='/signup' href='/signup' as='a'>SignUp</Menu.Item>
+            <Menu.Item to='/login'  as={Link}>Login</Menu.Item>
+            <Menu.Item to='/signup' as={Link}>SignUp</Menu.Item>
             </Menu.Menu>
           )}
 

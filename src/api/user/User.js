@@ -42,7 +42,7 @@ class User extends Component {
         uid: (!this.props.match.params.id) ? (0) : (parseInt(this.props.match.params.id)),
         initialPValues: { password: '', password2: '' },
         initialAValues: { avatar: '' },
-        initialValues: { name: '', email: '', password: '', password2: '', active: 0, checked: false },
+        initialUValues: { name: '', email: '', password: '', password2: '', active: 0, checked: false },
       },
       open: false,
       toggleAuthenticateStatus: this.props.toggleAuthenticateStatus,
@@ -77,7 +77,7 @@ class User extends Component {
               userEdit: {
                 uid: this.state.userEdit.uid,
                 name: this.state.userEdit.name,
-                initialValues: this.state.userEdit.initialValues,
+                initialUValues: this.state.userEdit.initialUValues,
                 initialPValues: this.state.userEdit.initialPValues,
                 initialAValues: this.state.userEdit.initialAValues,
                 userPrefs: data,
@@ -123,7 +123,7 @@ class User extends Component {
               userEdit: {
                 uid: this.state.userEdit.uid,
                 name: this.state.userEdit.name,
-                initialValues: this.state.userEdit.initialValues,
+                initialUValues: this.state.userEdit.initialUValues,
                 initialPValues: this.state.userEdit.initialPValues,
                 initialAValues: this.state.userEdit.initialAValues,
                 userPrefs: userPrefs,
@@ -164,7 +164,7 @@ class User extends Component {
               userEdit: {
                 uid: data.id,
                 name: data.name,
-                initialValues: data,
+                initialUValues: data,
                 initialPValues: this.state.userEdit.initialPValues,
                 initialAValues: this.state.userEdit.initialAValues,
               },
@@ -241,7 +241,7 @@ class User extends Component {
               userEdit: {
                 uid: data.user.id ,
                 name: this.state.userEdit.name,
-                initialValues: this.state.userEdit.initialValues,
+                initialUValues: this.state.userEdit.initialUValues,
                 initialPValues: this.state.userEdit.initialPValues,
                 initialAValues: this.state.userEdit.initialAValues,
                 userPrefs: this.state.userEdit.userPrefs,
@@ -321,13 +321,13 @@ class User extends Component {
       userEdit: {
         uid: this.state.userEdit.uid,
         name: this.state.userEdit.name,
-        initialValues: change,
+        initialUValues: change,
         initialPValues: this.state.userEdit.initialPValues,
         initialAValues: this.state.userEdit.initialAValues,
         userPrefs: this.state.userEdit.userPrefs,
       }
     });
-    console.log(this.state.userEdit.initialValues.checked)
+    console.log(this.state.userEdit.initialUValues.checked)
   }
 
   async handleSubmit(e) {
@@ -373,13 +373,13 @@ class User extends Component {
   }
   editForm() {
     return (
-      <Segment >
+      <Segment className="view" >
       <Header as='h3' color='violet' textAlign='center'>
         {(this.state.userEdit.mode === 'create') ? <FormattedMessage id="app.user.create" defaultMessage={`Create user`}/> : <FormattedMessage id="app.user.edit" defaultMessage={`Edit user`}/> }
       </Header>
       <Formik
         enableReinitialize={true}
-        initialValues={this.state.userEdit.initialValues}
+        initialUValues={this.state.userEdit.initialUValues}
         validate={values => {
           let errors = {};
           if (!values.email) {
@@ -441,7 +441,7 @@ class User extends Component {
               value={(values && values.email) ? values.email : ''}
             />
             {errors.email && touched.email && errors.email}
-              {(this.state.userEdit.mode === 'create') ? (
+            {(this.state.userEdit.mode === 'create') ? (
               <div>
                 <Divider horizontal>...</Divider>
                 <input
@@ -475,33 +475,33 @@ class User extends Component {
               iconposition='left'
               placeholder='Active'
               ref = "active"
-              label = <FormattedMessage id="app.user.active" defaultMessage={`Active`}/>
               name="active"
               defaultChecked= {(values && values.checked) ? values.checked : false }
               onChange = {(e, { checked }) => handleChange(checked)}
               onBlur = {handleBlur}
               defaultValue={(values && values.active) ? values.active : 0}
               toggle
+              label = <FormattedMessage id="app.user.active" defaultMessage={`Active`} />
             />
             {errors.active && touched.active && errors.active}
             <Divider horizontal>...</Divider>
-            <Button onClick={handleSubmit} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
-              {(this.state.userEdit.mode === 'create') ? <FormattedMessage id="app.user.created" defaultMessage={`Create`}/> : <FormattedMessage id="app.user.update" defaultMessage={`Update`}/>}
-            </Button>
-            {(this.state.userEdit.mode === 'update') ? (
-              <div>
-                <Button onClick={this.show} color='red' fluid size='large' type="submit" disabled={isSubmitting}>
-                  <FormattedMessage id="app.user.delete" defaultMessage={`Delete`}/>
-                </Button>
-                <Confirm
-                   open={this.state.open}
-                   cancelButton=<FormattedMessage id="app.user.cancel" defaultMessage={`Never Mind`}/>
-                   confirmButton=<FormattedMessage id="app.user.deleteUser" defaultMessage={`Delete User`}/>
-                   onCancel={this.handleCancel}
-                   onConfirm={this.handleDelete}
-                 />
-              </div>
-            ) : '' }
+              <Button onClick={handleSubmit} color='violet'   floated='right' type="submit" disabled={isSubmitting}>
+                {(this.state.userEdit.mode === 'create') ? <FormattedMessage id="app.user.created" defaultMessage={`Create`}/> : <FormattedMessage id="app.user.update" defaultMessage={`Update`}/>}
+              </Button>
+            {(this.state.userEdit.mode !== 'create') ? (
+                <div>
+                  <Button onClick={this.show} color='red'  type="submit" disabled={isSubmitting}>
+                    <FormattedMessage id="app.user.delete" defaultMessage={`Delete user`} />
+                  </Button>
+                  <Confirm
+                    open = {this.state.open}
+                    onCancel = {this.handleCancel}
+                    onConfirm = {this.handleDelete}
+                    cancelButton = <FormattedMessage id="app.user.cancel" defaultMessage={"Never Mind"} />
+                    confirmButton = <FormattedMessage id="app.user.deleteUser" defaultMessage={"Delete User"} />
+                    />
+                </div>
+              ) : 'null' }
           </Form>
         )}
       </Formik>
@@ -516,7 +516,7 @@ class User extends Component {
         </Header>
         <Formik
 
-          initialValues={this.state.initialPValues}
+          initialUValues={this.state.initialPValues}
           validate={values => {
             let errors = {};
             if (!values.password) {
@@ -601,8 +601,8 @@ class User extends Component {
     );
   }
   render() {
-    // display render only afetr we get initialValues for update mode
-    if (this.state.userEdit.initialValues === null && this.state.userEdit.mode === 'update') return null;
+    // display render only afetr we get initialUValues for update mode
+    if (this.state.userEdit.initialUValues === null && this.state.userEdit.mode === 'update') return null;
     return (
 
       <Container  className="view" fluid>

@@ -253,11 +253,11 @@ class Story extends Component {
           </Header>
           <Header as='h6' icon floated='right'>
             <Menu secondary size='mini'>
-              <Menu.Item href={this.state.stages} to={this.state.stages} name='stages'>
+              <Menu.Item as={Link} to={this.state.stages} name='stages'>
                 <Icon name='google wallet' />
                 Stages
               </Menu.Item>
-              <Menu.Item href={this.state.map} to={this.state.map}>
+              <Menu.Item as={Link} to={this.state.map}>
                 <Icon name='map' />
                 Map
               </Menu.Item>
