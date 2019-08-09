@@ -163,7 +163,6 @@ const createUser = async ({ name, email, hash, active }) => {
   let password = hash;
   try{
     const res =  await Users.create({ name, email, password, active });
-    console.log(res);
     const uid = await res.dataValues.id;
     var dir = __dirname + '/public/users/'+uid;
     if (!fs.existsSync(dir)) {
@@ -276,7 +275,6 @@ const patchUserPrefs = async ({ uid, pref, pvalue }) => {
 };
 
 const getUserPreferences = async ({id}) => {
-  console.log(id);
   return await UserPref.findAll({
     where: {uid : id },
   });
@@ -367,13 +365,10 @@ app.patch('/users/:userId', function(req, res, next) {
     .catch(err => console.error(err.message));
 
   }
-  console.log(uid);
-
 });
 //delete user
 app.delete('/users/:userId', function(req, res, next) {
   let uid = req.params.userId;
-  console.log(uid);
   deleteUser(uid).then(user =>
     res.json({ user, msg: 'account destroyed successfully' })
   );
@@ -535,7 +530,6 @@ app.patch('/stories/:storytId', function(req, res, next) {
 app.delete('/stories/:storyId', function(req, res, next) {
   let sid = req.params.storyId;
   deleteStory(sid).then(user => {
-      console.log(user);
       res.json({ user, msg: 'Story destroyed successfully' })
   });
 });
