@@ -19,10 +19,13 @@ import { Formik } from 'formik';
 import UserPref from './userPreferences';
 import UserAvatar from './userAvatar';
 import { Link } from 'react-router-dom';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import {
+  injectIntl,
+  FormattedMessage } from 'react-intl';
 import _ from 'lodash';
 
 class User extends Component {
+
   constructor(props) {
     super(props);
     let protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
@@ -54,6 +57,7 @@ class User extends Component {
     this.handleSubmitP = this.handleSubmitP.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
   }
+
   // toggle user active slider
   toggle = () => this.setState( prevState => ({ checked: !prevState.checked }))
   // confirm functions for user delete
@@ -258,7 +262,7 @@ class User extends Component {
       console.log(e.message);
     }
   }
-  async deleteUser() {
+  deleteUser = async () => {
     try {
         await fetch(this.state.userp + this.state.userEdit.uid, {
         method: 'delete',
@@ -497,8 +501,8 @@ class User extends Component {
                     open = {this.state.open}
                     onCancel = {this.handleCancel}
                     onConfirm = {this.handleDelete}
-                    cancelButton = <FormattedMessage id="app.user.cancel" defaultMessage={"Never Mind"} />
-                    confirmButton = <FormattedMessage id="app.user.deleteUser" defaultMessage={"Delete User"} />
+                    cancelButton = {<Button secondary><FormattedMessage id="app.user.delete.cancel" defaultMessage="Never Mind"/></Button>}
+                    confirmButton = {<Button primary onClick={this.deleteUser}><FormattedMessage id="app.user.delete.confirm" defaultMessage="Delete User"/></Button>}
                     />
                 </div>
               ) : 'null' }
