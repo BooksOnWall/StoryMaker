@@ -15,7 +15,7 @@ import {
   Tab,
   Loader,
 } from 'semantic-ui-react';
-
+import { injectIntl, FormattedMessage } from 'react-intl';
 import { Formik } from 'formik';
 
 import { Link } from 'react-router-dom';
@@ -48,7 +48,7 @@ class Story extends Component {
       map:  '/stories/' + this.props.match.params.id + '/map',
       loading: null,
       data: null,
-      initialValues: { title: '', state: '', city: '', sinopsys: '', credits: '', artist: '', active: true, checked: true},
+      initialSValues: { title: '', state: '', city: '', sinopsys: '', credits: '', artist: '', active: true, checked: true},
       toggleAuthenticateStatus: this.props.childProps.toggleAuthenticateStatus,
       authenticated: this.props.childProps.authenticated,
       open: false,
@@ -58,7 +58,10 @@ class Story extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
   }
-  show = () => this.setState({ open: true })
+  show = (e) => {
+    e.preventDefault();
+    this.setState({ open: true })
+  }
   handleConfirm = () => this.setState({ open: false })
   handleCancel = () => this.setState({ open: false })
 
@@ -67,7 +70,7 @@ class Story extends Component {
     const value = target.type === 'checkbox' ? target.checked : target.value;
     let change = {};
     change[e.target.name] = value ;
-    this.setState({initialValues: change});
+    this.setState({initialSValues: change});
   }
 
   async handleSubmit(e) {
@@ -180,7 +183,7 @@ class Story extends Component {
           if(data) {
 
             this.setState({sid: data.id, title: data.title, artist: data.artist});
-            this.setState({initialValues: data});
+            this.setState({initialSValues: data});
             this.setState({loading: false});
           } else {
             console.log('No Data received from the server');
@@ -267,7 +270,7 @@ class Story extends Component {
           </Header>
           <Formik
             enableReinitialize={true}
-            initialValues={this.state.initialValues}
+            initialValues={this.state.initialSValues}
             validate={values => {
               let errors = {};
               return errors;
@@ -346,7 +349,7 @@ class Story extends Component {
                               ref = "active"
                               label = "Active"
                               name="active"
-                              defaultChecked= {this.state.initialValues.checked}
+                              defaultChecked= {this.state.initialSValues.checked}
                               onChange = {(e, { checked }) => handleChange(checked)}
                               onBlur = {handleBlur}
                               value={(values.active === true) ? 1 : 0 }
@@ -386,13 +389,13 @@ class Story extends Component {
 
 
                     <Divider horizontal>...</Divider>
-                    <Button onClick={handleSubmit} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
+                    <Button onClick={handleSubmit} floated='right'color='violet'  size='large' type="submit" disabled={isSubmitting}>
                       {(this.state.mode === 'create') ? 'Create' : 'Update'}
                     </Button>
                     {(this.state.mode === 'update') ? (
                       <div>
-                        <Button onClick={this.show} color='red' fluid size='large' type="submit" disabled={isSubmitting}>
-                          Delete
+                        <Button onClick={this.show} color='red'  size='large' type="submit" disabled={isSubmitting}>
+                          <FormattedMessage id="app.story.delete" defaultMessage={`Delete Story`}/>
                         </Button>
                         <Confirm
                            open={this.state.open}

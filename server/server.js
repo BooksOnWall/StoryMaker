@@ -110,8 +110,16 @@ sequelize
 const Users = sequelize.define('users', usersList.users);
 // create table with user model
 Users.sync()
- .then(() => console.log('User table created successfully'))
+ .then(() => {
+   console.log('User table created successfully')
+   var dir = __dirname + '/public/users';
+   if (!fs.existsSync(dir)) {
+       fs.mkdirSync(dir, 0o744);
+       console.log('User directory created successfully')
+   }
+ })
  .catch(err => console.log('oooh, error creating database User , did you enter wrong database credentials?'));
+// create user assets directory
 
  // create user preferences model
  const UserPref = sequelize.define('userPref',
@@ -127,21 +135,45 @@ Users.sync()
 const Artists = sequelize.define('artists', artistsList.artists);
 // create table with artist model
 Artists.sync()
- .then(() => console.log('Artists table created successfully'))
+ .then(() => {
+   console.log('Artists table created successfully');
+   var dir = __dirname + '/public/artists';
+   if (!fs.existsSync(dir)) {
+       fs.mkdirSync(dir, 0o744);
+       console.log('Artists directory created successfully')
+   }
+ })
  .catch(err => console.log('oooh,error creating database Artists , did you enter wrong database credentials?'));
  // create Artists model
  const Stories = sequelize.define('stories', storiesList.stories);
  // create table with stories model
  Stories.sync()
-  .then(() => console.log('Stories table created successfully'))
+  .then(() => {
+    console.log('Stories table created successfully');
+    var dir = __dirname + '/public/stories';
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, 0o744);
+        console.log('Stories directory created successfully')
+    }
+  })
   .catch(err => console.log('oooh, error creating database Stories ,did you enter wrong database credentials?'));
 
 // create some helper functions to work on the database
 const createUser = async ({ name, email, hash, active }) => {
   let password = hash;
-  if(hash) return await Users.create({ name, email, password, active });
+  try{
+    const res =  await Users.create({ name, email, password, active });
+    console.log(res);
+    const uid = await res.dataValues.id;
+    var dir = __dirname + '/public/users/'+uid;
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, 0o744);
+    }
+    return res;
+  } catch(e) {
+    console.log(e.message);
+  }
 }
-
 const patchUser = async ({ id, name, email, active }) => {
   return await Users.update({ id, name, email, active },
     { where: {id : id}}
@@ -162,9 +194,12 @@ const getUser = async obj => {
   });
 };
 const deleteUser = async (uid) => {
-  return await Users.destroy({
+  let res= await Users.destroy({
     where: {id : uid}
-    });
+  });
+  //remove user directory
+  rimraf.sync("./public/users/"+uid);
+  return res;
 };
 
 // artist db requests
@@ -203,7 +238,17 @@ const getAllStories = async () => {
   return await Stories.findAll();
 }
 const createStory = async ({ title, artist, state, city, sinopsys, credits, active }) => {
-  return await Stories.create({ title, artist, state, city, sinopsys, credits, active });
+  try {
+    let res = await Stories.create({ title, artist, state, city, sinopsys, credits, active });
+    const sid = res.dataValues.id;
+    var dir = __dirname + '/public/stories/'+sid;
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, 0o744);
+    }
+    return res;
+  } catch(e) {
+    console.log(e.message);
+  }
 }
 const getStory = async obj => {
   return await Stories.findOne({
@@ -216,9 +261,12 @@ const patchStory = async ({ id, name, email, description }) => {
   );
 }
 const deleteStory = async (sid) => {
-  return await Stories.destroy({
+  let res = await Stories.destroy({
     where: {id : sid}
     });
+  //delete story directory
+  rimraf.sync("./public/stories/"+sid);
+  return res;
 };
 const patchUserPrefs = async ({ uid, pref, pvalue }) => {
   return await UserPref.upsert(
@@ -486,9 +534,10 @@ app.patch('/stories/:storytId', function(req, res, next) {
 });
 app.delete('/stories/:storyId', function(req, res, next) {
   let sid = req.params.storyId;
-  deleteStory(sid).then(user =>
-    res.json({ user, msg: 'Story destroyed successfully' })
-  );
+  deleteStory(sid).then(user => {
+      console.log(user);
+      res.json({ user, msg: 'Story destroyed successfully' })
+  });
 });
 // protected route
 app.get('/protected', passport.authenticate('jwt', { session: false }), function(req, res) {

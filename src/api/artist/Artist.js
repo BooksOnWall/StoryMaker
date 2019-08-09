@@ -4,7 +4,6 @@ import {
   Segment,
   Header,
   Divider,
-  Container,
   Form,
   Icon,
   Tab,
@@ -14,7 +13,7 @@ import {
   Dimmer,
   Loader,
 } from 'semantic-ui-react';
-
+import { injectIntl, FormattedMessage } from 'react-intl';
 import { Formik } from 'formik';
 import Previews from './preview';
 import { Link } from 'react-router-dom';
@@ -423,7 +422,7 @@ class Artist extends Component {
               {(this.state.mode === 'update') ? (
                 <div>
                   <Button onClick={this.show} color='red' fluid size='large' type="submit" disabled={isSubmitting}>
-                    Delete
+                    <FormattedMessage id="app.artist.delete" defaultMessage={`Delete Artist`}/>
                   </Button>
                   <Confirm
 
