@@ -5,7 +5,7 @@ import {
   Dimmer,
   Loader,
 } from 'semantic-ui-react';
-
+import StorySteps from '../storySteps';
 import MapGL from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import StylePanel from './stylePanel';
@@ -22,8 +22,10 @@ class storyMap extends Component {
     this.state = {
       toggleAuthenticateStatus: this.props.childProps.toggleAuthenticateStatus,
       authenticated: this.props.childProps.authenticated,
+      sid: (!this.props.match.params.id) ? (0) : (parseInt(this.props.match.params.id)),
       loading: null,
       mapStyle: '',
+      active: 'Map',
       bounds: bounds,
       viewport: {
         latitude: -34.9022229,
@@ -53,11 +55,12 @@ class storyMap extends Component {
   render() {
     const {viewport, mapStyle, loading} = this.state;
     return (
-      <Segment inverted color="violet" className="view map" fluid>
+      <Segment  className="view map" fluid>
 
       <Dimmer active={loading}>
         <Loader active={loading} >Get map info</Loader>
       </Dimmer>
+      <StorySteps sid={this.state.sid} active={this.state.active}/>
       <MapGL
         {...viewport}
         width="100vw"

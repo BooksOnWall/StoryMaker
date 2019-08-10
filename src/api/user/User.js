@@ -17,6 +17,7 @@ import {
 } from 'semantic-ui-react';
 
 import { Formik } from 'formik';
+import UsersSteps from './usersSteps';
 import UserPref from './userPreferences';
 import UserAvatar from './userAvatar';
 import { Link } from 'react-router-dom';
@@ -616,7 +617,7 @@ class User extends Component {
     if (this.state.userEdit.initialUValues === null && this.state.userEdit.mode === 'update') return null;
     return (
 
-      <Container  className="view" fluid>
+      <Container  className="view" fluid >
         <Dimmer active={this.state.loading}>
           <Loader active={this.state.loading} >
             <FormattedMessage id="app.user.loading" defaultMessage={`Get user info`}/>
@@ -629,46 +630,8 @@ class User extends Component {
                List user
             </Link>
         </Header>
-        <Step.Group fluid ordered>
-          <Step
-            active={this.state.active === 'User'}
-            icon='user'
-            link
-            num = {1}
-            onClick={this.setTab(1)}
-            title='Edit User'
-            description='Edit user things'
-          />
-          <Step
-            active={this.state.active === 'Password'}
-            icon='user secret'
-            link
-            num = {2}
-            onClick={this.setTab(2)}
-            title='Password'
-            description='Change user password'
-          />
-          <Step
-            active={this.state.active === 'Preferences'}
-            icon='wordpress forms'
-            link
-            num = {3}
-            onClick={this.setTab(3)}
-            title='Preferences'
-            description='User preferences'
-          />
-          <Step
-            active={this.state.active === 'Avatar'}
-            icon='user circle'
-            link
-            num = {3}
-            onClick={this.setTab(4)}
-            title='Avatar'
-            description='User avatar'
-          />
-        </Step.Group>
-        <Divider horizontal>...</Divider>
-        <Tab menu={{  color: 'violet', inverted: true, borderless: true, attached: false, tabular: false , secondary: true, pointing: true }} panes={[
+        <UsersSteps uid={this.state.uid} active={this.state.active} />
+        <Tab menu={{   borderless: true, attached: false, tabular: false , primary: true, pointing: true }} panes={[
             { menuItem: 'Edit User',
               render: () => <Tab.Pane>{this.editForm()}</Tab.Pane>,
             },

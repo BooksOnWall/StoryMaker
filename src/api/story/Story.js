@@ -10,15 +10,13 @@ import {
   Icon,
   Button,
   Confirm,
-  Menu,
   Dimmer,
   Tab,
-  Step,
   Loader,
 } from 'semantic-ui-react';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import {  FormattedMessage } from 'react-intl';
 import { Formik } from 'formik';
-
+import StorySteps from './storySteps';
 import { Link } from 'react-router-dom';
 //wysiwyg editor for textarea form fields
 import { EditorState } from 'draft-js';
@@ -101,7 +99,6 @@ class Story extends Component {
   }
   async createStory(values) {
     this.setState(values);
-    console.log(values);
     try {
       await fetch(this.state.stories +'/'+ 0, {
         method: 'post',
@@ -251,59 +248,13 @@ class Story extends Component {
           <Loader active={this.state.loading} >Get artist info</Loader>
         </Dimmer>
         <Segment>
-          <Step.Group fluid ordered>
-            <Step
-              active={this.state.active === 'Story'}
-              icon='star'
-              link
-              num = {1}
-              onClick={this.setTab(1)}
-              title='Edit Story'
-              description='Story things'
-            />
-            <Step
-              active={this.state.active === 'Synopsys'}
-              icon='sun'
-              link
-              num = {2}
-              onClick={this.setTab(2)}
-              title='Images'
-              description='Synopsys of the story'
-            />
-            <Step
-              active={this.state.active === 'Credits'}
-              icon='credit card'
-              link
-              num = {3}
-              onClick={this.setTab(3)}
-              title='book'
-              description='Credits for this story'
-            />
-          </Step.Group>
-          <Header as='h6' icon floated='left'>
-            <Link to="/stories" >
-            <Icon name='list' />
-            List stories
-          </Link>
-          </Header>
-          <Header as='h6' icon floated='right'>
-            <Menu secondary size='mini'>
-              <Menu.Item as={Link} to={this.state.stages} name='stages'>
-                <Icon name='google wallet' />
-                Stages
-              </Menu.Item>
-              <Menu.Item as={Link} to={this.state.map}>
-                <Icon name='map' />
-                Map
-              </Menu.Item>
-            </Menu>
-          </Header>
+
           <Header as='h6' icon >
-            <Icon name='meh' />
-            Edit Story
-
+            <Button primary size='mini' to="/stories" as={Link}>
+              <Icon name='list' >  List stories</Icon>
+            </Button>
           </Header>
-
+          <StorySteps sid={this.state.sid} active={this.state.active}/>
           <Formik
             enableReinitialize={true}
             initialValues={this.state.initialSValues}

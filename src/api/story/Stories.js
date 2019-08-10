@@ -89,7 +89,7 @@ class Stories extends Component {
     return (
 
     <Container className="view" fluid>
-      <Segment>
+      <Segment style={{fontSize: '1.1em'}}>
         <Dimmer active={this.state.loading}>
           <Loader active={this.state.loading} >Get users info</Loader>
         </Dimmer>
@@ -163,14 +163,14 @@ class Stories extends Component {
            <Table.Row>
              <Table.HeaderCell colSpan='6'>
                <Menu floated='right' pagination>
-                 <Menu.Item as='a' icon>
+                 <Menu.Item as={Link} icon>
                    <Icon name='chevron left' />
                  </Menu.Item>
-                 <Menu.Item as='a'>1</Menu.Item>
-                 <Menu.Item as='a'>2</Menu.Item>
-                 <Menu.Item as='a'>3</Menu.Item>
-                 <Menu.Item as='a'>4</Menu.Item>
-                 <Menu.Item as='a' icon>
+                 <Menu.Item as={Link}>1</Menu.Item>
+                 <Menu.Item as={Link}>2</Menu.Item>
+                 <Menu.Item as={Link}>3</Menu.Item>
+                 <Menu.Item as={Link}>4</Menu.Item>
+                 <Menu.Item as={Link} icon>
                    <Icon name='chevron right' />
                  </Menu.Item>
                </Menu>

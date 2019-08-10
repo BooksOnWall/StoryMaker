@@ -90,11 +90,16 @@ div.DraftEditor-root {
 
 }
 #root {
-  background-color: '#6435c9';
+  /* background-color: '#6435c9'; */
 }
 .main {
+  width: 100vw;
   padding-top: 6vw!important;
   height: 100vh;
+}
+.view {
+  min-width: 100vw;
+  min-height: 100vh;
 }
 .view, .slide-out {
   animation: slide-out 0.5s forwards;

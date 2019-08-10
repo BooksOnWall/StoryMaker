@@ -95,7 +95,7 @@ class Users extends Component {
           <FormattedMessage id="app.users.loading" defaultMessage={`Get users info`}/>
         </Loader>
       </Dimmer>
-      <Segment >
+      <Segment style={{fontSize: '1.1em'}}>
         <Header as='h6' icon floated='right'>
           <Link to="/users/0">
             <Icon name='add user' />
@@ -165,14 +165,14 @@ class Users extends Component {
            <Table.Row>
              <Table.HeaderCell colSpan='6'>
                <Menu floated='right' pagination>
-                 <Menu.Item as='a' icon>
+                 <Menu.Item as={Link} icon>
                    <Icon name='chevron left' />
                  </Menu.Item>
-                 <Menu.Item as='a'>1</Menu.Item>
-                 <Menu.Item as='a'>2</Menu.Item>
-                 <Menu.Item as='a'>3</Menu.Item>
-                 <Menu.Item as='a'>4</Menu.Item>
-                 <Menu.Item as='a' icon>
+                 <Menu.Item as={Link}>1</Menu.Item>
+                 <Menu.Item as={Link}>2</Menu.Item>
+                 <Menu.Item as={Link}>3</Menu.Item>
+                 <Menu.Item as={Link}>4</Menu.Item>
+                 <Menu.Item as={Link} icon>
                    <Icon name='chevron right' />
                  </Menu.Item>
                </Menu>
