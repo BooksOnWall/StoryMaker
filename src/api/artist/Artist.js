@@ -10,10 +10,11 @@ import {
   Button,
   Image,
   Confirm,
+  Step,
   Dimmer,
   Loader,
 } from 'semantic-ui-react';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { Formik } from 'formik';
 import Previews from './preview';
 import { Link } from 'react-router-dom';
@@ -102,6 +103,8 @@ class Artist extends Component {
       data: null,
       images: [],
       percent: 0,
+      active: 'Artist',
+      activeIndex: parseInt(1),
       selectedFile: null,
       setImages: this.setImages,
       saveImages: this.saveArtistImages,
@@ -111,6 +114,7 @@ class Artist extends Component {
       open: false,
       editorState: EditorState.createEmpty(),
     };
+    this.setTab = this.setTab.bind(this);
     this.setImages = this.setImages.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -442,35 +446,120 @@ class Artist extends Component {
   }
   editImages(values) {
     return (
-      <div>
-        <aside style={thumbsContainer}>
-          <Showimages mode={this.state.mode} images={this.state.images} server={this.state.server}/>
-        </aside>
-        <Divider horizontal>...</Divider>
-        <Previews state={this.state} />
-      </div>
+      <Formik
+        enableReinitialize={true}
+        initialValues={this.state.initialValues}
+        validate={values => {
+          let errors = {};
+          values.images = document.getElementById("artistFiles").files;
+          return errors;
+        }}
+        onSubmit={(values, { setSubmitting }) => {
+          if(this.state.mode === 'update') {
+            this.updateImages(values);
+          } else {
+            this.addImages(values);
+          }
+          setTimeout(() => {
+            //alert(JSON.stringify(values, null, 2));
+
+            setSubmitting(false);
+          }, 400);
+        }}
+        >
+        {({
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleBlur,
+          handleSubmitImages,
+          isSubmitting,
+          /* and other goodies */
+        }) => (
+          <Form size='large' onSubmit={this.handleSubmitImages}>
+            <div>
+              <aside style={thumbsContainer}>
+                <Showimages mode={this.state.mode} images={this.state.images} server={this.state.server}/>
+              </aside>
+              <Divider horizontal>...</Divider>
+              <Previews state={this.state} />
+            </div>
+            <Divider horizontal>...</Divider>
+            <Button onClick={handleSubmitImages} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
+              {(this.state.mode === 'create') ? 'Create' : 'Update'}
+            </Button>
+          </Form>
+        )}
+      </Formik>
+
     );
   }
   editBio(values) {
     return (
-      <div>
-      <Divider horizontal>...</Divider>
+      <Formik
+        enableReinitialize={true}
+        initialValues={this.state.initialValues}
+        validate={values => {
+          let errors = {};
+          if (!values.email) {
+            errors.email = 'Required';
+          } else if (
+            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+          ) {
+            errors.email = 'Invalid email address';
+          }
+          values.images = document.getElementById("artistFiles").files;
+          return errors;
+        }}
+        onSubmit={(values, { setSubmitting }) => {
+          if(this.state.mode === 'update') {
+            this.updateBio(values);
+          } else {
+            this.addBio(values);
+          }
 
-      <Editor
-        toolbarOnFocus
-        width= '80vw'
-        height= '60vh'
-        ref={this.setEditor}
-        editorState={this.state.editorState}
-        wrapperClassName="demo-wrapper"
-        editorClassName="demo-editor"
-        onEditorStateChange={this.onEditorStateChange}
-        toolbar={options}
-        name="description"
-        placeholder='Description'
-        value={values.description}
-        />
-      </div>
+          setTimeout(() => {
+            //alert(JSON.stringify(values, null, 2));
+
+            setSubmitting(false);
+          }, 400);
+        }}
+        >
+        {({
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleBlur,
+          handleSubmitBio,
+          handleDelete,
+          onEditorStateChange,
+          isSubmitting,
+          /* and other goodies */
+        }) => (
+          <Form size='large' onSubmit={this.handleSubmitBio}>
+            <Editor
+              toolbarOnFocus
+              width= '80vw'
+              height= '60vh'
+              ref={this.setEditor}
+              editorState={this.state.editorState}
+              wrapperClassName="demo-wrapper"
+              editorClassName="demo-editor"
+              onEditorStateChange={this.onEditorStateChange}
+              toolbar={options}
+              name="description"
+              placeholder='Description'
+              value={values.description}
+              />
+            <Divider horizontal>...</Divider>
+            <Button onClick={handleSubmitBio} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
+              {(this.state.mode === 'create') ? 'Create' : 'Update'}
+            </Button>
+          </Form>
+        )}
+      </Formik>
     );
   }
   onChangeHandler = event => {
@@ -478,9 +567,14 @@ class Artist extends Component {
      selectedFile: event.target.files,
    });
   }
+  setTab = (e, num) => {
+
+    //this.setState({ activeIndex: num });
+  }
+  handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex });
   render() {
     return (
-        <Segment inverted color='violet' className="view" fluid>
+        <Segment inverted color='violet' className="view" >
           <Dimmer active={this.state.loading}>
             <Loader active={this.state.loading} >Get artist info</Loader>
           </Dimmer>
@@ -490,7 +584,38 @@ class Artist extends Component {
               List artists
             </Link>
           </Header>
-          <Tab menu={{  color: 'violet', inverted: true, borderless: true, attached: false, tabular: false , secondary: true, pointing: true }} panes={[
+          <Step.Group fluid ordered>
+            <Step
+              active={this.state.active === 'Artist'}
+              icon='area graph'
+              link
+              num = {1}
+              onClick={this.setTab(1)}
+              title='Edit Artist'
+              description='Edit artists things'
+            />
+            <Step
+              active={this.state.active === 'Images'}
+              icon='images'
+              link
+              num = {2}
+              onClick={this.setTab(2)}
+              title='Images'
+              description='Upload artist images'
+            />
+            <Step
+              active={this.state.active === 'Bio'}
+              icon='images'
+              link
+              num = {3}
+              onClick={this.setTab(3)}
+              title='book'
+              description='Artist Biography'
+            />
+          </Step.Group>
+          <Tab
+            menu={{  color: 'violet', inverted: true, borderless: true, attached: false, tabular: false , secondary: true, pointing: true }}
+            panes={[
               { menuItem: 'Edit Artist',
                 render: () => <Tab.Pane>{this.editArtist(this.state.initialAValues)}</Tab.Pane>,
               },
@@ -501,6 +626,8 @@ class Artist extends Component {
                 render: () => <Tab.Pane>{this.editBio(this.state.initialAValues)}</Tab.Pane>,
               }
             ]}
+            activeIndex={this.state.activeIndex}
+            onTabChange={this.handleTabChange}
           />
         </Segment>
 

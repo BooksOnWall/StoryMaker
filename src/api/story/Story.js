@@ -13,6 +13,7 @@ import {
   Menu,
   Dimmer,
   Tab,
+  Step,
   Loader,
 } from 'semantic-ui-react';
 import { injectIntl, FormattedMessage } from 'react-intl';
@@ -236,6 +237,11 @@ class Story extends Component {
       editorState,
     });
   };
+  setTab = (e, num) => {
+
+    //this.setState({ activeIndex: num });
+  }
+  handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex });
   render() {
     const { editorState } = this.state;
     return (
@@ -245,6 +251,35 @@ class Story extends Component {
           <Loader active={this.state.loading} >Get artist info</Loader>
         </Dimmer>
         <Segment>
+          <Step.Group fluid ordered>
+            <Step
+              active={this.state.active === 'Story'}
+              icon='star'
+              link
+              num = {1}
+              onClick={this.setTab(1)}
+              title='Edit Story'
+              description='Story things'
+            />
+            <Step
+              active={this.state.active === 'Synopsys'}
+              icon='sun'
+              link
+              num = {2}
+              onClick={this.setTab(2)}
+              title='Images'
+              description='Synopsys of the story'
+            />
+            <Step
+              active={this.state.active === 'Credits'}
+              icon='credit card'
+              link
+              num = {3}
+              onClick={this.setTab(3)}
+              title='book'
+              description='Credits for this story'
+            />
+          </Step.Group>
           <Header as='h6' icon floated='left'>
             <Link to="/stories" >
             <Icon name='list' />
@@ -268,6 +303,7 @@ class Story extends Component {
             Edit Story
 
           </Header>
+
           <Formik
             enableReinitialize={true}
             initialValues={this.state.initialSValues}

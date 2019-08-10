@@ -8,6 +8,7 @@ import {
   Tab,
   Form,
   Icon,
+  Step,
   Button,
   Checkbox,
   Confirm,
@@ -40,6 +41,7 @@ class User extends Component {
       userp: server + 'users/',
       userPref: server + 'userPref/',
       user: this.props.state.user,
+      active : 'User',
       userEdit: {
         mode: (parseInt(this.props.match.params.id) === 0) ? ('create') : ('update'),
         uid: (!this.props.match.params.id) ? (0) : (parseInt(this.props.match.params.id)),
@@ -604,6 +606,11 @@ class User extends Component {
       <UserAvatar state={this.props.state} id={parseInt(this.props.match.params.id)} toggleAuthenticateStatus={() => this.state.toggleAuthenticateStatus}/>
     );
   }
+  setTab = (e, num) => {
+
+    //this.setState({ activeIndex: num });
+  }
+  handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex });
   render() {
     // display render only afetr we get initialUValues for update mode
     if (this.state.userEdit.initialUValues === null && this.state.userEdit.mode === 'update') return null;
@@ -622,6 +629,44 @@ class User extends Component {
                List user
             </Link>
         </Header>
+        <Step.Group fluid ordered>
+          <Step
+            active={this.state.active === 'User'}
+            icon='user'
+            link
+            num = {1}
+            onClick={this.setTab(1)}
+            title='Edit User'
+            description='Edit user things'
+          />
+          <Step
+            active={this.state.active === 'Password'}
+            icon='user secret'
+            link
+            num = {2}
+            onClick={this.setTab(2)}
+            title='Password'
+            description='Change user password'
+          />
+          <Step
+            active={this.state.active === 'Preferences'}
+            icon='wordpress forms'
+            link
+            num = {3}
+            onClick={this.setTab(3)}
+            title='Preferences'
+            description='User preferences'
+          />
+          <Step
+            active={this.state.active === 'Avatar'}
+            icon='user circle'
+            link
+            num = {3}
+            onClick={this.setTab(4)}
+            title='Avatar'
+            description='User avatar'
+          />
+        </Step.Group>
         <Divider horizontal>...</Divider>
         <Tab menu={{  color: 'violet', inverted: true, borderless: true, attached: false, tabular: false , secondary: true, pointing: true }} panes={[
             { menuItem: 'Edit User',
