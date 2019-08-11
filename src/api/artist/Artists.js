@@ -87,7 +87,7 @@ class Artists extends Component {
     if(data === null) return null;
     return (
     <Container className="main" fluid>
-      <Segment className="view" style={{fontSize: '1.1em'}} fluid>
+      <Segment className="view" style={{fontSize: '.9em'}} fluid>
         <Dimmer active={this.state.loading}>
           <Loader active={this.state.loading} >Get users info</Loader>
         </Dimmer>

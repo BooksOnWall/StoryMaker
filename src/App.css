@@ -22,12 +22,15 @@
 .App-link {
   color: #61dafb;
 }
+
 .container {
   display: flex;
   flex-direction: column;
   font-family: sans-serif;
 }
-
+.slidemenu {
+  text-align: left!important;
+}
 .container > p {
   font-size: 1rem;
 }
@@ -93,13 +96,11 @@ div.DraftEditor-root {
   /* background-color: '#6435c9'; */
 }
 .main {
-  width: 100vw;
   padding-top: 6vw!important;
-  height: 100vh;
 }
-.view {
-  min-width: 100vw;
-  min-height: 100vh;
+.view, .main {
+  min-width: 100%;
+  min-height: 90vh;
 }
 .view, .slide-out {
   animation: slide-out 0.5s forwards;
@@ -108,6 +109,18 @@ div.DraftEditor-root {
 .fadeInRight {
   animation: fadeInRight 0.5s forwards;
   -webkit-animation: fadeInRight 0.5s forwards;
+}
+.ui.vertical.icon.menu .item > i.icon {
+  text-align: left;
+  float: left!important;
+  margin-right: 1em;
+}
+.ui.vertical.icon.menu .item {
+  text-align: left;
+  paddung: 1em;
+}
+.ui.vertical.icon.menu .item span {
+  margin-left: 1em;
 }
 @keyframes slide-out {
   0% {

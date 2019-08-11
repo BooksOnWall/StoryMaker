@@ -89,7 +89,7 @@ class Stories extends Component {
     return (
 
     <Container className="view" fluid>
-      <Segment style={{fontSize: '1.1em'}}>
+      <Segment style={{fontSize: '.9em'}}>
         <Dimmer active={this.state.loading}>
           <Loader active={this.state.loading} >Get users info</Loader>
         </Dimmer>

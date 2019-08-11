@@ -95,7 +95,7 @@ class Users extends Component {
           <FormattedMessage id="app.users.loading" defaultMessage={`Get users info`}/>
         </Loader>
       </Dimmer>
-      <Segment style={{fontSize: '1.1em'}}>
+      <Segment style={{fontSize: '.9em'}}>
         <Header as='h6' icon floated='right'>
           <Link to="/users/0">
             <Icon name='add user' />

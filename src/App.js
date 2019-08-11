@@ -5,12 +5,14 @@ import {
   Route,
   Redirect,
   Switch,
-  withRouter
+  withRouter,
+
 } from 'react-router-dom';
 
 import Auth from './module/Auth';
 
 import AppMenu from './layout/AppMenu';
+import LeftSlideMenu from './layout/slideMenu';
 import Login from './api/user/Login';
 import Logout from './api/user/Logout';
 import SignUp from './api/user/SignUp';
@@ -40,6 +42,8 @@ import LocaleContext from './context/LocaleContext';
 import './App.css';
 import {
   Segment,
+  Sidebar,
+  Menu,
 } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 
@@ -130,21 +134,29 @@ class App extends Component {
       themes: themes,
       users: users,
       locales: locales,
+      sidebarVisible: true,
       setUserPreferences: this.setUserPreferences,
       toggleAuthenticateStatus: this.toggleAuthenticateStatus,
       setUser: this.setUser,
       setAvatar: this.setAvatar,
       setTheme: this.setTheme,
+      handleSideBar: this.handleSideBar,
+      animation: 'slide along',
+      direction: 'left',
+      dimmed: false,
       locale: locales.locale.language,
       setLocale: this.setLocale,
       user: (this.authenticated) ? Auth.getDatas() : users.user,
     };
-
+    this.handleSideBar= this.handleSideBar.bind(this);
     this.setTheme = this.setTheme.bind(this);
     this.setLocale = this.setLocale.bind(this);
     this.toggleAuthenticateStatus = this.toggleAuthenticateStatus.bind(this);
   }
-
+  handleSideBar = () => {
+    (!this.state.sidebarVisible) ? this.setState({sidebarVisible: true }) : this.setState({sidebarVisible: false }) ;
+    console.log(this.state.sidebarVisible);
+  }
   async componentDidMount() {
     try {
       await this.toggleAuthenticateStatus();
@@ -166,32 +178,48 @@ class App extends Component {
                 {locale => (
                     <ThemeContext.Consumer value={{state: this.state}} users={users} locales={locales} themes={themes}>
                       {theme => (
-
                           <Router childProps={childProps} >
-                            <AppMenu childProps={childProps} state={this.state} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
-                            <Segment className="main"  vertical fluid='true'  style={{fontSize: '1.8vw'}}>
-                              <Route render={({ location }) => {
-                                  return (
+                            <Sidebar.Pushable as={Segment} style={{textAlign: 'left'}}>
+                              <Sidebar as={Menu}
+                                animation={this.state.animation}
+                                icon='labeled'
+                                vertical
+                                style={{padding: 0}}
+                                dimmed={this.state.dimmed}
+                                direction={this.state.direction}
+                                visible={this.state.sidebarVisible}
+                                width='wide'
+                              >
+                                <LeftSlideMenu state={this.state} childProps={childProps}  toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()}/>
+                              </Sidebar>
 
-                                      <Switch  location={location}>
-                                        <PropsRoute exact path="/"  component={Home} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
-                                        <PrivateRoute path="/dashboard"   component={Dashboard} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
-                                        <PrivateRoute exact path="/users"  component={Users} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
-                                        <PrivateRoute path="/users/:id"  state={this.state} component={User} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
-                                        <PrivateRoute exact path="/artists" component={Artists} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
-                                        <PrivateRoute path="/artists/:id"   component={Artist} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
-                                        <PrivateRoute exact path="/stories"   component={Stories} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
-                                        <PrivateRoute exact path="/stories/:id"  component={Story} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
-                                        <PrivateRoute exact path="/stories/:id/map"  component={StoryMap} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
-                                        <PrivateRoute exact path="/stories/:id/stages"  component={StoryStages} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
-                                        <PrivateRoute path="/profile"  component={Profile} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
-                                        <LoggedOutRoute path="/login"  state={this.state} component={Login} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
-                                        <LoggedOutRoute path="/signup"  component={SignUp} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} />
-                                        <Route path="/logout"  component={Logout} childProps={childProps} />
-                                      </Switch>
-                                  );
-                                }}/>
-                            </Segment>
+                              <Sidebar.Pusher dimmed={this.state.dimmed && this.state.sidebarVisible}>
+                                <Segment className="main"  vertical fluid='true'  style={{fontSize: '1.8em'}}>
+                                  <AppMenu childProps={childProps} state={this.state} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
+                                  <Route render={({ location }) => {
+                                      return (
+
+                                        <Switch  location={location}>
+                                          <PropsRoute exact path="/"  component={Home} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
+                                          <PrivateRoute path="/dashboard"   component={Dashboard} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
+                                          <PrivateRoute exact path="/users"  component={Users} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
+                                          <PrivateRoute path="/users/:id"  state={this.state} component={User} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
+                                          <PrivateRoute exact path="/artists" component={Artists} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
+                                          <PrivateRoute path="/artists/:id"   component={Artist} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
+                                          <PrivateRoute exact path="/stories"   component={Stories} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
+                                          <PrivateRoute exact path="/stories/:id"  component={Story} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
+                                          <PrivateRoute exact path="/stories/:id/map"  component={StoryMap} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
+                                          <PrivateRoute exact path="/stories/:id/stages"  component={StoryStages} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
+                                          <PrivateRoute path="/profile"  component={Profile} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
+                                          <LoggedOutRoute path="/login"  state={this.state} component={Login} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
+                                          <LoggedOutRoute path="/signup"  component={SignUp} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} />
+                                          <Route path="/logout"  component={Logout} childProps={childProps} />
+                                        </Switch>
+                                      );
+                                    }}/>
+                                  </Segment>
+                                </Sidebar.Pusher>
+                              </Sidebar.Pushable>
                           </Router>
 
                       )}

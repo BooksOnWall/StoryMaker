@@ -1,0 +1,68 @@
+import React, {Component} from 'react';
+import { Divider, Input, Label, Dropdown, Container, Image, Button, Icon,  Menu, Segment } from 'semantic-ui-react';
+import {Link} from 'react-router-dom';
+import UserContext from '../context/UserContext';
+import Logo from '../logo.svg';
+class LeftSlideMenu extends Component {
+  constructor(props) {
+    super(props);
+      this.state = {
+        activeItem:'homepage'
+      }
+  }
+
+
+ handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+
+  render() {
+
+    return (
+      <Segment  fluid style={{padding: 0}} >
+      <Menu size='medium' pointing primary vertical fluid  style={{padding: 0}}>
+
+
+        {this.props.childProps.authenticated ? (
+          <UserContext.Consumer>{(user) => {
+            return(
+              <Menu.Menu style={{padding: 0}}>
+                <Image fluid avatar size='small' src={this.props.state.user.avatar}
+                    /><Label>{this.props.state.user.name}</Label>
+                  <Menu.Item name='homepage' active={this.state.activeItem === 'homepage'} as={Link} to='/'  style={{textAlign: 'left'}}>
+                    <Icon name='home' /><span className='text'>Home</span>
+                  </Menu.Item>
+                    <Divider horizontal>...</Divider>
+                  <Menu.Item name='users' active={this.state.activeItem === 'users'} onClick={this.handleItemClick} as={Link} to='/users' className="sidemenu"  >
+                    <Icon name='address card'  floated='left'/><span className='text'>Users</span>
+                  </Menu.Item>
+                  <Menu.Item name='artists' active={this.state.activeItem === 'artists'} onClick={this.handleItemClick} as={Link} to='/artists'  >
+                    <Icon name='list' /><span className='text'>Artists</span>
+                  </Menu.Item>
+                  <Menu.Item name='stories' active={this.state.activeItem === 'stories'} onClick={this.handleItemClick} as={Link} to='/stories'  >
+                    <Icon name='list' /><span className='text'>Stories</span>
+                  </Menu.Item>
+                  <Menu.Item name='dashboard' active={this.state.activeItem === 'dashboard'} onClick={this.handleItemClick} as={Link} to='/dashboard'  >
+                    <Icon name='dashboard' /><span className='text'>Dashboard</span>
+                  </Menu.Item>
+                    <Divider horizontal>...</Divider>
+                  <Menu.Item name='logout' active={this.state.activeItem === 'logout'} onClick={this.handleItemClick} as={Link} to='/logout' >
+                    <Icon name='logout' /><span className='text'>Logout</span>
+                  </Menu.Item>
+              </Menu.Menu>
+          )}}
+        </UserContext.Consumer>
+        ) : (
+          <Menu.Menu >
+            <Menu.Item name='homepage' active={this.state.activeItem === 'homepage'} as={Link} to='/'  style={{textAlign: 'left'}}>
+              <Icon name='home' /><span className='text'>Home</span>
+            </Menu.Item>
+          <Menu.Item active={this.state.activeItem === 'login'} onClick={this.handleItemClick} to='/login'  as={Link}><Icon name='connectdevelop' /><span className='text'>Login</span></Menu.Item>
+          <Menu.Item active={this.state.activeItem === 'signup'} onClick={this.handleItemClick} to='/signup' as={Link}><Icon name='connectdevelop' /><span className='text'>SignUp</span></Menu.Item>
+          </Menu.Menu>
+        )}
+      </Menu>
+      </Segment>
+    );
+  }
+}
+
+export default LeftSlideMenu;
