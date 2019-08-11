@@ -161,24 +161,7 @@ class Users extends Component {
               </Table.Row>
             ))}
           </Table.Body>
-          <Table.Footer>
-           <Table.Row>
-             <Table.HeaderCell colSpan='6'>
-               <Menu floated='right' pagination>
-                 <Menu.Item as={Link} icon>
-                   <Icon name='chevron left' />
-                 </Menu.Item>
-                 <Menu.Item as={Link}>1</Menu.Item>
-                 <Menu.Item as={Link}>2</Menu.Item>
-                 <Menu.Item as={Link}>3</Menu.Item>
-                 <Menu.Item as={Link}>4</Menu.Item>
-                 <Menu.Item as={Link} icon>
-                   <Icon name='chevron right' />
-                 </Menu.Item>
-               </Menu>
-             </Table.HeaderCell>
-           </Table.Row>
-         </Table.Footer>
+        
         </Table>
       </Segment>
     </Container>

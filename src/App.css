@@ -98,6 +98,13 @@ div.DraftEditor-root {
 .main {
   padding-top: 6vw!important;
 }
+.ui.visible.slide.along.sidebar.bwSidebar,.ui.slide.along.sidebar.bwSidebar {
+  background: #6435c9 none no-repeat;
+  height: '100vh';
+}
+.ui.menu.fluid, .ui.vertical.menu.fluid.bwSidebarMenu {
+  min-height: '100vh';
+}
 .view, .main {
   min-width: 100%;
   min-height: 90vh;

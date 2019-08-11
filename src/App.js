@@ -143,7 +143,7 @@ class App extends Component {
       handleSideBar: this.handleSideBar,
       animation: 'slide along',
       direction: 'left',
-      dimmed: false,
+      dimmed: null,
       locale: locales.locale.language,
       setLocale: this.setLocale,
       user: (this.authenticated) ? Auth.getDatas() : users.user,
@@ -184,13 +184,14 @@ class App extends Component {
                                 animation={this.state.animation}
                                 icon='labeled'
                                 vertical
+                                className='bwSidebar'
                                 style={{padding: 0}}
                                 dimmed={this.state.dimmed}
                                 direction={this.state.direction}
                                 visible={this.state.sidebarVisible}
                                 width='wide'
                               >
-                                <LeftSlideMenu state={this.state} childProps={childProps}  toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()}/>
+                                <LeftSlideMenu  state={this.state} childProps={childProps}  toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()}/>
                               </Sidebar>
 
                               <Sidebar.Pusher dimmed={this.state.dimmed && this.state.sidebarVisible}>
@@ -198,7 +199,6 @@ class App extends Component {
                                   <AppMenu childProps={childProps} state={this.state} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
                                   <Route render={({ location }) => {
                                       return (
-
                                         <Switch  location={location}>
                                           <PropsRoute exact path="/"  component={Home} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
                                           <PrivateRoute path="/dashboard"   component={Dashboard} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
