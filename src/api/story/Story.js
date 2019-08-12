@@ -424,7 +424,6 @@ class Story extends Component {
              toolbar={options}
              name="sinopsys"
              placeholder='Sinopsys'
-             value={values.sinopsys}
            />
          <Button onClick={handleSubmitSyno} floated='right'color='violet'  size='large' type="submit" disabled={isSubmitting}>
              {(this.state.mode === 'create') ? 'Create' : 'Update'}

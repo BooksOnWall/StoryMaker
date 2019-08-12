@@ -96,7 +96,7 @@ class User extends Component {
                 initialAValues: this.state.userEdit.initialAValues,
                 userPrefs: data,
               },
-              loading: false,
+              loading: false
             });
           } else {
             console.log('No Data received from the server');
@@ -143,7 +143,7 @@ class User extends Component {
                 initialAValues: this.state.userEdit.initialAValues,
                 userPrefs: userPrefs,
               },
-              loading: false,
+              loading: null
             });
             //this.data.setUserPreferences({locale: data.locale, theme: data.theme, avatar: data.avatar});
           } else {
