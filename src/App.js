@@ -166,6 +166,7 @@ class App extends Component {
       }
     }
   }
+  handleSidebarHide = () => this.setState({ sidebarVisible: false })
   render () {
     const childProps = {
       authenticated: this.state.authenticated
@@ -187,6 +188,7 @@ class App extends Component {
                                 className='bwSidebar'
                                 style={{padding: 0}}
                                 dimmed={this.state.dimmed}
+                                onHide={this.handleSidebarHide}
                                 direction={this.state.direction}
                                 visible={this.state.sidebarVisible}
                                 width='wide'
@@ -194,7 +196,7 @@ class App extends Component {
                                 <LeftSlideMenu  state={this.state} childProps={childProps}  toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()}/>
                               </Sidebar>
 
-                              <Sidebar.Pusher dimmed={this.state.dimmed && this.state.sidebarVisible}>
+                              <Sidebar.Pusher onClick={this.state.handleSidebarHide} dimmed={this.state.dimmed && this.state.sidebarVisible}>
                                 <Segment className="main"  vertical fluid='true'  style={{fontSize: '1.8em'}}>
                                   <AppMenu childProps={childProps} state={this.state} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
                                   <Route render={({ location }) => {

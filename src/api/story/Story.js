@@ -47,12 +47,16 @@ class Story extends Component {
       map:  '/stories/' + this.props.match.params.id + '/map',
       loading: null,
       data: null,
+      active: 'Story',
+      setSteps: this.setSteps,
       initialSValues: { title: '', state: '', city: '', sinopsys: '', credits: '', artist: '', active: true, checked: true},
       toggleAuthenticateStatus: this.props.childProps.toggleAuthenticateStatus,
       authenticated: this.props.childProps.authenticated,
       open: false,
       editorState: EditorState.createEmpty(),
     };
+    this.setSteps = this.setSteps.bind(this);
+    this.EditForm = this.EditForm.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
@@ -234,13 +238,238 @@ class Story extends Component {
       editorState,
     });
   };
-  setTab = (e, num) => {
+  EditCred = () => {
+    if(!this.state.active === 'Credits') return null;
+    return (
+      <Segment >
+        <Formik
+          visible = {this.state.active==='Synopsis'}
+          enableReinitialize={true}
+          initialValues={this.state.initialSValues}
+          validate={values => {
+            let errors = {};
+            return errors;
+          }}
+          onSubmit={(values, { setSubmitting }) => {
+            if(this.state.mode === 'update') {
+              this.updateStory(values);
+            } else {
+              this.createStory(values);
+            }
 
-    //this.setState({ activeIndex: num });
+            setTimeout(() => {
+              //alert(JSON.stringify(values, null, 2));
+
+              setSubmitting(false);
+            }, 400);
+          }}
+            >
+              {({
+                values,
+                errors,
+                touched,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                handleDelete,
+                isSubmitting,
+                /* and other goodies */
+              }) => (
+
+                <Form size='large' onSubmit={this.handleSubmitCredit}>
+
+                  <Editor
+                    toolbarOnFocus
+                     editorState={this.state.editorState}
+                     wrapperClassName="demo-wrapper"
+                     editorClassName="demo-editor"
+                     onEditorStateChange={this.onEditorStateChange}
+                     toolbar={options}
+                     name="credits"
+                     placeholder='Credits'
+                     value={values.credits}
+                   />
+                </Form>
+              )}
+            </Formik>
+      </Segment>
+    );
+  }
+  EditSyno = () => {
+    if(!this.state.active === 'Synopsis') return null;
+    return (
+      <Formik
+        visible = {this.state.active==='Synopsis'}
+        enableReinitialize={true}
+        initialValues={this.state.initialSValues}
+        validate={values => {
+          let errors = {};
+          return errors;
+        }}
+        onSubmit={(values, { setSubmitting }) => {
+          if(this.state.mode === 'update') {
+            this.updateStory(values);
+          } else {
+            this.createStory(values);
+          }
+
+          setTimeout(() => {
+            //alert(JSON.stringify(values, null, 2));
+
+            setSubmitting(false);
+          }, 400);
+        }}
+          >
+            {({
+              values,
+              errors,
+              touched,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              handleDelete,
+              isSubmitting,
+              /* and other goodies */
+            }) => (
+
+              <Form size='large' onSubmit={this.handleSubmitCredit}>
+        <Editor
+          toolbarOnFocus
+           editorState={this.state.editorState}
+           wrapperClassName="demo-wrapper"
+           editorClassName="demo-editor"
+           onEditorStateChange={this.onEditorStateChange}
+           toolbar={options}
+           name="sinopsys"
+           placeholder='Sinopsys'
+           value={values.sinopsys}
+         />
+       </Form>
+     )}
+   </Formik>
+    );
+  }
+  EditForm = () => {
+    if(!this.state.active === 'Story') return null;
+    return (
+    <Formik
+      enableReinitialize={true}
+      initialValues={this.state.initialSValues}
+      validate={values => {
+        let errors = {};
+        return errors;
+      }}
+      onSubmit={(values, { setSubmitting }) => {
+        if(this.state.mode === 'update') {
+          this.updateStory(values);
+        } else {
+          this.createStory(values);
+        }
+
+        setTimeout(() => {
+          //alert(JSON.stringify(values, null, 2));
+
+          setSubmitting(false);
+        }, 400);
+      }}
+        >
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            handleDelete,
+            isSubmitting,
+            /* and other goodies */
+          }) => (
+
+            <Form size='large' onSubmit={this.handleSubmit}>
+              <input
+                placeholder='Artist'
+                type="text"
+                name="artist"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.artist}
+              />
+              <Divider horizontal>...</Divider>
+                <input
+                  placeholder='Title'
+                  autoFocus={true}
+                  type="text"
+                  name="title"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.title}
+                />
+              {errors.title && touched.title && errors.title}
+                <Divider horizontal>...</Divider>
+                <input
+                  placeholder='State'
+                  type="text"
+                  name="state"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.state}
+                />
+              {errors.state && touched.state && errors.state}
+                <Divider horizontal>...</Divider>
+                <input
+                  placeholder='City'
+                  type="text"
+                  name="city"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.city}
+                />
+              {errors.city && touched.city && errors.city}
+              <Checkbox
+                placeholder='Active'
+                ref = "active"
+                label = "Active"
+                name="active"
+                defaultChecked= {this.state.initialSValues.checked}
+                onChange = {(e, { checked }) => handleChange(checked)}
+                onBlur = {handleBlur}
+                value={(values.active === true) ? 1 : 0 }
+                toggle
+              />
+              {errors.active && touched.active && errors.active}
+              <Divider horizontal>...</Divider>
+              <Button onClick={handleSubmit} floated='right'color='violet'  size='large' type="submit" disabled={isSubmitting}>
+                {(this.state.mode === 'create') ? 'Create' : 'Update'}
+              </Button>
+              {(this.state.mode === 'update') ? (
+                <div>
+                  <Button onClick={this.show} color='red'  size='large' type="submit" disabled={isSubmitting}>
+                    <FormattedMessage id="app.story.delete" defaultMessage={`Delete Story`}/>
+                  </Button>
+                  <Confirm
+                     open={this.state.open}
+                     cancelButton='Never mind'
+                     confirmButton="Delete Story"
+                     onCancel={this.handleCancel}
+                     onConfirm={this.handleDelete}
+                   />
+                </div>
+              ) : '' }
+            </Form>
+          )}
+        </Formik>
+      );
+  }
+  setSteps = (obj) => {
+    if(obj) this.setState(obj);
+    console.log(obj);
+  }
+  handleChangeSteps= (e) =>{
+    return this.setSteps(e);
   }
   handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex });
   render() {
-    const { editorState } = this.state;
+
     return (
 
       <Container  className="view" fluid>
@@ -254,148 +483,12 @@ class Story extends Component {
               <Icon name='list' >  List stories</Icon>
             </Button>
           </Header>
-          <StorySteps sid={this.state.sid} active={this.state.active}/>
-          <Formik
-            enableReinitialize={true}
-            initialValues={this.state.initialSValues}
-            validate={values => {
-              let errors = {};
-              return errors;
-            }}
-            onSubmit={(values, { setSubmitting }) => {
-              if(this.state.mode === 'update') {
-                this.updateStory(values);
-              } else {
-                this.createStory(values);
-              }
-
-              setTimeout(() => {
-                //alert(JSON.stringify(values, null, 2));
-
-                setSubmitting(false);
-              }, 400);
-            }}
-              >
-                {({
-                  values,
-                  errors,
-                  touched,
-                  handleChange,
-                  handleBlur,
-                  handleSubmit,
-                  handleDelete,
-                  isSubmitting,
-                  /* and other goodies */
-                }) => (
-
-                  <Form size='large' onSubmit={this.handleSubmit}>
-                    <Tab panes={[
-                        {menuItem: 'Story', render:() => <Tab.Pane>
-                          <input
-                            placeholder='Title'
-                            autoFocus={true}
-                            type="text"
-                            name="title"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.title}
-                          />
-                        {errors.title && touched.title && errors.title}
-                          <Divider horizontal>...</Divider>
-                          <input
-                            placeholder='State'
-                            type="text"
-                            name="state"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.state}
-                          />
-                        {errors.state && touched.state && errors.state}
-                          <Divider horizontal>...</Divider>
-                          <input
-                            placeholder='City'
-                            type="text"
-                            name="city"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.city}
-                          />
-                        {errors.city && touched.city && errors.city}
-                          <Divider horizontal>...</Divider>
-                            <input
-                              placeholder='Artist'
-                              type="text"
-                              name="artist"
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.artist}
-                            />
-                            <Divider horizontal>...</Divider>
-                            <Checkbox
-                              placeholder='Active'
-                              ref = "active"
-                              label = "Active"
-                              name="active"
-                              defaultChecked= {this.state.initialSValues.checked}
-                              onChange = {(e, { checked }) => handleChange(checked)}
-                              onBlur = {handleBlur}
-                              value={(values.active === true) ? 1 : 0 }
-                              toggle
-                            />
-                            {errors.active && touched.active && errors.active}
-                          </Tab.Pane>},
-                        {menuItem: 'Sinopsys', render:() => <Tab.Pane>
-                          <Divider horizontal>...</Divider>
-                          <Editor
-                            toolbarOnFocus
-                             editorState={editorState}
-                             wrapperClassName="demo-wrapper"
-                             editorClassName="demo-editor"
-                             onEditorStateChange={this.onEditorStateChange}
-                             toolbar={options}
-                             name="sinopsys"
-                             placeholder='Sinopsys'
-                             value={values.sinopsys}
-                           />
-                        </Tab.Pane>},
-                        {menuItem: 'Credits', render:() => <Tab.Pane>
-                          <Divider horizontal>...</Divider>
-                          <Editor
-                            toolbarOnFocus
-                             editorState={editorState}
-                             wrapperClassName="demo-wrapper"
-                             editorClassName="demo-editor"
-                             onEditorStateChange={this.onEditorStateChange}
-                             toolbar={options}
-                             name="credits"
-                             placeholder='Credits'
-                             value={values.credits}
-                           />
-                        </Tab.Pane>},
-                      ]} />
-
-
-                    <Divider horizontal>...</Divider>
-                    <Button onClick={handleSubmit} floated='right'color='violet'  size='large' type="submit" disabled={isSubmitting}>
-                      {(this.state.mode === 'create') ? 'Create' : 'Update'}
-                    </Button>
-                    {(this.state.mode === 'update') ? (
-                      <div>
-                        <Button onClick={this.show} color='red'  size='large' type="submit" disabled={isSubmitting}>
-                          <FormattedMessage id="app.story.delete" defaultMessage={`Delete Story`}/>
-                        </Button>
-                        <Confirm
-                           open={this.state.open}
-                           cancelButton='Never mind'
-                           confirmButton="Delete Story"
-                           onCancel={this.handleCancel}
-                           onConfirm={this.handleDelete}
-                         />
-                      </div>
-                    ) : '' }
-                  </Form>
-                )}
-              </Formik>
+          <StorySteps sid={this.state.sid} active={this.state.active} state={this.state}/>
+          <Segment id='StepsContent'>
+            {this.EditForm()}
+            {this.EditSyno()}
+            {this.EditCred()}
+          </Segment>
         </Segment>
       </Container>
 
