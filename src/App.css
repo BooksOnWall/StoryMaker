@@ -22,7 +22,9 @@
 .App-link {
   color: #61dafb;
 }
-
+.ui.vertical.inverted.menu .menu .item {
+  padding: 1.2em;
+}
 .container {
   display: flex;
   flex-direction: column;
