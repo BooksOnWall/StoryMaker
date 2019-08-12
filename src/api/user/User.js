@@ -95,7 +95,8 @@ class User extends Component {
                 initialPValues: this.state.userEdit.initialPValues,
                 initialAValues: this.state.userEdit.initialAValues,
                 userPrefs: data,
-              }
+              },
+              loading: false,
             });
           } else {
             console.log('No Data received from the server');
