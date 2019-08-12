@@ -145,7 +145,7 @@ class User extends Component {
                 initialAValues: this.state.userEdit.initialAValues,
                 userPrefs: userPrefs,
               },
-              loading: null
+              loading: false
             });
             //this.data.setUserPreferences({locale: data.locale, theme: data.theme, avatar: data.avatar});
           } else {
