@@ -397,9 +397,8 @@ class User extends Component {
     }
   }
   editForm() {
-
     if(this.state.step !== 'User') {return null}
-
+    if(!this.state.userEdit.name && this.state.userEdit.mode === 'update') {return null}
     return (
       <Segment className="slide-out" >
       <Header as='h3' color='violet' textAlign='center'>
@@ -502,9 +501,9 @@ class User extends Component {
                name="active"
                label = 'Active'
                onBlur = {handleBlur}
-               defaultChecked= {(values && values.checked) ? values.checked : false }
+               defaultChecked ={(this.state.userEdit.initialUValues.active) ? true : false }
                onChange = {(e, { checked }) => handleChange(checked)}
-               defaultValue = {(values && values.active) ? values.active : true}
+               defaultValue = {(values && values.active) ? values.active : false}
               />
 
             {errors.active && touched.active && errors.active}
@@ -540,7 +539,7 @@ class User extends Component {
           <FormattedMessage id="app.user.passwdTitle" defaultMessage={`Change password`}/>
         </Header>
         <Formik
-          initialUValues={this.state.initialPValues}
+          initialUValues={this.state.userEdit.initialPValues}
           validate={values => {
             let errors = {};
             if (!values.password) {
@@ -577,7 +576,7 @@ class User extends Component {
             <Form  size='large' onSubmit={this.handleSubmit}>
               <Input
                 fluid
-                Icon='lock'
+                icon='lock'
                 iconposition='left'
                 placeholder='Password'
                 type="password"
@@ -588,7 +587,7 @@ class User extends Component {
                 />
               {errors.password && touched.password && errors.password}
               <Input
-                Icon='lock'
+                icon='lock'
                 iconposition='left'
                 fluid
                 placeholder='Repeat Password'

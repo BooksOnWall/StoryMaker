@@ -19,10 +19,7 @@ class storySteps extends Component {
   handleSteps = (e) => {
     e.preventDefault();
     let step = (e.target.name) ? e.target.name : null;
-    let to = (e.target.to && e.target.link) ? e.taget.to : null;
-    console.log(e.target.link);
     if (step) this.props.state.setSteps({step: step});
-    if(to) this.props.history.push(to);
   }
   render() {
     return (
@@ -39,6 +36,7 @@ class storySteps extends Component {
         <Step
           active={this.props.state.step === 'Synopsys'}
           disabled ={(this.props.state.mode === 'update') ? false : true }
+            completed = {this.props.state.synoCompleted}
           icon='sun'
           name='Synopsys'
           onClick={this.handleSteps}

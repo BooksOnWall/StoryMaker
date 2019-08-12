@@ -53,7 +53,7 @@ class artistSteps extends Component {
           name='Bio'
           onClick={this.handleSteps}
           icon='images'
-          title='book'
+          title='Bio'
           description='Artist Biography'
         />
       </Step.Group>

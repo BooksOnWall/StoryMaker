@@ -22,7 +22,7 @@ class storyStages extends Component {
   render() {
     if(this.props.step !== 'Stages') {return null}
     return (
-      <Segment  className="view stages" fluid>
+      <Segment  className="view stages">
         <span>Stages</span>
       </Segment>
     );

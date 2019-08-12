@@ -7,6 +7,8 @@ import {
   Container,
   Checkbox,
   Form,
+  Input,
+  Select,
   Icon,
   Button,
   Confirm,
@@ -21,6 +23,9 @@ import { Link } from 'react-router-dom';
 import { EditorState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+
+import htmlToDraft from 'html-to-draftjs';
+import draftToHtml from 'draftjs-to-html';
 // maps
 import StoryMap from './map/storyMap';
 //Stages
@@ -42,6 +47,8 @@ class Story extends Component {
     this.state = {
       server: server,
       stories: server + 'stories',
+      artists: server + 'artists',
+      artistOptions: [],
       sid: (!this.props.match.params.id) ? (0) : (parseInt(this.props.match.params.id)),
       mode: (parseInt(this.props.match.params.id) === 0) ? ('create') : ('update'),
       name: null,
@@ -49,9 +56,12 @@ class Story extends Component {
       map:  '/stories/' + this.props.match.params.id + '/map',
       loading: null,
       data: null,
+      synoState: EditorState.createEmpty(),
       step: 'Story',
       setSteps: this.setSteps,
       storyCompleted: false,
+      synoCompleted: false,
+      creditState: {},
       initialSValues: { title: '', state: '', city: '', sinopsys: '', credits: '', artist: '', active: true, checked: true},
       toggleAuthenticateStatus: this.props.childProps.toggleAuthenticateStatus,
       authenticated: this.props.childProps.authenticated,
@@ -70,7 +80,6 @@ class Story extends Component {
   }
   handleConfirm = () => this.setState({ open: false })
   handleCancel = () => this.setState({ open: false })
-
   handleChange(e) {
     const target = e.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -78,7 +87,71 @@ class Story extends Component {
     change[e.target.name] = value ;
     this.setState({initialSValues: change});
   }
+  listArtists = async (e) => {
+    try {
+      await  fetch(this.state.artists, {
+        method: 'GET',
+        headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'},
+      })
+      .then(response => {
+        if (response && !response.ok) { throw new Error(response.statusText);}
+        return response.json();
+      })
+      .then(data => {
+          if(data) {
+            let artists =[];
+            data.map((artist, index) =>
+              artists[index]= {key: artist.id, value:artist.id, text: artist.name}
+            );
+            this.setState({artistOptions: artists});
+          }
+      })
+      .catch((error) => {
+        // Your error is here!
+        console.log(error)
+      });
+    } catch(e) {
+      console.log(e.message);
+    }
+  }
+  handleSubmitSyno = async (e) => {
+    let html = draftToHtml(this.state.synoState);
+    if(html) {
+      try {
+        await fetch(this.state.stories+'/'+this.state.sid, {
+          method: 'PATCH',
+          headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json', charset:'utf-8' },
+          body:JSON.stringify({ sinopsys: html })
+        })
+        .then(response => {
+          if (response && !response.ok) { throw new Error(response.statusText);}
+          return response.json();
+        })
+        .then(data => {
+            if(data) {
+              // set Step complete and forward to next step
+              this.setState({storyComplete: true});
+              this.setState({synoComplete: true, step: 'Stages'});
+            }
+        })
+        .catch((error) => {
+          // Your error is here!
+          console.log(error)
+        });
+      } catch(e) {
+        console.log(e.message);
+      }
+    }
+    console.log(html);
+  }
+  handleSubmitCredit = async (values) => {
 
+  }
+  onSynoStateChange = (contentState) => {
+    this.setState({
+      synoState: contentState,
+    });
+  }
   async handleSubmit(e) {
     let mode = this.state.mode;
 
@@ -162,9 +235,6 @@ class Story extends Component {
           if(data) {
             // set Step complete and forward to next step
             this.setState({storyComplete: true, step: 'Synopsys'});
-
-            // redirect to users list page
-            //this.props.history.push('/stories');
           }
       })
       .catch((error) => {
@@ -189,7 +259,11 @@ class Story extends Component {
       })
       .then(data => {
           if(data) {
-
+            data.sinopsys = htmlToDraft(data.sinopsys);
+            this.setState({synoState: data.sinopsys});
+            console.log(data.sinopsys);
+            data.credits = htmlToDraft(data.credits);
+            this.setState({creditState: data.credits});
             this.setState({sid: data.id, title: data.title, artist: data.artist});
             this.setState({initialSValues: data});
             this.setState({loading: false});
@@ -233,17 +307,19 @@ class Story extends Component {
   async componentDidMount() {
     try {
       await this.state.toggleAuthenticateStatus;
+      await this.listArtists();
       if(this.state.mode === 'update')  await this.getStory();
 
     } catch(e) {
       console.log(e.message);
     }
   }
-  onEditorStateChange: Function = (editorState) => {
-    this.setState({
-      editorState,
-    });
-  };
+  onEditorStateChange = (editorState) => {
+    this.setState({editorState: editorState});
+  }
+  onSynoStateChange = (synoState) => {
+    this.setState({synoState: synoState});
+  }
   EditCred = () => {
     if(this.state.step !== 'Credits') {return null};
     return (
@@ -275,7 +351,7 @@ class Story extends Component {
                 touched,
                 handleChange,
                 handleBlur,
-                handleSubmit,
+                handleSubmitCredit,
                 handleDelete,
                 isSubmitting,
                 /* and other goodies */
@@ -294,6 +370,9 @@ class Story extends Component {
                      placeholder='Credits'
                      value={values.credits}
                    />
+                 <Button onClick={handleSubmitCredit} color='violet'  size='large' type="submit" disabled={isSubmitting}>
+                     {(this.state.mode === 'create') ? 'Create' : 'Update'}
+                   </Button>
                 </Form>
               )}
             </Formik>
@@ -302,22 +381,19 @@ class Story extends Component {
   }
   EditSyno = () => {
     if(this.state.step !== 'Synopsys') {return null;}
+    if(!this.state.synoState) {return null}
     return (
-    <Segment  className="view synopsys" fluid>
+    <Segment  className="view synopsys">
       <Formik
         enableReinitialize={true}
         initialValues={this.state.initialSValues}
         validate={values => {
           let errors = {};
+          console.log(this.state.synoState);
           return errors;
         }}
         onSubmit={(values, { setSubmitting }) => {
-          if(this.state.mode === 'update') {
-            this.updateStory(values);
-          } else {
-            this.createStory(values);
-          }
-
+          this.handleSubmitSyno(values);
           setTimeout(() => {
             //alert(JSON.stringify(values, null, 2));
 
@@ -331,24 +407,28 @@ class Story extends Component {
               touched,
               handleChange,
               handleBlur,
-              handleSubmit,
+              handleSubmitSyno,
               handleDelete,
               isSubmitting,
               /* and other goodies */
             }) => (
-
-              <Form size='large' onSubmit={this.handleSubmitCredit}>
-        <Editor
-          toolbarOnFocus
-           editorState={this.state.editorState}
-           wrapperClassName="demo-wrapper"
-           editorClassName="demo-editor"
-           onEditorStateChange={this.onEditorStateChange}
-           toolbar={options}
-           name="sinopsys"
-           placeholder='Sinopsys'
-           value={values.sinopsys}
-         />
+        <Form size='large' onSubmit={this.handleSubmitSyno}>
+          <Editor
+            toolbarOnFocus
+             editorState={this.state.editorState}
+             wrapperClassName="demo-wrapper"
+             editorClassName="demo-editor"
+             onEditorStateChange={this.onEditorStateChange}
+             onContentStateChange={this.onSynoStateChange}
+             defaultContentState={this.state.synoState}
+             toolbar={options}
+             name="sinopsys"
+             placeholder='Sinopsys'
+             value={values.sinopsys}
+           />
+         <Button onClick={handleSubmitSyno} floated='right'color='violet'  size='large' type="submit" disabled={isSubmitting}>
+             {(this.state.mode === 'create') ? 'Create' : 'Update'}
+           </Button>
        </Form>
      )}
    </Formik>
@@ -358,7 +438,7 @@ class Story extends Component {
   EditForm = () => {
     if(this.state.step !== 'Story') {return null;}
     return (
-    <Segment  className="view story" fluid>
+    <Segment  className="view story">
       <Formik
         enableReinitialize={true}
         initialValues={this.state.initialSValues}
@@ -393,16 +473,16 @@ class Story extends Component {
         }) => (
 
           <Form size='large' onSubmit={this.handleSubmit}>
-            <input
-              placeholder='Artist'
-              type="text"
+            <Select
+              placeholder='Select your Artist'
               name="artist"
+              options={this.state.artistOptions}
               onChange={handleChange}
               onBlur={handleBlur}
-              value={values.artist}
+              defaultValue={values.artist}
               />
             <Divider horizontal>...</Divider>
-            <input
+            <Input
               placeholder='Title'
               autoFocus={true}
               type="text"
@@ -413,7 +493,7 @@ class Story extends Component {
               />
             {errors.title && touched.title && errors.title}
             <Divider horizontal>...</Divider>
-            <input
+            <Input
               placeholder='State'
               type="text"
               name="state"
@@ -423,7 +503,7 @@ class Story extends Component {
               />
             {errors.state && touched.state && errors.state}
             <Divider horizontal>...</Divider>
-            <input
+            <Input
               placeholder='City'
               type="text"
               name="city"
@@ -470,7 +550,6 @@ class Story extends Component {
   }
   setSteps = (obj) => {
     if(obj) this.setState(obj);
-    console.log(obj);
   }
   handleChangeSteps= (e) =>{
     return this.setSteps(e);

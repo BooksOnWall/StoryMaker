@@ -254,9 +254,9 @@ const getStory = async obj => {
     where: obj,
   });
 };
-const patchStory = async ({ id, name, email, description }) => {
-  return await Stories.update({ id, name, email, description },
-    { where: {id : id}}
+const patchStory = async ({ sid, title, artist, state, city, sinopsys, credits, active }) => {
+  return await Stories.update({ title, artist, state, city, sinopsys, credits, active },
+    { where: {id : sid}}
   );
 }
 const deleteStory = async (sid) => {
@@ -520,15 +520,16 @@ app.get('/stories/:storyId', (req, res) => {
   let sid = req.params.storyId;
   getStory({id: sid}).then(user => res.json(user));
 });
-app.patch('/stories/:storytId', function(req, res, next) {
+app.patch('/stories/:storyId', function(req, res, next) {
   const { title, artist, state, city, sinopsys, credits, active } = req.body;
-  let id = req.params.storyId;
-  patchStory({ id, title, artist, state, city, sinopsys, credits, active }).then(user =>
+  let sid = parseInt(req.params.storyId);
+  console.log(sid);
+  patchStory({ sid, title, artist, state, city, sinopsys, credits, active }).then(user =>
       res.json({ user, msg: 'Story updated successfully' })
     );
 });
 app.delete('/stories/:storyId', function(req, res, next) {
-  let sid = req.params.storyId;
+  let sid = parseInt(req.params.storyId);
   deleteStory(sid).then(user => {
       res.json({ user, msg: 'Story destroyed successfully' })
   });
