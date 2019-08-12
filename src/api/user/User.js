@@ -5,9 +5,9 @@ import {
   Header,
   Divider,
   Container,
-  Tab,
   Form,
   Icon,
+  Input,
   Button,
   Checkbox,
   Confirm,
@@ -20,13 +20,14 @@ import UsersSteps from './usersSteps';
 import UserPref from './userPreferences';
 import UserAvatar from './userAvatar';
 import { Link } from 'react-router-dom';
+
 import {
   injectIntl,
   FormattedMessage } from 'react-intl';
+
 import _ from 'lodash';
 
 class User extends Component {
-
   constructor(props) {
     super(props);
     let protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
@@ -41,7 +42,8 @@ class User extends Component {
       userp: server + 'users/',
       userPref: server + 'userPref/',
       user: this.props.state.user,
-      active : 'User',
+      step : 'User',
+      setSteps: this.setSteps,
       userEdit: {
         mode: (parseInt(this.props.match.params.id) === 0) ? ('create') : ('update'),
         uid: (!this.props.match.params.id) ? (0) : (parseInt(this.props.match.params.id)),
@@ -54,6 +56,7 @@ class User extends Component {
       authenticated: this.props.authenticated,
       setUserPreferences: this.props.state.setUserPreferences,
     };
+    this.setSteps = this.setSteps.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleSubmitP = this.handleSubmitP.bind(this);
@@ -66,7 +69,12 @@ class User extends Component {
   show = () => this.setState({ open: true })
   handleConfirm = () => this.setState({ open: false })
   handleCancel = () => this.setState({ open: false })
-
+  setSteps = (obj) => {
+    if(obj) this.setState(obj);
+  }
+  handleChangeSteps= (e) =>{
+    return this.setSteps(e);
+  }
   async getUserPref() {
     try {
       await fetch(this.state.userPref+this.state.userEdit.uid, {
@@ -89,7 +97,6 @@ class User extends Component {
                 userPrefs: data,
               }
             });
-            this.setState({loading: false});
           } else {
             console.log('No Data received from the server');
           }
@@ -129,11 +136,13 @@ class User extends Component {
               userEdit: {
                 uid: this.state.userEdit.uid,
                 name: this.state.userEdit.name,
+                mode: this.state.userEdit.mode,
                 initialUValues: this.state.userEdit.initialUValues,
                 initialPValues: this.state.userEdit.initialPValues,
                 initialAValues: this.state.userEdit.initialAValues,
                 userPrefs: userPrefs,
-              }
+              },
+              loading: false,
             });
             //this.data.setUserPreferences({locale: data.locale, theme: data.theme, avatar: data.avatar});
           } else {
@@ -170,11 +179,19 @@ class User extends Component {
               userEdit: {
                 uid: data.id,
                 name: data.name,
-                initialUValues: data,
+                mode: this.state.userEdit.mode,
+                initialUValues: {
+                  name: data.name,
+                  email: data.email,
+                  password: '',
+                  password2: '',
+                  active: data.active,
+                  checked: data.checked,
+                },
                 initialPValues: this.state.userEdit.initialPValues,
                 initialAValues: this.state.userEdit.initialAValues,
               },
-              loading: false,
+              loading: true,
             });
             return this.getUserPreferences(data);
           } else {
@@ -318,7 +335,6 @@ class User extends Component {
     }
   }
   handleChange(e) {
-    console.log(e.target);
     const target = e.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     let change = {};
@@ -327,6 +343,7 @@ class User extends Component {
       userEdit: {
         uid: this.state.userEdit.uid,
         name: this.state.userEdit.name,
+        mode: this.state.userEdit.mode,
         initialUValues: change,
         initialPValues: this.state.userEdit.initialPValues,
         initialAValues: this.state.userEdit.initialAValues,
@@ -371,15 +388,20 @@ class User extends Component {
   async componentDidMount() {
     try {
       await this.props.state.toggleAuthenticateStatus;
-      if(this.state.userEdit.mode === 'update')  await this.getUser();
+      if(this.state.userEdit.mode === 'update') {
+        await this.getUser();
+      }
 
     } catch(e) {
       console.log(e.message);
     }
   }
   editForm() {
+
+    if(this.state.step !== 'User') {return null}
+
     return (
-      <Segment className="view" >
+      <Segment className="slide-out" >
       <Header as='h3' color='violet' textAlign='center'>
         {(this.state.userEdit.mode === 'create') ? <FormattedMessage id="app.user.create" defaultMessage={`Create user`}/> : <FormattedMessage id="app.user.edit" defaultMessage={`Edit user`}/> }
       </Header>
@@ -422,38 +444,38 @@ class User extends Component {
           isSubmitting,
           /* and other goodies */
         }) => (
-          <Form className='slide-out' size='large' onSubmit={this.handleSubmit}>
-            <input
+          <Form size='large' onSubmit={this.handleSubmit}>
+            <Input
               icon='user'
               iconposition='left'
-              placeholder=<FormattedMessage id="app.user.name" defaultMessage={`Name`}/>
+              placeholder= {<FormattedMessage id="app.user.userEdit.name" defaultMessage={'Name'}/>}
               autoFocus={true}
               type="text"
               name="name"
               onChange={handleChange}
               onBlur={handleBlur}
-              value={(values && values.name) ? values.name : ''}
+              defaultValue={(values && values.name) ? values.name : ''}
             />
             {errors.name && touched.name && errors.name}
-            <Divider horizontal>...</Divider>
-            <input
-              icon='user'
+
+            <Input
+              icon='mail'
               iconposition='left'
-              placeholder=<FormattedMessage id="app.user.email" defaultMessage={`Email`}/>
+              placeholder={<FormattedMessage id="app.user.userEdit.email" defaultMessage={'Email'}/>}
               type="email"
               name="email"
               onChange={handleChange}
               onBlur={handleBlur}
-              value={(values && values.email) ? values.email : ''}
+              defaultValue={(values && values.email) ? values.email : ''}
             />
             {errors.email && touched.email && errors.email}
             {(this.state.userEdit.mode === 'create') ? (
               <div>
-                <Divider horizontal>...</Divider>
-                <input
+
+                <Input
                   icon='lock'
                   iconposition='left'
-                  placeholder=<FormattedMessage id="app.user.password" defaultMessage={`Password`}/>
+                  placeholder={<FormattedMessage id="app.user.userEdit.password" defaultMessage={'Password'}/>}
                   type="password"
                   name="password"
                   onChange={handleChange}
@@ -461,11 +483,11 @@ class User extends Component {
                   value={values.password}
                 />
               {errors.password && touched.password && errors.password}
-              <Divider horizontal>...</Divider>
-                <input
+
+                <Input
                   icon='lock'
                   iconposition='left'
-                  placeholder=<FormattedMessage id="app.user.repeatpassword" defaultMessage={`Repeat Password`}/>
+                  placeholder={<FormattedMessage id="app.user.userEdit.repeatpassword" defaultMessage={'Repeat Password'}/>}
                   type="password"
                   name="password2"
                   onChange={handleChange}
@@ -475,20 +497,16 @@ class User extends Component {
               {errors.password2 && touched.password2 && errors.password2}
             </div>
               ) : ''}
-            <Divider horizontal>...</Divider>
-            <Checkbox
-              icon='user'
-              iconposition='left'
-              placeholder='Active'
-              ref = "active"
-              name="active"
-              defaultChecked= {(values && values.checked) ? values.checked : false }
-              onChange = {(e, { checked }) => handleChange(checked)}
-              onBlur = {handleBlur}
-              defaultValue={(values && values.active) ? values.active : 0}
-              toggle
-              label = <FormattedMessage id="app.user.active" defaultMessage={`Active`} />
-            />
+             <Checkbox
+               toggle
+               name="active"
+               label = 'Active'
+               onBlur = {handleBlur}
+               defaultChecked= {(values && values.checked) ? values.checked : false }
+               onChange = {(e, { checked }) => handleChange(checked)}
+               defaultValue = {(values && values.active) ? values.active : true}
+              />
+
             {errors.active && touched.active && errors.active}
             <Divider horizontal>...</Divider>
               <Button onClick={handleSubmit} color='violet'   floated='right' type="submit" disabled={isSubmitting}>
@@ -515,13 +533,13 @@ class User extends Component {
     )
   }
   editPasswd() {
+    if(this.state.step !== 'Password') {return null}
     return(
-      <Segment>
+      <Segment className='slide-out'>
         <Header as='h3' color='violet' textAlign='center'>
           <FormattedMessage id="app.user.passwdTitle" defaultMessage={`Change password`}/>
         </Header>
         <Formik
-
           initialUValues={this.state.initialPValues}
           validate={values => {
             let errors = {};
@@ -556,29 +574,29 @@ class User extends Component {
             isSubmitting,
             /* and other goodies */
           }) => (
-            <Form className='slide-out' size='large' onSubmit={this.handleSubmit}>
-              <Divider horizontal>...</Divider>
-              <input
-                icon='lock'
+            <Form  size='large' onSubmit={this.handleSubmit}>
+              <Input
+                fluid
+                Icon='lock'
                 iconposition='left'
                 placeholder='Password'
                 type="password"
                 name="password"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={(values && values.password) ? values.password : '' }
+                defaultValue={(values && values.password) ? values.password : '' }
                 />
               {errors.password && touched.password && errors.password}
-              <Divider horizontal>...</Divider>
-              <input
-                icon='lock'
+              <Input
+                Icon='lock'
                 iconposition='left'
+                fluid
                 placeholder='Repeat Password'
                 type="password"
                 name="password2"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={(values && values.password2) ? values.password2 : '' }
+                defaultValue={(values && values.password2) ? values.password2 : '' }
                 />
               {errors.password2 && touched.password2 && errors.password2}
               <Divider horizontal>...</Divider>
@@ -592,59 +610,43 @@ class User extends Component {
     );
   }
   editPrefs() {
+    if(this.state.step !== 'Preferences') {return null}
     return (
-      <Segment>
-        <Header as='h3' color='violet' textAlign='center'>
-          User Preferences
-        </Header>
         <UserPref state={this.props.state} id={parseInt(this.props.match.params.id)} toggleAuthenticateStatus={() => this.state.toggleAuthenticateStatus} />
-      </Segment>
     );
   }
   editAvatar() {
+    if(this.state.step !== 'Avatar') {return null}
     return (
       <UserAvatar state={this.props.state} id={parseInt(this.props.match.params.id)} toggleAuthenticateStatus={() => this.state.toggleAuthenticateStatus}/>
     );
   }
-  setTab = (e, num) => {
-
-    //this.setState({ activeIndex: num });
-  }
-  handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex });
-  render() {
+render() {
     // display render only afetr we get initialUValues for update mode
     if (this.state.userEdit.initialUValues === null && this.state.userEdit.mode === 'update') return null;
+    if (this.state.userEdit.initialUValues.name ==='' && this.state.userEdit.mode === 'update') { return null }
+    console.log(this.state.userEdit.initialUValues);
     return (
 
-      <Container  className="view" fluid >
+      <Container className="view" fluid >
         <Dimmer active={this.state.loading}>
           <Loader active={this.state.loading} >
             <FormattedMessage id="app.user.loading" defaultMessage={`Get user info`}/>
           </Loader>
         </Dimmer>
-
         <Header as='h6' icon floated='left'>
             <Link to="/users">
               <Icon name='list' />
                List user
             </Link>
         </Header>
-        <UsersSteps uid={this.state.uid} active={this.state.active} />
-        <Tab menu={{   borderless: true, attached: false, tabular: false , primary: true, pointing: true }} panes={[
-            { menuItem: 'Edit User',
-              render: () => <Tab.Pane>{this.editForm()}</Tab.Pane>,
-            },
-            { menuItem: 'Password',
-              render: () => <Tab.Pane>{this.editPasswd()}</Tab.Pane>,
-            },
-            { menuItem: 'Preferences',
-              render: () => <Tab.Pane>{this.editPrefs()}</Tab.Pane>,
-            },
-            { menuItem: 'Avatar',
-              render: () => <Tab.Pane>{this.editAvatar()}</Tab.Pane>,
-            }
-          ]}
-        />
+        <UsersSteps uid={this.state.userEdit.uid} step={this.state.step} state={this.state}/>
+        <Segment>
+            {this.editForm()}
+            {this.editPasswd()}
+            {this.editPrefs()}
+            {this.editAvatar()}
+        </Segment>
       </Container>
 
     );

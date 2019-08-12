@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import { Divider, Input, Label, Dropdown, Container, Image, Button, Icon,  Menu, Segment } from 'semantic-ui-react';
+import { Divider,  Image, Icon,  Menu, Segment } from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
 import UserContext from '../context/UserContext';
-import Logo from '../logo.svg';
+
 class LeftSlideMenu extends Component {
   constructor(props) {
     super(props);

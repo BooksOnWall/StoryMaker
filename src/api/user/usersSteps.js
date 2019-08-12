@@ -5,48 +5,58 @@ import {
 } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
 
-import { Link } from 'react-router-dom';
 class userSteps extends Component {
   constructor(props) {
     super(props);
     this.state = {
       aid: this.props.aid,
-      active: this.props.active
+      active: this.props.step
     }
+  }
+  handleSteps = (e) => {
+    e.preventDefault();
+    let step = (e.target.name) ? e.target.name : null;
+    let to = (e.target.to && e.target.link) ? e.taget.to : null;
+    if (step) this.props.state.setSteps({step: step});
+    if(to) this.props.history.push(to);
   }
   render() {
 
     return (
       <Step.Group fluid ordered>
         <Step
-          active={this.state.active === 'User'}
+          active={this.props.state.step === 'User'}
           icon='user'
-          link
-          num = {1}
+          disabled = {false}
+          name='User'
+          onClick={this.handleSteps}
           title='Edit User'
           description='Edit user things'
         />
         <Step
-          active={this.state.active === 'Password'}
+          active={this.props.state.step === 'Password'}
           icon='user secret'
-          link
-          num = {2}
+          disabled ={(this.props.state.userEdit.mode === 'update') ? false : true }
+          name='Password'
+          onClick={this.handleSteps}
           title='Password'
           description='Change user password'
         />
         <Step
-          active={this.state.active === 'Preferences'}
+          active={this.props.state.step === 'Preferences'}
           icon='wordpress forms'
-          link
-          num = {3}
+          disabled ={(this.props.state.userEdit.mode === 'update') ? false : true }
+          name='Preferences'
+          onClick={this.handleSteps}
           title='Preferences'
           description='User preferences'
         />
         <Step
-          active={this.state.active === 'Avatar'}
+          active={this.props.state.step === 'Avatar'}
           icon='user circle'
-          link
-          num = {3}
+          disabled ={(this.props.state.userEdit.mode === 'update') ? false : true }
+          name='Avatar'
+          onClick={this.handleSteps}
           title='Avatar'
           description='User avatar'
         />

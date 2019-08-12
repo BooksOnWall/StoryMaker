@@ -5,7 +5,6 @@ import {
 } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
 
-import { Link } from 'react-router-dom';
 class storySteps extends Component {
   constructor(props) {
     super(props);
@@ -13,48 +12,43 @@ class storySteps extends Component {
       sid: this.props.sid,
       mapPath: (this.props.active === 'Map') ? window.location.reload : this.props.sid + '/map',
       stagesPath: (this.props.active === 'Stages') ? window.location.reload : this.props.sid + '/stages',
-      active: this.props.active
+      step: this.props.step
     }
     this.handleSteps = this.handleSteps.bind(this);
   }
   handleSteps = (e) => {
     e.preventDefault();
-    let active = (e.target.name) ? e.target.name : null;
+    let step = (e.target.name) ? e.target.name : null;
     let to = (e.target.to && e.target.link) ? e.taget.to : null;
     console.log(e.target.link);
-    if (active) this.props.state.setSteps({active: active});
+    if (step) this.props.state.setSteps({step: step});
     if(to) this.props.history.push(to);
   }
   render() {
     return (
       <Step.Group fluid ordered>
         <Step
-          active={this.props.state.active === 'Story'}
           icon='star'
-          link
+          active = {this.props.state.step === 'Story'}
+          completed = {this.props.state.storyCompleted}
           name='Story'
-          num = {1}
           onClick={this.handleSteps}
           title='Story'
           description='Story things'
         />
         <Step
-          active={this.props.state.active === 'Synopsys'}
+          active={this.props.state.step === 'Synopsys'}
+          disabled ={(this.props.state.mode === 'update') ? false : true }
           icon='sun'
-          link
-          num = {2}
           name='Synopsys'
-          to='synopsis'
           onClick={this.handleSteps}
           title='Synopsys'
           description='Synopsys of the story'
         />
         <Step
-          active={this.props.state.active === 'Stages'}
+          active={this.props.state.step === 'Stages'}
+          disabled ={(this.props.state.mode === 'update') ? false : true }
           icon='google wallet'
-          link
-          num = {4}
-          as={Link}
           name='Stages'
           to={this.props.state.stagesPath}
           onClick={this.handleSteps}
@@ -62,23 +56,20 @@ class storySteps extends Component {
           description='Stages of your story'
         />
         <Step
-          active={this.props.state.active === 'Map'}
+          active={this.props.state.step === 'Map'}
+          disabled ={(this.props.state.mode === 'update') ? false : true }
           icon='map'
-          link
-          num = {5}
-          as={Link}
           name='Map'
           to={this.state.mapPath}
           onClick={this.handleSteps}
-          href='map'
           title='Map'
           description='Design the map for this story'
         />
         <Step
-          active={this.state.active === 'Credits'}
+          active={this.props.state.step === 'Credits'}
+          disabled ={(this.props.state.mode === 'update') ? false : true }
           icon='credit card'
-          link
-          num = {3}
+          name='Credits'
           onClick={this.handleSteps}
           title='Credits'
           description='Credits for this story'

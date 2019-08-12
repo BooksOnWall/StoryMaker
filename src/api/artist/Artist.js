@@ -6,7 +6,6 @@ import {
   Divider,
   Form,
   Icon,
-  Tab,
   Button,
   Image,
   Confirm,
@@ -103,7 +102,9 @@ class Artist extends Component {
       data: null,
       images: [],
       percent: 0,
-      active: 'Artist',
+      step: 'Artist',
+      setSteps: this.setSteps,
+      artistCompleted: false,
       activeIndex: parseInt(1),
       selectedFile: null,
       setImages: this.setImages,
@@ -114,7 +115,7 @@ class Artist extends Component {
       open: false,
       editorState: EditorState.createEmpty(),
     };
-    this.setTab = this.setTab.bind(this);
+    this.setSteps = this.setSteps.bind(this);
     this.setImages = this.setImages.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -125,7 +126,13 @@ class Artist extends Component {
   show = () => this.setState({ open: true })
   handleConfirm = () => this.setState({ open: false })
   handleCancel = () => this.setState({ open: false })
-
+  setSteps = (obj) => {
+    if(obj) this.setState(obj);
+    console.log(obj);
+  }
+  handleChangeSteps= (e) =>{
+    return this.setSteps(e);
+  }
   handleChange(e) {
 
     const target = e.target;
@@ -345,6 +352,7 @@ class Artist extends Component {
     this.setState({images: {files} });
   }
   editArtist(values) {
+      if(this.state.step !== 'Artist') {return null;}
       return (
         <div>
         <Header as='h6' icon >
@@ -445,6 +453,7 @@ class Artist extends Component {
     );
   }
   editImages(values) {
+        if(this.state.step !== 'Images') {return null;}
     return (
       <Formik
         enableReinitialize={true}
@@ -496,6 +505,7 @@ class Artist extends Component {
     );
   }
   editBio(values) {
+        if(this.state.step !== 'Bio') {return null;}
     return (
       <Formik
         enableReinitialize={true}
@@ -567,11 +577,6 @@ class Artist extends Component {
      selectedFile: event.target.files,
    });
   }
-  setTab = (e, num) => {
-
-    //this.setState({ activeIndex: num });
-  }
-  handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex });
   render() {
     return (
         <Segment className="view" >
@@ -584,23 +589,10 @@ class Artist extends Component {
               List artists
             </Link>
           </Header>
-          <ArtistSteps  aid={this.state.aid} active={this.state.active}/>
-          <Tab
-            menu={{  borderless: true, attached: false, tabular: false , primary: true, pointing: true }}
-            panes={[
-              { menuItem: 'Edit Artist',
-                render: () => <Tab.Pane>{this.editArtist(this.state.initialAValues)}</Tab.Pane>,
-              },
-              { menuItem: 'Images',
-                render: () => <Tab.Pane>{this.editImages(this.state.initialAValues)}</Tab.Pane>,
-              },
-              { menuItem: 'Bio',
-                render: () => <Tab.Pane>{this.editBio(this.state.initialAValues)}</Tab.Pane>,
-              }
-            ]}
-            activeIndex={this.state.activeIndex}
-            onTabChange={this.handleTabChange}
-          />
+          <ArtistSteps  aid={this.state.aid} step={this.state.step} state={this.state}/>
+          {this.editArtist(this.state.initialAValues)}
+          {this.editImages(this.state.initialAValues)}
+          {this.editBio(this.state.initialAValues)}
         </Segment>
 
 

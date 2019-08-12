@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Dimmer, Loader, Segment, Header, Table, Icon, Menu } from 'semantic-ui-react';
+import { Container, Dimmer, Loader, Segment, Header, Table, Icon } from 'semantic-ui-react';
 import Moment from 'moment';
 import { Link } from 'react-router-dom';
 import { injectIntl, FormattedMessage } from 'react-intl';
@@ -96,7 +96,7 @@ class Users extends Component {
         </Loader>
       </Dimmer>
       <Segment style={{fontSize: '.9em'}}>
-        <Header as='h6' icon floated='right'>
+        <Header as='h6' icon floated='left'>
           <Link to="/users/0">
             <Icon name='add user' />
               <FormattedMessage id="app.users.adduser" defaultMessage={`Add user`}/>
@@ -161,7 +161,7 @@ class Users extends Component {
               </Table.Row>
             ))}
           </Table.Body>
-        
+
         </Table>
       </Segment>
     </Container>

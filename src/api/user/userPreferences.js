@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Container,
+  Segment,
   Label,
   Divider,
   Dimmer,
@@ -128,7 +128,7 @@ class userPreferences extends Component {
   render() {
     if (this.state.theme.value === null && this.state.locale.value === null) return null;
     return (
-      <Container className="view" >
+      <Segment className='slide-out'>
         <Dimmer active={this.state.loading}>
           <Loader active={this.state.loading} >
             <FormattedMessage id="app.userPrefs.loading" defaultMessage={`Get users preferences`}/>
@@ -175,7 +175,7 @@ class userPreferences extends Component {
             </LocaleContext.Consumer>
 
 
-       </Container>
+       </Segment>
     );
   }
 }

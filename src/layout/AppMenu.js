@@ -3,14 +3,12 @@ import {
   Menu,
   Container,
   Image,
-  Dropdown,
   Icon,
   Button
 } from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
 
 import Logo from '../logo.svg';
-import UserContext from '../context/UserContext';
 
 class AppMenu extends Component {
   constructor(props) {

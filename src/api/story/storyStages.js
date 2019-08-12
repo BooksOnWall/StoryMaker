@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import StorySteps from './storySteps';
+
 
 import {
-  Step,
   Segment,
 } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
@@ -16,14 +15,15 @@ class storyStages extends Component {
     this.state = {
       active: 'Stages',
       server: server,
-      sid: (!this.props.match.params.id) ? (0) : (parseInt(this.props.match.params.id)),
-      mode: (parseInt(this.props.match.params.id) === 0) ? ('create') : ('update'),
+      sid: parseInt(this.props.sid),
+      mode: (parseInt(this.props.sid) === 0) ? ('create') : ('update'),
     }
   }
   render() {
+    if(this.props.step !== 'Stages') {return null}
     return (
-      <Segment fluid>
-        <StorySteps sid={this.state.sid} active={this.state.active}/>
+      <Segment  className="view stages" fluid>
+        <span>Stages</span>
       </Segment>
     );
   }

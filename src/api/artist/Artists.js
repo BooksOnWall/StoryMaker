@@ -91,7 +91,7 @@ class Artists extends Component {
         <Dimmer active={this.state.loading}>
           <Loader active={this.state.loading} >Get users info</Loader>
         </Dimmer>
-        <Header as='h6' icon floated='right'>
+        <Header as='h6' icon floated='left'>
           <Link to="/artists/0">
             <Icon name='meh' />
             Add Artist
