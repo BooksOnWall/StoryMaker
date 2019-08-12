@@ -12,28 +12,38 @@
     },
     "user": {
       "edit": "Edit user",
-      "name": "Name",
-      "email": "Email",
-      "active": "Active",
-      "cancel": "Never Mind",
+      "theme": "Choose your theme",
       "create": "Create user",
-      "delete": "Delete",
+      "delete": "Delete user",
+      "locale": "Choose your Language",
       "update": "Update",
       "created": "Create",
       "loading": "Get user info",
-      "password": "Password",
       "required": "Required",
-      "deleteUser": "Delete User",
       "passwdTitle": "Change password",
       "wrongPasswd": "Invalid repeat password",
       "invalidEmail": "Invalid email",
-      "repeatpassword": "Repeat Password"
+      "userEdit": {
+        "name": "Name",
+        "email": "Email",
+        "password": "Password",
+        "repeatpassword": "Repeat Password"
+      }
     },
     "home": {
       "title": "Books on Wall",
       "logged": "You are  logged in.!",
       "subtitle": "This is the home page.",
       "unlogged": "You are not logged in.!"
+    },
+    "story": {
+      "delete": "Delete Story"
+    },
+    "artist": {
+      "delete": "Delete Artist"
+    },
+    "userPrefs": {
+      "loading": "Get users preferences"
     }
   }
 }

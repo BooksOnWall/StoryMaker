@@ -12,28 +12,38 @@
     },
     "user": {
       "edit": "",
-      "name": "",
-      "email": "",
-      "active": "",
-      "cancel": "",
+      "theme": "",
       "create": "",
       "delete": "",
+      "locale": "",
       "update": "",
       "created": "",
       "loading": "",
-      "password": "",
       "required": "",
-      "deleteUser": "",
       "passwdTitle": "",
       "wrongPasswd": "",
       "invalidEmail": "",
-      "repeatpassword": ""
+      "userEdit": {
+        "name": "",
+        "email": "",
+        "password": "",
+        "repeatpassword": ""
+      }
     },
     "home": {
       "title": "",
       "logged": "",
       "subtitle": "",
       "unlogged": ""
+    },
+    "story": {
+      "delete": ""
+    },
+    "artist": {
+      "delete": ""
+    },
+    "userPrefs": {
+      "loading": ""
     }
   }
 }
