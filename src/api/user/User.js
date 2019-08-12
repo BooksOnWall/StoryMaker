@@ -121,13 +121,13 @@ class User extends Component {
         return response.json();
       })
       .then(datas => {
+        // todo moved avatar image to single file upload and return path to store in pvalue
           if(datas) {
-            console.log(datas)
             let userPrefs = [];
             if(datas && datas.length > 0) {
               _.map(datas, ({ id, pname, pvalue }) => {
                 console.log(pvalue);
-                pvalue = JSON.parse(pvalue);
+                pvalue = (pname === 'avatar') ? '' : JSON.parse(pvalue);
                 userPrefs.push({[pname]: pvalue});
               });
             }
