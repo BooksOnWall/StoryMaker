@@ -122,9 +122,11 @@ class User extends Component {
       })
       .then(datas => {
           if(datas) {
+            console.log(datas)
             let userPrefs = [];
             if(datas && datas.length > 0) {
               _.map(datas, ({ id, pname, pvalue }) => {
+                console.log(pvalue);
                 pvalue = JSON.parse(pvalue);
                 userPrefs.push({[pname]: pvalue});
               });
