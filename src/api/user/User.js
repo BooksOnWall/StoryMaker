@@ -143,7 +143,7 @@ class User extends Component {
                 initialUValues: this.state.userEdit.initialUValues,
                 initialPValues: this.state.userEdit.initialPValues,
                 initialAValues: this.state.userEdit.initialAValues,
-                userPrefs: userPrefs,
+                userPrefs: (userPrefs) ? userPrefs : null,
               },
               loading: false
             });
