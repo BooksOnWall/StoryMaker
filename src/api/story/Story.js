@@ -146,11 +146,12 @@ class Story extends Component {
     }
   }
   handleSubmitSyno = async (e) => {
+    let sinopsys = (this.state.sinopsys) ? this.state.sinopsys : '';
       try {
         await fetch(this.state.stories+'/'+this.state.sid, {
           method: 'PATCH',
           headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json', charset:'utf-8' },
-          body:JSON.stringify({ sinopsys: this.state.sinopsys})
+          body:JSON.stringify({ sinopsys: sinopsys})
         })
         .then(response => {
           if (response && !response.ok) { throw new Error(response.statusText);}
@@ -248,8 +249,8 @@ class Story extends Component {
           artist:parseInt(this.state.artist),
           state:this.state.state,
           city: this.state.city,
-          sinopsys: this.state.sinopsys,
-          credits: this.state.credits,
+          sinopsys: (this.state.sinopsys) ? this.state.sinopsys : '',
+          credits: (this.state.credits) ? this.state.credits : '',
           active: parseInt(this.state.active),
         })
       })
@@ -318,9 +319,10 @@ class Story extends Component {
       })
       .then(data => {
           if(data) {
-            console.log(data);
+
             //data.sinopsys = htmlToDraft(data.sinopsys);
-            this.setState({synoState: htmlToState(data.sinopsys)});
+            this.setState({synoState: (data.sinopsys) ? htmlToState(data.sinopsys) : htmlToState(' Toto ') });
+            this.setState({creditState: (data.credits) ? htmlToState(data.credits) : htmlToState(' Toto ') });
             //data.credits = htmlToDraft(data.credits);
             //this.setState({creditState: data.credits});
             this.setState({sid: data.id, title: data.title, artist: data.artist});
