@@ -16,12 +16,12 @@ module.exports.stories = {
   sinopsys: {
     type: Sequelize.TEXT,
     allowNull: true,
-    defaultValue: null
+    defaultValue: ''
   },
   credits: {
     type: Sequelize.TEXT,
     allowNull: true,
-    defaultValue: null
+    defaultValue: ''
   },
   artist: {
     type: Sequelize.INTEGER,

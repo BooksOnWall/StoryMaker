@@ -20,10 +20,9 @@ import { Formik } from 'formik';
 import StorySteps from './storySteps';
 import { Link } from 'react-router-dom';
 //wysiwyg editor for textarea form fields
-import { ContentState, EditorState,  convertFromHTML, convertToRaw } from 'draft-js';
-import { convertToHTML } from 'draft-convert';
+import { EditorState,  ContentState, convertFromHTML, convertToRaw } from 'draft-js';
 import Editor from 'react-draft-wysiwyg';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 // maps
 import StoryMap from './map/storyMap';
@@ -42,7 +41,13 @@ const stateToHtml = (synoState) => {
   const content = convertToRaw(synoState.getCurrentContent());
   return content;
 };
-
+let options = {
+    inline: { inDropdown: true },
+    list: { inDropdown: true },
+    textAlign: { inDropdown: true },
+    link: { inDropdown: true },
+    history: { inDropdown: true },
+};
 
 class Story extends Component {
 
@@ -52,12 +57,13 @@ class Story extends Component {
     let protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
     let domain = protocol + '://' + process.env.REACT_APP_SERVER_HOST;
     let server = domain + ':'+ process.env.REACT_APP_SERVER_PORT+'/';
-    let synoState;
-    const scontentState = ContentState.createFromBlockArray(convertFromHTML('<H1>Sinopsis</H1>'));
-    synoState = EditorState.createWithContent(scontentState);
-    let creditState;
-    const ccontentState = ContentState.createFromBlockArray(convertFromHTML('<H1>Credits</H1>'));
-    creditState = EditorState.createWithContent(ccontentState);
+    //let synoState;
+    //const scontentState = ContentState.createFromBlockArray(convertFromHTML('<H1>Sinopsis</H1>'));
+    //synoState = EditorState.createWithContent(scontentState);
+    //synoState= EditorState.createEmpty();
+    //let creditState;
+    //const ccontentState = ContentState.createFromBlockArray(convertFromHTML('<H1>Credits</H1>'));
+    //creditState = EditorState.createWithContent(ccontentState);
 
     this.state = {
       server: server,
@@ -72,13 +78,14 @@ class Story extends Component {
       map:  '/stories/' + this.props.match.params.id + '/map',
       loading: null,
       data: null,
-      synoState: synoState ,
+      synoState: EditorState.createEmpty() ,
+      editorState: EditorState.createEmpty(),
       step: 'Story',
       artist: parseInt(1),
       setSteps: this.setSteps,
       storyCompleted: false,
       synoCompleted: false,
-      creditState: creditState,
+      creditState: EditorState.createEmpty(),
       toggleAuthenticateStatus: this.props.childProps.toggleAuthenticateStatus,
       authenticated: this.props.childProps.authenticated,
       open: false,
@@ -202,20 +209,7 @@ class Story extends Component {
       console.log(e.message);
     }
   }
-  onSynoStateChange = (synoState) => {
-    console.log(synoState);
-    this.setState({
-      synoState: synoState,
-      sinopsys: stateToHtml(synoState),
-    });
 
-  }
-  onCreditStateChange = (creditState) => {
-    this.setState({
-      creditState: creditState,
-      credit: stateToHtml(creditState),
-    });
-  }
   async handleSubmit(e) {
     let mode = this.state.mode;
 
@@ -324,9 +318,10 @@ class Story extends Component {
       .then(data => {
           if(data) {
             console.log(data.sinopsys);
+            data.sinopsys = (data.sinopsys) ? data.sinopsys : '<span>Toto</span>';
             //data.sinopsys = htmlToDraft(data.sinopsys);
-            this.setState({synoState: (data.sinopsys) ? htmlToState(data.sinopsys) : htmlToState(' Toto ') });
-            this.setState({creditState: (data.credits) ? htmlToState(data.credits) : htmlToState(' Toto ') });
+            //this.setState({synoState: (data.sinopsys) ? htmlToState(data.sinopsys) : htmlToState(' Toto ') });
+            //this.setState({creditState: (data.credits) ? htmlToState(data.credits) : htmlToState(' Toto ') });
             //data.credits = htmlToDraft(data.credits);
             //this.setState({creditState: data.credits});
             this.setState({sid: data.id, title: data.title, artist: data.artist});
@@ -383,127 +378,34 @@ class Story extends Component {
 
   onSynoStateChange = (synoState) => {
     this.setState({synoState: synoState});
-    this.setState({sinopsys: stateToHtml(synoState)});
+    this.setState({sinopsys: convertToRaw(synoState.getCurrentContent())});
   }
   onCreditStateChange = (creditState) => {
     this.setState({creditState: creditState});
-    this.setState({credits: stateToHtml(creditState)});
+    this.setState({credits: convertToRaw(creditState.getCurrentContent())});
   }
   EditCred = () => {
     if(this.state.step !== 'Credits') {return null};
     return (
       <Segment  className="view credits">
-        <Formik
-          enableReinitialize={true}
-          initialValues={this.state.initialSValues}
-          validate={values => {
-            let errors = {};
-            return errors;
-          }}
-          onSubmit={(values, { setSubmitting }) => {
-            if(this.state.mode === 'update') {
-              this.updateStory(values);
-            } else {
-              this.createStory(values);
-            }
 
-            setTimeout(() => {
-              //alert(JSON.stringify(values, null, 2));
-
-              setSubmitting(false);
-            }, 400);
-          }}
-            >
-              {({
-                values,
-                errors,
-                touched,
-                onCreditStateChange,
-                handleBlur,
-                handleSubmitCredit,
-                handleDelete,
-                isSubmitting,
-                /* and other goodies */
-              }) => (
-
-                <Form size='large' onSubmit={this.handleSubmitCredit}>
-
-                  <Editor
-                    toolbarOnFocus
-                     editorState={this.state.creditState}
-                     wrapperClassName="demo-wrapper"
-                     editorClassName="demo-editor"
-                     onEditorStateChange={this.onCreditStateChange}
-                     name="credits"
-                     placeholder='Credits'
-                   />
-                 <Button onClick={handleSubmitCredit} color='violet'  size='large' type="submit" disabled={isSubmitting}>
-                     {(this.state.mode === 'create') ? 'Create' : 'Update'}
-                   </Button>
-                </Form>
-              )}
-            </Formik>
+        <Button onClick={this.handleSubmitCredit} color='violet'  size='large' type="submit" >
+          {(this.state.mode === 'create') ? 'Create' : 'Update'}
+        </Button>
       </Segment>
     );
   }
   EditSyno = () => {
     if(this.state.step !== 'Sinopsys') {return null;}
     if(!this.state.synoState) {return null}
-    const toolbarOptions = {
-       inline: { inDropdown: true },
-       list: { inDropdown: true },
-       textAlign: { inDropdown: true },
-       link: { inDropdown: true },
-       history: { inDropdown: true },
-     };
     return (
-    <Segment  className="view synopsys">
-      <Formik
-        enableReinitialize={true}
-        initialValues={this.state.initialSValues}
-        validate={values => {
-          let errors = {};
+      <Segment  className="view synopsys">
+        
+        <Button onClick={this.handleSubmitSyno} floated='right'color='violet'  size='large' type="submit" >
+          {(this.state.mode === 'create') ? 'Create' : 'Update'}
+        </Button>
 
-          return errors;
-        }}
-        onSubmit={(values, { setSubmitting }) => {
-          this.handleSubmitSyno(this.state.synoState);
-          setTimeout(() => {
-            //alert(JSON.stringify(values, null, 2));
-
-            setSubmitting(false);
-          }, 400);
-        }}
-          >
-            {({
-              values,
-              errors,
-              touched,
-              onSynoStateChange,
-              handleBlur,
-              handleSubmitSyno,
-              handleDelete,
-              isSubmitting,
-              /* and other goodies */
-            }) => (
-        <Form size='large' onSubmit={this.handleSubmitSyno}>
-          <Editor
-             toolbarOnFocus
-             wrapperClassName="demo-wrapper"
-             editorClassName="demo-editor"
-             editorState={this.state.synoState}
-             onEditorStateChange={this.onSynoStateChange}
-             name="sinopsys"
-             toolbar={toolbarOptions}
-             placeholder='Sinopsys'
-           />
-         <Button onClick={handleSubmitSyno} floated='right'color='violet'  size='large' type="submit" disabled={isSubmitting}>
-             {(this.state.mode === 'create') ? 'Create' : 'Update'}
-           </Button>
-       </Form>
-     )}
-   </Formik>
- </Segment>
+      </Segment>
     );
   }
   EditForm = () => {
