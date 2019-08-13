@@ -4,6 +4,7 @@
   "private": true,
   "author": "Tom Bouillut, Diego Strasser",
   "dependencies": {
+    "draft-convert": "^2.1.8",
     "draft-js": "^0.11.0",
     "draftjs-to-html": "^0.8.4",
     "formik": "^1.5.8",

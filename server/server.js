@@ -498,7 +498,34 @@ app.post('/artists/:artistId/upload', function (req, res, next) {
   //console.log(req.body);
   // req.body will contain the text fields, if there were any
 });
-
+app.post('/users/:userId/upload', function (req, res, next) {
+  let uid = req.params.userId;
+  var storage = multer.diskStorage({
+      destination: function(req, file, cb){
+        cb(null, './public/user/'+uid);
+      },
+      filename: function (req, file, cb) {
+        cb(null, file.originalname);
+      }
+    });
+    var upload = multer({ storage : storage}).single();
+    upload(req,res,function(err) {
+      if(err) {
+        return res.end("Error uploading file." + err);
+      } else {
+        //req.files.forEach( function(f) {
+          // and move file to final destination...
+        //});
+        return res.json({ user: uid, msg: 'user avatar uploaded  successfully', files: req.files })
+      }
+    });
+  // req.files is array of `images` files
+  //console.log('FILES:');
+  //console.log(req.files);
+  //console.log('BODY:');
+  //console.log(req.body);
+  // req.body will contain the text fields, if there were any
+});
 
 app.delete('/artists/:artistId', function(req, res, next) {
   let aid = req.params.artistId;

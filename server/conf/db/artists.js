@@ -14,8 +14,8 @@ module.exports.artists = {
     type: Sequelize.JSON,
     allowNull: true,
   },
-  description : {
-    type: Sequelize.TEXT,
+  bio : {
+    type: Sequelize.JSON,
     allowNull: true,
   }
 };

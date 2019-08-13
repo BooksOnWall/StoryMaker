@@ -20,7 +20,9 @@ import { Formik } from 'formik';
 import StorySteps from './storySteps';
 import { Link } from 'react-router-dom';
 //wysiwyg editor for textarea form fields
-import { EditorState } from 'draft-js';
+import { ContentState, EditorState, RichUtils, convertFromHTML, convertToRaw } from 'draft-js';
+import DraftPasteProcessor from 'draft-js/lib/DraftPasteProcessor';
+import { convertToHTML } from 'draft-convert';
 import { Editor } from 'react-draft-wysiwyg';
 import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
@@ -37,17 +39,37 @@ let options = {
     link: { inDropdown: true },
     history: { inDropdown: true },
 };
-
+const htmlToState = (html) => {
+  let synoState;
+  const blocksFromHTML = convertFromHTML(html);
+  const contentState = ContentState.createFromBlockArray(blocksFromHTML);
+  synoState = EditorState.createWithContent(contentState);
+  return synoState;
+};
+const stateToHtml = (synoState) => {
+  const content = convertToHTML(synoState.getCurrentContent());
+  return content;
+};
 class Story extends Component {
   constructor(props) {
     super(props);
     let protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
     let domain = protocol + '://' + process.env.REACT_APP_SERVER_HOST;
     let server = domain + ':'+ process.env.REACT_APP_SERVER_PORT+'/';
+    let synoState;
+    const sblocksFromHTML = convertFromHTML('Toto');
+    const scontentState = ContentState.createFromBlockArray(sblocksFromHTML);
+    synoState = EditorState.createWithContent(scontentState);
+    let creditState;
+    const cblocksFromHTML = convertFromHTML('Toto');
+    const ccontentState = ContentState.createFromBlockArray(cblocksFromHTML);
+    creditState = EditorState.createWithContent(ccontentState);
+
     this.state = {
       server: server,
       stories: server + 'stories',
       artists: server + 'artists',
+      initialSValues:  (!this.props.match.params.id) ?{ artist: 1, title: '', state: '', city: '', sinopsys: '' , credits: '', active: true} : this.getStory,
       artistOptions: [],
       sid: (!this.props.match.params.id) ? (0) : (parseInt(this.props.match.params.id)),
       mode: (parseInt(this.props.match.params.id) === 0) ? ('create') : ('update'),
@@ -56,18 +78,20 @@ class Story extends Component {
       map:  '/stories/' + this.props.match.params.id + '/map',
       loading: null,
       data: null,
-      synoState: EditorState.createEmpty(),
+      synoState: synoState ,
       step: 'Story',
+      artist: parseInt(1),
       setSteps: this.setSteps,
       storyCompleted: false,
       synoCompleted: false,
-      creditState: {},
-      initialSValues: { title: '', state: '', city: '', sinopsys: '', credits: '', artist: '', active: true, checked: true},
+      creditState: creditState,
       toggleAuthenticateStatus: this.props.childProps.toggleAuthenticateStatus,
       authenticated: this.props.childProps.authenticated,
       open: false,
-      editorState: EditorState.createEmpty(),
     };
+    this.getStory = this.getStory.bind(this);
+    this.onSynoStateChange = this.onSynoStateChange.bind(this);
+    this.onCreditStateChange = this.onCreditStateChange.bind(this);
     this.setSteps = this.setSteps.bind(this);
     this.EditForm = this.EditForm.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -82,11 +106,15 @@ class Story extends Component {
   handleCancel = () => this.setState({ open: false })
   handleChange(e) {
     const target = e.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
+    let value = (target.type === 'checkbox') ? target.checked : target.value;
+    value = (target.type === 'select') ? target.selected : value;
     let change = {};
     change[e.target.name] = value ;
     this.setState({initialSValues: change});
   }
+  /* Build artist select options in editForm
+  *
+  */
   listArtists = async (e) => {
     try {
       await  fetch(this.state.artists, {
@@ -99,10 +127,13 @@ class Story extends Component {
       })
       .then(data => {
           if(data) {
-            let artists =[];
-            data.map((artist, index) =>
-              artists[index]= {key: artist.id, value:artist.id, text: artist.name}
-            );
+            data = Object.values(data);
+            const artists = [];
+            data.map(artist => (
+              (artist.id === this.state.initialSValues.artist) ?
+                artists.push({selected: true, active: true, key: artist.id , value: artist.id , text: artist.name }) :
+                  artists.push({key: artist.id , value: artist.id , text: artist.name })
+            ));
             this.setState({artistOptions: artists});
           }
       })
@@ -115,13 +146,11 @@ class Story extends Component {
     }
   }
   handleSubmitSyno = async (e) => {
-    let html = draftToHtml(this.state.synoState);
-    if(html) {
       try {
         await fetch(this.state.stories+'/'+this.state.sid, {
           method: 'PATCH',
           headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json', charset:'utf-8' },
-          body:JSON.stringify({ sinopsys: html })
+          body:JSON.stringify({ sinopsys: this.state.sinopsys})
         })
         .then(response => {
           if (response && !response.ok) { throw new Error(response.statusText);}
@@ -141,15 +170,46 @@ class Story extends Component {
       } catch(e) {
         console.log(e.message);
       }
-    }
-    console.log(html);
   }
   handleSubmitCredit = async (values) => {
+    try {
+      await fetch(this.state.stories+'/'+this.state.sid, {
+        method: 'PATCH',
+        headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json', charset:'utf-8' },
+        body:JSON.stringify({ credits: this.state.credits})
+      })
+      .then(response => {
+        if (response && !response.ok) { throw new Error(response.statusText);}
+        return response.json();
+      })
+      .then(data => {
+          if(data) {
+            // set Step complete and forward to next step
+            this.setState({storyComplete: true});
+            this.setState({synoComplete: true});
+            this.setState({creditComplete: true, step: 'Stages'});
+          }
+      })
+      .catch((error) => {
+        // Your error is here!
+        console.log(error)
+      });
+    } catch(e) {
+      console.log(e.message);
+    }
+  }
+  onSynoStateChange = (synoState) => {
+    console.log(synoState);
+    this.setState({
+      synoState: synoState,
+      sinopsys: stateToHtml(synoState),
+    });
 
   }
-  onSynoStateChange = (contentState) => {
+  onCreditStateChange = (creditState) => {
     this.setState({
-      synoState: contentState,
+      creditState: creditState,
+      credit: stateToHtml(creditState),
     });
   }
   async handleSubmit(e) {
@@ -201,7 +261,7 @@ class Story extends Component {
           if(data) {
             // redirect to user edit page
             this.setState({uid: data.user.id })
-            this.props.history.push('/stories');
+            this.props.history.push('/stories/'+data.user.id);
           }
       })
       .catch((error) => {
@@ -218,13 +278,13 @@ class Story extends Component {
         method: 'PATCH',
         headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json', charset:'utf-8' },
         body:JSON.stringify({
-          title: this.state.title,
-          artist:parseInt(this.state.artist),
-          state:this.state.state,
-          city: this.state.city,
+          title: this.state.initialSValues.title,
+          artist:parseInt(this.state.initialSValues.artist),
+          state:this.state.initialSValues.state,
+          city: this.state.initialSValues.city,
           sinopsys: this.state.sinopsys,
           credits: this.state.credits,
-          active: parseInt(this.state.active),
+          active: parseInt(this.state.initialSValues.active),
         })
       })
       .then(response => {
@@ -246,7 +306,6 @@ class Story extends Component {
     }
   }
   async getStory() {
-    // set loading
     this.setState({loading: true});
     try {
       await fetch(this.state.stories+'/'+this.state.sid, {
@@ -259,14 +318,15 @@ class Story extends Component {
       })
       .then(data => {
           if(data) {
-            data.sinopsys = htmlToDraft(data.sinopsys);
-            this.setState({synoState: data.sinopsys});
-            console.log(data.sinopsys);
-            data.credits = htmlToDraft(data.credits);
-            this.setState({creditState: data.credits});
+            console.log(data);
+            //data.sinopsys = htmlToDraft(data.sinopsys);
+            this.setState({synoState: htmlToState(data.sinopsys)});
+            //data.credits = htmlToDraft(data.credits);
+            //this.setState({creditState: data.credits});
             this.setState({sid: data.id, title: data.title, artist: data.artist});
             this.setState({initialSValues: data});
             this.setState({loading: false});
+            return data;
           } else {
             console.log('No Data received from the server');
           }
@@ -314,16 +374,19 @@ class Story extends Component {
       console.log(e.message);
     }
   }
-  onEditorStateChange = (editorState) => {
-    this.setState({editorState: editorState});
-  }
+
   onSynoStateChange = (synoState) => {
     this.setState({synoState: synoState});
+    this.setState({sinopsys: stateToHtml(synoState)});
+  }
+  onCreditStateChange = (creditState) => {
+    this.setState({creditState: creditState});
+    this.setState({credits: stateToHtml(creditState)});
   }
   EditCred = () => {
     if(this.state.step !== 'Credits') {return null};
     return (
-      <Segment  className="view credits" fluid>
+      <Segment  className="view credits">
         <Formik
           enableReinitialize={true}
           initialValues={this.state.initialSValues}
@@ -349,7 +412,7 @@ class Story extends Component {
                 values,
                 errors,
                 touched,
-                handleChange,
+                onCreditStateChange,
                 handleBlur,
                 handleSubmitCredit,
                 handleDelete,
@@ -361,14 +424,13 @@ class Story extends Component {
 
                   <Editor
                     toolbarOnFocus
-                     editorState={this.state.editorState}
+                     editorState={this.state.creditState}
                      wrapperClassName="demo-wrapper"
                      editorClassName="demo-editor"
-                     onEditorStateChange={this.onEditorStateChange}
+                     onEditorStateChange={this.onCreditStateChange}
                      toolbar={options}
                      name="credits"
                      placeholder='Credits'
-                     value={values.credits}
                    />
                  <Button onClick={handleSubmitCredit} color='violet'  size='large' type="submit" disabled={isSubmitting}>
                      {(this.state.mode === 'create') ? 'Create' : 'Update'}
@@ -389,11 +451,13 @@ class Story extends Component {
         initialValues={this.state.initialSValues}
         validate={values => {
           let errors = {};
-          console.log(this.state.synoState);
+
           return errors;
         }}
         onSubmit={(values, { setSubmitting }) => {
-          this.handleSubmitSyno(values);
+
+          console.log(JSON.stringify(this.state.synoState));
+          this.handleSubmitSyno(this.state.synoState);
           setTimeout(() => {
             //alert(JSON.stringify(values, null, 2));
 
@@ -405,7 +469,7 @@ class Story extends Component {
               values,
               errors,
               touched,
-              handleChange,
+              onSynoStateChange,
               handleBlur,
               handleSubmitSyno,
               handleDelete,
@@ -415,12 +479,11 @@ class Story extends Component {
         <Form size='large' onSubmit={this.handleSubmitSyno}>
           <Editor
             toolbarOnFocus
-             editorState={this.state.editorState}
+             editorState={this.state.synoState}
              wrapperClassName="demo-wrapper"
              editorClassName="demo-editor"
-             onEditorStateChange={this.onEditorStateChange}
-             onContentStateChange={this.onSynoStateChange}
-             defaultContentState={this.state.synoState}
+             onEditorStateChange={this.onSynoStateChange}
+             currentState={values.sinopsys}
              toolbar={options}
              name="sinopsys"
              placeholder='Sinopsys'
@@ -473,13 +536,19 @@ class Story extends Component {
 
           <Form size='large' onSubmit={this.handleSubmit}>
             <Select
-              placeholder='Select your Artist'
-              name="artist"
-              options={this.state.artistOptions}
-              onChange={handleChange}
+              type="select"
+              name="artists"
+              onChange={(e, { selected }) => handleChange(selected)}
               onBlur={handleBlur}
-              defaultValue={values.artist}
+              options={this.state.artistOptions}
               />
+              <Input
+                type="text"
+                name="artist"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.artist}
+                />
             <Divider horizontal>...</Divider>
             <Input
               placeholder='Title'

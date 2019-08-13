@@ -64,6 +64,7 @@ class userAvatar extends Component {
     this.inputOpenFileRef.current.click()
   }
   handleSave = data => {
+
     const img = this.editor.getImageScaledToCanvas().toDataURL();
     const rect = this.editor.getCroppingRect();
     //this.props.state.avatar = img;
@@ -78,12 +79,26 @@ class userAvatar extends Component {
         borderRadius: this.state.borderRadius,
       },
     });
-    this.saveAvatarPreference(img);
+    this.uploadAvatar(img);
+  }
+  uploadAvatar = async (img) => {
+    this.state.loading = true;
+    // prepare images name and path for store
+
+    try {
+      console.log(img);
+    } catch(e) {
+      console.log(e.message);
+    }
+    //this.saveAvatarPreference(img);
   }
   async saveAvatarPreference(img) {
       this.setState({'avatar': img});
       let uid = this.props.id;
       try {
+        //upload image to server and store the returned image path in avatar userPreference
+        let path = this.uploadAvatar(img);
+        console.log(path);
         await fetch(this.state.userPreferences , {
           method: 'PATCH',
           headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json', charset:'utf-8' },
