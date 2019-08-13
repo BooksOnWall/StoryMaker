@@ -236,9 +236,9 @@ const deleteArtist = async (aid) => {
 const getAllStories = async () => {
   return await Stories.findAll();
 }
-const createStory = async ({ title, artist, state, city, sinopsys, credits, active }) => {
+const createStory = async ({ title, artist, state, city,  active }) => {
   try {
-    let res = await Stories.create({ title, artist, state, city, sinopsys, credits, active });
+    let res = await Stories.create({ title, artist, state, city,  active });
     const sid = res.dataValues.id;
     var dir = __dirname + '/public/stories/'+sid;
     if (!fs.existsSync(dir)) {
@@ -538,8 +538,8 @@ app.get('/stories', function(req, res) {
   getAllStories().then(user => res.json(user));
 });
 app.post('/stories/0', function(req, res, next) {
-  const { title, artist, state, city, sinopsys, credits, active } = req.body;
-  createStory({ title, artist, state, city, sinopsys, credits, active }).then(user =>
+  const { title, artist, state, city, active } = req.body;
+  createStory({ title, artist, state, city,  active }).then(user =>
     res.json({ user, msg: 'story created successfully' })
   );
 });
@@ -550,7 +550,6 @@ app.get('/stories/:storyId', (req, res) => {
 app.patch('/stories/:storyId', function(req, res, next) {
   const { title, artist, state, city, sinopsys, credits, active } = req.body;
   let sid = parseInt(req.params.storyId);
-  console.log(sid);
   patchStory({ sid, title, artist, state, city, sinopsys, credits, active }).then(user =>
       res.json({ user, msg: 'Story updated successfully' })
     );

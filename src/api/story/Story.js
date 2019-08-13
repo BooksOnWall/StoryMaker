@@ -20,25 +20,17 @@ import { Formik } from 'formik';
 import StorySteps from './storySteps';
 import { Link } from 'react-router-dom';
 //wysiwyg editor for textarea form fields
-import { ContentState, EditorState, RichUtils, convertFromHTML, convertToRaw } from 'draft-js';
-import DraftPasteProcessor from 'draft-js/lib/DraftPasteProcessor';
+import { ContentState, EditorState,  convertFromHTML, convertToRaw } from 'draft-js';
 import { convertToHTML } from 'draft-convert';
-import { Editor } from 'react-draft-wysiwyg';
-import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import Editor from 'react-draft-wysiwyg';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
-import htmlToDraft from 'html-to-draftjs';
-import draftToHtml from 'draftjs-to-html';
 // maps
 import StoryMap from './map/storyMap';
 //Stages
 import StoryStages from './storyStages';
-let options = {
-    inline: { inDropdown: true },
-    list: { inDropdown: true },
-    textAlign: { inDropdown: true },
-    link: { inDropdown: true },
-    history: { inDropdown: true },
-};
+
+
 const htmlToState = (html) => {
   let synoState;
   const blocksFromHTML = convertFromHTML(html);
@@ -47,22 +39,24 @@ const htmlToState = (html) => {
   return synoState;
 };
 const stateToHtml = (synoState) => {
-  const content = convertToHTML(synoState.getCurrentContent());
+  const content = convertToRaw(synoState.getCurrentContent());
   return content;
 };
+
+
 class Story extends Component {
+
   constructor(props) {
     super(props);
+
     let protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
     let domain = protocol + '://' + process.env.REACT_APP_SERVER_HOST;
     let server = domain + ':'+ process.env.REACT_APP_SERVER_PORT+'/';
     let synoState;
-    const sblocksFromHTML = convertFromHTML('Toto');
-    const scontentState = ContentState.createFromBlockArray(sblocksFromHTML);
+    const scontentState = ContentState.createFromBlockArray(convertFromHTML('<H1>Sinopsis</H1>'));
     synoState = EditorState.createWithContent(scontentState);
     let creditState;
-    const cblocksFromHTML = convertFromHTML('Toto');
-    const ccontentState = ContentState.createFromBlockArray(cblocksFromHTML);
+    const ccontentState = ContentState.createFromBlockArray(convertFromHTML('<H1>Credits</H1>'));
     creditState = EditorState.createWithContent(ccontentState);
 
     this.state = {
@@ -89,6 +83,7 @@ class Story extends Component {
       authenticated: this.props.childProps.authenticated,
       open: false,
     };
+
     this.getStory = this.getStory.bind(this);
     this.onSynoStateChange = this.onSynoStateChange.bind(this);
     this.onCreditStateChange = this.onCreditStateChange.bind(this);
@@ -144,6 +139,14 @@ class Story extends Component {
     } catch(e) {
       console.log(e.message);
     }
+  }
+  setEditor = (editor) => {
+      this.editor = editor;
+  }
+  focusEditor = () => {
+      if (this.editor) {
+        this.editor.focus();
+      }
   }
   handleSubmitSyno = async (e) => {
     let sinopsys = (this.state.sinopsys) ? this.state.sinopsys : '';
@@ -249,8 +252,8 @@ class Story extends Component {
           artist:parseInt(this.state.artist),
           state:this.state.state,
           city: this.state.city,
-          sinopsys: (this.state.sinopsys) ? this.state.sinopsys : '',
-          credits: (this.state.credits) ? this.state.credits : '',
+          sinopsys: this.state.sinopsys,
+          credits: this.state.credits,
           active: parseInt(this.state.active),
         })
       })
@@ -294,8 +297,9 @@ class Story extends Component {
       })
       .then(data => {
           if(data) {
+            console.log(data);
             // set Step complete and forward to next step
-            this.setState({storyComplete: true, step: 'Synopsys'});
+            return this.setState({storyComplete: true, step: 'Sinopsys'});
           }
       })
       .catch((error) => {
@@ -319,7 +323,7 @@ class Story extends Component {
       })
       .then(data => {
           if(data) {
-
+            console.log(data.sinopsys);
             //data.sinopsys = htmlToDraft(data.sinopsys);
             this.setState({synoState: (data.sinopsys) ? htmlToState(data.sinopsys) : htmlToState(' Toto ') });
             this.setState({creditState: (data.credits) ? htmlToState(data.credits) : htmlToState(' Toto ') });
@@ -430,7 +434,6 @@ class Story extends Component {
                      wrapperClassName="demo-wrapper"
                      editorClassName="demo-editor"
                      onEditorStateChange={this.onCreditStateChange}
-                     toolbar={options}
                      name="credits"
                      placeholder='Credits'
                    />
@@ -444,8 +447,15 @@ class Story extends Component {
     );
   }
   EditSyno = () => {
-    if(this.state.step !== 'Synopsys') {return null;}
+    if(this.state.step !== 'Sinopsys') {return null;}
     if(!this.state.synoState) {return null}
+    const toolbarOptions = {
+       inline: { inDropdown: true },
+       list: { inDropdown: true },
+       textAlign: { inDropdown: true },
+       link: { inDropdown: true },
+       history: { inDropdown: true },
+     };
     return (
     <Segment  className="view synopsys">
       <Formik
@@ -457,8 +467,6 @@ class Story extends Component {
           return errors;
         }}
         onSubmit={(values, { setSubmitting }) => {
-
-          console.log(JSON.stringify(this.state.synoState));
           this.handleSubmitSyno(this.state.synoState);
           setTimeout(() => {
             //alert(JSON.stringify(values, null, 2));
@@ -480,14 +488,13 @@ class Story extends Component {
             }) => (
         <Form size='large' onSubmit={this.handleSubmitSyno}>
           <Editor
-            toolbarOnFocus
-             editorState={this.state.synoState}
+             toolbarOnFocus
              wrapperClassName="demo-wrapper"
              editorClassName="demo-editor"
+             editorState={this.state.synoState}
              onEditorStateChange={this.onSynoStateChange}
-             currentState={values.sinopsys}
-             toolbar={options}
              name="sinopsys"
+             toolbar={toolbarOptions}
              placeholder='Sinopsys'
            />
          <Button onClick={handleSubmitSyno} floated='right'color='violet'  size='large' type="submit" disabled={isSubmitting}>
