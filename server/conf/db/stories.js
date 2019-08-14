@@ -14,12 +14,12 @@ module.exports.stories = {
     defaultValue: ''
   },
   sinopsys: {
-    type: Sequelize.TEXT,
+    type: Sequelize.TEXT('long'),
     allowNull: true,
     defaultValue: ''
   },
   credits: {
-    type: Sequelize.TEXT,
+    type: Sequelize.TEXT('long'),
     allowNull: true,
     defaultValue: ''
   },

@@ -36,7 +36,7 @@ class storySteps extends Component {
         <Step
           active={this.props.state.step === 'Synopsys'}
           disabled ={(this.props.state.mode === 'update') ? false : true }
-            completed = {this.props.state.synoCompleted}
+          completed = {this.props.state.synoCompleted}
           icon='sun'
           name='Sinopsys'
           onClick={this.handleSteps}

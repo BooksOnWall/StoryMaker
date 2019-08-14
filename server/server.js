@@ -236,14 +236,12 @@ const deleteArtist = async (aid) => {
 const getAllStories = async () => {
   return await Stories.findAll();
 }
-const createStory = async ({ title, artist, state, city,  active }) => {
+const createStory = async ({ title, state, city, sinopsys, credits, artist, active }) => {
   try {
-    let res = await Stories.create({ title, artist, state, city,  active });
+    let res = await Stories.create({ title, state, city, sinopsys, credits, artist, active });
     const sid = res.dataValues.id;
     var dir = __dirname + '/public/stories/'+sid;
-    if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir, 0o744);
-    }
+    if (!fs.existsSync(dir)) { fs.mkdirSync(dir, 0o744); }
     return res;
   } catch(e) {
     console.log(e.message);
@@ -538,9 +536,10 @@ app.get('/stories', function(req, res) {
   getAllStories().then(user => res.json(user));
 });
 app.post('/stories/0', function(req, res, next) {
-  const { title, artist, state, city, active } = req.body;
-  createStory({ title, artist, state, city,  active }).then(user =>
-    res.json({ user, msg: 'story created successfully' })
+  const { title, state, city, sinopsys, credits, artist, active } = req.body;
+  console.log(req.body);
+  createStory({ title, state, city, sinopsys, credits, artist ,  active,  }).then(story =>
+    res.json({ story, 'data': story, msg: 'story created successfully' })
   );
 });
 app.get('/stories/:storyId', (req, res) => {
