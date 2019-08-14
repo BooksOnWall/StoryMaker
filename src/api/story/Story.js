@@ -24,6 +24,8 @@ import { Link } from 'react-router-dom';
 import { EditorState,  ContentState, convertFromHTML, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import {stateToHTML} from 'draft-js-export-html';
+import htmlToDraft from 'html-to-draftjs';
 
 // maps
 import StoryMap from './map/storyMap';
@@ -31,14 +33,14 @@ import StoryMap from './map/storyMap';
 import StoryStages from './storyStages';
 
 const htmlToState = (html) => {
-  let synoState;
+  let sinoState;
   const blocksFromHTML = convertFromHTML(html);
   const contentState = ContentState.createFromBlockArray(blocksFromHTML);
-  synoState = EditorState.createWithContent(contentState);
-  return synoState;
+  sinoState = EditorState.createWithContent(contentState);
+  return sinoState;
 };
-const stateToHtml = (synoState) => {
-  const content = convertToRaw(synoState.getCurrentContent());
+const stateToHtml = (sinoState) => {
+  const content = convertToRaw(sinoState.getCurrentContent());
   return content;
 };
 let options = {
@@ -57,10 +59,10 @@ class Story extends Component {
     let protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
     let domain = protocol + '://' + process.env.REACT_APP_SERVER_HOST;
     let server = domain + ':'+ process.env.REACT_APP_SERVER_PORT+'/';
-  //  let synoState;
+  //  let sinoState;
     //const scontentState = ContentState.createFromBlockArray(convertFromHTML('<H1>Sinopsis</H1>'));
-    //synoState = EditorState.createWithContent(scontentState);
-    //synoState= EditorState.createEmpty();
+    //sinoState = EditorState.createWithContent(scontentState);
+    //sinoState= EditorState.createEmpty();
     //let creditState;
     //const ccontentState = ContentState.createFromBlockArray(convertFromHTML('<H1>Credits</H1>'));
     //creditState = EditorState.createWithContent(ccontentState);
@@ -78,14 +80,14 @@ class Story extends Component {
       map:  '/stories/' + this.props.match.params.id + '/map',
       loading: null,
       data: null,
-      synoState: EditorState.createEmpty(),
-      synopsys: '',
+      sinoState: EditorState.createEmpty(),
+      sinopsys: '',
       editorState: EditorState.createEmpty(),
       step: 'Story',
       artist: parseInt(1),
       setSteps: this.setSteps,
       storyCompleted: (this.props.match.params.id && this.props.match.params.id > 0 ) ? true : false,
-      synoCompleted: false,
+      sinoCompleted: false,
       active: parseInt(1),
       creditState: EditorState.createEmpty(),
       toggleAuthenticateStatus: this.props.childProps.toggleAuthenticateStatus,
@@ -95,7 +97,7 @@ class Story extends Component {
 
     this.getStory = this.getStory.bind(this);
     this.updateStory = this.updateStory.bind(this);
-    this.onSynoStateChange = this.onSynoStateChange.bind(this);
+    this.onSinoStateChange = this.onSinoStateChange.bind(this);
     this.onCreditStateChange = this.onCreditStateChange.bind(this);
     this.setSteps = this.setSteps.bind(this);
     this.EditForm = this.EditForm.bind(this);
@@ -161,8 +163,10 @@ class Story extends Component {
         this.editor.focus();
       }
   }
-  handleSubmitSyno = async (e) => {
+  handleSubmitSino = async (e) => {
+
     let sinopsys = (this.state.sinopsys) ? this.state.sinopsys : '';
+    console.log(sinopsys);
       try {
         await fetch(this.state.stories+'/'+this.state.sid, {
           method: 'PATCH',
@@ -177,7 +181,7 @@ class Story extends Component {
             if(data) {
               // set Step complete and forward to next step
               this.setState({storyComplete: true});
-              this.setState({synoComplete: true, step: 'Stages'});
+              this.setState({sinoComplete: true, step: 'Stages'});
             }
         })
         .catch((error) => {
@@ -203,7 +207,7 @@ class Story extends Component {
           if(data) {
             // set Step complete and forward to next step
             this.setState({storyComplete: true});
-            this.setState({synoComplete: true});
+            this.setState({sinoComplete: true});
             this.setState({creditComplete: true, step: 'Stages'});
           }
       })
@@ -312,6 +316,9 @@ class Story extends Component {
       console.log(e.message);
     }
   }
+  htmlToState(data, state) {
+
+  }
   async getStory() {
     this.setState({loading: true});
     try {
@@ -326,13 +333,20 @@ class Story extends Component {
       .then(data => {
           if(data) {
 
-            data.sinopsys = (data.sinopsys) ? data.sinopsys : '<span>Toto</span>';
-            console.log(data.sinopsys);
-            //data.sinopsys = htmlToDraft(data.sinopsys);
-            //this.setState({synoState: (data.sinopsys) ? htmlToState(data.sinopsys) : htmlToState(' Toto ') });
-            //this.setState({creditState: (data.credits) ? htmlToState(data.credits) : htmlToState(' Toto ') });
-            //data.credits = htmlToDraft(data.credits);
-            //this.setState({creditState: data.credits});
+            data.sinopsys = (data.sinopsys) ? data.sinopsys : '<span>&nbsp</span>';
+            data.credits = (data.credits) ? data.credits : '<span>&nbsp</span>';
+            var { contentBlocks, entityMap } = htmlToDraft(data.sinopsys);
+            const sinoContentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+            const sinoState = EditorState.createWithContent(sinoContentState);
+            var { contentBlocks, entityMap } = htmlToDraft(data.credits);
+            const creditContentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+            const creditState = EditorState.createWithContent(creditContentState);
+
+            this.setState({sinoState: sinoState});
+            this.setState({sinopsys: data.sinopsys});
+            this.setState({creditState: creditState});
+            this.setState({credits: data.credits});
+
             this.setState({sid: data.id, title: data.title, artist: data.artist});
             this.setState({initialSValues: data});
             this.setState({loading: false});
@@ -385,13 +399,13 @@ class Story extends Component {
     }
   }
 
-  onSynoStateChange = (synoState) => {
-    this.setState({synoState: synoState});
-    this.setState({sinopsys: convertToRaw(synoState.getCurrentContent())});
+  onSinoStateChange = (sinoState) => {
+    this.setState({sinoState: sinoState});
+    this.setState({sinopsys: stateToHTML(sinoState.getCurrentContent())});
   }
   onCreditStateChange = (creditState) => {
     this.setState({creditState: creditState});
-    this.setState({credits: convertToRaw(creditState.getCurrentContent())});
+    this.setState({credits: stateToHTML(creditState.getCurrentContent())});
   }
   EditCred = () => {
 
@@ -414,17 +428,17 @@ class Story extends Component {
       editorState: editorState,
     });
   }
-  EditSyno = () => {
+  EditSino = () => {
 
     return (
-      <Segment  className="view synopsys">
+      <Segment  className="view sinopsys">
           <Editor
-           editorState={this.state.synoState}
+           editorState={this.state.sinoState}
            wrapperClassName="demo-wrapper"
            editorClassName="demo-editor"
-           onEditorStateChange={this.onSynoStateChange}
+           onEditorStateChange={this.onSinoStateChange}
          />
-        <Button onClick={this.handleSubmitSyno} floated='right'color='violet'  size='large' type="submit" >
+        <Button onClick={this.handleSubmitSino} floated='right'color='violet'  size='large' type="submit" >
           {(this.state.mode === 'create') ? 'Create' : 'Update'}
         </Button>
 
@@ -564,7 +578,7 @@ class Story extends Component {
           <StorySteps sid={this.state.sid} step={this.state.step} state={this.state} />
           <Segment id='StepsContent'>
             {(this.state.step === 'Story') ? this.EditForm() : '' }
-            {(this.state.step === 'Sinopsys') ? this.EditSyno() : '' }
+            {(this.state.step === 'Sinopsys') ? this.EditSino() : '' }
             {(this.state.step === 'Credits') ? this.EditCred() : '' }
             {(this.state.step === 'Map') ? <StoryMap sid={this.state.sid} step={this.state.step} state={this.state} /> : '' }
             {(this.state.step === 'Stages') ? <StoryStages sid={this.state.sid} step={this.state.step} state={this.state} />  : '' }
