@@ -564,7 +564,7 @@ class Story extends Component {
           <StorySteps sid={this.state.sid} step={this.state.step} state={this.state} />
           <Segment id='StepsContent'>
             {(this.state.step === 'Story') ? this.EditForm() : '' }
-            {(this.state.step === 'Synopsys') ? this.EditSyno() : '' }
+            {(this.state.step === 'Sinopsys') ? this.EditSyno() : '' }
             {(this.state.step === 'Credits') ? this.EditCred() : '' }
             {(this.state.step === 'Map') ? <StoryMap sid={this.state.sid} step={this.state.step} state={this.state} /> : '' }
             {(this.state.step === 'Stages') ? <StoryStages sid={this.state.sid} step={this.state.step} state={this.state} />  : '' }
