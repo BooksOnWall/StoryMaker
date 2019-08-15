@@ -4,8 +4,6 @@
   "private": true,
   "author": "Tom Bouillut, Diego Strasser",
   "dependencies": {
-    "css-loader": "^3.2.0",
-    "draft-convert": "^2.1.8",
     "draft-js": "^0.11.0",
     "draft-js-export-html": "^1.4.1",
     "draftjs-to-html": "^0.8.4",
@@ -20,6 +18,7 @@
     "react-avatar-editor": "^11.0.7",
     "react-dom": "^16.8.6",
     "react-draft-wysiwyg": "^1.13.2",
+    "react-drag-listview": "^0.1.6",
     "react-dropzone": "^10.1.6",
     "react-icons": "^3.7.0",
     "react-intl": "^2.9.0",
@@ -29,10 +28,8 @@
     "react-semantic-ui-range": "^0.7.0",
     "react-transition-group": "^4.2.1",
     "sanitize-html": "^1.20.1",
-    "sanitize-html-react": "^1.13.0",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.87.3",
-    "style-loader": "^1.0.0",
     "styled-components": "^4.3.2"
   },
   "scripts": {
