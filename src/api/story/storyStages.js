@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 
-
 import {
   Segment,
   Table,
   Button,
   Icon
 } from 'semantic-ui-react';
+
 import ReactDragListView  from 'react-drag-listview';
 import { FormattedMessage } from 'react-intl';
 import _ from 'lodash';
-import Moment from 'moment';
+
+import StagesMap from './map/stagesMap';
 
 class storyStages extends Component {
   constructor(props) {
@@ -50,6 +51,7 @@ class storyStages extends Component {
       data: data.data,
       server: server,
       column: null,
+      history: this.props.history,
       direction: null,
       sid: parseInt(this.props.sid),
       mode: (parseInt(this.props.sid) === 0) ? ('create') : ('update'),
@@ -67,59 +69,55 @@ class storyStages extends Component {
       },
       handleSelector: "a"
     };
-
+    this.handleCreate = this.handleCreate.bind(this);
   }
-
-  tableRowClickFunc(user) {
-  //  return this.props.history.push('/users/'+user.id);
+  tableRowClickFunc(stage) {
+    const url = '/stories/' + this.state.sid + '/stages/' + stage.key;
+    return this.props.history.push(url);
+  }
+  handleCreate = (e) => {
+    const url = '/stories/' + this.state.sid + '/stages/' + 0;
+    return this.props.history.push(url);
   }
   render() {
     return (
-      <Segment  className="view stages">
-        <Button primary ><Icon name="google wallet" />Add Stage</Button>
-        <h2>Table row with dragging (fake datas ...)</h2>
-                <ReactDragListView {...this.dragProps}>
-                  <Table sortable celled fixed selectable>
-                    <Table.Header className='slide-out'>
-                      <Table.Row>
-                        <Table.HeaderCell   >
-                            <FormattedMessage id="app.stage.drag" defaultMessage={`Drag me`} />
-                        </Table.HeaderCell>
-                        <Table.HeaderCell   >
-                            <FormattedMessage id="app.stage.rank" defaultMessage={`rank`} />
-                        </Table.HeaderCell>
-                        <Table.HeaderCell >
-                          <FormattedMessage id="app.stage.id" defaultMessage={`Id`} />
-                        </Table.HeaderCell>
-                        <Table.HeaderCell >
-                            <FormattedMessage id="app.stage.name" defaultMessage={`Name`} />
-                        </Table.HeaderCell>
-                        <Table.HeaderCell   >
-                            <FormattedMessage id="app.stage.created" defaultMessage={`Created`} />
-                        </Table.HeaderCell>
-                        <Table.HeaderCell   >
-                            <FormattedMessage id="app.stage.updated" defaultMessage={`Updated`} />
-                        </Table.HeaderCell>
-
-                      </Table.Row>
-                    </Table.Header>
-                    <Table.Body>
-
-                      {_.map(this.state.data, ({ key, name, image, createdAt, updatedAt, rank }) => (
-                        <Table.Row className='slide-out' key={key} onClick={() => this.tableRowClickFunc({key})}>
-                          <Table.Cell>{<a className="drag-handle" href="void(0)"><Icon name='grab' size='tiny' /> Drage Me</a>}</Table.Cell>
-                          <Table.Cell>{rank}</Table.Cell>
-                          <Table.Cell>{key}</Table.Cell>
-                          <Table.Cell>{name}</Table.Cell>
-                          <Table.Cell>{Moment(createdAt).format('LLL')}</Table.Cell>
-                          <Table.Cell>{Moment(updatedAt).format('LLL')}</Table.Cell>
-
-                        </Table.Row>
-                      ))}
-                    </Table.Body>
-                  </Table>
-                </ReactDragListView>
-      </Segment>
+      <Segment.Group horizontal>
+        <Segment className="stagesMap"><StagesMap /></Segment>
+        <Segment  className="stages">
+          <Button primary onClick={this.handleCreate}><Icon name="google wallet" />Add Stage</Button>
+          <h2>Table row with dragging (fake datas ...)</h2>
+          <ReactDragListView {...this.dragProps}>
+            <Table sortable celled  selectable>
+              <Table.Header className='slide-out'>
+                <Table.Row>
+                  <Table.HeaderCell   >
+                    <FormattedMessage id="app.stage.drag" defaultMessage={`Drag me`} />
+                  </Table.HeaderCell>
+                  <Table.HeaderCell >
+                    <FormattedMessage id="app.stage.name" defaultMessage={`Name`} />
+                  </Table.HeaderCell>
+                  <Table.HeaderCell   >
+                    <FormattedMessage id="app.stage.rank" defaultMessage={`rank`} />
+                  </Table.HeaderCell>
+                  <Table.HeaderCell >
+                    <FormattedMessage id="app.stage.id" defaultMessage={`Id`} />
+                  </Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+                {_.map(this.state.data, ({ key, name, image, createdAt, updatedAt, rank }) => (
+                  <Table.Row className='slide-out' key={key} onClick={() => this.tableRowClickFunc({key})}>
+                    <Table.Cell>{<a className="drag-handle" href="void(0)"><Icon name='grab' size='tiny' /> Drage Me</a>}</Table.Cell>
+                    <Table.Cell>{name}</Table.Cell>
+                    <Table.Cell>{rank}</Table.Cell>
+                    <Table.Cell>{key}</Table.Cell>
+                  </Table.Row>
+                ))}
+              </Table.Body>
+            </Table>
+          </ReactDragListView>
+        </Segment>
+      </Segment.Group>
     );
   }
 }

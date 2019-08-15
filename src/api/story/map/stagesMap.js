@@ -7,7 +7,7 @@ import {
 
 import MapGL from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import StylePanel from './stylePanel';
+
 
 let MapboxAccessToken = process.env.REACT_APP_MAT;
 // Set bounds toMontevideo
@@ -15,7 +15,7 @@ var bounds = [
   [-34.9036749, -56.2189153], // Southwest coordinates
   [-34.9068829, -56.211639]  // Northeast coordinates
 ];
-class storyMap extends Component {
+class stagesMap extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -33,18 +33,7 @@ class storyMap extends Component {
         bearing: -60, // bearing in degrees
         pitch: 60  // pitch in degrees
       }
-    }
-  };
-
-  async componentDidMount() {
-    // check if user is logged in on refresh
-    try {
-      await this.state.toggleAuthenticateStatus;
-      //await this.setState({loading: true});
-    } catch(e) {
-      console.log(e.message);
-    }
-
+    };
   }
   toggleLoading(val) {
     this.setState({loading: false});
@@ -56,7 +45,7 @@ class storyMap extends Component {
 
     const {viewport, mapStyle, loading} = this.state;
     return (
-      <Segment  className="view map" >
+      <Segment  className="view stagesMap" >
 
       <Dimmer active={loading}>
         <Loader active={loading} >Get map info</Loader>
@@ -64,20 +53,15 @@ class storyMap extends Component {
 
       <MapGL
         {...viewport}
-        width="100vw"
-        height="100vh"
-        mapStyle={mapStyle}
+        width="inherit"
+        height="50vh"
         onViewportChange={this.onViewportChange}
         mapboxApiAccessToken={MapboxAccessToken}
       >
 
-        <StylePanel
-          containerComponent={this.props.containerComponent}
-          onChange={this.onStyleChange}
-        />
       </MapGL>
     </Segment>
     );
   }
 }
-export default storyMap;
+export default stagesMap;

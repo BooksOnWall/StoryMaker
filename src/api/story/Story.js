@@ -304,7 +304,7 @@ class Story extends Component {
       })
       .then(data => {
           if(data) {
-            
+
             data.sinopsys = (data.sinopsys) ? sanitizeHtml(data.sinopsys) : '<span>&nbsp</span>';
             data.credits = (data.credits) ? sanitizeHtml(data.credits) : '<span>&nbsp</span>';
 
@@ -542,18 +542,18 @@ class Story extends Component {
           <Loader active={this.state.loading} >Get artist info</Loader>
         </Dimmer>
         <Segment>
-          <Header as='h6' icon >
+
             <Button primary size='mini' to="/stories" as={Link}>
               <Icon name='list' >  List stories</Icon>
             </Button>
-          </Header>
+
           <StorySteps sid={this.state.sid} step={this.state.step} state={this.state} />
           <Segment id='StepsContent'>
             {(this.state.step === 'Story') ? this.EditForm() : '' }
             {(this.state.step === 'Sinopsys') ? this.EditSino() : '' }
             {(this.state.step === 'Credits') ? this.EditCred() : '' }
-            {(this.state.step === 'Map') ? <StoryMap sid={this.state.sid} step={this.state.step} state={this.state} /> : '' }
-            {(this.state.step === 'Stages') ? <StoryStages sid={this.state.sid} step={this.state.step} state={this.state} />  : '' }
+            {(this.state.step === 'Map') ? <StoryMap sid={this.state.sid}  history={this.props.history} step={this.state.step} state={this.state} /> : '' }
+            {(this.state.step === 'Stages') ? <StoryStages sid={this.state.sid} history={this.props.history} step={this.state.step} state={this.state} />  : '' }
           </Segment>
         </Segment>
       </Container>
