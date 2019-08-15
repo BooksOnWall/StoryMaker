@@ -219,8 +219,8 @@ const getArtist = async obj => {
     where: obj,
   });
 };
-const patchArtist = async ({ id, name, email, images, description }) => {
-  return await Artists.update({ id, name, email, images, description },
+const patchArtist = async ({ id, name, email, images, bio }) => {
+  return await Artists.update({ id, name, email, images, bio },
     { where: {id : id}}
   );
 }
@@ -449,8 +449,8 @@ app.get('/artists', function(req, res) {
   getAllArtists().then(user => res.json(user));
 });
 app.post('/artists/0', function(req, res, next) {
-  const { name, email, images, description } = req.body;
-  createArtist({ name, email, images, description }).then(user =>
+  const { name, email, images, bio } = req.body;
+  createArtist({ name, email, images, bio }).then(user =>
     res.json({ user, msg: 'artist created successfully' })
   );
 });
@@ -459,9 +459,9 @@ app.get('/artists/:artistId', (req, res) => {
   getArtist({id: aid}).then(user => res.json(user));
 });
 app.patch('/artists/:artistId', function(req, res, next) {
-  const { name, email, images, description } = req.body;
+  const { name, email, images, bio } = req.body;
   let id = req.params.artistId;
-  patchArtist({ id, name, email, images, description }).then(user =>
+  patchArtist({ id, name, email, images, bio }).then(user =>
       res.json({ user, msg: 'artist updated successfully' })
     );
 });

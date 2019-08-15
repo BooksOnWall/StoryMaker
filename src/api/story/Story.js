@@ -230,8 +230,8 @@ class Story extends Component {
           title: this.state.title,
           state:this.state.state,
           city: this.state.city,
-          sinopsys: (this.state.sinopsys) ? this.state.sinopsys : '' ,
-          credits: (this.state.credits) ? this.state.credits : '' ,
+          sinopsys: (this.state.sinopsys) ? sanitizeHtml(this.state.sinopsys) : '' ,
+          credits: (this.state.credits) ? sanitizeHtml(this.state.credits) : '' ,
           artist:parseInt(this.state.artist),
           active: parseInt(this.state.active),
         })
@@ -265,8 +265,8 @@ class Story extends Component {
           title: this.state.initialSValues.title,
           state:this.state.initialSValues.state,
           city: this.state.initialSValues.city,
-          sinopsys: this.state.sinopsys,
-          credits: this.state.credits,
+          sinopsys: sanitizeHtml(this.state.sinopsys),
+          credits: sanitizeHtml(this.state.credits),
           artist:parseInt(this.state.initialSValues.artist),
           active: parseInt(this.state.initialSValues.active),
         })

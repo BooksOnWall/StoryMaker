@@ -19,10 +19,12 @@ import ArtistSteps from './artistSteps';
 import { Link } from 'react-router-dom';
 
 //wysiwyg editor for textarea form fields
-import { EditorState,  ContentState, convertFromHTML, convertToRaw } from 'draft-js';
+import { EditorState,  ContentState, convertFromHTML, convertToRaw , convertFromRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-
+import { stateToHTML } from 'draft-js-export-html';
+import htmlToDraft from 'html-to-draftjs';
+import sanitizeHtml from 'sanitize-html';
 
 const thumbsContainer = {
   display: 'flex',
@@ -107,7 +109,7 @@ class Artist extends Component {
       selectedFile: null,
       setImages: this.setImages,
       saveImages: this.saveArtistImages,
-      initialAValues: { name: '', email: '', description: '', images: null},
+      initialAValues: { name: '', email: '', bio: {}, images: null},
       toggleAuthenticateStatus: this.props.childProps.toggleAuthenticateStatus,
       authenticated: this.props.childProps.authenticated,
       open: false,
@@ -116,6 +118,7 @@ class Artist extends Component {
     };
     this.setSteps = this.setSteps.bind(this);
     this.setImages = this.setImages.bind(this);
+    this.onBioStateChange = this.onBioStateChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
@@ -159,7 +162,7 @@ class Artist extends Component {
 
     let bio = (this.state.bio) ? this.state.bio : '';
       try {
-        await fetch(this.state.artists+'/'+this.state.aid, {
+        await fetch(this.state.artist+this.state.aid, {
           method: 'PATCH',
           headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json', charset:'utf-8' },
           body:JSON.stringify({ bio: bio})
@@ -203,7 +206,7 @@ class Artist extends Component {
         body:JSON.stringify({
           name: this.state.name,
           email:this.state.email,
-          description:this.state.description,
+          bio:this.state.bio,
         })
       })
       .then(response => {
@@ -245,7 +248,7 @@ class Artist extends Component {
           name: values.name,
           email:values.email,
           images: images,
-          description:values.description
+          bio:values.bio
         })
       })
       .then(response => {
@@ -305,8 +308,19 @@ class Artist extends Component {
       })
       .then(data => {
           if(data) {
-            console.log(data.images);
-            this.setState({aid: data.id, name: data.name, email: data.email, description: data.description, images : data.images});
+            if(data.bio) {
+
+              let bio = JSON.parse(data.bio);
+              console.log(bio);
+              //var { contentBlocks, entityMap } = convertFromRaw(bio);
+              const bioContentState = convertFromRaw(bio);
+              const bioState = EditorState.createWithContent(bioContentState);
+              this.setState({bio: bio});
+              this.setState({bioState: bioState});
+
+            }
+
+            this.setState({aid: data.id, name: data.name, email: data.email, bio: data.bio, images : data.images});
             this.setState({initialValues: data});
             this.setState({loading: false});
           } else {
@@ -315,7 +329,7 @@ class Artist extends Component {
       })
       .catch((error) => {
         // Your error is here!
-        console.log(error)
+        console.log({error})
       });
     } catch(e) {
       console.log(e.message);
@@ -357,10 +371,10 @@ class Artist extends Component {
       console.log(e.message);
     }
   }
-  onEditorStateChange: Function = (editorState) => {
+  onBioStateChange = (bioState) => {
     this.setState({
-      bioState: editorState,
-    //  bio: convertToRaw(editorState)
+      bioState: bioState,
+      bio: convertToRaw(bioState.getCurrentContent())
     });
   }
   setEditor = (editor) => {
@@ -549,10 +563,7 @@ class Artist extends Component {
         onSubmit={(values, { setSubmitting }) => {
           if(this.state.mode === 'update') {
             this.updateBio(values);
-          } else {
-            this.addBio(values);
           }
-
           setTimeout(() => {
             //alert(JSON.stringify(values, null, 2));
 
@@ -568,7 +579,7 @@ class Artist extends Component {
           handleBlur,
           handleSubmitBio,
           handleDelete,
-          onEditorStateChange,
+          onBioStateChange,
           isSubmitting,
           /* and other goodies */
         }) => (
@@ -578,6 +589,7 @@ class Artist extends Component {
               width= '80vw'
               height= '60vh'
               ref={this.setEditor}
+              initialContentState={this.state.bio}
               editorState={this.state.bioState}
               wrapperClassName="demo-wrapper"
               editorClassName="demo-editor"

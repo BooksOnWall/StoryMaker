@@ -87,7 +87,7 @@ class Artists extends Component {
     if(data === null) return null;
     return (
     <Container className="main" fluid>
-      <Segment className="view" style={{fontSize: '.9em'}} fluid>
+      <Segment className="view" style={{fontSize: '.9em'}} >
         <Dimmer active={this.state.loading}>
           <Loader active={this.state.loading} >Get users info</Loader>
         </Dimmer>
@@ -150,24 +150,7 @@ class Artists extends Component {
               </Table.Row>
             ))}
           </Table.Body>
-          <Table.Footer>
-           <Table.Row>
-             <Table.HeaderCell colSpan='6'>
-               <Menu floated='right' pagination>
-                 <Menu.Item as={Link} icon>
-                   <Icon name='chevron left' />
-                 </Menu.Item>
-                 <Menu.Item as={Link}>1</Menu.Item>
-                 <Menu.Item as={Link}>2</Menu.Item>
-                 <Menu.Item as={Link}>3</Menu.Item>
-                 <Menu.Item as={Link}>4</Menu.Item>
-                 <Menu.Item as={Link} icon>
-                   <Icon name='chevron right' />
-                 </Menu.Item>
-               </Menu>
-             </Table.HeaderCell>
-           </Table.Row>
-         </Table.Footer>
+
         </Table>
       </Segment>
       </Container>
