@@ -24,9 +24,9 @@ import { Link } from 'react-router-dom';
 import { EditorState,  ContentState, convertFromHTML, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import {stateToHTML} from 'draft-js-export-html';
+import { stateToHTML } from 'draft-js-export-html';
 import htmlToDraft from 'html-to-draftjs';
-
+import sanitizeHtml from 'sanitize-html';
 // maps
 import StoryMap from './map/storyMap';
 //Stages
@@ -304,9 +304,10 @@ class Story extends Component {
       })
       .then(data => {
           if(data) {
+            console.log(data.sinopsys);
 
-            data.sinopsys = (data.sinopsys) ? data.sinopsys : '<span>&nbsp</span>';
-            data.credits = (data.credits) ? data.credits : '<span>&nbsp</span>';
+            data.sinopsys = (data.sinopsys) ? sanitizeHtml(data.sinopsys) : '<span>&nbsp</span>';
+            data.credits = (data.credits) ? sanitizeHtml(data.credits) : '<span>&nbsp</span>';
             var { contentBlocks, entityMap } = htmlToDraft(data.sinopsys);
             const sinoContentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
             const sinoState = EditorState.createWithContent(sinoContentState);
@@ -329,7 +330,7 @@ class Story extends Component {
       })
       .catch((error) => {
         // Your error is here!
-        console.log(error)
+        console.log({error})
       });
     } catch(e) {
       console.log(e.message);

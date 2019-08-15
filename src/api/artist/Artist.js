@@ -435,7 +435,7 @@ class Artist extends Component {
                 name="name"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.name}
+                defaultValue={values.name}
                 />
               {errors.name && touched.name && errors.name}
               <Divider horizontal>...</Divider>
@@ -447,7 +447,7 @@ class Artist extends Component {
                 name="email"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.email}
+                defaultValue={values.email}
                 />
               {errors.email && touched.email && errors.email}
 
@@ -585,7 +585,7 @@ class Artist extends Component {
               toolbar={options}
               name="bio"
               placeholder='Biographie'
-              value={values.bio}
+              value={values.bio  }
               />
             <Divider horizontal>...</Divider>
             <Button onClick={handleSubmitBio} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>

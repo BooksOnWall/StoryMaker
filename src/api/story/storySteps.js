@@ -23,7 +23,7 @@ class storySteps extends Component {
   }
   render() {
     return (
-      <Step.Group fluid ordered>
+      <Step.Group fluid >
         <Step
           icon='star'
           active = {this.props.state.step === 'Story'}
@@ -31,7 +31,7 @@ class storySteps extends Component {
           name='Story'
           onClick={this.handleSteps}
           title='Story'
-          description='Story things'
+          description='things'
         />
         <Step
           active={this.props.state.step === 'Synopsys'}
@@ -41,7 +41,7 @@ class storySteps extends Component {
           name='Sinopsys'
           onClick={this.handleSteps}
           title='Sinopsys'
-          description='Sinopsys of the story'
+          description='of the story'
         />
         <Step
           active={this.props.state.step === 'Stages'}
@@ -51,7 +51,7 @@ class storySteps extends Component {
           to={this.props.state.stagesPath}
           onClick={this.handleSteps}
           title='Stages'
-          description='Stages of your story'
+          description='of the story'
         />
         <Step
           active={this.props.state.step === 'Map'}
@@ -61,7 +61,7 @@ class storySteps extends Component {
           to={this.state.mapPath}
           onClick={this.handleSteps}
           title='Map'
-          description='Design the map for this story'
+          description='Design for this story'
         />
         <Step
           active={this.props.state.step === 'Credits'}
@@ -70,7 +70,7 @@ class storySteps extends Component {
           name='Credits'
           onClick={this.handleSteps}
           title='Credits'
-          description='Credits for this story'
+          description='for this story'
         />
       </Step.Group>
     );
