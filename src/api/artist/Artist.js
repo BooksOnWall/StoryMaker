@@ -19,7 +19,7 @@ import ArtistSteps from './artistSteps';
 import { Link } from 'react-router-dom';
 
 //wysiwyg editor for textarea form fields
-import { EditorState } from 'draft-js';
+import { EditorState,  ContentState, convertFromHTML, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
@@ -111,7 +111,8 @@ class Artist extends Component {
       toggleAuthenticateStatus: this.props.childProps.toggleAuthenticateStatus,
       authenticated: this.props.childProps.authenticated,
       open: false,
-      editorState: EditorState.createEmpty(),
+      bio: {},
+      bioState: EditorState.createEmpty(),
     };
     this.setSteps = this.setSteps.bind(this);
     this.setImages = this.setImages.bind(this);
@@ -126,7 +127,7 @@ class Artist extends Component {
   handleCancel = () => this.setState({ open: false })
   setSteps = (obj) => {
     if(obj) this.setState(obj);
-    console.log(obj);
+
   }
   handleChangeSteps= (e) =>{
     return this.setSteps(e);
@@ -154,7 +155,33 @@ class Artist extends Component {
       console.log(e.message);
     }
   }
+  handleSubmitBio = async (e) => {
 
+    let bio = (this.state.bio) ? this.state.bio : '';
+      try {
+        await fetch(this.state.artists+'/'+this.state.aid, {
+          method: 'PATCH',
+          headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json', charset:'utf-8' },
+          body:JSON.stringify({ bio: bio})
+        })
+        .then(response => {
+          if (response && !response.ok) { throw new Error(response.statusText);}
+          return response.json();
+        })
+        .then(data => {
+            if(data) {
+              // set Step complete and forward to next step
+              this.setState({bioComplete: true});
+            }
+        })
+        .catch((error) => {
+          // Your error is here!
+          console.log(error)
+        });
+      } catch(e) {
+        console.log(e.message);
+      }
+  }
   async handleDelete(e) {
     e.preventDefault(); // Let's stop this event.
 
@@ -331,9 +358,9 @@ class Artist extends Component {
     }
   }
   onEditorStateChange: Function = (editorState) => {
-    console.log(editorState);
     this.setState({
-      editorState,
+      bioState: editorState,
+    //  bio: convertToRaw(editorState)
     });
   }
   setEditor = (editor) => {
@@ -350,7 +377,6 @@ class Artist extends Component {
     this.setState({images: {files} });
   }
   editArtist(values) {
-      if(this.state.step !== 'Artist') {return null;}
       return (
         <div>
         <Header as='h6' icon >
@@ -451,7 +477,7 @@ class Artist extends Component {
     );
   }
   editImages(values) {
-        if(this.state.step !== 'Images') {return null;}
+
     return (
       <Formik
         enableReinitialize={true}
@@ -503,7 +529,7 @@ class Artist extends Component {
     );
   }
   editBio(values) {
-        if(this.state.step !== 'Bio') {return null;}
+
     return (
       <Formik
         enableReinitialize={true}
@@ -552,14 +578,14 @@ class Artist extends Component {
               width= '80vw'
               height= '60vh'
               ref={this.setEditor}
-              editorState={this.state.editorState}
+              editorState={this.state.bioState}
               wrapperClassName="demo-wrapper"
               editorClassName="demo-editor"
-              onEditorStateChange={this.onEditorStateChange}
+              onEditorStateChange={this.onBioStateChange}
               toolbar={options}
-              name="description"
-              placeholder='Description'
-              value={values.description}
+              name="bio"
+              placeholder='Biographie'
+              value={values.bio}
               />
             <Divider horizontal>...</Divider>
             <Button onClick={handleSubmitBio} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
@@ -588,9 +614,9 @@ class Artist extends Component {
             </Link>
           </Header>
           <ArtistSteps  aid={this.state.aid} step={this.state.step} state={this.state}/>
-          {this.editArtist(this.state.initialAValues)}
-          {this.editImages(this.state.initialAValues)}
-          {this.editBio(this.state.initialAValues)}
+          {(this.state.step === 'Artist') ? this.editArtist() : ''}
+          {(this.state.step === 'Images') ? this.editImages() : ''}
+          {(this.state.step === 'Bio') ? this.editBio() : ''}
         </Segment>
 
 

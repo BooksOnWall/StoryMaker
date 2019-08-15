@@ -32,24 +32,6 @@ import StoryMap from './map/storyMap';
 //Stages
 import StoryStages from './storyStages';
 
-const htmlToState = (html) => {
-  let sinoState;
-  const blocksFromHTML = convertFromHTML(html);
-  const contentState = ContentState.createFromBlockArray(blocksFromHTML);
-  sinoState = EditorState.createWithContent(contentState);
-  return sinoState;
-};
-const stateToHtml = (sinoState) => {
-  const content = convertToRaw(sinoState.getCurrentContent());
-  return content;
-};
-let options = {
-    inline: { inDropdown: true },
-    list: { inDropdown: true },
-    textAlign: { inDropdown: true },
-    link: { inDropdown: true },
-    history: { inDropdown: true },
-};
 
 class Story extends Component {
 
@@ -59,13 +41,6 @@ class Story extends Component {
     let protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
     let domain = protocol + '://' + process.env.REACT_APP_SERVER_HOST;
     let server = domain + ':'+ process.env.REACT_APP_SERVER_PORT+'/';
-  //  let sinoState;
-    //const scontentState = ContentState.createFromBlockArray(convertFromHTML('<H1>Sinopsis</H1>'));
-    //sinoState = EditorState.createWithContent(scontentState);
-    //sinoState= EditorState.createEmpty();
-    //let creditState;
-    //const ccontentState = ContentState.createFromBlockArray(convertFromHTML('<H1>Credits</H1>'));
-    //creditState = EditorState.createWithContent(ccontentState);
 
     this.state = {
       server: server,
@@ -315,9 +290,6 @@ class Story extends Component {
     } catch(e) {
       console.log(e.message);
     }
-  }
-  htmlToState(data, state) {
-
   }
   async getStory() {
     this.setState({loading: true});
