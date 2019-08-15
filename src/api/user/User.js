@@ -126,7 +126,7 @@ class User extends Component {
             let userPrefs = [];
             if(datas && datas.length > 0) {
               _.map(datas, ({ id, pname, pvalue }) => {
-                console.log(pvalue);
+
                 pvalue = (pname === 'avatar') ? null : JSON.parse(pvalue);
                 userPrefs.push({[pname]: pvalue});
               });
@@ -353,7 +353,7 @@ class User extends Component {
         userPrefs: this.state.userEdit.userPrefs,
       }
     });
-    console.log(this.state.userEdit.initialUValues.checked)
+
   }
 
   async handleSubmit(e) {
@@ -627,7 +627,6 @@ render() {
     // display render only afetr we get initialUValues for update mode
     if (this.state.userEdit.initialUValues === null && this.state.userEdit.mode === 'update') return null;
     if (this.state.userEdit.initialUValues.name ==='' && this.state.userEdit.mode === 'update') { return null }
-    console.log(this.state.userEdit.initialUValues);
     return (
 
       <Container className="view" fluid >
@@ -644,10 +643,10 @@ render() {
         </Header>
         <UsersSteps uid={this.state.userEdit.uid} step={this.state.step} state={this.state}/>
         <Segment>
-            {this.editForm()}
-            {this.editPasswd()}
-            {this.editPrefs()}
-            {this.editAvatar()}
+            {(this.state.step === 'User') ? this.editForm() : ''}
+            {(this.state.step === 'Password') ? this.editPasswd() : ''}
+            {(this.state.step === 'Preferences') ? this.editPrefs() : ''}
+            {(this.state.step === 'Avatar') ? this.editAvatar() : ''}
         </Segment>
       </Container>
 

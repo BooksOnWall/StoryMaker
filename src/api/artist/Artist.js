@@ -309,13 +309,11 @@ class Artist extends Component {
       .then(data => {
           if(data) {
             if (data.bio) {
-
               let bio = JSON.parse(data.bio);
               const bioContentState = convertFromRaw(bio);
               const bioState = EditorState.createWithContent(bioContentState);
               this.setState({bio: bio});
               this.setState({bioState: bioState});
-
             }
 
             this.setState({aid: data.id, name: data.name, email: data.email, bio: data.bio, images : data.images});

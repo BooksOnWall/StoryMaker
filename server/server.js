@@ -496,18 +496,20 @@ app.post('/artists/:artistId/upload', function (req, res, next) {
   //console.log(req.body);
   // req.body will contain the text fields, if there were any
 });
+//Uploading single file avatar
 app.post('/users/:userId/upload', function (req, res, next) {
   let uid = req.params.userId;
   var storage = multer.diskStorage({
       destination: function(req, file, cb){
-        cb(null, './public/user/'+uid);
+        cb(null, './public/users/'+uid);
       },
       filename: function (req, file, cb) {
         cb(null, file.originalname);
       }
     });
-    var upload = multer({ storage : storage}).single();
+    var upload = multer({ storage : storage}).any();
     upload(req,res,function(err) {
+      
       if(err) {
         return res.end("Error uploading file." + err);
       } else {

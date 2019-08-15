@@ -304,15 +304,14 @@ class Story extends Component {
       })
       .then(data => {
           if(data) {
-            console.log(data.sinopsys);
-
+            
             data.sinopsys = (data.sinopsys) ? sanitizeHtml(data.sinopsys) : '<span>&nbsp</span>';
             data.credits = (data.credits) ? sanitizeHtml(data.credits) : '<span>&nbsp</span>';
-            var { contentBlocks, entityMap } = htmlToDraft(data.sinopsys);
-            const sinoContentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+
+            const sinoContentState = ContentState.createFromBlockArray(htmlToDraft(data.sinopsys));
             const sinoState = EditorState.createWithContent(sinoContentState);
-            var { contentBlocks, entityMap } = htmlToDraft(data.credits);
-            const creditContentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+
+            const creditContentState = ContentState.createFromBlockArray(htmlToDraft(data.credits));
             const creditState = EditorState.createWithContent(creditContentState);
 
             this.setState({sinoState: sinoState});

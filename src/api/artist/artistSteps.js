@@ -26,7 +26,7 @@ class artistSteps extends Component {
   render() {
 
     return (
-      <Step.Group fluid ordered>
+      <Step.Group fluid >
         <Step
           icon='area graph'
           active = {this.props.state.step === 'Artist'}
@@ -34,7 +34,7 @@ class artistSteps extends Component {
           name='Artist'
           onClick={this.handleSteps}
           title='Edit Artist'
-          description='Edit artists things'
+          description='things'
         />
         <Step
           active = {this.props.state.step === 'Images'}
@@ -44,7 +44,7 @@ class artistSteps extends Component {
           onClick={this.handleSteps}
           icon='images'
           title='Images'
-          description='Upload artist images'
+          description='images'
         />
         <Step
           active = {this.props.state.step === 'Bio'}
@@ -52,9 +52,9 @@ class artistSteps extends Component {
           disabled ={(this.props.state.mode === 'update') ? false : true }
           name='Bio'
           onClick={this.handleSteps}
-          icon='images'
+          icon='book'
           title='Bio'
-          description='Artist Biography'
+          description='Biography'
         />
       </Step.Group>
     );

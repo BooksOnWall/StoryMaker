@@ -23,7 +23,7 @@ class userSteps extends Component {
   render() {
 
     return (
-      <Step.Group fluid ordered>
+      <Step.Group fluid >
         <Step
           active={this.props.state.step === 'User'}
           icon='user'

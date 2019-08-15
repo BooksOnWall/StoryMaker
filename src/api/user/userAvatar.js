@@ -34,6 +34,7 @@ class userAvatar extends Component {
       user: server + 'users/',
       uid: uid,
       data: null,
+      userUpload: users + '/' + uid +'/upload',
       toggleAuthenticateStatus: this.props.toggleAuthenticateStatus,
       authenticated: this.props.authenticated,
       userPreferences: userPreferences,
@@ -64,7 +65,6 @@ class userAvatar extends Component {
     this.inputOpenFileRef.current.click()
   }
   handleSave = data => {
-
     const img = this.editor.getImageScaledToCanvas().toDataURL();
     const rect = this.editor.getCroppingRect();
     //this.props.state.avatar = img;
@@ -81,12 +81,53 @@ class userAvatar extends Component {
     });
     this.uploadAvatar(img);
   }
-  uploadAvatar = async (img) => {
-    this.state.loading = true;
-    // prepare images name and path for store
+  converterDataURItoBlob(dataURI) {
+    //convert image hash to blob
+    let byteString;
+    let mimeString;
+    let ia;
 
+    if (dataURI.split(',')[0].indexOf('base64') >= 0) {
+      byteString = atob(dataURI.split(',')[1]);
+    } else {
+      byteString = encodeURI(dataURI.split(',')[1]);
+    }
+    // separate out the mime component
+    mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+    // write the bytes of the string to a typed array
+    ia = new Uint8Array(byteString.length);
+    for (var i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+    return new File([ia], {type:mimeString});
+  }
+  uploadAvatar = async (img) => {
+    console.log(this.state.image);
+    // prepare images name and path for store
     try {
-      console.log(img);
+      await this.setState({loading: true});
+      let formData = new FormData();
+      let file = this.converterDataURItoBlob(img);
+      formData.append(file, 'avatar.png');
+      let files = [];
+      files.push(file);
+      console.log(files);
+      await fetch(this.state.userUpload, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Accept':'application/json; charset=utf-8'
+        },
+        files: JSON.stringify(files),
+        body: formData
+       })
+       .then(response => response.json())
+       .then(data => {
+          this.props.history.push('/artists');
+       });
+
     } catch(e) {
       console.log(e.message);
     }
@@ -105,7 +146,7 @@ class userAvatar extends Component {
           body:JSON.stringify({
             uid: uid,
             pref: 'avatar',
-            pvalue: img,
+            pvalue: path,
           })
         })
         .then(response => {
