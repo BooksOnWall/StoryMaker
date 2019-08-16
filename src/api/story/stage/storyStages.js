@@ -11,7 +11,7 @@ import ReactDragListView  from 'react-drag-listview';
 import { FormattedMessage } from 'react-intl';
 import _ from 'lodash';
 
-import StagesMap from './map/stagesMap';
+import StagesMap from '../map/stagesMap';
 
 class storyStages extends Component {
   constructor(props) {

@@ -30,7 +30,7 @@ import sanitizeHtml from 'sanitize-html';
 // maps
 import StoryMap from './map/storyMap';
 //Stages
-import StoryStages from './storyStages';
+import StoryStages from './stage/storyStages';
 
 
 class Story extends Component {
@@ -543,9 +543,7 @@ class Story extends Component {
         </Dimmer>
         <Segment>
 
-            <Button primary size='mini' to="/stories" as={Link}>
-              <Icon name='list' >  List stories</Icon>
-            </Button>
+            <Button primary  to="/stories" as={Link}><Icon name='list' /> List stories</Button>
 
           <StorySteps sid={this.state.sid} step={this.state.step} state={this.state} />
           <Segment id='StepsContent'>

@@ -22,7 +22,7 @@ import Artists from './api/artist/Artists';
 import Artist from './api/artist/Artist';
 import Stories from './api/story/Stories';
 import Story from './api/story/Story';
-import Stage from './api/story/Stage';
+import Stage from './api/story/stage/Stage';
 
 
 import Profile from './api/user/Profile';
