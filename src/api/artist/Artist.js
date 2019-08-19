@@ -228,11 +228,11 @@ class Artist extends Component {
     }
   }
   async updateArtist(values) {
-    console.log(values.images);
+    //console.log(values.images);
     //this.setState({loading: true});
     // prepare images name and path for store
     let images =[];
-    if (values.images) {
+    if (values.images && values.images.length > 0) {
       //prepare aray of image name and path for store and let the rest for updateImages
       Array.from(values.images).forEach(image => {
         images.push({
@@ -276,12 +276,12 @@ class Artist extends Component {
   }
 
   updateImages = async (values) => {
-    console.log(this.state.mode);
-    console.log(values.files);
-    let files = values.files;
+    //console.log(this.state.mode);
+    //console.log(values.images);
+    let files = values.images;
 
     if(files) {
-      console.log(files);
+      //console.log(files);
       try {
         let formData = new FormData();
         for(var x = 0; x < files.length; x++) {
@@ -539,7 +539,7 @@ class Artist extends Component {
               <Previews state={this.state} />
             </div>
             <Divider horizontal>...</Divider>
-            <Button onClick={this.updateArtist(values)} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
+            <Button onClick={this.updateArtist} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
               {(this.state.mode === 'create') ? 'Create' : 'Update'}
             </Button>
           </Form>
