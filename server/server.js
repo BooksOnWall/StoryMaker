@@ -111,7 +111,13 @@ const Users = sequelize.define('users', usersList.users);
 // create table with user model
 Users.sync()
  .then(() => {
-   console.log('User table created successfully')
+   console.log('User table created successfully');
+   var dir_root = __dirname + '/public';
+   if (!fs.existsSync(dir_root)) {
+       fs.mkdirSync(dir_root, 0o744);
+       console.log('Public directory created successfully')
+   }
+   
    var dir = __dirname + '/public/users';
    if (!fs.existsSync(dir)) {
        fs.mkdirSync(dir, 0o744);
@@ -498,26 +504,27 @@ app.post('/artists/:artistId/upload', function (req, res, next) {
 });
 //Uploading single file avatar
 app.post('/users/:userId/upload', function (req, res, next) {
+  console.log('avatar upload');
   let uid = req.params.userId;
   var storage = multer.diskStorage({
       destination: function(req, file, cb){
         cb(null, './public/users/'+uid);
       },
       filename: function (req, file, cb) {
+        console.log(file);
         cb(null, file.originalname);
       }
     });
     var upload = multer({ storage : storage}).any();
     upload(req,res,function(err) {
-      
-      if(err) {
-        return res.end("Error uploading file." + err);
-      } else {
-        //req.files.forEach( function(f) {
-          // and move file to final destination...
-        //});
-        return res.json({ user: uid, msg: 'user avatar uploaded  successfully', files: req.files })
-      }
+
+        if(err) {
+          return res.end("Error uploading file." + err);
+        } else {
+          console.log(req.files);
+          console.log('end avatar upload');
+          return res.json({ user: uid, msg: 'user avatar uploaded  successfully' })
+        }
     });
   // req.files is array of `images` files
   //console.log('FILES:');
