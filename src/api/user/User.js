@@ -126,8 +126,7 @@ class User extends Component {
             let userPrefs = [];
             if(datas && datas.length > 0) {
               _.map(datas, ({ id, pname, pvalue }) => {
-                pvalue = JSON.parse(pvalue);
-                userPrefs.push({[pname]: pvalue.value});
+                userPrefs.push({[pname]: pvalue });
               });
             }
             // if edited user is the one that is connected
@@ -618,13 +617,11 @@ class User extends Component {
   }
   editAvatar() {
     return (
-      <UserAvatar state={this.props.state} history={this.props.history} id={parseInt(this.props.match.params.id)} toggleAuthenticateStatus={() => this.state.toggleAuthenticateStatus}/>
+      <UserAvatar state={this.props.state} setAvatar={this.props.state.setAvatar} history={this.props.history} id={parseInt(this.props.match.params.id)} toggleAuthenticateStatus={() => this.state.toggleAuthenticateStatus}/>
     );
   }
 render() {
-    // display render only afetr we get initialUValues for update mode
-    if (this.state.userEdit.initialUValues === null && this.state.userEdit.mode === 'update') return null;
-    if (this.state.userEdit.initialUValues.name ==='' && this.state.userEdit.mode === 'update') { return null }
+
     return (
 
       <Container className="view" fluid >

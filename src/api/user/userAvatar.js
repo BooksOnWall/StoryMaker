@@ -130,7 +130,7 @@ class userAvatar extends Component {
                 // store avatar in localStorage
                 Auth.updateAvatar(path);
                 // update user Preferences
-                this.props.state.setAvatar(path);
+                this.props.setAvatar(path);
               } else {
                 // redirect to users list page
                 this.props.history.push('/users');

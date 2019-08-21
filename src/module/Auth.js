@@ -13,9 +13,9 @@ class Auth {
     localStorage.setItem('uid', data.id);
     localStorage.setItem('userIsLoggedIn', true);
     console.log(prefs);
-    let p = prefs.map( pref => ({ name: pref.pname, nvalue: JSON.parse(pref.pvalue)}));
+    let p = prefs.map( pref => ({ name: pref.pname, nvalue: pref.pvalue}));
     for (var i = 0; i < p.length; i++) {
-      localStorage.setItem(p[i].name, p[i].nvalue.value);
+      localStorage.setItem(p[i].name, p[i].nvalue);
     }
     console.log(localStorage.getItem('avatar'));
     return true;

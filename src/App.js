@@ -95,12 +95,16 @@ class App extends Component {
     };
     this.setAvatar = (avatar) => {
       this.setState(state => ({
-        user: Auth.getDatas()
+        user: {
+          theme: this.state.theme,
+          locale: this.state.locale,
+          avatar: avatar
+        }
       }));
     };
     this.setUser = (user) => {
       this.setState(state => ({
-        user: {user: Auth.getDatas()}
+        user: Auth.getDatas()
       }));
     };
     this.updateUserPreferences = (user) => {
@@ -210,7 +214,7 @@ class App extends Component {
                                           <PrivateRoute exact path="/stories/:id"  component={Story} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
                                           <PrivateRoute exact path="/stories/:id/stages/:sid"  component={Stage} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
                                           <PrivateRoute path="/profile"  component={Profile} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
-                                          <LoggedOutRoute path="/login"  state={this.state} component={Login} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
+                                          <LoggedOutRoute path="/login"  state={this.state} setUser={this.state.setUser} component={Login} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
                                           <LoggedOutRoute path="/signup"  component={SignUp} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} />
                                           <Route path="/logout"  component={Logout} childProps={childProps} />
                                         </Switch>

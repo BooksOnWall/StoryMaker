@@ -6,7 +6,7 @@ module.exports.userPref = {
     unique: 'compositeIndex'
   },
   pvalue: {
-    type: Sequelize.JSON,
+    type: Sequelize.STRING,
     allowNull: false,
   },
   uid: {

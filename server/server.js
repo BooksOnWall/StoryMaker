@@ -273,7 +273,7 @@ const deleteStory = async (sid) => {
 };
 const patchUserPrefs = async ({ uid, pref, pvalue }) => {
   return await UserPref.upsert(
-    { uid: uid, pname: pref, pvalue: {value: pvalue}},
+    { uid: uid, pname: pref, pvalue: pvalue},
     { where: {uid : uid, name: pref }}
   );
 };

@@ -41,7 +41,7 @@ class userPreferences extends Component {
       theme: {value: this.props.state.theme},
       setTheme: this.props.state.setTheme,
       setLocale: this.props.state.setLocale,
-      avatar: null,
+      avatar: (this.props.state.user.avatar) ? this.props.state.user.avatar : null,
     };
     this.setPreference = this.setPreference.bind(this);
   };
@@ -72,7 +72,6 @@ class userPreferences extends Component {
         .then(data => {
             if(data && data.length > 0) {
               _.map(data, ({ id, pname, pvalue }) => {
-                pvalue= JSON.parse(pvalue);
                 this.setState({ [pname]: pvalue});
               });
             }
@@ -89,7 +88,7 @@ class userPreferences extends Component {
   }
   async setPreference(e,{pref,value}) {
       this.setState({pref: pref});
-      this.setState({ [pref]: {value: value} });
+      this.setState({ [pref]: value });
       if(pref === 'locale') this.state.setLocale(value);
       if(pref === 'theme') this.state.setTheme(value);
 

@@ -57,10 +57,9 @@ let options = {
 function Showimages(props) {
 
   if (!props.images || props.images.length === 0 ) return null;
-  console.log(props.images);
-  console.log(props.mode);
+
   let images = (props.mode === 'update' && !props.images.files) ? JSON.parse(props.images) : props.images.files ;
-  console.log(images);
+
   const build = images.map((image, index) => {
     // switch oject structure from create to update
     image = (props.mode === 'update' && !props.images.files) ? image.image : image;
@@ -227,7 +226,8 @@ class Artist extends Component {
       console.log(e.message);
     }
   }
-  async updateArtist(values) {
+  updateArtist = async (values) => {
+    console.log(this.state.artist);
     //console.log(values.images);
     //this.setState({loading: true});
     // prepare images name and path for store
@@ -243,8 +243,11 @@ class Artist extends Component {
         });
        });
     }
+    console.log(values.files);
+    console.log(images);
     try {
-      await fetch(this.state.artist+this.state.aid, {
+
+      await fetch(this.state.artist + this.state.aid, {
         method: 'PATCH',
         headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json', charset:'utf-8' },
         body:JSON.stringify({
@@ -263,7 +266,7 @@ class Artist extends Component {
             console.log(values.images);
             this.state.percent=15;
             // redirect to users list page or batch upload images
-            (values.images) ?  this.updateImages(values) :  this.props.history.push('/artists');
+            if(values.images) { this.updateImages(values); }
           }
       })
       .catch((error) => {
