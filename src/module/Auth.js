@@ -41,6 +41,7 @@ class Auth {
       theme: localStorage.getItem('theme'),
       locale: localStorage.getItem('locale')
     };
+    console.log(user);
     return user;
   }
   /**
