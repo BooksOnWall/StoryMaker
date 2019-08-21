@@ -56,7 +56,7 @@ class Login extends Component {
       await this.setState({accessToken : data.token});
       await Auth.authenticateUser(data);
       await this.setState({userIsLoggedIn: true});
-      await this.storeUserSession(data);
+      //await this.storeUserSession(data);
       await this.props.state.setUser();
     } catch(e) {
       console.log(e.message);

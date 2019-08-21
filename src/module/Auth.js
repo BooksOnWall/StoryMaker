@@ -7,6 +7,7 @@ class Auth {
    */
    static authenticateUser(data) {
     let prefs = data.prefs;
+
     localStorage.setItem('token', data.token);
     localStorage.setItem('name', data.name);
     localStorage.setItem('uid', data.id);
