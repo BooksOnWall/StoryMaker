@@ -71,12 +71,14 @@ class userPreferences extends Component {
         })
         .then(data => {
             if(data && data.length > 0) {
+              let h = [];
               _.map(data, ({ id, pname, pvalue }) => {
-                this.setState({ [pname]: pvalue});
+                h[pname]= pvalue;
               });
+              this.props.state.setUserPreferences(h);
             }
             this.setState({loading: false});
-            return data
+            return
         })
         .catch((error) => {
           // Your error is here!
@@ -147,7 +149,7 @@ class userPreferences extends Component {
 
                onChange={this.setPreference}
                options={ThemeOptions}
-               defaultValue={this.state.theme.value}
+               defaultValue={this.state.theme}
              />
            </div>
           )}
@@ -167,7 +169,7 @@ class userPreferences extends Component {
                    item
                    onChange={this.setPreference}
                    options={LocaleOptions}
-                   defaultValue={this.state.locale.value}
+                   defaultValue={this.state.locale}
                  />
                </div>
               )}

@@ -11,11 +11,13 @@ class LeftSlideMenu extends Component {
     let server = domain + ':'+ process.env.REACT_APP_SERVER_PORT;
       this.state = {
         activeItem:'homepage',
-        server: server
+        server: server,
+        user: this.props.state.user
       }
   }
  handleItemClick = (e, { name }) => this.setState({ activeItem: name })
   render() {
+    console.log(this.props.state.user.avatar);
     return (
       <Segment  fluid='true' style={{padding: 0}} >
         <Menu className='bwSidebarMenu'size='large' pointing primary='true' inverted color='violet' vertical fluid  style={{padding: 0}}>

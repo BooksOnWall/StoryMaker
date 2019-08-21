@@ -125,12 +125,14 @@ class userAvatar extends Component {
         })
         .then(data => {
             if(data) {
+              console.log(data);
+              console.log(this.props.state);
               // if user is the one logged then change it's user preferences
-              if (parseInt(this.props.state.user.uid) === parseInt(uid) ) {
+              if (parseInt(this.props.state.uid) === parseInt(uid) ) {
                 // store avatar in localStorage
                 Auth.updateAvatar(path);
                 // update user Preferences
-                this.props.setAvatar(path);
+                this.props.state.setAvatar(path);
               } else {
                 // redirect to users list page
                 this.props.history.push('/users');

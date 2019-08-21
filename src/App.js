@@ -107,12 +107,13 @@ class App extends Component {
         user: Auth.getDatas()
       }));
     };
-    this.updateUserPreferences = (user) => {
+    this.updateUserPreferences = (prefs) => {
+      console.log(prefs);
       this.setState(state => ({
         user: {
-          theme: user.theme,
-          locale: user.locale,
-          avatar: user.avatar,
+          theme: prefs.theme,
+          locale: prefs.locale,
+          avatar: prefs.avatar,
         }
       }));
     };

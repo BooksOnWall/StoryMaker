@@ -132,6 +132,7 @@ class User extends Component {
             // if edited user is the one that is connected
             // then update it's preferences ,
             // otherwise preferences will be updated at next session
+
             if(this.props.state.user.uid === this.state.userEdit.uid) this.props.state.setUserPreferences(userPrefs);
             this.setState({
               userEdit: {
@@ -146,7 +147,7 @@ class User extends Component {
               loading: false
             });
             console.log(userPrefs);
-            this.props.state.setUserPreferences({locale: userPrefs.locale, theme: userPrefs.theme, avatar: userPrefs.avatar});
+            this.props.state.setUserPreferences({locale: {userPrefs}.locale, theme: {userPrefs}.theme, avatar: {userPrefs}.avatar});
           } else {
             console.log('No Data received from the server');
           }
@@ -156,7 +157,7 @@ class User extends Component {
         console.log({error})
       });
     } catch(e) {
-
+      console.log(e.message);
     }
   }
   async getUser() {
