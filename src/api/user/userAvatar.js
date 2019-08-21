@@ -3,6 +3,7 @@ import AvatarEditor from 'react-avatar-editor';
 import Dropzone from 'react-dropzone';
 import Auth from '../../module/Auth';
 import { injectIntl, FormattedMessage } from 'react-intl';
+
 import {
   Button,
   Input,
@@ -15,7 +16,6 @@ import {
 } from 'semantic-ui-react';
 
 import src from '../../assets/images/patrick.png';
-
 
 class userAvatar extends Component {
   editor: AvatarEditor;
@@ -60,6 +60,7 @@ class userAvatar extends Component {
   }
   handleNewImage = e => {
     this.setState({ image: e.target.files[0] });
+
   }
   showOpenFileDlg = () => {
     this.inputOpenFileRef.current.click()
@@ -79,67 +80,32 @@ class userAvatar extends Component {
         borderRadius: this.state.borderRadius,
       },
     });
-    this.uploadAvatar(img);
+    this.saveAvatarPreference(img);
   }
-  converterDataURItoBlob(dataURI) {
-    //convert image hash to blob
-    let byteString;
-    let mimeString;
-    let ia;
-
-    if (dataURI.split(',')[0].indexOf('base64') >= 0) {
-      byteString = atob(dataURI.split(',')[1]);
-    } else {
-      byteString = encodeURI(dataURI.split(',')[1]);
-    }
+  dataURItoBlob(dataURI) {
+    // convert base64 to raw binary data held in a string
+    // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+    var byteString = atob(dataURI.split(',')[1]);
     // separate out the mime component
-    mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-
-    // write the bytes of the string to a typed array
-    ia = new Uint8Array(byteString.length);
-    for (var i = 0; i < byteString.length; i++) {
-      ia[i] = byteString.charCodeAt(i);
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    // write the bytes of the string to an ArrayBuffer
+    var ab = new ArrayBuffer(byteString.length);
+    var dw = new DataView(ab);
+    for(var i = 0; i < byteString.length; i++) {
+      dw.setUint8(i, byteString.charCodeAt(i));
     }
-    return new File([ia], {type:mimeString});
-  }
-  uploadAvatar = async (img) => {
-    console.log(this.state.image);
-    // prepare images name and path for store
-    try {
-      await this.setState({loading: true});
-      let formData = new FormData();
-      let file = this.converterDataURItoBlob(img);
-      formData.append(file, 'avatar.png');
-      let files = [];
-      files.push(file);
-      console.log(files);
-      await fetch(this.state.userUpload, {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Accept':'application/json; charset=utf-8'
-        },
-        files: JSON.stringify(files),
-        body: formData
-       })
-       .then(response => response.json())
-       .then(data => {
-          this.props.history.push('/artists');
-       });
-
-    } catch(e) {
-      console.log(e.message);
-    }
-    //this.saveAvatarPreference(img);
+    // write the ArrayBuffer to a blob, and you're done
+    return new Blob([ab], {type: mimeString});
   }
   async saveAvatarPreference(img) {
       this.setState({'avatar': img});
       let uid = this.props.id;
       try {
+        //transform image uri hash to file
+        let image = this.dataURItoBlob(img);
+        let path = '/images/users/' + uid +'/avatar.png';
         //upload image to server and store the returned image path in avatar userPreference
-        let path = this.uploadAvatar(img);
-        console.log(path);
+        await this.uploadAvatar(image, 'avatar.png');
         await fetch(this.state.userPreferences , {
           method: 'PATCH',
           headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json', charset:'utf-8' },
@@ -156,12 +122,11 @@ class userAvatar extends Component {
         .then(data => {
             if(data) {
               // redirect to users list page
-              console.log(this.props.state);
               if (this.props.state.user.uid === uid ) {
                 // store avatar in localStorage
-                Auth.updateAvatar(img);
+                Auth.updateAvatar(path);
                 // update user Preferences
-                this.props.state.setAvatar(img);
+                this.props.state.setAvatar(path);
               }
             }
         })
@@ -174,6 +139,36 @@ class userAvatar extends Component {
     }
 
 
+  }
+  uploadAvatar = async (blob, name) => {
+    // prepare image name and path for store
+     let files = [];
+
+    try {
+      this.setState({loading: true});
+      let formData = new FormData();
+      var file = new File([blob], name, ({type: blob.type}));
+      formData.append('files[]',file, name);
+      files.push(file);
+
+      await fetch(this.state.userUpload, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Accept':'application/json; charset=utf-8'
+        },
+        files: JSON.stringify(files),
+        body: formData
+       })
+       .then(response => response.json())
+       .then(data => {
+          return data;
+       });
+
+    } catch(e) {
+      console.log(e.message);
+    }
   }
   handlePreview = data => {
     const img = this.editor.getImageScaledToCanvas().toDataURL();

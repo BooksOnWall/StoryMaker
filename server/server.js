@@ -117,7 +117,7 @@ Users.sync()
        fs.mkdirSync(dir_root, 0o744);
        console.log('Public directory created successfully')
    }
-   
+
    var dir = __dirname + '/public/users';
    if (!fs.existsSync(dir)) {
        fs.mkdirSync(dir, 0o744);
@@ -296,6 +296,26 @@ var staticoptions = {
   }
 }
 app.use('/images', express.static(__dirname + 'public', staticoptions));
+app.get('/images/users/:userId/:name', function (req, res, next) {
+  var uid = req.params.userId;
+  var fileName = req.params.name;
+  var path = 'public/users/'+uid+'/';
+  var options = {
+    root: path ,
+    dotfiles: 'deny',
+    headers: {
+      'x-timestamp': Date.now(),
+      'x-sent': true
+    }
+  }
+  res.sendFile(fileName, options, function (err) {
+    if (err) {
+      next(err)
+    } else {
+      console.log('Sent:', fileName)
+    }
+  })
+});
 app.get('/images/artists/:artistId/:name', function (req, res, next) {
   var aid = req.params.artistId;
   var fileName = req.params.name;
@@ -504,25 +524,20 @@ app.post('/artists/:artistId/upload', function (req, res, next) {
 });
 //Uploading single file avatar
 app.post('/users/:userId/upload', function (req, res, next) {
-  console.log('avatar upload');
   let uid = req.params.userId;
   var storage = multer.diskStorage({
       destination: function(req, file, cb){
         cb(null, './public/users/'+uid);
       },
       filename: function (req, file, cb) {
-        console.log(file);
         cb(null, file.originalname);
       }
     });
     var upload = multer({ storage : storage}).any();
     upload(req,res,function(err) {
-
         if(err) {
           return res.end("Error uploading file." + err);
         } else {
-          console.log(req.files);
-          console.log('end avatar upload');
           return res.json({ user: uid, msg: 'user avatar uploaded  successfully' })
         }
     });

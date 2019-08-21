@@ -612,15 +612,13 @@ class User extends Component {
     );
   }
   editPrefs() {
-    if(this.state.step !== 'Preferences') {return null}
     return (
         <UserPref state={this.props.state} id={parseInt(this.props.match.params.id)} toggleAuthenticateStatus={() => this.state.toggleAuthenticateStatus} />
     );
   }
   editAvatar() {
-    if(this.state.step !== 'Avatar') {return null}
     return (
-      <UserAvatar state={this.props.state} id={parseInt(this.props.match.params.id)} toggleAuthenticateStatus={() => this.state.toggleAuthenticateStatus}/>
+      <UserAvatar state={this.props.state} history={this.props.history} id={parseInt(this.props.match.params.id)} toggleAuthenticateStatus={() => this.state.toggleAuthenticateStatus}/>
     );
   }
 render() {

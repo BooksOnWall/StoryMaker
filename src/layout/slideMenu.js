@@ -6,12 +6,14 @@ import UserContext from '../context/UserContext';
 class LeftSlideMenu extends Component {
   constructor(props) {
     super(props);
+    let protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
+    let domain = protocol + '://' + process.env.REACT_APP_SERVER_HOST;
+    let server = domain + ':'+ process.env.REACT_APP_SERVER_PORT;
       this.state = {
-        activeItem:'homepage'
+        activeItem:'homepage',
+        server: server
       }
   }
-
-
  handleItemClick = (e, { name }) => this.setState({ activeItem: name })
   render() {
     return (
@@ -21,7 +23,7 @@ class LeftSlideMenu extends Component {
             <UserContext.Consumer>{(user) => {
               return(
                 <Menu.Menu style={{padding: 0}}>
-                  <Image  avatar size='small'  src={this.props.state.user.avatar} />
+                  <Image  avatar size='small'  src={this.state.server+this.props.state.user.avatar} />
                     <span style={{display: 'block', paddingTop: '20px', fontSize: '2em', color: 'white'}} >Welcome {this.props.state.user.name}</span>
                   <Divider horizontal>...</Divider>
                     <Menu.Item name='homepage' active={this.state.activeItem === 'homepage'} as={Link} to='/'  style={{textAlign: 'left'}}>
