@@ -41,7 +41,6 @@ class Auth {
       theme: localStorage.getItem('theme'),
       locale: localStorage.getItem('locale')
     };
-    console.log(user);
     return user;
   }
   /**
@@ -50,6 +49,7 @@ class Auth {
    * @returns {obj}
    */
   static updateAvatar(path) {
+    console.log(path);
     localStorage.setItem('avatar', path);
   }
 
