@@ -23,7 +23,7 @@ class LeftSlideMenu extends Component {
             <UserContext.Consumer>{(user) => {
               return(
                 <Menu.Menu style={{padding: 0}}>
-                  <Image  avatar size='small'  src={this.state.server+this.props.state.user.avatar} />
+                  <Image  avatar size='small'  src={this.state.server + this.props.state.user.avatar} />
                     <span style={{display: 'block', paddingTop: '20px', fontSize: '2em', color: 'white'}} >Welcome {this.props.state.user.name}</span>
                   <Divider horizontal>...</Divider>
                     <Menu.Item name='homepage' active={this.state.activeItem === 'homepage'} as={Link} to='/'  style={{textAlign: 'left'}}>

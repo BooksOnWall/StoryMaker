@@ -84,13 +84,11 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.setTheme = (key) => {
-
       this.setState(state => ({
         theme:themes.$key,
       }));
     };
     this.setLocale = (key) => {
-
       this.setState(state => ({
         locale: locales.$key,
       }));
@@ -101,7 +99,6 @@ class App extends Component {
       }));
     };
     this.setUser = (user) => {
-
       this.setState(state => ({
         user: {user: Auth.getDatas()}
       }));

@@ -48,8 +48,8 @@ class Auth {
    *
    * @returns {obj}
    */
-  static updateAvatar(img) {
-    localStorage.setItem('avatar', img);
+  static updateAvatar(path) {
+    localStorage.setItem('avatar', path);
   }
 
   /**
