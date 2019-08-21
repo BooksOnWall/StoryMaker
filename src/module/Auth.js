@@ -17,6 +17,7 @@ class Auth {
       localStorage.setItem(p[i].name, p[i].nvalue.value);
     }
     console.log(localStorage.getItem('avatar'));
+    return true;
   }
 
   /**
