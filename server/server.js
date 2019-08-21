@@ -359,8 +359,7 @@ app.patch('/users/:userId/prefs', function(req, res, next) {
   let uid = req.params.userId;
   const { pvalue , pref  } = req.body;
   patchUserPrefs({ uid, pref, pvalue }).then(user => {
-      console.log(user);
-      res.json({ user, msg: 'user preference updated successfully' });
+      res.json({ msg: 'user preference updated successfully' });
     }
   );
 });

@@ -6,7 +6,6 @@ class Auth {
    * @param {obj} data
    */
   static authenticateUser(data) {
-
     let prefs = data.prefs;
     localStorage.setItem('token', data.token);
     localStorage.setItem('name', data.name);
