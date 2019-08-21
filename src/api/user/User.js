@@ -146,7 +146,7 @@ class User extends Component {
               },
               loading: false
             });
-            //this.data.setUserPreferences({locale: data.locale, theme: data.theme, avatar: data.avatar});
+            this.setUserPreferences({locale: data.locale, theme: data.theme, avatar: data.avatar});
           } else {
             console.log('No Data received from the server');
           }

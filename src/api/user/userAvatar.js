@@ -28,6 +28,10 @@ class userAvatar extends Component {
     let users = server + 'users';
     let userPreferences = users + '/' + uid + '/prefs';
     this.inputOpenFileRef = React.createRef();
+    //console.log(this.props.state.user.avatar);
+    let avatar_path = props.state.user.avatar;
+    avatar_path = (avatar_path) ? server + avatar_path.substring(1) : null;
+
     this.state = {
       server: server,
       users: users,
@@ -47,7 +51,7 @@ class userAvatar extends Component {
       width: 180,
       height: 180,
       initialAValues: {},
-      image: (this.props.state.user.avatar) ? this.props.state.user.avatar : src,
+      image: (avatar_path) ? avatar_path : src,
       file: null,
       fileName: '',
       isUploading: false,
@@ -268,6 +272,7 @@ class userAvatar extends Component {
     }
   }
   render() {
+    console.log(this.state.image);
     return (
       <Container  fluid className="view" style={{textAlign: 'left'}}>
         <Segment>
