@@ -31,7 +31,7 @@ class userAvatar extends Component {
     //console.log(this.props.state.user.avatar);
     let avatar_path = props.state.user.avatar;
     avatar_path = (avatar_path) ? server + avatar_path.substring(1) : null;
-
+    console.log(avatar_path);
     this.state = {
       server: server,
       users: users,

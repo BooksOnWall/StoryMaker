@@ -126,8 +126,8 @@ class User extends Component {
             let userPrefs = [];
             if(datas && datas.length > 0) {
               _.map(datas, ({ id, pname, pvalue }) => {
-                pvalue = JSON.parse(JSON.stringify(pvalue));
-                userPrefs.push({[pname]: pvalue});
+                pvalue = JSON.parse(pvalue);
+                userPrefs.push({[pname]: pvalue.value});
               });
             }
             // if edited user is the one that is connected
@@ -146,7 +146,8 @@ class User extends Component {
               },
               loading: false
             });
-            this.setUserPreferences({locale: data.locale, theme: data.theme, avatar: data.avatar});
+            console.log(userPrefs);
+            this.props.state.setUserPreferences({locale: userPrefs.locale, theme: userPrefs.theme, avatar: userPrefs.avatar});
           } else {
             console.log('No Data received from the server');
           }
