@@ -408,15 +408,12 @@ class User extends Component {
     if(!this.state.userEdit.name && this.state.userEdit.mode === 'update') {return null}
     return (
       <Segment className="slide-out" >
-
       <Header as='h3' color='violet' textAlign='center'>
-
         {(this.state.userEdit.mode === 'create') ? <FormattedMessage id="app.user.create" defaultMessage={`Create user`}/> : <FormattedMessage id="app.user.edit" defaultMessage={`Edit user`}/> }
       </Header>
-
       <Formik
         enableReinitialize={true}
-        initialUValues={this.state.userEdit.initialUValues}
+        initialValues={this.state.userEdit.initialUValues}
         validate={values => {
           let errors = {};
           if (!values.email) {
