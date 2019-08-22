@@ -19,12 +19,10 @@ import ArtistSteps from './artistSteps';
 import { Link } from 'react-router-dom';
 
 //wysiwyg editor for textarea form fields
-import { EditorState,  ContentState, convertFromHTML, convertToRaw , convertFromRaw } from 'draft-js';
+import { EditorState, convertToRaw , convertFromRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import { stateToHTML } from 'draft-js-export-html';
-import htmlToDraft from 'html-to-draftjs';
-import sanitizeHtml from 'sanitize-html';
+
 
 const thumbsContainer = {
   display: 'flex',

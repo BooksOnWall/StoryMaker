@@ -123,17 +123,19 @@ class User extends Component {
       .then(datas => {
         // todo moved avatar image to single file upload and return path to store in pvalue
           if(datas) {
-            let userPrefs = [];
+            console.log(datas);
+            let userPrefs = {};
             if(datas && datas.length > 0) {
               _.map(datas, ({ id, pname, pvalue }) => {
-                userPrefs.push({[pname]: pvalue });
+                userPrefs[pname]= pvalue ;
               });
             }
+
             // if edited user is the one that is connected
             // then update it's preferences ,
             // otherwise preferences will be updated at next session
 
-            if(this.props.state.user.uid === this.state.userEdit.uid) this.props.state.setUserPreferences(userPrefs);
+            if(this.props.childProps.user.uid === this.state.userEdit.uid) this.props.state.setUserPreferences(userPrefs);
             this.setState({
               userEdit: {
                 uid: this.state.userEdit.uid,
@@ -146,8 +148,8 @@ class User extends Component {
               },
               loading: false
             });
-            console.log(userPrefs);
-            this.props.state.setUserPreferences({locale: {userPrefs}.locale, theme: {userPrefs}.theme, avatar: {userPrefs}.avatar});
+
+            this.props.state.setUserPreferences(userPrefs);
           } else {
             console.log('No Data received from the server');
           }
@@ -482,7 +484,7 @@ class User extends Component {
                   name="password"
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  value={values.password}
+                  defaultValue={values.password}
                 />
               {errors.password && touched.password && errors.password}
 
@@ -494,7 +496,7 @@ class User extends Component {
                   name="password2"
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  value={values.password2}
+                  defaultValue={values.password2}
                 />
               {errors.password2 && touched.password2 && errors.password2}
             </div>

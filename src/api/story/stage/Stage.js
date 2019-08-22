@@ -2,17 +2,6 @@ import React, { Component } from 'react';
 
 import {
   Segment,
-  Header,
-  Divider,
-  Container,
-  Checkbox,
-  Form,
-  Input,
-  Select,
-  Label,
-  Icon,
-  Button,
-  Confirm,
   Dimmer,
   Loader,
 } from 'semantic-ui-react';

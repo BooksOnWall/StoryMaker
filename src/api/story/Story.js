@@ -2,13 +2,11 @@ import React, { Component } from 'react';
 
 import {
   Segment,
-  Header,
   Divider,
   Container,
   Checkbox,
   Form,
   Input,
-  Select,
   Label,
   Icon,
   Button,
@@ -21,7 +19,7 @@ import { Formik } from 'formik';
 import StorySteps from './storySteps';
 import { Link } from 'react-router-dom';
 //wysiwyg editor for textarea form fields
-import { EditorState,  ContentState, convertFromHTML, convertToRaw } from 'draft-js';
+import { EditorState,  ContentState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { stateToHTML } from 'draft-js-export-html';

@@ -70,6 +70,7 @@ class userAvatar extends Component {
     this.inputOpenFileRef.current.click()
   }
   handleSave = data => {
+    this.setState({loading: true});
     const img = this.editor.getImageScaledToCanvas().toDataURL();
     const rect = this.editor.getCroppingRect();
     //this.props.state.avatar = img;

@@ -117,12 +117,13 @@ class App extends Component {
         }
       }));
     };
-    this.setUserPreferences = (user) => {
+    this.setUserPreferences = (prefs) => {
+      console.log(prefs);
       this.setState(state => ({
         user: {
-          theme: user.theme,
-          locale: user.locale,
-          avatar: user.avatar,
+          theme: prefs.theme,
+          locale: prefs.locale,
+          avatar: prefs.avatar,
         }
       }));
     };
@@ -172,7 +173,8 @@ class App extends Component {
   handleSidebarHide = () => this.setState({ sidebarVisible: false })
   render () {
     const childProps = {
-      authenticated: this.state.authenticated
+      authenticated: this.state.authenticated,
+      user: this.state.user
     };
 
     return (

@@ -149,7 +149,7 @@ class userPreferences extends Component {
 
                onChange={this.setPreference}
                options={ThemeOptions}
-               defaultValue={this.state.theme}
+               defaultValue={this.props.state.user.theme}
              />
            </div>
           )}
@@ -169,7 +169,7 @@ class userPreferences extends Component {
                    item
                    onChange={this.setPreference}
                    options={LocaleOptions}
-                   defaultValue={this.state.locale}
+                   defaultValue={this.props.state.user.locale}
                  />
                </div>
               )}
