@@ -225,8 +225,9 @@ const getArtist = async obj => {
     where: obj,
   });
   // prepare JSON.parse for JSON fields
-  res.dataValues.images = JSON.parse(res.dataValues.images);
-  res.dataValues.bio = JSON.parse(res.dataValues.bio);
+  console.log(res.dataValues.images);
+  res.dataValues.images = (res.dataValues.images) ? JSON.parse(res.dataValues.images) : null;
+  res.dataValues.bio = (res.dataValues.bio) ? JSON.parse(res.dataValues.bio) : null ;
   return res;
 };
 const patchArtist = async ({ id, name, email, images, bio }) => {
