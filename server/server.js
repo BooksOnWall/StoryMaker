@@ -221,9 +221,13 @@ const createArtist = async ({ name, email, images, description }) => {
   return response;
 }
 const getArtist = async obj => {
-  return await Artists.findOne({
+  let res = await Artists.findOne({
     where: obj,
   });
+  // prepare JSON.parse for JSON fields
+  res.dataValues.images = JSON.parse(res.dataValues.images);
+  res.dataValues.bio = JSON.parse(res.dataValues.bio);
+  return res;
 };
 const patchArtist = async ({ id, name, email, images, bio }) => {
   return await Artists.update({ id, name, email, images, bio },
