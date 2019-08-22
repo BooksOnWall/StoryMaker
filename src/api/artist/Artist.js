@@ -44,7 +44,8 @@ let options = {
 
 function Listimages(props) {
   if (!props.images || props.images.length === 0 ) return null;
-  let images = props.images;
+  let images = JSON.parse(props.images);
+  images = JSON.parse(images);
   const build = images.map((image, index) => {
     // switch oject structure from create to update
     return (

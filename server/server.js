@@ -225,10 +225,10 @@ const getArtist = async obj => {
     where: obj,
   });
   // prepare JSON.parse for JSON fields
-  console.log(res.dataValues.images);
+  
   res.dataValues.images = (res.dataValues.images) ? JSON.stringify(res.dataValues.images) : null;
   res.dataValues.bio = (res.dataValues.bio) ? JSON.stringify(res.dataValues.bio) : null ;
-  console.log(res.dataValues.images);
+
   return res;
 };
 const patchArtist = async ({ id, name, email, images, bio }) => {
