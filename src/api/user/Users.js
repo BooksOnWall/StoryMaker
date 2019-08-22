@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Dimmer, Loader, Segment, Header, Table, Icon } from 'semantic-ui-react';
+import { Image, Container, Dimmer, Loader, Segment, Header, Table, Icon } from 'semantic-ui-react';
 import Moment from 'moment';
 import { Link } from 'react-router-dom';
 import { injectIntl, FormattedMessage } from 'react-intl';
@@ -153,7 +153,7 @@ class Users extends Component {
             {_.map(data, ({ id, name, email, createdAt, updatedAt, active }) => (
               <Table.Row className='slide-out' key={id} onClick={() => this.tableRowClickFunc({id})}>
                 <Table.Cell>{id}</Table.Cell>
-                <Table.Cell>{name}</Table.Cell>
+                <Table.Cell> <Image src={this.state.server + 'images/users/' + id + '/avatar.png'} avatar />{name}</Table.Cell>
                 <Table.Cell>{email}</Table.Cell>
                 <Table.Cell>{Moment(createdAt).format('LLL')}</Table.Cell>
                 <Table.Cell>{Moment(updatedAt).format('LLL')}</Table.Cell>
