@@ -132,7 +132,7 @@ class Artist extends Component {
     const value = target.type === 'checkbox' ? target.checked : target.value;
     let change = {};
     change[e.target.name] = value ;
-    this.setState({initialValues: change});
+    this.setState({initialAValues: change});
 
   }
   async handleSubmitI(e) {
@@ -230,11 +230,16 @@ class Artist extends Component {
     }
   }
   async updateArtist(values) {
+    console.log(values);
     this.setState({loading: true});
     try {
       await fetch(this.state.artist + this.state.aid, {
         method: 'PATCH',
-        headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json', charset:'utf-8' },
+        credentials: 'same-origin',
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type':'application/json',
+          charset:'utf-8' },
         body:JSON.stringify({
           name: values.name,
           email:values.email,
@@ -276,7 +281,11 @@ class Artist extends Component {
     try {
       await fetch(this.state.artist + this.state.aid, {
         method: 'PATCH',
-        headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json', charset:'utf-8' },
+        credentials: 'same-origin',
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type' :'application/json',
+          charset:'utf-8' },
         body:JSON.stringify({
           images: simages,
         })
@@ -335,7 +344,11 @@ class Artist extends Component {
     try {
       await fetch(this.state.artist+this.state.aid, {
         method: 'get',
-        headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'}
+        credentials: 'same-origin',
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type':'application/json'
+        }
       })
       .then(response => {
         if (response && !response.ok) { throw new Error(response.statusText);}
@@ -350,6 +363,7 @@ class Artist extends Component {
               this.setState({bio: bio});
               this.setState({bioState: bioState});
             }
+            console.log(data.images);
             //parse json returned
             console.log(typeof(data.images));
             data.images = (data.images && data.images.length > 0) ? JSON.parse(data.images) : null;
