@@ -54,15 +54,10 @@ let options = {
 };
 
 function Listimages(props) {
-
   if (!props.images || props.images.length === 0 ) return null;
-
-  let images = (props.mode === 'update' && !props.images.files) ? JSON.parse(props.images) : props.images.files ;
-
+  let images = props.images;
   const build = images.map((image, index) => {
     // switch oject structure from create to update
-    image = (props.mode === 'update' && !props.images.files) ? image.image : image;
-
     return (
       <div  style={thumb} key={index} >
         <div  style={thumbInner} key={index} className='slide-out'>
@@ -71,8 +66,8 @@ function Listimages(props) {
             rounded
             size='large'
             className='fadeIn'
-            alt={image.name}
-            src={props.server + image.path}
+            alt={image.image.name}
+            src={props.server + image.image.path}
             />
         </div>
       </div>
@@ -355,6 +350,7 @@ class Artist extends Component {
               this.setState({bio: bio});
               this.setState({bioState: bioState});
             }
+            data.images = (data.images) ? JSON.parse(data.images) : null;
             this.setState({aid: data.id, name: data.name, email: data.email, bio: data.bio, images : data.images});
             this.setState({initialAValues: data});
             this.setState({loading: false});
