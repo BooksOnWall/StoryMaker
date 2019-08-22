@@ -350,7 +350,8 @@ class Artist extends Component {
               this.setState({bio: bio});
               this.setState({bioState: bioState});
             }
-            data.images = (data.images) ? JSON.parse(data.images) : null;
+            data.images = (data.images && data.images.length > 0) ? JSON.parse(data.images) : null;
+            console.log(data.images);
             this.setState({aid: data.id, name: data.name, email: data.email, bio: data.bio, images : data.images});
             this.setState({initialAValues: data});
             this.setState({loading: false});
