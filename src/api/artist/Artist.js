@@ -336,14 +336,19 @@ class Artist extends Component {
       })
       .then(data => {
           if(data) {
+            /*
             if (data.bio) {
-              const bioContentState = convertFromRaw(data.bio);
+              //check if the json format is string or object
+              let bio = (typeof(data.bio) === 'string') ? JSON.parse(data.bio) : data.bio;
+              const bioContentState = convertFromRaw(bio);
               const bioState = EditorState.createWithContent(bioContentState);
-              this.setState({bio: data.bio});
+              this.setState({bio: bio});
               this.setState({bioState: bioState});
             }
+            */
             //parse json returned
             data.images = (data.images && data.images.length > 0) ? data.images : null;
+            data.images = (typeof(data.images) === 'string') ? JSON.parse(data.images) : data.images;
             this.setState({aid: data.id, name: data.name, email: data.email, bio: data.bio, images : data.images});
             this.setState({initialAValues: {
               aid: data.id,
