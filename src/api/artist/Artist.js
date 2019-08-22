@@ -6,6 +6,7 @@ import {
   Divider,
   Form,
   Icon,
+  Input,
   Button,
   Image,
   Confirm,
@@ -52,7 +53,7 @@ let options = {
     history: { inDropdown: true },
 };
 
-function Showimages(props) {
+function Listimages(props) {
 
   if (!props.images || props.images.length === 0 ) return null;
 
@@ -82,7 +83,6 @@ function Showimages(props) {
 }
 class Artist extends Component {
   constructor(props) {
-
     super(props);
     let protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
     let domain = protocol + '://' + process.env.REACT_APP_SERVER_HOST;
@@ -117,6 +117,7 @@ class Artist extends Component {
     this.onBioStateChange = this.onBioStateChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSubmitI = this.handleSubmitI.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
 
   }
@@ -132,7 +133,6 @@ class Artist extends Component {
     return this.setSteps(e);
   }
   handleChange(e) {
-
     const target = e.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     let change = {};
@@ -140,7 +140,17 @@ class Artist extends Component {
     this.setState({initialValues: change});
 
   }
-
+  async handleSubmitI(e) {
+    let mode = this.state.mode;
+    let images = (this.state.selectedFile) ? this.state.selectedFile : this.state.images;
+    try {
+      if (mode ==='update') {
+        await this.updateArtistImages(images);
+      }
+    } catch(e) {
+      console.log(e.message);
+    }
+  }
   async handleSubmit(e) {
     let mode = this.state.mode;
 
@@ -224,34 +234,15 @@ class Artist extends Component {
       console.log(e.message);
     }
   }
-  updateArtist = async (values) => {
-    console.log(this.state.artist);
-    //console.log(values.images);
-    //this.setState({loading: true});
-    // prepare images name and path for store
-    let images =[];
-    if (values.images && values.images.length > 0) {
-      //prepare aray of image name and path for store and let the rest for updateImages
-      Array.from(values.images).forEach(image => {
-        images.push({
-          'image': {
-            'name': image.name,
-            'path': 'images/artists/'+ this.state.aid + '/' + image.path
-          }
-        });
-       });
-    }
-    console.log(values.files);
-    console.log(images);
+  async updateArtist(values) {
+    this.setState({loading: true});
     try {
-
       await fetch(this.state.artist + this.state.aid, {
         method: 'PATCH',
         headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json', charset:'utf-8' },
         body:JSON.stringify({
           name: values.name,
           email:values.email,
-          images: images,
           bio:values.bio
         })
       })
@@ -261,10 +252,7 @@ class Artist extends Component {
       })
       .then(data => {
           if(data) {
-            console.log(values.images);
-            this.state.percent=15;
-            // redirect to users list page or batch upload images
-            if(values.images) { this.updateImages(values); }
+            this.props.history.push('/artists')
           }
       })
       .catch((error) => {
@@ -275,14 +263,53 @@ class Artist extends Component {
       console.log(e.message);
     }
   }
-
-  updateImages = async (values) => {
+  async updateArtistImages(images) {
+    this.setState({loading: true});
+    // prepare images name and path for store
+    let simages =[];
+    if (images && images.files && images.files.length > 0) {
+      //prepare aray of image name and path for store and let the rest for updateImages
+      Array.from(images.files).forEach(file => {
+        simages.push({
+          'image': {
+            'name': file.name,
+            'path': 'images/artists/'+ this.state.aid + '/' + file.name
+          }
+        });
+       });
+    }
+    try {
+      await fetch(this.state.artist + this.state.aid, {
+        method: 'PATCH',
+        headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json', charset:'utf-8' },
+        body:JSON.stringify({
+          images: simages,
+        })
+      })
+      .then(response => {
+        if (response && !response.ok) { throw new Error(response.statusText);}
+        return response.json();
+      })
+      .then(data => {
+          if(data) {
+            this.state.percent=15;
+            // redirect to users list page or batch upload images
+            if(images.files) { this.updateImages(images.files); }
+          }
+      })
+      .catch((error) => {
+        // Your error is here!
+        console.log(error)
+      });
+    } catch(e) {
+      console.log(e.message);
+    }
+  }
+  updateImages = async (files) => {
     //console.log(this.state.mode);
     //console.log(values.images);
-    let files = values.images;
-
     if(files) {
-      //console.log(files);
+
       try {
         let formData = new FormData();
         for(var x = 0; x < files.length; x++) {
@@ -331,7 +358,6 @@ class Artist extends Component {
             this.setState({aid: data.id, name: data.name, email: data.email, bio: data.bio, images : data.images});
             this.setState({initialAValues: data});
             this.setState({loading: false});
-            console.log(data);
           } else {
             console.log('No Data received from the server');
           }
@@ -396,17 +422,14 @@ class Artist extends Component {
   }
   setImages = (files) => {
     // prep store artist images
-
     this.setState({images: {files} });
   }
   editArtist(values) {
-     if((this.state.mode === 'update') && (!this.state.aid)) return null
       return (
         <div>
         <Header as='h6' icon >
           <Icon name='meh' />
           Edit Artist
-
         </Header>
         <Formik
           enableReinitialize={true}
@@ -450,7 +473,7 @@ class Artist extends Component {
             /* and other goodies */
           }) => (
             <Form size='large' onSubmit={this.handleSubmit}>
-              <input
+              <Input
                 icon='user'
                 iconposition='left'
                 placeholder='Name'
@@ -463,8 +486,8 @@ class Artist extends Component {
                 />
               {errors.name && touched.name && errors.name}
               <Divider horizontal>...</Divider>
-              <input
-                icon='user'
+              <Input
+                icon='mail'
                 iconposition='left'
                 placeholder='E-mail address'
                 type="email"
@@ -500,7 +523,6 @@ class Artist extends Component {
     );
   }
   editImages(values) {
-
     return (
       <Formik
         enableReinitialize={true}
@@ -511,9 +533,9 @@ class Artist extends Component {
           return errors;
         }}
         onSubmit={(values, { setSubmitting }) => {
-          if(this.state.mode === 'update') {
-            this.updateArtist(values);
-          }
+          values.images = document.getElementById("artistFiles").files;
+
+
           setTimeout(() => {
             //alert(JSON.stringify(values, null, 2));
 
@@ -527,20 +549,20 @@ class Artist extends Component {
           touched,
           handleChange,
           handleBlur,
-          updateArtist,
+          handleSubmitI,
           isSubmitting,
           /* and other goodies */
         }) => (
-          <Form size='large' onSubmit={this.updateArtist}>
+          <Form size='large' onSubmit={this.handleSubmitI}>
             <div>
               <aside style={thumbsContainer}>
-                <Showimages mode={this.state.mode} images={this.state.images} server={this.state.server}/>
+                {(this.state.images && this.state.images.length > 0) ? <Listimages mode={this.state.mode} images={this.state.images} server={this.state.server}/> : ''}
               </aside>
               <Divider horizontal>...</Divider>
               <Previews state={this.state} />
             </div>
             <Divider horizontal>...</Divider>
-            <Button onClick={this.updateArtist} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
+            <Button onClick={this.handleSubmitI} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
               {(this.state.mode === 'create') ? 'Create' : 'Update'}
             </Button>
           </Form>
