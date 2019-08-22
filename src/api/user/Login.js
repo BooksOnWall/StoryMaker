@@ -53,7 +53,6 @@ class Login extends Component {
   }
   async logUser(data) {
     try {
-      console.log({data}.data);
       await this.setState({accessToken : data.token});
       await Auth.authenticateUser({data}.data);
       await this.setState({userIsLoggedIn: true});

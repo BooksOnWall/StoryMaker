@@ -159,7 +159,6 @@ class App extends Component {
   }
   handleSideBar = () => {
     (!this.state.sidebarVisible) ? this.setState({sidebarVisible: true }) : this.setState({sidebarVisible: false }) ;
-    console.log(this.state.sidebarVisible);
   }
   async componentDidMount() {
     try {
