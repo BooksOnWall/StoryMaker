@@ -7,6 +7,7 @@ import {
   Form,
   Icon,
   Input,
+  Card,
   Button,
   Image,
   Confirm,
@@ -32,18 +33,6 @@ const thumbsContainer = {
   marginTop: 16
 };
 
-const thumb = {
-  display: 'inline-flex',
-  marginBottom: 8,
-  marginRight: 8,
-  padding: 4
-};
-
-const thumbInner = {
-  display: 'flex',
-  minWidth: 0,
-  overflow: 'hidden'
-};
 
 let options = {
     inline: { inDropdown: true },
@@ -59,22 +48,10 @@ function Listimages(props) {
   const build = images.map((image, index) => {
     // switch oject structure from create to update
     return (
-      <div  style={thumb} key={index} >
-        <div  style={thumbInner} key={index} className='slide-out'>
-          <Image
-            key={index}
-            rounded
-            size='large'
-            className='fadeIn'
-            alt={image.image.name}
-            src={props.server + image.image.path}
-            />
-        </div>
-      </div>
+      <Card key={index} image={props.server + image.image.path} header={<div><Button  primary floated='left'>View</Button><Button  primary floated='right' >Remove</Button></div>}  description={image.image.name} color='violet'  />
     );
   });
-
-    return build;
+  return build;
 }
 class Artist extends Component {
   constructor(props) {
@@ -124,6 +101,7 @@ class Artist extends Component {
     if(obj) this.setState(obj);
 
   }
+
   handleChangeSteps= (e) =>{
     return this.setSteps(e);
   }
@@ -310,6 +288,7 @@ class Artist extends Component {
     }
   }
   updateImages = async (files) => {
+    this.setState({loading: true});
     //console.log(this.state.mode);
     //console.log(values.images);
     if(files) {
@@ -571,7 +550,9 @@ class Artist extends Component {
           <Form size='large' onSubmit={this.handleSubmitI}>
             <div>
               <aside style={thumbsContainer}>
-                {(this.state.images && this.state.images.length > 0) ? <Listimages mode={this.state.mode} images={this.state.images} server={this.state.server}/> : ''}
+                 <Card.Group itemsPerRow={4}>
+                {(this.state.images && this.state.images.length > 0) ? <Listimages mode={this.state.mode} state={this.state} images={this.state.images} server={this.state.server}/> : ''}
+                 </Card.Group>
               </aside>
               <Divider horizontal>...</Divider>
               <Previews state={this.state} />
