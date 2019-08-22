@@ -5,7 +5,7 @@ import {
   Loader,
 } from 'semantic-ui-react';
 
-import MapGL, {Marker, Popup, NavigationControl, FullscreenControl}  from 'react-map-gl';
+import MapGL  from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MAP_STYLE from './map-style-basic-v8.json';
 import ControlPanel from './controlPanel';

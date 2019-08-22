@@ -118,7 +118,6 @@ class App extends Component {
       }));
     };
     this.setUserPreferences = (prefs) => {
-      console.log(prefs);
       this.setState(state => ({
         user: {
           theme: prefs.theme,

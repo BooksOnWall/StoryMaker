@@ -9,6 +9,7 @@ import {
   Icon,
   Input,
   Button,
+  Image,
   Checkbox,
   Confirm,
   Dimmer,
@@ -33,6 +34,7 @@ class User extends Component {
     let protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
     let domain = protocol + '://' + process.env.REACT_APP_SERVER_HOST;
     let server = domain + ':'+ process.env.REACT_APP_SERVER_PORT+'/';
+    let uid = (!this.props.match.params.id) ? (0) : (parseInt(this.props.match.params.id));
     this.state = {
       server: server,
       login: server + 'login',
@@ -46,11 +48,12 @@ class User extends Component {
       setSteps: this.setSteps,
       userEdit: {
         mode: (parseInt(this.props.match.params.id) === 0) ? ('create') : ('update'),
-        uid: (!this.props.match.params.id) ? (0) : (parseInt(this.props.match.params.id)),
+        uid: uid,
         initialPValues: { password: '', password2: '' },
         initialAValues: { avatar: '' },
         initialUValues: { name: '', email: '', password: '', password2: '', active: 0, checked: false },
       },
+      avatar_path: server + 'images/users/' + uid + '/avatar.png',
       open: false,
       toggleAuthenticateStatus: this.props.toggleAuthenticateStatus,
       authenticated: this.props.authenticated,
@@ -405,9 +408,12 @@ class User extends Component {
     if(!this.state.userEdit.name && this.state.userEdit.mode === 'update') {return null}
     return (
       <Segment className="slide-out" >
+
       <Header as='h3' color='violet' textAlign='center'>
+
         {(this.state.userEdit.mode === 'create') ? <FormattedMessage id="app.user.create" defaultMessage={`Create user`}/> : <FormattedMessage id="app.user.edit" defaultMessage={`Edit user`}/> }
       </Header>
+
       <Formik
         enableReinitialize={true}
         initialUValues={this.state.userEdit.initialUValues}
@@ -448,6 +454,7 @@ class User extends Component {
           /* and other goodies */
         }) => (
           <Form size='large' onSubmit={this.handleSubmit}>
+            {(this.state.userEdit.mode === 'update') ? <Image src={this.state.avatar_path} avatar  /> : '' }
             <Input
               icon='user'
               iconposition='left'
