@@ -225,7 +225,7 @@ const getArtist = async obj => {
     where: obj,
   });
   // prepare JSON.parse for JSON fields
-  
+
   res.dataValues.images = (res.dataValues.images) ? JSON.stringify(res.dataValues.images) : null;
   res.dataValues.bio = (res.dataValues.bio) ? JSON.stringify(res.dataValues.bio) : null ;
 
@@ -552,6 +552,20 @@ app.post('/users/:userId/upload', function (req, res, next) {
   //console.log('FILES:');
   //console.log(req.files);
   //console.log('BODY:');
+  //console.log(req.body);
+  // req.body will contain the text fields, if there were any
+});
+app.patch('/artists/:artistId/image', function (req, res, next) {
+  let id = req.params.artistId;
+  let name = req.body.name;
+  let images = req.body.images;
+  //delete file
+  rimraf.sync("./public/artists/" + id + "/" + name);
+  // update artists.Images
+  patchArtist({ id, images }).then(user =>
+      res.json({ user, msg: 'artist image removed successfully' })
+  );
+  // req.images is array of `image` files
   //console.log(req.body);
   // req.body will contain the text fields, if there were any
 });

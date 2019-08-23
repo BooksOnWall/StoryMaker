@@ -9,6 +9,7 @@ import {
   Input,
   Card,
   Button,
+  Modal,
   Image,
   Confirm,
   Dimmer,
@@ -42,6 +43,21 @@ let options = {
     history: { inDropdown: true },
 };
 
+function humanFileSize(bytes, si) {
+    var thresh = si ? 1000 : 1024;
+    if(Math.abs(bytes) < thresh) {
+        return bytes + ' B';
+    }
+    var units = si
+        ? ['kB','MB','GB','TB','PB','EB','ZB','YB']
+        : ['KiB','MiB','GiB','TiB','PiB','EiB','ZiB','YiB'];
+    var u = -1;
+    do {
+        bytes /= thresh;
+        ++u;
+    } while(Math.abs(bytes) >= thresh && u < units.length - 1);
+    return bytes.toFixed(1)+' '+units[u];
+}
 function Listimages(props) {
   if (!props.images || props.images.length === 0 ) return null;
   let images = JSON.parse(props.images);
@@ -49,7 +65,25 @@ function Listimages(props) {
   const build = images.map((image, index) => {
     // switch oject structure from create to update
     return (
-      <Card key={index} image={props.server + image.image.path} header={<div><Button  primary floated='left'>View</Button><Button  primary floated='right' >Remove</Button></div>}  description={image.image.name} color='violet'  />
+      <Card key={index} color='violet'>
+        <Card.Content>
+          <Modal  trigger={<Image floated='right' size='fullscreen' src={props.server + image.image.path} />} centered={true}>
+            <Modal.Content image>
+              <Image src={props.server + image.image.path} />
+            </Modal.Content>
+            <Modal.Actions>
+              <Button name={image.image.name} color='red' onClick={props.handleImageDelete} inverted>
+                <Icon name='checkmark' /> Remove
+              </Button>
+            </Modal.Actions>
+          </Modal>
+          <Card.Header>{image.image.name}</Card.Header>
+          <Card.Meta>{image.image.type}</Card.Meta>
+          <Card.Description>
+            {humanFileSize(image.image.size, true)}
+          </Card.Description>
+        </Card.Content>
+      </Card>
     );
   });
   return build;
@@ -85,6 +119,7 @@ class Artist extends Component {
       bio: {},
       bioState: EditorState.createEmpty(),
     };
+    this.handleImageDelete = this.handleImageDelete.bind(this);
     this.setSteps = this.setSteps.bind(this);
     this.setImages = this.setImages.bind(this);
     this.onBioStateChange = this.onBioStateChange.bind(this);
@@ -102,7 +137,47 @@ class Artist extends Component {
     if(obj) this.setState(obj);
 
   }
-
+  handleImageDelete(e) {
+    const imgName = e.target.name;
+    let images = JSON.parse(this.state.images);
+    console.log(images);
+    // remove image object from images array
+    images = images.filter(function(e) {
+      return e.image.name !== imgName;
+    });
+    this.setState({images: JSON.stringify(images)});
+    // delete array and file server side
+    return this.dropImage(imgName);
+  }
+  dropImage = async (name) => {
+    try {
+      await fetch(this.state.artist+this.state.aid+'/image', {
+        method: 'PATCH',
+        credentials: 'same-origin',
+        headers: {'Access-Control-Allow-Origin': '*',  'Content-Type':'application/json'},
+        body:JSON.stringify({
+          name: name,
+          images: this.state.images,
+        })
+      })
+      .then(response => {
+        if (response && !response.ok) { throw new Error(response.statusText);}
+        return response.json();
+      })
+      .then(data => {
+          if(data) {
+            // redirect
+            //this.props.history.push('/artists');
+          }
+      })
+      .catch((error) => {
+        // Your error is here!
+        console.log(error)
+      });
+    } catch(e) {
+      console.log(e.message);
+    }
+  }
   handleChangeSteps= (e) =>{
     return this.setSteps(e);
   }
@@ -139,12 +214,13 @@ class Artist extends Component {
     }
   }
   handleSubmitBio = async (e) => {
-
+    this.setState({loading: true});
     let bio = (this.state.bio) ? this.state.bio : '';
       try {
         await fetch(this.state.artist+this.state.aid, {
           method: 'PATCH',
-          headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json', charset:'utf-8' },
+          credentials: 'same-origin',
+          headers: {'Access-Control-Allow-Origin': '*', 'Content-Type':'application/json', charset:'utf-8' },
           body:JSON.stringify({ bio: bio})
         })
         .then(response => {
@@ -154,7 +230,8 @@ class Artist extends Component {
         .then(data => {
             if(data) {
               // set Step complete and forward to next step
-              this.setState({bioComplete: true});
+              this.setState({bioComplete: true, loading: false});
+              this.props.history.push('/artists')
             }
         })
         .catch((error) => {
@@ -243,57 +320,60 @@ class Artist extends Component {
     }
   }
   async updateArtistImages(images) {
-    this.setState({loading: true});
+
     // prepare images name and path for store
     let simages =[];
     if (images && images.files && images.files.length > 0) {
+      this.setState({loading: true});
       //prepare aray of image name and path for store and let the rest for updateImages
       Array.from(images.files).forEach(file => {
         simages.push({
           'image': {
             'name': file.name,
+            'size': file.size,
+            'type': file.type,
             'path': 'images/artists/'+ this.state.aid + '/' + file.name
           }
         });
        });
-    }
-    try {
-      await fetch(this.state.artist + this.state.aid, {
-        method: 'PATCH',
-        credentials: 'same-origin',
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Content-Type' :'application/json',
-          charset:'utf-8' },
-        body:JSON.stringify({
-          images: simages,
-        })
-      })
-      .then(response => {
-        if (response && !response.ok) { throw new Error(response.statusText);}
-        return response.json();
-      })
-      .then(data => {
-          if(data) {
-            this.state.percent=15;
-            // redirect to users list page or batch upload images
-            if(images.files) { this.updateImages(images.files); }
-          }
-      })
-      .catch((error) => {
-        // Your error is here!
-        console.log(error)
-      });
-    } catch(e) {
-      console.log(e.message);
+       try {
+         await fetch(this.state.artist + this.state.aid, {
+           method: 'PATCH',
+           credentials: 'same-origin',
+           headers: {
+             'Access-Control-Allow-Origin': '*',
+             'Content-Type' :'application/json',
+             charset:'utf-8' },
+             body:JSON.stringify({
+               images: simages,
+             })
+           })
+           .then(response => {
+             if (response && !response.ok) { throw new Error(response.statusText);}
+             return response.json();
+           })
+           .then(data => {
+             if(data) {
+               this.state.percent=15;
+               // redirect to users list page or batch upload images
+               if(images.files) { this.updateImages(images.files); }
+             }
+           })
+           .catch((error) => {
+             // Your error is here!
+             console.log(error)
+           });
+         } catch(e) {
+           console.log(e.message);
+         }
     }
   }
   updateImages = async (files) => {
-    this.setState({loading: true});
+
     //console.log(this.state.mode);
     //console.log(values.images);
     if(files) {
-
+      this.setState({loading: true});
       try {
         let formData = new FormData();
         for(var x = 0; x < files.length; x++) {
@@ -374,7 +454,8 @@ class Artist extends Component {
     try {
         await fetch(this.state.artist + this.state.aid, {
         method: 'delete',
-        headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'},
+        credentials: 'same-origin',
+        headers: {'Access-Control-Allow-Origin': '*',  'Content-Type':'application/json'},
         body:JSON.stringify({ id: this.state.aid })
       })
       .then(response => {
@@ -399,7 +480,6 @@ class Artist extends Component {
     try {
       if(this.state.mode === 'update')  {
         await this.getArtist();
-
       }
       this.focusEditor();
     } catch(e) {
@@ -557,7 +637,7 @@ class Artist extends Component {
             <div>
               <aside style={thumbsContainer}>
                  <Card.Group itemsPerRow={4}>
-                {(this.state.images && this.state.images.length > 0) ? <Listimages mode={this.state.mode} state={this.state} images={this.state.images} server={this.state.server}/> : ''}
+                {(this.state.images && this.state.images.length > 0) ? <Listimages mode={this.state.mode} handleImageDelete={this.handleImageDelete} state={this.state} images={this.state.images} server={this.state.server}/> : ''}
                  </Card.Group>
               </aside>
               <Divider horizontal>...</Divider>
@@ -627,7 +707,6 @@ class Artist extends Component {
               toolbar={options}
               name="bio"
               placeholder='Biographie'
-              value={values.bio  }
               />
             <Divider horizontal>...</Divider>
             <Button onClick={handleSubmitBio} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
