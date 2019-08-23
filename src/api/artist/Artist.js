@@ -58,16 +58,19 @@ function humanFileSize(bytes, si) {
     } while(Math.abs(bytes) >= thresh && u < units.length - 1);
     return bytes.toFixed(1)+' '+units[u];
 }
+
 function Listimages(props) {
   if (!props.images || props.images.length === 0 ) return null;
-  let images = JSON.parse(props.images);
+  let images = (typeof(props.image) === 'string') ? JSON.parse(props.images) : props.images;
+
+  images = (typeof(images) === 'string') ? JSON.parse(images) : images;
   images = (typeof(images) === 'string') ? JSON.parse(images) : images;
   const build = images.map((image, index) => {
     // switch oject structure from create to update
     return (
       <Card key={index} color='violet'>
         <Card.Content>
-          <Modal  trigger={<Image floated='right' size='fullscreen' src={props.server + image.image.path} />} centered={true}>
+          <Modal  size='fullscreen' trigger={<Image floated='right' size='massive' src={props.server + image.image.path} />} centered={true}>
             <Modal.Content image>
               <Image src={props.server + image.image.path} />
             </Modal.Content>
@@ -140,6 +143,7 @@ class Artist extends Component {
   handleImageDelete(e) {
     const imgName = e.target.name;
     let images = JSON.parse(this.state.images);
+    images = (typeof(images) === 'string') ? JSON.parse(images): images;
     console.log(images);
     // remove image object from images array
     images = images.filter(function(e) {
