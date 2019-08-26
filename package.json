@@ -1,8 +1,10 @@
 {
-  "name": "bowbo",
-  "version": "0.1.0",
+  "name": "BooksOnWall",
+  "version": "0.8.0",
   "private": true,
-  "author": "Tom Bouillut, Diego Strasser",
+  "author": "Tom Bouillut",
+  "Contributors": "Cristobal Severin",
+  "Traductors": "Cristobal Severin",
   "dependencies": {
     "draft-js": "^0.11.0",
     "draft-js-export-html": "^1.4.1",
