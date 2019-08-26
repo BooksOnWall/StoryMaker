@@ -53,7 +53,9 @@ class storyStages extends Component {
       column: null,
       history: this.props.history,
       direction: null,
+      stages: null,
       sid: parseInt(this.props.sid),
+      stagesURI: server + 'stories/' + parseInt(this.props.sid) +'/stages',
       mode: (parseInt(this.props.sid) === 0) ? ('create') : ('update'),
     };
 
@@ -78,6 +80,40 @@ class storyStages extends Component {
   handleCreate = (e) => {
     const url = '/stories/' + this.state.sid + '/stages/' + 0;
     return this.props.history.push(url);
+  }
+  async componentDidMount() {
+    // check if user is logged in on refresh
+    try {
+      await this.listStages();
+    } catch(e) {
+      console.log(e.message);
+    }
+  }
+  listStages = async () => {
+    // set loading
+    this.setState({loading: true});
+    await fetch(this.state.stagesURI, {
+      method: 'get',
+      headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'}
+    })
+    .then(response => {
+      if (response && !response.ok) { throw new Error(response.statusText);}
+      return response.json();
+    })
+    .then(data => {
+        if(data) {
+          console.log(data);
+          this.setState({stages: data});
+          // set loading
+          this.setState({loading: false});
+        } else {
+          console.log('No Data received from the server');
+        }
+    })
+    .catch((error) => {
+      // Your error is here!
+      //console.log(error)
+    });
   }
   render() {
     return (

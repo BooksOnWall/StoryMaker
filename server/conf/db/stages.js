@@ -9,12 +9,16 @@ module.exports.stages = {
     type: Sequelize.STRING,
     allowNull: false,
   },
-  photo: {
+  picture: {
     type: Sequelize.STRING,
     allowNull: true
   },
   type: {
     type: Sequelize.STRING,
     allowNull: false,
+  },
+  geometry: {
+    type: Sequelize.GEOMETRY('POINT'),
+    allowNull: true
   }
 };

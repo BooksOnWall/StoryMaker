@@ -173,7 +173,7 @@ class Artist extends Component {
           if(data) {
             // close modal window
 
-            console.log(data);
+            console.log(data); // to be send later in messages 
             // redirect
             //this.props.history.push('/artists');
           }

@@ -100,6 +100,7 @@ const usersList = require('./conf/db/users');
 const userPref = require('./conf/db/userPref');
 const artistsList = require('./conf/db/artists');
 const storiesList = require('./conf/db/stories');
+const stagesList = require('./conf/db/stages');
 // check the databse connection
 sequelize
   .authenticate()
@@ -124,7 +125,7 @@ Users.sync()
        console.log('User directory created successfully')
    }
  })
- .catch(err => console.log('oooh, error creating database User , did you enter wrong database credentials?'));
+ .catch(err => console.log('oooh, error creating database User or directory , did you enter wrong database credentials? is your user folder created server side ?'));
 // create user assets directory
 
  // create user preferences model
@@ -150,7 +151,7 @@ Artists.sync()
    }
  })
  .catch(err => console.log('oooh,error creating database Artists , did you enter wrong database credentials?'));
- // create Artists model
+ // create Stories model
  const Stories = sequelize.define('stories', storiesList.stories);
  // create table with stories model
  Stories.sync()
@@ -164,6 +165,15 @@ Artists.sync()
   })
   .catch(err => console.log('oooh, error creating database Stories ,did you enter wrong database credentials?'));
 
+// create Stages model
+const Stages = sequelize.define('stages', stagesList.stages);
+// create table with artist model
+Stages.sync()
+ .then(() => {
+   console.log('Stages table created successfully');
+
+ })
+ .catch(err => console.log('oooh,error creating database Stages , did you enter wrong database credentials?'));
 // create some helper functions to work on the database
 const createUser = async ({ name, email, hash, active }) => {
   let password = hash;
@@ -254,6 +264,8 @@ const createStory = async ({ title, state, city, sinopsys, credits, artist, acti
     const sid = res.dataValues.id;
     var dir = __dirname + '/public/stories/'+sid;
     if (!fs.existsSync(dir)) { fs.mkdirSync(dir, 0o744); }
+    var sdir = __dirname + '/public/stories/' + sid + '/stages';
+    if (!fs.existsSync(sdir)) { fs.mkdirSync(sdir, 0o744); }
     return res;
   } catch(e) {
     console.log(e.message);
@@ -287,6 +299,29 @@ const patchUserPrefs = async ({ uid, pref, pvalue }) => {
 const getUserPreferences = async ({id}) => {
   return await UserPref.findAll({
     where: {uid : id },
+  });
+};
+//set Stages functions
+// stories db requests
+const getAllStages = async (sid) => {
+  return await Stages.findAll({
+    where: {id : sid },
+  });
+}
+const createStage = async ({ name, adress, picture, type, geometry }) => {
+  try {
+    let res = await Stages.create({ name, adress, picture, type, geometry });
+    const ssid = res.dataValues.id;
+    var dir = __dirname + '/public/stages/'+ssid;
+    if (!fs.existsSync(dir)) { fs.mkdirSync(dir, 0o744); }
+    return res;
+  } catch(e) {
+    console.log(e.message);
+  }
+}
+const getStage = async obj => {
+  return await Stages.findOne({
+    where: obj,
   });
 };
 // get static route to serve images
@@ -584,7 +619,7 @@ app.get('/stories', function(req, res) {
 app.post('/stories/0', function(req, res, next) {
   const { title, state, city, sinopsys, credits, artist, active } = req.body;
   console.log(req.body);
-  createStory({ title, state, city, sinopsys, credits, artist ,  active,  }).then(story =>
+  createStory({ title, state, city, sinopsys, credits, artist, active }).then(story =>
     res.json({ story, 'data': story, msg: 'story created successfully' })
   );
 });
@@ -604,6 +639,23 @@ app.delete('/stories/:storyId', function(req, res, next) {
   deleteStory(sid).then(user => {
       res.json({ user, msg: 'Story destroyed successfully' })
   });
+});
+// Stages URI requests
+app.get('/stories/:storyId/stages', function(req, res) {
+  let sid = req.params.storyId;
+  console.log(sid);
+  getAllStages(sid).then(user => res.json(user));
+});
+app.post('/stories/:storyId/0', function(req, res, next) {
+  const { name, adress, picture, type, geometry } = req.body;
+  console.log(req.body);
+  createStage({ name, adress, picture, type, geometry  }).then(story =>
+    res.json({ story, 'data': story, msg: 'story created successfully' })
+  );
+});
+app.get('/stories/:storyId/:stageId', (req, res) => {
+  let ssid = req.params.stageId;
+  getStory({id: ssid}).then(user => res.json(user));
 });
 // protected route
 app.get('/protected', passport.authenticate('jwt', { session: false }), function(req, res) {
