@@ -61,16 +61,17 @@ function humanFileSize(bytes, si) {
 
 function Listimages(props) {
   if (!props.images || props.images.length === 0 ) return null;
-  let images = (typeof(props.image) === 'string') ? JSON.parse(props.images) : props.images;
-
-  images = (typeof(images) === 'string') ? JSON.parse(images) : images;
-  images = (typeof(images) === 'string') ? JSON.parse(images) : images;
+  let images = (typeof(props.images) === 'string') ? JSON.parse(props.images) : props.images;
+  //images = (typeof(images) === 'string') ? JSON.parse(images) : images;
   const build = images.map((image, index) => {
     // switch oject structure from create to update
     return (
       <Card key={index} color='violet'>
         <Card.Content>
-          <Modal  size='fullscreen' trigger={<Image floated='right' size='massive' src={props.server + image.image.path} />} centered={true}>
+          <Modal
+            onClose={props.handleModalImgDeleteClose}
+            size='fullscreen'
+            trigger={<Image floated='right' size='massive'  src={props.server + image.image.path} />} centered={true} >
             <Modal.Content image>
               <Image src={props.server + image.image.path} />
             </Modal.Content>
@@ -119,6 +120,7 @@ class Artist extends Component {
       toggleAuthenticateStatus: this.props.childProps.toggleAuthenticateStatus,
       authenticated: this.props.childProps.authenticated,
       open: false,
+      modalImgDelete: false,
       bio: {},
       bioState: EditorState.createEmpty(),
     };
@@ -144,16 +146,15 @@ class Artist extends Component {
     const imgName = e.target.name;
     let images = JSON.parse(this.state.images);
     images = (typeof(images) === 'string') ? JSON.parse(images): images;
-    console.log(images);
     // remove image object from images array
     images = images.filter(function(e) {
       return e.image.name !== imgName;
     });
     this.setState({images: JSON.stringify(images)});
     // delete array and file server side
-    return this.dropImage(imgName);
+    this.dropImage(imgName, images);
   }
-  dropImage = async (name) => {
+  dropImage = async (name, images) => {
     try {
       await fetch(this.state.artist+this.state.aid+'/image', {
         method: 'PATCH',
@@ -161,7 +162,7 @@ class Artist extends Component {
         headers: {'Access-Control-Allow-Origin': '*',  'Content-Type':'application/json'},
         body:JSON.stringify({
           name: name,
-          images: this.state.images,
+          images: images,
         })
       })
       .then(response => {
@@ -170,6 +171,9 @@ class Artist extends Component {
       })
       .then(data => {
           if(data) {
+            // close modal window
+
+            console.log(data);
             // redirect
             //this.props.history.push('/artists');
           }
@@ -217,6 +221,8 @@ class Artist extends Component {
       console.log(e.message);
     }
   }
+  handleImgDeleteOpen = () => this.setState({ modalImgDelete: true })
+  handleModalImgDeleteClose = () =>  this.setState({ modalImgDelete: false })
   handleSubmitBio = async (e) => {
     this.setState({loading: true});
     let bio = (this.state.bio) ? this.state.bio : '';
@@ -641,7 +647,7 @@ class Artist extends Component {
             <div>
               <aside style={thumbsContainer}>
                  <Card.Group itemsPerRow={4}>
-                {(this.state.images && this.state.images.length > 0) ? <Listimages mode={this.state.mode} handleImageDelete={this.handleImageDelete} state={this.state} images={this.state.images} server={this.state.server}/> : ''}
+                {(this.state.images && this.state.images.length > 0) ? <Listimages mode={this.state.mode} handleImageDelete={this.handleImageDelete} handleImgDeleteOpen={this.handleImgDeleteOpen} handleModalImgDeleteClose={this.handleModalImgDeleteClose}  state={this.state} images={this.state.images} server={this.state.server}/> : ''}
                  </Card.Group>
               </aside>
               <Divider horizontal>...</Divider>

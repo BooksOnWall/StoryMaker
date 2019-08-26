@@ -235,7 +235,7 @@ const patchArtist = async ({ id, name, email, images, bio }) => {
   return await Artists.update({ id, name, email, images, bio },
     { where: {id : id}}
   );
-}
+};
 const deleteArtist = async (aid) => {
   let response =  await Artists.destroy({
     where: {id : aid}
@@ -562,6 +562,7 @@ app.patch('/artists/:artistId/image', function (req, res, next) {
   //delete file
   rimraf.sync("./public/artists/" + id + "/" + name);
   // update artists.Images
+  console.log(images);
   patchArtist({ id, images }).then(user =>
       res.json({ user, msg: 'artist image removed successfully' })
   );
