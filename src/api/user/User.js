@@ -68,7 +68,7 @@ class User extends Component {
 
   // toggle user active slider
   toggle = () => this.setState( prevState => ({ checked: !prevState.checked }))
-  // confirm functions for user delete
+  // confirm functions for modal user delete
   show = () => this.setState({ open: true })
   handleConfirm = () => this.setState({ open: false })
   handleCancel = () => this.setState({ open: false })
@@ -342,22 +342,34 @@ class User extends Component {
     }
   }
   handleChange(e) {
-    const target = e.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    let change = {};
-    change[e.target.name] = value ;
+    console.log(e);
+    let targetName;
+    let value;
+    if(typeof(e) === 'boolean') {
+      // checkbox active
+      value = e;
+      targetName = 'active';
+    } else {
+      // other form input
+      value = e.target.value;
+      targetName = e.target.name;
+    }
+    console.log(value);
     this.setState({
       userEdit: {
         uid: this.state.userEdit.uid,
         name: this.state.userEdit.name,
         mode: this.state.userEdit.mode,
-        initialUValues: change,
+        initialUValues: {
+          name: (targetName === 'name') ? value : this.state.userEdit.initialAValues.name,
+          email: (targetName === 'email') ? value : this.state.userEdit.initialAValues.email,
+          active: (targetName === 'active') ? value : this.state.userEdit.initialAValues.active,
+        },
         initialPValues: this.state.userEdit.initialPValues,
         initialAValues: this.state.userEdit.initialAValues,
         userPrefs: this.state.userEdit.userPrefs,
       }
     });
-
   }
 
   async handleSubmit(e) {
@@ -404,7 +416,6 @@ class User extends Component {
     }
   }
   editForm() {
-    if(this.state.step !== 'User') {return null}
     if(!this.state.userEdit.name && this.state.userEdit.mode === 'update') {return null}
     return (
       <Segment className="slide-out" >
@@ -412,7 +423,7 @@ class User extends Component {
         {(this.state.userEdit.mode === 'create') ? <FormattedMessage id="app.user.create" defaultMessage={`Create user`}/> : <FormattedMessage id="app.user.edit" defaultMessage={`Edit user`}/> }
       </Header>
       <Formik
-        enableReinitialize={true}
+        enableReinitialize={false}
         initialValues={this.state.userEdit.initialUValues}
         validate={values => {
           let errors = {};
@@ -426,6 +437,9 @@ class User extends Component {
           return errors;
         }}
         onSubmit={(values, { setSubmitting }) => {
+          //values.name = this.state.userEdit.initialAValues.name;
+          //values.email = this.state.userEdit.initialAValues.email;
+          //values.active = this.state.userEdit.initialAValues.active;
           if(this.state.userEdit.mode === 'update') {
             this.updateUser(values);
           } else {
@@ -510,7 +524,7 @@ class User extends Component {
                label = 'Active'
                onBlur = {handleBlur}
                defaultChecked ={(this.state.userEdit.initialUValues.active) ? true : false }
-               onChange = {(e, { checked }) => handleChange(checked)}
+               onChange = {(e, {checked}) => this.handleChange(checked)}
                defaultValue = {(values && values.active) ? values.active : false}
               />
 
