@@ -144,7 +144,7 @@ class Artist extends Component {
   }
   handleImageDelete(e) {
     const imgName = e.target.name;
-    let images = JSON.parse(this.state.images);
+    let images = (typeof(this.state.images) === 'string') ? JSON.parse(this.state.images) : this.state.images ;
     images = (typeof(images) === 'string') ? JSON.parse(images): images;
     // remove image object from images array
     images = images.filter(function(e) {
