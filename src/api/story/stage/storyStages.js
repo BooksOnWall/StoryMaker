@@ -30,6 +30,7 @@ class storyStages extends Component {
       importLoading: false,
       direction: null,
       stages: null,
+      listStages: this.listStages,
       confirmOpen: false,
       sid: parseInt(this.props.sid),
       stagesURI: server + 'stories/' + parseInt(props.sid) +'/stages',
@@ -58,8 +59,7 @@ class storyStages extends Component {
     const url = '/stories/' + this.state.sid + '/stages/' + 0;
     return this.props.history.push(url);
   }
-  async componentDidMount() {
-    // check if user is logged in on refresh
+  componentDidMount = async () => {
     try {
       await this.listStages();
     } catch(e) {
@@ -79,10 +79,8 @@ class storyStages extends Component {
     })
     .then(data => {
         if(data) {
-          console.log(data);
-          this.setState({stages: data});
-          // set loading
-          this.setState({loading: false});
+          this.setState({stages: data, loading: false});
+          return data;
         } else {
           console.log('No Data received from the server');
         }
@@ -126,7 +124,7 @@ class storyStages extends Component {
     }
   }
   ImportPreview = (geojson) => {
-    console.log(typeof(geojson));
+
     let features = (typeof(geojson) === 'object') ? geojson : null;
     if(!features) {return null}
 
@@ -157,16 +155,15 @@ class storyStages extends Component {
       </Table.Body>
       </Table>
       </Segment>
-    //
-
-    //);
     )
   }
   render() {
 
     return (
       <Segment.Group horizontal>
-        <Segment className="stagesMap"><StagesMap /></Segment>
+        <Segment className="stagesMap">
+          <StagesMap stages={this.state.stages} state={this.state}/>
+        </Segment>
         <Segment  className="stages">
           <Button.Group>
             <Button primary onClick={this.handleCreate}><Icon name="google wallet" />Add Stage</Button>
