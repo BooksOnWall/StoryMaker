@@ -173,7 +173,7 @@ class Artist extends Component {
           if(data) {
             // close modal window
 
-            console.log(data); // to be send later in messages 
+            console.log(data); // to be send later in messages
             // redirect
             //this.props.history.push('/artists');
           }
@@ -564,6 +564,7 @@ class Artist extends Component {
           }) => (
             <Form size='large' onSubmit={this.handleSubmit}>
               <Input
+                label='Name'
                 icon='user'
                 iconposition='left'
                 placeholder='Name'
@@ -577,6 +578,7 @@ class Artist extends Component {
               {errors.name && touched.name && errors.name}
               <Divider horizontal>...</Divider>
               <Input
+                label='E-mail address'
                 icon='mail'
                 iconposition='left'
                 placeholder='E-mail address'

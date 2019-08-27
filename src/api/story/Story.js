@@ -453,15 +453,13 @@ class Story extends Component {
         }) => (
 
           <Form size='large' onSubmit={this.handleSubmit}>
-            <Label >
-              Choose your artist:
-            <select name="artist" type="select" defaultValue={this.state.artist} onChange={this.handleChange}>
+            <select size='small' label='Choose your artist:' name="artist" type="select" defaultValue={this.state.artist} onChange={this.handleChange}>
               <option key={0} disabled hidden value=''></option>
               {this.state.artistOptions.map(options => <option key={options.key} value={options.value} >{options.text}</option>)}
             </select>
-            </Label>
             <Divider horizontal>...</Divider>
             <Input
+              label='Title'
               placeholder='Title'
               autoFocus={true}
               type="text"
@@ -473,6 +471,7 @@ class Story extends Component {
             {errors.title && touched.title && errors.title}
             <Divider horizontal>...</Divider>
             <Input
+              label='State'
               placeholder='State'
               type="text"
               name="state"
@@ -483,6 +482,7 @@ class Story extends Component {
             {errors.state && touched.state && errors.state}
             <Divider horizontal>...</Divider>
             <Input
+              label='City'
               placeholder='City'
               type="text"
               name="city"
@@ -492,9 +492,9 @@ class Story extends Component {
               />
             {errors.city && touched.city && errors.city}
             <Checkbox
-              placeholder='Active'
+              label='Active'
+              placeholder=''
               ref = "active"
-              label = "Active"
               name="active"
               defaultChecked= {values.checked}
               onChange = {(e, { checked }) => handleChange(checked)}

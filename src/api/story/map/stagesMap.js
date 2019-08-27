@@ -5,11 +5,12 @@ import {
   Loader,
 } from 'semantic-ui-react';
 
-import MapGL  from 'react-map-gl';
+import MapGL, {Marker, Popup, NavigationControl, FullscreenControl} from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MAP_STYLE from './map-style-basic-v8.json';
-import ControlPanel from './controlPanel';
+import StagePin from './stagePin';
 let MapboxAccessToken = process.env.REACT_APP_MAT;
+
 // Set bounds toMontevideo
 var bounds = [
   [-34.9036749, -56.2189153], // Southwest coordinates
@@ -58,6 +59,19 @@ class stagesMap extends Component {
   getCursor = ({isHovering, isDragging}) => {
     return isHovering ? 'pointer' : 'default';
   };
+  Stages = () => {
+    let stages = this.props.stages;
+    console.log(stages);
+    return (
+      stages.map((stage, index) => (
+        (stage.type === 'Point') ?
+          <Marker key={`marker-${stage.id}`} longitude={stage.geometry.coordinates[0]} latitude={stage.geometry.coordinates[1]}>
+            <StagePin size={20} onClick={() => this.setState({popupInfo: stage.description})} />
+          </Marker>
+         : ''
+      ))
+    )
+  }
   render() {
 
     const {viewport, interactiveLayerIds, mapStyle, loading} = this.state;
@@ -71,7 +85,7 @@ class stagesMap extends Component {
       <MapGL
         {...viewport}
         width="inherit"
-        height="50vh"
+        height="70vh"
         mapStyle={MAP_STYLE}
         clickRadius={2}
         onClick={this.onClick}
@@ -80,10 +94,15 @@ class stagesMap extends Component {
         onViewportChange={this.onViewportChange}
         mapboxApiAccessToken={MapboxAccessToken}
       >
-      <ControlPanel
-        containerComponent={this.props.containerComponent}
-        onChange={this.onInteractiveLayersChange}
-      />
+      {(this.state.stage && this.state.stage.length > 0) ? (
+        this.state.stages.map(stage => (
+          (stage.type === 'Point') ?
+            <Marker key={`marker-${stage.id}`} longitude={stage.geometry.coordinates[0]} latitude={stage.geometry.coordinates[1]}>
+              <StagePin size={20} onClick={() => this.setState({popupInfo: stage.description})} />
+            </Marker>
+          : ''
+          ))
+      ) :''}
       </MapGL>
     </Segment>
     );

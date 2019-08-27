@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 
 import {
-  Step,
+  Icon,
+  Button,
 } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
 
@@ -22,36 +23,13 @@ class stageSteps extends Component {
   }
   render() {
     return (
-      <Step.Group fluid >
-        <Step
-          icon='map'
-          active = {this.props.state.sstep === 'Stage'}
-          completed = {this.props.state.storyCompleted}
-          name='Stage'
-          onClick={this.handleSSteps}
-          title='Stage'
-          description='things'
-        />
-
-        <Step
-          active={this.props.state.sstep === 'geoPosition'}
-          disabled ={(this.props.state.mode === 'update') ? false : true }
-          icon='map marker alternate'
-          name='GeoPosition'
-          onClick={this.handleSSteps}
-          title='GeoPosition'
-          description='for the stage'
-        />
-        <Step
-          active={this.props.state.sstep === 'augmentedReality'}
-          disabled ={(this.props.state.mode === 'update') ? false : true }
-          icon='road'
-          name='augmentedReality'
-          onClick={this.handleSSteps}
-          title='augmentedReality'
-          description='for the stage'
-        />
-      </Step.Group>
+      <Button.Group>
+        <Button primary name='Stage' onClick={this.handleSSteps}><Icon name="google wallet" />Stage</Button>
+        <Button.Or />
+       <Button name="geoposition"><Icon name="map marker alternate" />GeoPosition</Button>
+       <Button.Or />
+       <Button positive name="augmentedReality"><Icon name="road" /> Augmented Reality</Button>
+     </Button.Group>
     );
   }
 }

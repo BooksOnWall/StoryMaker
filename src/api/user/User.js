@@ -467,6 +467,7 @@ class User extends Component {
           <Form size='large' onSubmit={this.handleSubmit}>
             {(this.state.userEdit.mode === 'update') ? <Image src={this.state.avatar_path} avatar  /> : '' }
             <Input
+              label={<FormattedMessage id="app.user.userEdit.name" defaultMessage={'Name'}/>}
               icon='user'
               iconposition='left'
               placeholder= {<FormattedMessage id="app.user.userEdit.name" defaultMessage={'Name'}/>}
@@ -480,6 +481,7 @@ class User extends Component {
             {errors.name && touched.name && errors.name}
 
             <Input
+              label={<FormattedMessage id="app.user.userEdit.email" defaultMessage={'Email'}/>}
               icon='mail'
               iconposition='left'
               placeholder={<FormattedMessage id="app.user.userEdit.email" defaultMessage={'Email'}/>}
@@ -492,8 +494,8 @@ class User extends Component {
             {errors.email && touched.email && errors.email}
             {(this.state.userEdit.mode === 'create') ? (
               <div>
-
                 <Input
+                  label={<FormattedMessage id="app.user.userEdit.password" defaultMessage={'Password'}/>}
                   icon='lock'
                   iconposition='left'
                   placeholder={<FormattedMessage id="app.user.userEdit.password" defaultMessage={'Password'}/>}
@@ -597,6 +599,7 @@ class User extends Component {
           }) => (
             <Form  size='large' onSubmit={this.handleSubmit}>
               <Input
+                label="Password"
                 fluid
                 icon='lock'
                 iconposition='left'
@@ -609,6 +612,7 @@ class User extends Component {
                 />
               {errors.password && touched.password && errors.password}
               <Input
+                label="Password again"
                 icon='lock'
                 iconposition='left'
                 fluid

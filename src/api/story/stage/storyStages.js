@@ -4,13 +4,14 @@ import {
   Segment,
   Table,
   Button,
+  Message,
+  Confirm,
   Icon
 } from 'semantic-ui-react';
 
 import ReactDragListView  from 'react-drag-listview';
 import { FormattedMessage } from 'react-intl';
 import _ from 'lodash';
-
 import StagesMap from '../map/stagesMap';
 
 class storyStages extends Component {
@@ -19,54 +20,30 @@ class storyStages extends Component {
     let protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
     let domain = protocol + '://' + process.env.REACT_APP_SERVER_HOST;
     let server = domain + ':'+ process.env.REACT_APP_SERVER_PORT+'/';
-    let data = { data: [
-      {
-        key: "1",
-        name: "Boran",
-        rank: "1"
-      },
-      {
-        key: "2",
-        name: "JayChou",
-        rank: "2"
-      },
-      {
-        key: "3",
-        name: "Lee",
-        rank: "3"
-      },
-      {
-        key: "4",
-        name: "ChouTan",
-        rank: "4"
-      },
-      {
-        key: "5",
-        name: "AiTing",
-        rank: "5"
-      }
-    ]};
+    this.fileInputRef = React.createRef();
     this.state = {
       active: 'Stages',
-      data: data.data,
       server: server,
       column: null,
       history: this.props.history,
+      importURL: server + 'stories/' + props.sid + '/import',
+      importLoading: false,
       direction: null,
       stages: null,
+      confirmOpen: false,
       sid: parseInt(this.props.sid),
-      stagesURI: server + 'stories/' + parseInt(this.props.sid) +'/stages',
+      stagesURI: server + 'stories/' + parseInt(props.sid) +'/stages',
       mode: (parseInt(this.props.sid) === 0) ? ('create') : ('update'),
     };
 
     const that = this;
     this.dragProps = {
       onDragEnd(fromIndex, toIndex) {
-        const data = that.state.data;
-        const item = data.splice(fromIndex, 1)[0];
-        data.splice(toIndex, 0, item);
+        const stages = that.state.stages;
+        const item = stages.splice(fromIndex, 1)[0];
+        stages.splice(toIndex, 0, item);
         that.setState({
-          data
+          stages
         });
       },
       handleSelector: "a"
@@ -74,7 +51,7 @@ class storyStages extends Component {
     this.handleCreate = this.handleCreate.bind(this);
   }
   tableRowClickFunc(stage) {
-    const url = '/stories/' + this.state.sid + '/stages/' + stage.key;
+    const url = '/stories/' + this.state.sid + '/stages/' + stage.id;
     return this.props.history.push(url);
   }
   handleCreate = (e) => {
@@ -115,15 +92,109 @@ class storyStages extends Component {
       //console.log(error)
     });
   }
+  open = () => this.setState({ confirmOpen: true })
+  close = () => this.setState({ confirmOpen: false })
+  geojsonImport = async (e) => {
+    //this.open();
+    this.setState({importLoading: true});
+    try {
+      let files = e.target.files;
+      let formData = new FormData();
+      let file;
+      for(var x = 0; x < files.length; x++) {
+        formData.append('file', files[x]);
+        file = files[x];
+      };
+
+      await fetch(this.state.importURL, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Accept':'application/json; charset=utf-8'
+        },
+        files: JSON.stringify(file),
+        body: formData
+       })
+       .then(response => response.json())
+       .then(data => {
+         this.setState({importLoading: false});
+         return this.listStages();
+       });
+    } catch(e) {
+      console.log(e.message);
+    }
+  }
+  ImportPreview = (geojson) => {
+    console.log(typeof(geojson));
+    let features = (typeof(geojson) === 'object') ? geojson : null;
+    if(!features) {return null}
+
+    return (
+      <Segment>
+      <Message
+        attached
+        header='Warning'
+        content='This will erase and recreate all stages datas !'
+        />
+      <Table color='violet' sortable celled  selectable>
+        <Table.Header fullWidth>
+          <Table.Row>
+            <Table.HeaderCell>Name</Table.HeaderCell>
+            <Table.HeaderCell>Type</Table.HeaderCell>
+            <Table.HeaderCell>Coordonates</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {(features) ?
+            features.map(feature  => (
+              <Table.Row className='slide-out'  key={feature.properties.Name}>
+                <Table.Cell>{feature.properties.Name}</Table.Cell>
+                <Table.Cell>{feature.geometry.type}</Table.Cell>
+                <Table.Cell>{feature.geometry.coordinates}</Table.Cell>
+              </Table.Row>
+            )) : ''}
+      </Table.Body>
+      </Table>
+      </Segment>
+    //
+
+    //);
+    )
+  }
   render() {
+
     return (
       <Segment.Group horizontal>
         <Segment className="stagesMap"><StagesMap /></Segment>
         <Segment  className="stages">
-          <Button primary onClick={this.handleCreate}><Icon name="google wallet" />Add Stage</Button>
-          <h2>Table row with dragging (fake datas ...)</h2>
+          <Button.Group>
+            <Button primary onClick={this.handleCreate}><Icon name="google wallet" />Add Stage</Button>
+            <Button.Or />
+            <Button negative loading={this.state.importLoading} onClick={() => this.fileInputRef.current.click()}><Icon name="point" />GeoJSON import</Button>
+              <input
+                id='importfile'
+                name="files"
+                ref={this.fileInputRef}
+                type="file"
+                accept=".json,.geojson"
+                hidden
+                onChange={this.geojsonImport}
+             />
+           <Confirm
+               header='Are you sure ?'
+               content={this.ImportPreview}
+               cancelButton='Never mind'
+               confirmButton="Let's do it"
+               open={this.state.confirmOpen}
+               onCancel={this.close}
+               onConfirm={this.close}
+             />
+            <Button.Or />
+            <Button positive><Icon name="external square alternate" /> GeoJSON export</Button>
+          </Button.Group>
           <ReactDragListView {...this.dragProps}>
-            <Table sortable celled  selectable>
+            <Table color='violet' inverted compact sortable  selectable>
               <Table.Header className='slide-out'>
                 <Table.Row>
                   <Table.HeaderCell   >
@@ -133,20 +204,16 @@ class storyStages extends Component {
                     <FormattedMessage id="app.stage.name" defaultMessage={`Name`} />
                   </Table.HeaderCell>
                   <Table.HeaderCell   >
-                    <FormattedMessage id="app.stage.rank" defaultMessage={`rank`} />
-                  </Table.HeaderCell>
-                  <Table.HeaderCell >
-                    <FormattedMessage id="app.stage.id" defaultMessage={`Id`} />
+                    <FormattedMessage id="app.stage.rank" defaultMessage={`Type`} />
                   </Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
               <Table.Body>
-                {_.map(this.state.data, ({ key, name, image, createdAt, updatedAt, rank }) => (
-                  <Table.Row className='slide-out' key={key} onClick={() => this.tableRowClickFunc({key})}>
+                {_.map(this.state.stages, ({ id, name, type, description , updatedAt, rank }) => (
+                  <Table.Row className='slide-out' key={id} onClick={() => this.tableRowClickFunc({id})}>
                     <Table.Cell>{<a className="drag-handle" href="void(0)"><Icon name='grab' size='tiny' /> Drage Me</a>}</Table.Cell>
                     <Table.Cell>{name}</Table.Cell>
-                    <Table.Cell>{rank}</Table.Cell>
-                    <Table.Cell>{key}</Table.Cell>
+                    <Table.Cell>{type}</Table.Cell>
                   </Table.Row>
                 ))}
               </Table.Body>

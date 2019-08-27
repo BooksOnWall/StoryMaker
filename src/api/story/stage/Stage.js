@@ -66,113 +66,113 @@ class stage extends Component {
     return (
       <Segment>
         <StageMap setStageLocation={this.state.setStageLocation} stageLocation={this.state.stageLocation}/>
+        <Segment.Group horizontal>
+          <Segment>
+            <StagePictures onChangeHandler={this.onChangeHandler} setPictures={this.setPictures}/>
+          </Segment>
+          <Segment  className="story">
+            <Formik
+              enableReinitialize={true}
+              initialValues={this.state.initialStageValues}
+              validate={values => {
+                let errors = {};
+                return errors;
+              }}
+              onSubmit={(values, { setSubmitting }) => {
+                if(this.state.mode === 'update') {
+                  //    this.updateStage(values);
+                } else {
+                  //  this.createStage(values);
+                }
 
-      <Segment.Group horizontal>
-        <Segment>
-          <StagePictures onChangeHandler={this.onChangeHandler} setPictures={this.setPictures}/>
-        </Segment>
-        <Segment  className="story">
-          <Formik
-            enableReinitialize={true}
-            initialValues={this.state.initialStageValues}
-            validate={values => {
-              let errors = {};
-              return errors;
-            }}
-            onSubmit={(values, { setSubmitting }) => {
-              if(this.state.mode === 'update') {
-                //    this.updateStage(values);
-              } else {
-                //  this.createStage(values);
-              }
+                setTimeout(() => {
+                  //alert(JSON.stringify(values, null, 2));
 
-              setTimeout(() => {
-                //alert(JSON.stringify(values, null, 2));
+                  setSubmitting(false);
+                }, 400);
+              }}
+              >
+              {({
+                values,
+                errors,
+                touched,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                handleDelete,
+                isSubmitting,
+                /* and other goodies */
+              }) => (
 
-                setSubmitting(false);
-              }, 400);
-            }}
-            >
-            {({
-              values,
-              errors,
-              touched,
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              handleDelete,
-              isSubmitting,
-              /* and other goodies */
-            }) => (
+                <Form  onSubmit={this.handleSubmit}>
+                  <Input
+                    placeholder='Name'
+                    label='Name'
+                    autoFocus={true}
+                    type="text"
+                    name="name"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    defaultValue={values.name}
+                    />
+                  {errors.name && touched.name && errors.name}
 
-              <Form  onSubmit={this.handleSubmit}>
-
-  
-                <Input
-                  placeholder='Name'
-                  autoFocus={true}
-                  type="text"
-                  name="name"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  defaultValue={values.name}
-                  />
-                {errors.name && touched.name && errors.name}
-
-                <Input
-                  placeholder='Adress'
-                  type="text"
-                  name="adress"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  defaultValue={values.adress}
-                  />
-                {errors.adress && touched.adress && errors.adress}
+                  <Input
+                    placeholder='Adress'
+                    label='Adress'
+                    type="text"
+                    name="adress"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    defaultValue={values.adress}
+                    />
+                  {errors.adress && touched.adress && errors.adress}
 
 
-                <Select
-                  placeholder='Stage type'
-                  type="text"
-                  name="stagetype"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  options={stageOptions}
-                  defaultValue={values.stagetype}
-                  />
-                {errors.stagetype && touched.stagetype && errors.stagetype}
-                <Input
-
-                  placeholder='Stage Location'
-                  type="text"
-                  name="stagelocation"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={JSON.stringify(this.state.stageLocation)}
-                  />
-                {errors.stagelocation && touched.stagelocation && errors.stagelocation}
-                <Button onClick={handleSubmit} floated='right'color='violet'  size='large' type="submit" disabled={isSubmitting}>
-                  {(this.state.mode === 'create') ? 'Create' : 'Update'}
-                </Button>
-                {(this.state.mode === 'update') ? (
-                  <div>
-                    <Button onClick={this.show} color='red'  size='large' type="submit" disabled={isSubmitting}>
-                      <FormattedMessage id="app.story.delete" defaultMessage={`Delete stage`}/>
-                    </Button>
-                    <Confirm
-                      open={this.state.open}
-                      cancelButton='Never mind'
-                      confirmButton="Delete Story"
-                      onCancel={this.handleCancel}
-                      onConfirm={this.handleDelete}
-                      />
-                  </div>
-                ) : '' }
-              </Form>
-            )}
-          </Formik>
-        </Segment>
-      </Segment.Group>
-    </Segment>
+                  <Select
+                    placeholder='Stage type'
+                    label='Stage type'
+                    type="text"
+                    name="stagetype"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    options={stageOptions}
+                    defaultValue={values.stagetype}
+                    />
+                  {errors.stagetype && touched.stagetype && errors.stagetype}
+                  <Input
+                    label='Stage Location'
+                    placeholder='Stage Location'
+                    type="text"
+                    name="stagelocation"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={JSON.stringify(this.state.stageLocation)}
+                    />
+                  {errors.stagelocation && touched.stagelocation && errors.stagelocation}
+                  <Button onClick={handleSubmit} floated='right'color='violet'  size='large' type="submit" disabled={isSubmitting}>
+                    {(this.state.mode === 'create') ? 'Create' : 'Update'}
+                  </Button>
+                  {(this.state.mode === 'update') ? (
+                    <div>
+                      <Button onClick={this.show} color='red'  size='large' type="submit" disabled={isSubmitting}>
+                        <FormattedMessage id="app.story.delete" defaultMessage={`Delete stage`}/>
+                      </Button>
+                      <Confirm
+                        open={this.state.open}
+                        cancelButton='Never mind'
+                        confirmButton="Delete Story"
+                        onCancel={this.handleCancel}
+                        onConfirm={this.handleDelete}
+                        />
+                    </div>
+                  ) : '' }
+                </Form>
+              )}
+            </Formik>
+          </Segment>
+        </Segment.Group>
+      </Segment>
     );
   }
   render() {

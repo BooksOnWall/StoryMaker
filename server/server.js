@@ -305,12 +305,13 @@ const getUserPreferences = async ({id}) => {
 // stories db requests
 const getAllStages = async (sid) => {
   return await Stages.findAll({
-    where: {id : sid },
+    where: {sid : sid },
   });
 }
-const createStage = async ({ name, adress, picture, type, geometry }) => {
+
+const createStage = async ({ sid, name, adress, description, tessellate, picture, type, geometry }) => {
   try {
-    let res = await Stages.create({ name, adress, picture, type, geometry });
+    let res = await Stages.create({ sid, name, adress, description, tessellate, picture, type, geometry });
     const ssid = res.dataValues.id;
     var dir = __dirname + '/public/stages/'+ssid;
     if (!fs.existsSync(dir)) { fs.mkdirSync(dir, 0o744); }
@@ -319,6 +320,37 @@ const createStage = async ({ name, adress, picture, type, geometry }) => {
     console.log(e.message);
   }
 }
+const importStages = async (sid, geojson) => {
+  console.log(typeof(geojson));
+  Stages.destroy({
+    where: {sid: sid},
+    truncate: true
+  });
+  //deleteAllStages(sid);
+  if (geojson) {
+    geojson.map((feature, index ) => {
+      console.log(feature);
+      let properties = feature.properties;
+      console.log(typeof(feature));
+
+      let name = properties.Name;
+      let description = properties.description;
+      let tessellate = properties.tessellate;
+      let geometry = feature.geometry;
+      let adress='';
+      let pictures = null;
+      let type=feature.geometry.type;
+      console.log(name);
+      createStage({ sid, name, adress, description, tessellate, pictures, type, geometry }).then(res =>
+        console.log(res)
+        //res.json({ stage, 'data': stage, msg: 'stage created successfully' })
+      );
+      return ('toto')
+    });
+  }
+
+}
+
 const getStage = async obj => {
   return await Stages.findOne({
     where: obj,
@@ -426,10 +458,8 @@ app.patch('/users/:userId', function(req, res, next) {
       patchUserPasswd({ id, hash }).then(user =>
           res.json({ user, msg: 'password updated successfully' })
         );
-
     })
     .catch(err => console.error(err.message));
-
   }
 });
 //delete user
@@ -641,6 +671,39 @@ app.delete('/stories/:storyId', function(req, res, next) {
   });
 });
 // Stages URI requests
+// geoJSON import stages
+app.post('/stories/:storyId/import', function(req, res) {
+  let sid = req.params.storyId;
+  //check if import directory exist otherwise create it
+  var dir = __dirname + '/public/stories/'+sid+'/import';
+  if (!fs.existsSync(dir)) { fs.mkdirSync(dir, 0o744); }
+
+  var storage = multer.diskStorage({
+      destination: function(req, file, cb){
+        cb(null, './public/stories/'+sid+'/import');
+      },
+      filename: function (req, file, cb) {
+        cb(null, file.originalname);
+      }
+    });
+    var upload = multer({ storage : storage}).any();
+    upload(req,res,function(err) {
+        if(err) {
+          return res.end("Error uploading file." + err);
+        } else {
+          let geojson = fs.readFileSync(
+            dir+'/' + req.files[0].originalname,
+            'utf8');
+            geojson = JSON.parse(geojson);
+            geojson = geojson.features;
+            let stages = importStages(sid,geojson);
+          return res.json({ user: sid, stages: stages, msg: 'geojson imported  successfully' })
+        }
+    });
+  //console.log(req.file);
+
+  //getAllStages(sid).then(user => res.json(user));
+});
 app.get('/stories/:storyId/stages', function(req, res) {
   let sid = req.params.storyId;
   console.log(sid);
