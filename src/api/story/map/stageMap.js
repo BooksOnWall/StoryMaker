@@ -22,6 +22,8 @@ var bounds = [
 class stageMap extends Component {
   constructor(props) {
     super(props);
+    let location = (this.props.stageLocation) ?this.props.stageLocation : [-34.9022229, -56.1670182];
+    console.log(location);
     this.state = {
       toggleAuthenticateStatus: this.props.toggleAuthenticateStatus,
       authenticated: this.props.authenticated,
@@ -31,10 +33,10 @@ class stageMap extends Component {
       active: 'Map',
       stagePosition: null,
       bounds: bounds,
-      popupInfo: '',
+      popupInfo: null,
       viewport: {
-        latitude: -34.9022229,
-        longitude: -56.1670182,
+        latitude: (parseFloat(location[0])) ? parseFloat(location[0]) : -34.9022229 ,
+        longitude: (parseFloat(location[1])) ? parseFloat(location[1]) : -56.1670182 ,
         zoom: 18,
         bearing: -60, // bearing in degrees
         pitch: 60  // pitch in degrees
@@ -63,7 +65,7 @@ class stageMap extends Component {
           closeOnClick={false}
           onClose={() => this.setState({popupInfo: null})}
         >
-          {this.state.popupInfo}
+          {this.state.popupInfo.name}
         </Popup>
       )
     );
@@ -100,7 +102,6 @@ class stageMap extends Component {
         height="40vh"
         mapStyle={MAP_STYLE}
         clickRadius={2}
-
         onClick={this.onClickMap}
         getCursor={this.getCursor}
         interactiveLayerIds={interactiveLayerIds}
@@ -108,7 +109,7 @@ class stageMap extends Component {
         mapboxApiAccessToken={MapboxAccessToken}
       >
         {(this.props.stageLocation) ?
-          <Marker key='stage' longitude={this.props.stageLocation[0]} latitude={this.props.stageLocation[1]}>
+          <Marker key='stage' longitude={parseFloat(this.props.stageLocation[0])} latitude={parseFloat(this.props.stageLocation[1])}>
             <StagePin size={20} onClick={() => this.setState({popupInfo: 'toto'})} />
             Stage location
           </Marker>

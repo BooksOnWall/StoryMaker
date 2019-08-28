@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {
   Segment,
+  Card,
   Dimmer,
   Loader,
 } from 'semantic-ui-react';
@@ -82,7 +83,6 @@ class stagesMap extends Component {
   renderPopup() {
     const {popupInfo} = this.state;
     if(popupInfo) {
-      console.log(popupInfo);
       return (
         popupInfo && (
           <Popup
@@ -93,8 +93,11 @@ class stagesMap extends Component {
             closeOnClick={false}
             onClose={() => this.setState({popupInfo: null})}
           >
-            {popupInfo.name}
-            {ReactHtmlParser(popupInfo.description)}
+            <Card
+              header={popupInfo.name}
+              meta='Point'
+              description={ReactHtmlParser(popupInfo.description)}
+            />
           </Popup>
         )
       );
@@ -143,7 +146,6 @@ class stagesMap extends Component {
         clickRadius={2}
         onClick={this.onClick}
         getCursor={this.getCursor}
-        perspectiveEnabled
         interactiveLayerIds={interactiveLayerIds}
         onViewportChange={this.onViewportChange}
         mapboxApiAccessToken={MapboxAccessToken}

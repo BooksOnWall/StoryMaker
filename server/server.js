@@ -716,9 +716,9 @@ app.post('/stories/:storyId/0', function(req, res, next) {
     res.json({ story, 'data': story, msg: 'story created successfully' })
   );
 });
-app.get('/stories/:storyId/:stageId', (req, res) => {
+app.get('/stories/:storyId/stages/:stageId', (req, res) => {
   let ssid = req.params.stageId;
-  getStory({id: ssid}).then(user => res.json(user));
+  getStage({id: ssid}).then(stage => res.json(stage));
 });
 // protected route
 app.get('/protected', passport.authenticate('jwt', { session: false }), function(req, res) {
