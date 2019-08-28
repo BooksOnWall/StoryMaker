@@ -5,10 +5,11 @@ import {
   Loader,
 } from 'semantic-ui-react';
 
-import MapGL, {Marker, Popup, NavigationControl, FullscreenControl} from 'react-map-gl';
+import MapGL, { Marker, Popup } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MAP_STYLE from './map-style-basic-v8.json';
 import StagePin from './stagePin';
+import ReactHtmlParser from 'react-html-parser';
 let MapboxAccessToken = process.env.REACT_APP_MAT;
 
 // Set bounds toMontevideo
@@ -28,6 +29,7 @@ class stagesMap extends Component {
       mapStyle: '',
       active: 'Map',
       bounds: bounds,
+      popupInfo: null,
       stages: (this.props.stages && this.props.stages.length > 0) ? this.props.stages : [],
       viewport: {
         latitude: -34.9022229,
@@ -47,16 +49,13 @@ class stagesMap extends Component {
     }
   }
   handleStages = async () => {
-    console.log(this.props);
     try {
       let stages = (this.props.stages && this.props.stages.length > 0) ? await this.props.stages : null;
       (stages) ? this.setState({stages: stages}) : this.setState({stages: []});
-      console.log(stages);
       if (stages) {return stages;}
     } catch(e) {
       console.log(e.message);
     }
-
   }
   toggleLoading(val) {
     this.setState({loading: false});
@@ -80,13 +79,35 @@ class stagesMap extends Component {
   getCursor = ({isHovering, isDragging}) => {
     return isHovering ? 'pointer' : 'default';
   };
+  renderPopup() {
+    const {popupInfo} = this.state;
+    if(popupInfo) {
+      console.log(popupInfo);
+      return (
+        popupInfo && (
+          <Popup
+            tipSize={5}
+            anchor="top"
+            longitude={parseFloat(popupInfo.geometry.coordinates[0])}
+            latitude={parseFloat(popupInfo.geometry.coordinates[1])}
+            closeOnClick={false}
+            onClose={() => this.setState({popupInfo: null})}
+          >
+            {popupInfo.name}
+            {ReactHtmlParser(popupInfo.description)}
+          </Popup>
+        )
+      );
+    }
+  }
   Stages = () => {
-    let stages = this.state.stages;
-    console.log(stages);
-    if(stages && typeof(stages) === 'Array' && stages.length > 0) {
-      console.log(typeof(stages));
-      stages = (typeof(stages) === 'object') ? Object.values(stages) : stages;
-      console.log({stages});
+    let stages = this.props.stages;
+
+    if(stages && stages.length > 0) {
+
+      stages = (typeof(stages) === 'object') ? {stages}.stages : stages;
+      stages = {stages}.stages;
+
       const listStages = stages.map((stage,i) =>  (
         <Marker
           key={i}
@@ -95,11 +116,12 @@ class stagesMap extends Component {
           >
           <StagePin
             size={20}
-            onClick={() => this.setState({popupInfo: stage.description})}
+            onClick={() => this.setState({popupInfo: stage})}
             />
+          {stage.name}
         </Marker>
       ));
-      return {listStages}
+      return listStages
     }
   }
   render() {
@@ -121,12 +143,14 @@ class stagesMap extends Component {
         clickRadius={2}
         onClick={this.onClick}
         getCursor={this.getCursor}
+        perspectiveEnabled
         interactiveLayerIds={interactiveLayerIds}
         onViewportChange={this.onViewportChange}
         mapboxApiAccessToken={MapboxAccessToken}
       >
 
       {this.Stages()}
+      {this.renderPopup()}
       </MapGL>
     </Segment>
     );

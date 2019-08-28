@@ -11,6 +11,7 @@ import MAP_STYLE from './map-style-basic-v8.json';
 import StagePin from './stagePin';
 import ControlPanel from './controlPanel';
 import {fromJS} from 'immutable';
+import HtmlParser from 'react-html-parser';
 let MapboxAccessToken = process.env.REACT_APP_MAT;
 // Set bounds toMontevideo
 var bounds = [
@@ -30,6 +31,7 @@ class stageMap extends Component {
       active: 'Map',
       stagePosition: null,
       bounds: bounds,
+      popupInfo: '',
       viewport: {
         latitude: -34.9022229,
         longitude: -56.1670182,
@@ -61,7 +63,7 @@ class stageMap extends Component {
           closeOnClick={false}
           onClose={() => this.setState({popupInfo: null})}
         >
-          blah blah
+          {this.state.popupInfo}
         </Popup>
       )
     );
