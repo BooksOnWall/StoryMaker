@@ -44,7 +44,7 @@ class stage extends Component {
         mode: (parseInt(this.props.match.params.id) === 0) ? ('create') : ('update'),
         name: null,
         stages: '/stories/' + this.props.match.params.id + '/stages',
-        stageURL: server + 'stories/' + this.props.match.params.id + '/stages/' + this.props.match.params.id,
+        stageURL: server + 'stories/' + this.props.match.params.id + '/stages/' + parseInt(this.props.match.params.id),
         map:  '/stories/' +  + '/map',
         loading: null,
         step: 'Stages',
