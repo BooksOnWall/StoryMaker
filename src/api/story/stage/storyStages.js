@@ -5,6 +5,7 @@ import {
   Table,
   Button,
   Message,
+  Placeholder,
   Confirm,
   Icon
 } from 'semantic-ui-react';
@@ -165,7 +166,12 @@ class storyStages extends Component {
     return (
       <Segment.Group horizontal>
         <Segment className="stagesMap">
-          {(this.state.location) ? <StagesMap goToStage={this.goToStage} stages={this.state.stages} location={this.state.location} state={this.state}/> : ''}
+          {(this.state.location)
+            ? <StagesMap goToStage={this.goToStage} stages={this.state.stages} location={this.state.location} state={this.state}/>
+            : <Placeholder>
+              <Placeholder.Image rectangular />
+            </Placeholder>
+          }
         </Segment>
         <Segment  className="stages">
           <Button.Group>

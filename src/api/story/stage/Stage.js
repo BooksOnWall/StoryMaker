@@ -218,7 +218,7 @@ class stage extends Component {
         <Segment.Group horizontal>
         <Segment >{(this.state.stage.stageLocation) ? <StageMap setStageLocation={this.state.setStageLocation} stageLocation={this.state.stage.stageLocation}/> : ''}</Segment>
         <Segment>
-          <Button onClick={this.toggleLock}><Icon name={this.state.descLock} /></Button>
+          <Button onClick={this.toggleLock}><Icon name={this.state.descLock} /><Icon name="edit" /></Button>
           <Divider />
           {(this.state.descLock === 'lock')
             ? <Card
