@@ -10,6 +10,7 @@ import {
   Icon,
   Confirm,
   Divider,
+  Placeholder,
   Segment,
   TextArea,
   Dimmer,
@@ -236,14 +237,8 @@ class stage extends Component {
           }
         </Segment>
         </Segment.Group>
-      <Segment.Group horizontal>
-          <Segment>
-            <StagePictures onChangeHandler={this.onChangeHandler} setPictures={this.setPictures}/>
-          </Segment>
-          <Segment  className="stage">
-
-          </Segment>
-        </Segment.Group>
+        <StagePictures onChangeHandler={this.onChangeHandler} setPictures={this.setPictures}/>
+      
       </Segment>
     );
   }
