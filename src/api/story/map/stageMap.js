@@ -5,7 +5,8 @@ import {
   Loader,
 } from 'semantic-ui-react';
 
-import MapGL, {Marker, Popup, NavigationControl, FullscreenControl} from 'react-map-gl';
+import MapGL, {Marker, Popup, LinearInterpolator, FlyToInterpolator, NavigationControl, FullscreenControl} from 'react-map-gl';
+import * as d3 from 'd3-ease';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MAP_STYLE from './map-style-basic-v8.json';
 import StagePin from './stagePin';
@@ -22,8 +23,10 @@ var bounds = [
 class stageMap extends Component {
   constructor(props) {
     super(props);
-    let location = (this.props.stageLocation) ?this.props.stageLocation : [-34.9022229, -56.1670182];
-    console.log(location);
+    let location = (this.props.stageLocation)
+      ? this.props.stageLocation
+      : [-34.9022229, -56.1670182 ];
+
     this.state = {
       toggleAuthenticateStatus: this.props.toggleAuthenticateStatus,
       authenticated: this.props.authenticated,
@@ -32,17 +35,25 @@ class stageMap extends Component {
       mapStyle: '',
       active: 'Map',
       stagePosition: null,
-      bounds: bounds,
+      location: (location) ? location : null ,
+      //bounds: bounds,
       popupInfo: null,
       viewport: {
-        latitude: (parseFloat(location[0])) ? parseFloat(location[0]) : -34.9022229 ,
-        longitude: (parseFloat(location[1])) ? parseFloat(location[1]) : -56.1670182 ,
+        latitude: (parseFloat(location[1])) ? parseFloat(location[1]) : -34.9022229  ,
+        longitude: (parseFloat(location[0])) ? parseFloat(location[0]) : -56.1670182 ,
         zoom: 18,
         bearing: -60, // bearing in degrees
         pitch: 60  // pitch in degrees
       },
       interactiveLayerIds: []
     };
+  }
+  componentDidMount = async () => {
+    try {
+
+    } catch(e) {
+      console.log(e.message);
+    }
   }
   toggleLoading(val) {
     this.setState({loading: false});
@@ -88,6 +99,22 @@ class stageMap extends Component {
       </Marker>
     );
   };
+  goToStage = () => {
+    let location = this.props.stageLocation;
+    let lng = parseFloat(location[0]);
+    let Lat = parseFloat(location[1]);
+    console.log(this.state.location);
+        const viewport = {
+            ...this.state.viewport,
+            longitude: lng,
+            latitude: Lat,
+            zoom: 20,
+            transitionDuration: 1500,
+            transitionInterpolator: new FlyToInterpolator(),
+            transitionEasing: d3.easeCubic
+        };
+        this.setState({viewport});
+    };
   render() {
     const {viewport, interactiveLayerIds, mapStyle, loading} = this.state;
     return (
@@ -95,7 +122,7 @@ class stageMap extends Component {
       <Dimmer active={loading}>
         <Loader active={loading} >Get map info</Loader>
       </Dimmer>
-
+      <button onClick={this.goToStage}>Go to stage {this.state.location}</button>
       <MapGL
         {...viewport}
         width="inherit"
@@ -115,6 +142,7 @@ class stageMap extends Component {
           </Marker>
          :''}
       </MapGL>
+
     </Segment>
     );
   }

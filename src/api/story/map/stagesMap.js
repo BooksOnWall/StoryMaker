@@ -6,11 +6,13 @@ import {
   Loader,
 } from 'semantic-ui-react';
 
-import MapGL, { Marker, Popup } from 'react-map-gl';
+import MapGL, { Marker, Popup, LinearInterpolator, FlyToInterpolator } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MAP_STYLE from './map-style-basic-v8.json';
 import StagePin from './stagePin';
 import ReactHtmlParser from 'react-html-parser';
+import * as d3 from 'd3-ease';
+
 let MapboxAccessToken = process.env.REACT_APP_MAT;
 
 // Set bounds toMontevideo
@@ -21,7 +23,7 @@ var bounds = [
 class stagesMap extends Component {
   constructor(props) {
     super(props);
-
+    let location = this.props.location;
     this.state = {
       toggleAuthenticateStatus: this.props.toggleAuthenticateStatus,
       authenticated: this.props.authenticated,
@@ -33,9 +35,9 @@ class stagesMap extends Component {
       popupInfo: null,
       stages: (this.props.stages && this.props.stages.length > 0) ? this.props.stages : [],
       viewport: {
-        latitude: -34.9022229,
-        longitude: -56.1670182,
-        zoom: 13,
+        latitude: parseFloat(location[1]),
+        longitude: parseFloat(location[0]),
+        zoom: 15,
         bearing: -60, // bearing in degrees
         pitch: 60  // pitch in degrees
       },
@@ -68,18 +70,23 @@ class stagesMap extends Component {
       interactiveLayerIds: MAP_STYLE.layers.map(layer => layer.id).filter(layerFilter)
     });
   };
-
-  onClick = event => {
-    const feature = event.features && event.features[0];
-
-    if (feature) {
-      window.alert(`Clicked layer ${feature.layer.id}`); // eslint-disable-line no-alert
-    }
-  };
-
   getCursor = ({isHovering, isDragging}) => {
     return isHovering ? 'pointer' : 'default';
   };
+  goToStage = (location) => {
+    let lng = parseFloat(location[0]);
+    let Lat = parseFloat(location[1]);
+        const viewport = {
+            ...this.state.viewport,
+            longitude: lng,
+            latitude: Lat,
+            zoom: 20,
+            transitionDuration: 1500,
+            transitionInterpolator: new FlyToInterpolator(),
+            transitionEasing: d3.easeCubic
+        };
+        this.setState({viewport});
+    };
   renderPopup() {
     const {popupInfo} = this.state;
     if(popupInfo) {
@@ -103,6 +110,11 @@ class stagesMap extends Component {
       );
     }
   }
+  handleMapClick= (stage) => {
+    this.setState({popupInfo: stage });
+    let location = stage.geometry.coordinates;
+    this.goToStage(location);
+  }
   Stages = () => {
     let stages = this.props.stages;
 
@@ -119,7 +131,7 @@ class stagesMap extends Component {
           >
           <StagePin
             size={20}
-            onClick={() => this.setState({popupInfo: stage})}
+            onClick={() => this.handleMapClick(stage)}
             />
           {stage.name}
         </Marker>

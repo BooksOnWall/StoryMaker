@@ -7,8 +7,11 @@ import {
   Input,
   Label,
   Button,
+  Icon,
   Confirm,
+  Divider,
   Segment,
+  TextArea,
   Dimmer,
   Loader,
 } from 'semantic-ui-react';
@@ -24,8 +27,8 @@ import ReactHtmlParser from 'react-html-parser';
 import { Link } from 'react-router-dom';
 
 const stageOptions = [
-  { key: 'Point', value: 'point', text: 'Geo Point' },
-  { key: 'linestring', value: 'linestrang', text: 'Line String' },
+  { key: 'Point', value: 'Point', text: 'Geo Point' },
+  { key: 'linestring', value: 'linestring', text: 'Line String' },
   { key: 'audio', value: 'audio', text: 'Audio' }
 ];
 
@@ -45,19 +48,51 @@ class stage extends Component {
         name: null,
         stages: '/stories/' + this.props.sid + '/stages',
         stageURL: server + 'stories/' + this.props.sid + '/stages/' + parseInt(this.props.match.params.id),
-        map:  '/stories/' +  + '/map',
+        map:  '/stories/'+ this.props.sid  + '/map',
         loading: null,
         step: 'Stages',
-        stageLocation: null,
+        descLock: 'lock',
+        stage: {
+          id: null,
+          sid: this.props.sid,
+          ssid: parseInt(this.props.match.params.id),
+          name: '',
+          adress: '',
+          pictures: null,
+          type: null,
+          description: '',
+          geometry: null,
+          stageLocation: null
+        },
         setSteps: this.setSteps,
         setStageLocation: this.setStageLocation,
         toggleAuthenticateStatus: this.props.childProps.toggleAuthenticateStatus,
         authenticated: this.props.childProps.authenticated,
       };
+      this.getStage= this.getStage.bind(this);
+      this.lock=this.lock.bind(this);
+      this.unlock=this.unlock.bind(this);
+      this.toggleLock = this.toggleLock.bind(this);
   }
+  lock = () => this.setState({descLock: 'lock'})
+  unlock = () => this.setState({descLock: 'unlock'})
+  toggleLock = () => (this.state.descLock === 'lock') ? this.unlock() : this.lock()
+
   setStageLocation = (lngLat) => {
     console.log(lngLat);
-    this.setState({stageLocation: lngLat});
+    this.setState({
+      stage : {
+        id: this.state.stage.id,
+        sid: this.state.stage.sid,
+        name: this.state.stage.name,
+        adress: this.state.stage.adress,
+        pictures: this.state.stage.pictures,
+        type: this.state.stage.type,
+        description: this.state.stage.description,
+        geometry: this.state.stage.geometry,
+        stageLocation: lngLat
+      }
+  });
   }
   onChangeHandler = (e) => {
     this.setState({stagePictures: e.files})
@@ -143,7 +178,7 @@ class stage extends Component {
                   name="stagelocation"
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  value={JSON.stringify(this.state.stageLocation)}
+                  defaultValue={JSON.stringify(this.state.stage.stageLocation)}
                   />
                 {errors.stagelocation && touched.stagelocation && errors.stagelocation}
 
@@ -181,13 +216,24 @@ class stage extends Component {
           </Formik>
         </Segment>
         <Segment.Group horizontal>
-        <Segment ><StageMap setStageLocation={this.state.setStageLocation} stageLocation={this.state.stageLocation}/></Segment>
+        <Segment >{(this.state.stage.stageLocation) ? <StageMap setStageLocation={this.state.setStageLocation} stageLocation={this.state.stage.stageLocation}/> : ''}</Segment>
         <Segment>
-          <Card
-            color='violet'
-            header={this.state.name}
-            description={ReactHtmlParser(this.state.description)}
-          />
+          <Button onClick={this.toggleLock}><Icon name={this.state.descLock} /></Button>
+          <Divider />
+          {(this.state.descLock === 'lock')
+            ? <Card
+              color='violet'
+              header={this.state.stage.name}
+              description={ReactHtmlParser(this.state.stage.description)}
+            />
+          : <Form color='violet'><TextArea
+            className="desc-edit"
+            name="description"
+            placeholder='Description'
+            value={this.state.stage.description}
+            /></Form>
+
+          }
         </Segment>
         </Segment.Group>
       <Segment.Group horizontal>
@@ -201,7 +247,7 @@ class stage extends Component {
       </Segment>
     );
   }
-  async getStage() {
+  getStage = async () => {
     this.setState({loading: true});
     try {
       await fetch(this.state.stageURL, {
@@ -215,15 +261,17 @@ class stage extends Component {
       .then(data => {
           if(data) {
             this.setState({
-              id: data.id,
-              sid: data.sid,
-              name: data.name,
-              adress: data.adress,
-              pictures: data.pictures,
-              type: data.type,
-              description: data.description,
-              geometry: data.geometry,
-              stageLocation: data.geometry.coordinates,
+              stage: {
+                id: data.id,
+                sid: data.sid,
+                name: data.name,
+                adress: data.adress,
+                pictures: data.pictures,
+                type: data.type,
+                description: data.description,
+                geometry: data.geometry,
+                stageLocation: Array.from(data.geometry.coordinates)
+              }
             });
             this.setState({initialSValues: data});
             this.setState({loading: false});

@@ -13,7 +13,7 @@ import ReactDragListView  from 'react-drag-listview';
 import { FormattedMessage } from 'react-intl';
 import _ from 'lodash';
 import StagesMap from '../map/stagesMap';
-
+import MapGL, { Marker, Popup, LinearInterpolator, FlyToInterpolator } from 'react-map-gl';
 class storyStages extends Component {
   constructor(props) {
     super(props);
@@ -30,6 +30,7 @@ class storyStages extends Component {
       importLoading: false,
       direction: null,
       stages: null,
+      location: null,
       listStages: this.listStages,
       confirmOpen: false,
       sid: parseInt(this.props.sid),
@@ -80,6 +81,8 @@ class storyStages extends Component {
     .then(data => {
         if(data) {
           this.setState({stages: data, loading: false});
+          this.setState({location: data[0].geometry.coordinates});
+          console.log(data[0].geometry.coordinates);
           return data;
         } else {
           console.log('No Data received from the server');
@@ -162,7 +165,7 @@ class storyStages extends Component {
     return (
       <Segment.Group horizontal>
         <Segment className="stagesMap">
-          <StagesMap stages={this.state.stages} state={this.state}/>
+          {(this.state.location) ? <StagesMap goToStage={this.goToStage} stages={this.state.stages} location={this.state.location} state={this.state}/> : ''}
         </Segment>
         <Segment  className="stages">
           <Button.Group>
