@@ -6,6 +6,7 @@
   "Contributors": "Cristobal Severin",
   "Traductors": "Cristobal Severin",
   "dependencies": {
+    "d3-ease": "^1.0.5",
     "draft-js": "^0.11.0",
     "draft-js-export-html": "^1.4.1",
     "draftjs-to-html": "^0.8.4",
