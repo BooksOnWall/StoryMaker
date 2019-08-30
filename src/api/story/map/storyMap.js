@@ -18,6 +18,7 @@ var bounds = [
 class storyMap extends Component {
   constructor(props) {
     super(props);
+    
     this.state = {
       toggleAuthenticateStatus: this.props.toggleAuthenticateStatus,
       authenticated: this.props.authenticated,

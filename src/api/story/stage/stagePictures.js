@@ -1,8 +1,11 @@
 import React, {useEffect, useState } from 'react';
 import {useDropzone} from 'react-dropzone';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import {
   Segment,
   Placeholder,
+  Icon,
+  Button,
   List,
   Image,
 } from 'semantic-ui-react';
@@ -57,7 +60,8 @@ function StagePictures(props) {
 
   const thumbs = files.map(file => (
     <List.Item key={file.name} className='slide-out'>
-      <Image size='big' src={file.preview} />
+      <Button key={file.name} floated="right" onClick circular simple color='violet'><Icon name="delete" size='mini'/></Button>
+      <Image size='small' src={file.preview} />
       <List.Content>
         <List.Header>{file.name}</List.Header>
       </List.Content>
@@ -72,28 +76,29 @@ function StagePictures(props) {
 
   return (
     <Segment.Group horizontal>
-        <Segment className="container">
-          <div {...getRootProps({className: 'dropzone'})}>
-            <input  id='stagePictures' name='files' onChange={props.onChangeHandler} ref={ref => this.fileInput = ref} {...getInputProps()} />
-            <p>Drag 'n' drop some files here, or click to select files</p>
-            {!isDragActive && 'Click here or drop a file to upload!'}
-            {isDragActive && !isDragReject && "Drop it like it's hot!"}
-            {isDragReject && "File type not accepted, sorry!"}
-          </div>
-        </Segment>
-        <Segment  className="stage">
-          <Placeholder fluid>
-            <Placeholder.Header image>
-              <Placeholder.Line />
-              <Placeholder.Line />
-            </Placeholder.Header>
-          </Placeholder>
-          <aside style={thumbsContainer}>
-            <List animated celled fluid verticalAlign='middle'>
-              {thumbs}
-            </List>
-          </aside>
-        </Segment>
+      <Segment  className="stage">
+        <Placeholder fluid>
+          <Placeholder.Header image >
+            <Placeholder.Line />
+            <Placeholder.Line />
+          </Placeholder.Header>
+        </Placeholder>
+
+        <aside style={thumbsContainer}>
+          <List animated celled verticalAlign='middle'>
+            {thumbs}
+          </List>
+        </aside>
+      </Segment>
+      <Segment className="container">
+        <div {...getRootProps({className: 'dropzone'})}>
+          <input  id='stagePictures' name='files' onChange={props.onChangeHandler} ref={ref => this.fileInput = ref} {...getInputProps()} />
+          <p>Drag 'n' drop some files here, or click to select files</p>
+          {!isDragActive && 'Click here or drop a file to upload!'}
+          {isDragActive && !isDragReject && "Drop it like it's hot!"}
+          {isDragReject && "File type not accepted, sorry!"}
+        </div>
+      </Segment>
       </Segment.Group>
   );
 }

@@ -543,7 +543,7 @@ class Story extends Component {
 
             <Button primary  to="/stories" as={Link}><Icon name='list' /> List stories</Button>
 
-          <StorySteps sid={this.state.sid} step={this.state.step} state={this.state} />
+          <StorySteps sid={this.state.sid} step={this.state.step} state={this.state} location={this.props.location} />
           <Segment id='StepsContent'>
             {(this.state.step === 'Story') ? this.EditForm() : '' }
             {(this.state.step === 'Sinopsys') ? this.EditSino() : '' }

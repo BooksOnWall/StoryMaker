@@ -1,22 +1,27 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 
 import {
   Form,
   Select,
   Card,
   Input,
+  Header,
+  Image,
   Label,
   Button,
   Icon,
   Confirm,
   Divider,
   Placeholder,
+  Grid,
+  Ref,
+  Sidebar,
+  Menu,
   Segment,
   TextArea,
   Dimmer,
   Loader,
 } from 'semantic-ui-react';
-
 import {  FormattedMessage } from 'react-intl';
 import { Formik } from 'formik';
 import StorySteps from '../storySteps';
@@ -32,6 +37,7 @@ const stageOptions = [
   { key: 'linestring', value: 'linestring', text: 'Line String' },
   { key: 'audio', value: 'audio', text: 'Audio' }
 ];
+
 
 class stage extends Component {
   constructor(props) {
@@ -53,6 +59,10 @@ class stage extends Component {
         loading: null,
         step: 'Stages',
         descLock: 'lock',
+        animation: 'overlay',
+        direction: 'left',
+        dimmed: false,
+        visible: false,
         stage: {
           id: null,
           sid: this.props.sid,
@@ -75,6 +85,13 @@ class stage extends Component {
       this.unlock=this.unlock.bind(this);
       this.toggleLock = this.toggleLock.bind(this);
   }
+  segmentRef = createRef()
+
+  handleHideClick = () => this.setState({ visible: false })
+  handleShowClick = () => this.setState({ visible: true })
+
+  handleSidebarHide = () => this.setState({ visible: false })
+
   lock = () => this.setState({descLock: 'lock'})
   unlock = () => this.setState({descLock: 'unlock'})
   toggleLock = () => (this.state.descLock === 'lock') ? this.unlock() : this.lock()
@@ -108,6 +125,14 @@ class stage extends Component {
       console.log(e.message);
     }
   }
+
+  handleAnimationChange = (animation) => () =>
+    this.setState((prevState) => ({ animation, visible: !prevState.visible }))
+
+  handleDimmedChange = (e, { checked }) => this.setState({ dimmed: checked })
+
+  handleDirectionChange = (direction) => () =>
+    this.setState({ direction, visible: false })
   editStage = () => {
     return (
       <Segment>
@@ -218,27 +243,9 @@ class stage extends Component {
         </Segment>
         <Segment.Group horizontal>
         <Segment >{(this.state.stage.stageLocation) ? <StageMap setStageLocation={this.state.setStageLocation} stageLocation={this.state.stage.stageLocation}/> : ''}</Segment>
-        <Segment>
-          <Button onClick={this.toggleLock}><Icon name={this.state.descLock} /><Icon name="edit" /></Button>
-          <Divider />
-          {(this.state.descLock === 'lock')
-            ? <Card
-              color='violet'
-              header={this.state.stage.name}
-              description={ReactHtmlParser(this.state.stage.description)}
-            />
-          : <Form color='violet'><TextArea
-            className="desc-edit"
-            name="description"
-            placeholder='Description'
-            value={this.state.stage.description}
-            /></Form>
 
-          }
-        </Segment>
         </Segment.Group>
-        <StagePictures onChangeHandler={this.onChangeHandler} setPictures={this.setPictures}/>
-      
+
       </Segment>
     );
   }
@@ -284,16 +291,71 @@ class stage extends Component {
     }
   }
   render() {
+    const { log, logCount, visible } = this.state
+
     return (
       <Segment className="view" >
         <Dimmer active={this.state.loading}>
           <Loader active={this.state.loading} >Get stage info</Loader>
         </Dimmer>
-        <StorySteps step={this.state.step} state={this.state}/>
-        <StageSteps step={this.state.step} state={this.state}/>
-        {(this.state.ssid >0) ? this.editStage() : ''}
+        <div>
+       <Sidebar.Pushable as={Segment.Group} raised>
+         <Sidebar
+           as={Menu}
+           animation='push'
+           direction='right'
+           icon='labeled'
+           onHide={this.handleSidebarHide}
+           vertical
+           target={this.segmentRef}
+           visible={visible}
+           width='wide'
+         >
+         <Button.Group>
+           <Button positive >Stage</Button>
+             <Button.Or text='or' />
+             <Button>Geo</Button>
+           <Button.Or text='or' />
+           <Button>Pictures</Button>
+           <Button.Or text='or' />
+           <Button>Video</Button>
+         </Button.Group>
+         <Segment >
+           <header>{this.state.stage.name}</header>
+           <Button onClick={this.toggleLock}><Icon name={this.state.descLock} /><Icon name="edit" /></Button>
+           <Divider />
+           {(this.state.descLock === 'lock')
+             ? <Card
+               color='violet'
+               header={this.state.stage.name}
+               description={ReactHtmlParser(this.state.stage.description)}
+             />
+           : <Form color='violet'><TextArea
+             className="desc-edit"
+             name="description"
+             placeholder='Description'
+             value={this.state.stage.description}
+             /></Form>
+           }
+           <Divider />
+           <StagePictures onChangeHandler={this.onChangeHandler} setPictures={this.setPictures}/>
+
+         </Segment>
+         </Sidebar>
+
+         <Ref innerRef={this.segmentRef}>
+           <Segment className='slide-out'>
+            {(this.state.ssid >0) ? this.editStage() : ''}
+           </Segment>
+         </Ref>
+       </Sidebar.Pushable>
+     </div>
+
+
+
       </Segment>
     );
   }
 }
+
 export default stage;

@@ -36,6 +36,7 @@ class AppMenu extends Component {
             <Image className='App-logo'  fluid  src={Logo} style={{ height: '5vw', width: '5vw',  marginRight: '1.5em' }} />
             Books On Wall
           </Menu.Item>
+          
         </Container>
       </Menu>
     );

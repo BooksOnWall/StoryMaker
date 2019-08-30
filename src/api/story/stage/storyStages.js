@@ -14,7 +14,7 @@ import ReactDragListView  from 'react-drag-listview';
 import { FormattedMessage } from 'react-intl';
 import _ from 'lodash';
 import StagesMap from '../map/stagesMap';
-import MapGL, { Marker, Popup, LinearInterpolator, FlyToInterpolator } from 'react-map-gl';
+
 class storyStages extends Component {
   constructor(props) {
     super(props);
@@ -165,7 +165,7 @@ class storyStages extends Component {
 
     return (
       <Segment.Group horizontal>
-        <Segment className="stagesMap">
+        <Segment style={{width: '40vw' }} className="stagesMap">
           {(this.state.location)
             ? <StagesMap goToStage={this.goToStage} stages={this.state.stages} location={this.state.location} state={this.state}/>
             : <Placeholder>
