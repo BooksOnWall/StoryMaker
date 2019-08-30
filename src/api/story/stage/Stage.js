@@ -299,6 +299,14 @@ class stage extends Component {
           <Loader active={this.state.loading} >Get stage info</Loader>
         </Dimmer>
         <div>
+          <Button.Group>
+          <Button disabled={visible} onClick={this.handleShowClick}>
+            Show sidebar
+          </Button>
+          <Button disabled={!visible} onClick={this.handleHideClick}>
+            Hide sidebar
+          </Button>
+        </Button.Group>
        <Sidebar.Pushable as={Segment.Group} raised>
          <Sidebar
            as={Menu}
