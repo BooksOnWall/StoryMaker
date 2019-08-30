@@ -7,6 +7,7 @@
   "Traductors": "Cristobal Severin",
   "dependencies": {
     "d3-ease": "^1.0.5",
+    "deck.gl": "^7.2.3",
     "draft-js": "^0.11.0",
     "draft-js-export-html": "^1.4.1",
     "draftjs-to-html": "^0.8.4",
@@ -29,6 +30,7 @@
     "react-icons": "^3.7.0",
     "react-intl": "^2.9.0",
     "react-map-gl": "^5.0.7",
+    "react-map-gl-geocoder": "^2.0.11",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
     "react-semantic-ui-range": "^0.7.0",

@@ -6,12 +6,14 @@ import {
 } from 'semantic-ui-react';
 
 import MapGL, {Marker, Popup, LinearInterpolator, FlyToInterpolator, NavigationControl, FullscreenControl} from 'react-map-gl';
+import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
+import DeckGL, { GeoJsonLayer } from "deck.gl";
+import Geocoder from "react-map-gl-geocoder";
+
 import * as d3 from 'd3-ease';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MAP_STYLE from './map-style-basic-v8.json';
 import StagePin from './stagePin';
-import ControlPanel from './controlPanel';
-import {fromJS} from 'immutable';
 import HtmlParser from 'react-html-parser';
 let MapboxAccessToken = process.env.REACT_APP_MAT;
 // Set bounds toMontevideo
@@ -63,6 +65,42 @@ class stageMap extends Component {
     this.renderStageMarker(map.lngLat);
     this.props.setStageLocation(map.lngLat);
   }
+  mapRef = React.createRef();
+
+handleViewportChange = viewport => {
+  this.setState({
+    viewport: { ...this.state.viewport, ...viewport }
+  });
+};
+
+// if you are happy with Geocoder default settings, you can just use handleViewportChange directly
+handleGeocoderViewportChange = viewport => {
+  const geocoderDefaultOverrides = {
+    transitionInterpolator: new FlyToInterpolator(),
+    transitionEasing: d3.easeCubic,
+    transitionDuration: 1500,
+    zoom: 15
+   };
+
+  return this.handleViewportChange({
+    ...viewport,
+    ...geocoderDefaultOverrides
+  });
+};
+
+handleOnResult = event => {
+  console.log(event.result);
+  this.setState({
+    searchResultLayer: new GeoJsonLayer({
+      id: "search-result",
+      data: event.result.geometry,
+      getFillColor: [255, 0, 0, 128],
+      getRadius: 1000,
+      pointRadiusMinPixels: 10,
+      pointRadiusMaxPixels: 10
+    })
+  });
+};
   renderPopup() {
     const {popupInfo} = this.state;
 
@@ -116,7 +154,7 @@ class stageMap extends Component {
         this.setState({viewport});
     };
   render() {
-    const {viewport, interactiveLayerIds, mapStyle, loading} = this.state;
+    const {viewport, searchResultLayer, interactiveLayerIds, mapStyle, loading} = this.state;
     return (
       <Segment  className="stageMap" >
       <Dimmer active={loading}>
@@ -126,6 +164,7 @@ class stageMap extends Component {
       <MapGL
         {...viewport}
         width="inherit"
+        ref={this.mapRef}
         height="40vh"
         mapStyle={MAP_STYLE}
         clickRadius={2}
@@ -135,6 +174,15 @@ class stageMap extends Component {
         onViewportChange={this.onViewportChange}
         mapboxApiAccessToken={MapboxAccessToken}
       >
+        <Geocoder
+          mapRef={this.mapRef}
+          onResult={this.handleOnResult}
+          onViewportChange={this.handleGeocoderViewportChange}
+          mapboxApiAccessToken={MapboxAccessToken}
+          position="top-left"
+        />
+        <DeckGL {...viewport} layers={[searchResultLayer]} />
+
         {(this.props.stageLocation) ?
           <Marker key='stage' longitude={parseFloat(this.props.stageLocation[0])} latitude={parseFloat(this.props.stageLocation[1])}>
             <StagePin size={20} onClick={() => this.setState({popupInfo: 'toto'})} />

@@ -60,6 +60,7 @@ class stage extends Component {
         step: 'Stages',
         descLock: 'lock',
         animation: 'overlay',
+        stageStep: 'Stage',
         direction: 'left',
         dimmed: false,
         visible: false,
@@ -241,11 +242,6 @@ class stage extends Component {
             )}
           </Formik>
         </Segment>
-        <Segment.Group horizontal>
-        <Segment >{(this.state.stage.stageLocation) ? <StageMap setStageLocation={this.state.setStageLocation} stageLocation={this.state.stage.stageLocation}/> : ''}</Segment>
-
-        </Segment.Group>
-
       </Segment>
     );
   }
@@ -290,6 +286,24 @@ class stage extends Component {
       console.log(e.message);
     }
   }
+  stageDescription = () => {
+    return (
+      <Button onClick={this.toggleLock}><Icon name={this.state.descLock} /><Icon name="edit" /></Button>,
+      (this.state.descLock === 'lock')
+        ? <Card
+          color='violet'
+          header={this.state.stage.name}
+          description={ReactHtmlParser(this.state.stage.description)}
+        />
+      : <Form color='violet'><TextArea
+        className="desc-edit"
+        name="description"
+        placeholder='Description'
+        value={this.state.stage.description}
+        /></Form>
+    )
+  }
+  handleStageStep = (e) => this.setState({stageStep: e.target.name})
   render() {
     const { log, logCount, visible } = this.state
 
@@ -299,61 +313,153 @@ class stage extends Component {
           <Loader active={this.state.loading} >Get stage info</Loader>
         </Dimmer>
         <div>
-          <Button.Group>
-          <Button disabled={visible} onClick={this.handleShowClick}>
-            Show sidebar
-          </Button>
-          <Button disabled={!visible} onClick={this.handleHideClick}>
-            Hide sidebar
-          </Button>
+          <StorySteps state={this.state}/>
+          <Button.Group fluid>
+            <Button animated primary floated="left">
+              <Button.Content visible>Prev</Button.Content>
+              <Button.Content hidden>
+                <Icon name='arrow left' />
+              </Button.Content>
+            </Button>
+            <Button disabled={visible} onClick={this.handleShowClick}>
+              Show sidebar
+            </Button>
+            <Button disabled={!visible} onClick={this.handleHideClick}>
+              Hide sidebar
+            </Button>
+            <Button animated primary floated="right">
+              <Button.Content visible>Next</Button.Content>
+              <Button.Content hidden>
+                <Icon name='arrow right' />
+              </Button.Content>
+            </Button>
+
         </Button.Group>
        <Sidebar.Pushable as={Segment.Group} raised>
          <Sidebar
            as={Menu}
-           animation='push'
+           animation='slide out'
            direction='right'
            icon='labeled'
            onHide={this.handleSidebarHide}
            vertical
            target={this.segmentRef}
            visible={visible}
-           width='wide'
+           width='very wide'
          >
          <Button.Group>
-           <Button positive >Stage</Button>
+           <Button name="Stage" onClick={this.handleStageStep} positive={(this.state.stageStep === 'Stage') ? true : false } >Stage</Button>
              <Button.Or text='or' />
-             <Button>Geo</Button>
+             <Button name="Geo" onClick={this.handleStageStep} positive={(this.state.stageStep === 'Geo') ? true : false }>Geo</Button>
            <Button.Or text='or' />
-           <Button>Pictures</Button>
+           <Button name="Pictures" onClick={this.handleStageStep} positive={(this.state.stageStep === 'Pictures') ? true : false }>Pictures</Button>
            <Button.Or text='or' />
-           <Button>Video</Button>
+           <Button name="Video" onClick={this.handleStageStep} positive={(this.state.stageStep === 'Video') ? true : false }>Video</Button>
+             <Button.Or text='or' />
+             <Button name="Audio" onClick={this.handleStageStep} positive={(this.state.stageStep === 'Audio') ? true : false }>Audio</Button>
          </Button.Group>
          <Segment >
-           <header>{this.state.stage.name}</header>
-           <Button onClick={this.toggleLock}><Icon name={this.state.descLock} /><Icon name="edit" /></Button>
+             {(this.state.stageStep === 'Stage') ? (
+               this.editStage(),
+               this.stageDescription()
+             ) : ''}
+             {(this.state.stageStep === 'Geo') ? <StageMap setStageLocation={this.state.setStageLocation} stageLocation={this.state.stage.stageLocation}/> : ''}
+             {(this.state.stageStep === 'Pictures') ? <StagePictures onChangeHandler={this.onChangeHandler} setPictures={this.setPictures}/> : ''}
+             {(this.state.stageStep === 'Video') ? 'stage video' : ''}
+             {(this.state.stageStep === 'Audio') ? 'stage audio' : ''}
+
+
            <Divider />
-           {(this.state.descLock === 'lock')
-             ? <Card
-               color='violet'
-               header={this.state.stage.name}
-               description={ReactHtmlParser(this.state.stage.description)}
-             />
-           : <Form color='violet'><TextArea
-             className="desc-edit"
-             name="description"
-             placeholder='Description'
-             value={this.state.stage.description}
-             /></Form>
-           }
-           <Divider />
-           <StagePictures onChangeHandler={this.onChangeHandler} setPictures={this.setPictures}/>
+
 
          </Segment>
          </Sidebar>
 
          <Ref innerRef={this.segmentRef}>
            <Segment className='slide-out'>
-            {(this.state.ssid >0) ? this.editStage() : ''}
+             <header as='h1'>{this.state.stage.name}</header>
+
+              <Placeholder style={{ float: 'left', height: 400, width: 400 }}>
+                <Placeholder.Image />
+              </Placeholder>
+
+              <Placeholder fluid>
+                <Placeholder.Paragraph>
+                  <Placeholder.Line />
+                  <Placeholder.Line />
+                  <Placeholder.Line />
+                  <Placeholder.Line />
+                  <Placeholder.Line />
+                </Placeholder.Paragraph>
+                <Placeholder.Paragraph>
+                  <Placeholder.Line />
+                  <Placeholder.Line />
+                  <Placeholder.Line />
+                </Placeholder.Paragraph>
+                <Placeholder.Paragraph>
+                  <Placeholder.Line />
+                  <Placeholder.Line />
+                  <Placeholder.Line />
+                </Placeholder.Paragraph>
+                <Placeholder.Paragraph>
+                  <Placeholder.Line />
+                  <Placeholder.Line />
+                  <Placeholder.Line />
+                </Placeholder.Paragraph>
+                <Placeholder.Paragraph>
+                  <Placeholder.Line />
+                  <Placeholder.Line />
+                </Placeholder.Paragraph>
+            </Placeholder>
+
+            <Placeholder fluid>
+
+             <Placeholder.Header image>
+               <Placeholder.Line />
+               <Placeholder.Line />
+             </Placeholder.Header>
+             <Placeholder.Paragraph>
+               <Placeholder.Line />
+               <Placeholder.Line />
+               <Placeholder.Line />
+             </Placeholder.Paragraph>
+             <Placeholder.Header image>
+               <Placeholder.Line />
+               <Placeholder.Line />
+             </Placeholder.Header>
+             <Placeholder.Paragraph>
+               <Placeholder.Line />
+               <Placeholder.Line />
+               <Placeholder.Line />
+             </Placeholder.Paragraph>
+             <Placeholder.Header image>
+               <Placeholder.Line />
+               <Placeholder.Line />
+             </Placeholder.Header>
+             <Placeholder.Paragraph>
+               <Placeholder.Line />
+               <Placeholder.Line />
+               <Placeholder.Line />
+             </Placeholder.Paragraph>
+             <Placeholder.Header image>
+               <Placeholder.Line />
+               <Placeholder.Line />
+             </Placeholder.Header>
+             <Placeholder.Paragraph>
+               <Placeholder.Line />
+               <Placeholder.Line />
+               <Placeholder.Line />
+             </Placeholder.Paragraph>
+             <Placeholder.Header image>
+               <Placeholder.Line />
+               <Placeholder.Line />
+             </Placeholder.Header>
+             <Placeholder.Paragraph>
+               <Placeholder.Line />
+               <Placeholder.Line />
+               <Placeholder.Line />
+             </Placeholder.Paragraph>
+           </Placeholder>
            </Segment>
          </Ref>
        </Sidebar.Pushable>
