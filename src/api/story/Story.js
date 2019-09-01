@@ -542,7 +542,6 @@ class Story extends Component {
         <Segment>
 
             <Button primary  to="/stories" as={Link}><Icon name='list' /> List stories</Button>
-
           <StorySteps sid={this.state.sid} step={this.state.step} history={this.props.history} setSteps={this.setSteps} state={this.state} location={this.props.location} />
           <Segment id='StepsContent'>
             {(this.state.step === 'Story') ? this.EditForm() : '' }

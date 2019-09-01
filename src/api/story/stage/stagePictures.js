@@ -1,6 +1,6 @@
 import React, {useEffect, useState } from 'react';
 import {useDropzone} from 'react-dropzone';
-
+import { FormattedMessage } from 'react-intl';
 import {
   Segment,
   Placeholder,

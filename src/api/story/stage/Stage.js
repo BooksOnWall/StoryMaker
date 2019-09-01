@@ -42,8 +42,6 @@ const stageOptions = [
 class stage extends Component {
   constructor(props) {
       super(props);
-      console.log(this.props.match.params);
-
       let protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
       let domain = protocol + '://' + process.env.REACT_APP_SERVER_HOST;
       let server = domain + ':'+ process.env.REACT_APP_SERVER_PORT+'/';
@@ -60,13 +58,12 @@ class stage extends Component {
         map:  '/stories/'+ this.props.sid  + '/map',
         loading: null,
         step: 'Stages',
-
+        animation: 'slide along',
+        direction: 'right',
+        dimmed: null,
         descLock: 'lock',
-        animation: 'overlay',
         stageStep: 'Stage',
-        direction: 'left',
-        dimmed: false,
-        visible: false,
+        sidebarVisible: false,
         stage: {
           id: null,
           sid: this.props.sid,
@@ -92,17 +89,15 @@ class stage extends Component {
   }
   segmentRef = createRef()
 
-  handleHideClick = () => this.setState({ visible: false })
-  handleShowClick = () => this.setState({ visible: true })
-
-  handleSidebarHide = () => this.setState({ visible: false })
+  handleHideClick = () => this.setState({ sidebarVisible: false })
+  handleShowClick = () => this.setState({ sidebarVisible: true })
+  handleSidebarHide = () => this.setState({ sidebarVisible: false })
 
   lock = () => this.setState({descLock: 'lock'})
   unlock = () => this.setState({descLock: 'unlock'})
   toggleLock = () => (this.state.descLock === 'lock') ? this.unlock() : this.lock()
   setSteps = (e) => this.setState(e)
   Location = (lngLat) => {
-    console.log(lngLat);
     this.setState({
       stage : {
         id: this.state.stage.id,
@@ -342,13 +337,15 @@ class stage extends Component {
        <Sidebar.Pushable as={Segment.Group} raised>
          <Sidebar
            as={Menu}
-           animation='slide out'
-           direction='right'
+           animation={this.state.animation}
            icon='labeled'
-           onHide={this.handleSidebarHide}
            vertical
+           style={{padding: 0}}
+           dimmed={this.state.dimmed}
+           onHide={this.handleSidebarHide}
+           direction={this.state.direction}
+           visible={this.state.sidebarVisible}
            target={this.segmentRef}
-           visible={visible}
            width='very wide'
          >
          <Button.Group>

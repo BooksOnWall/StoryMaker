@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Container, Dimmer, Loader, Segment, Header, Table, Icon } from 'semantic-ui-react';
 import Moment from 'moment';
 import { Link } from 'react-router-dom';
-
+import { FormattedMessage } from 'react-intl';
 
 import _ from 'lodash';
 
