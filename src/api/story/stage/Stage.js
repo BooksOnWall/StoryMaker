@@ -42,6 +42,8 @@ const stageOptions = [
 class stage extends Component {
   constructor(props) {
       super(props);
+      console.log(this.props.match.params);
+
       let protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
       let domain = protocol + '://' + process.env.REACT_APP_SERVER_HOST;
       let server = domain + ':'+ process.env.REACT_APP_SERVER_PORT+'/';
@@ -49,8 +51,8 @@ class stage extends Component {
         server: server,
         stories: server + 'stories',
         artists: server + 'artists',
-        sid: this.props.sid,
-        ssid: (!this.props.match.params.id) ? (0) : (parseInt(this.props.match.params.id)),
+        sid: (!this.props.match.params.id) ? (0) : (parseInt(this.props.match.params.id)),
+        ssid: (!this.props.match.params.sid) ? (0) : (parseInt(this.props.match.params.sid)),
         mode: (parseInt(this.props.match.params.id) === 0) ? ('create') : ('update'),
         name: null,
         stages: '/stories/' + this.props.sid + '/stages',
@@ -58,6 +60,7 @@ class stage extends Component {
         map:  '/stories/'+ this.props.sid  + '/map',
         loading: null,
         step: 'Stages',
+
         descLock: 'lock',
         animation: 'overlay',
         stageStep: 'Stage',
@@ -81,6 +84,7 @@ class stage extends Component {
         toggleAuthenticateStatus: this.props.childProps.toggleAuthenticateStatus,
         authenticated: this.props.childProps.authenticated,
       };
+      this.setSteps = this.setSteps.bind(this);
       this.getStage= this.getStage.bind(this);
       this.lock=this.lock.bind(this);
       this.unlock=this.unlock.bind(this);
@@ -96,8 +100,8 @@ class stage extends Component {
   lock = () => this.setState({descLock: 'lock'})
   unlock = () => this.setState({descLock: 'unlock'})
   toggleLock = () => (this.state.descLock === 'lock') ? this.unlock() : this.lock()
-
-  setStageLocation = (lngLat) => {
+  setSteps = (e) => this.setState(e)
+  Location = (lngLat) => {
     console.log(lngLat);
     this.setState({
       stage : {
@@ -313,7 +317,7 @@ class stage extends Component {
           <Loader active={this.state.loading} >Get stage info</Loader>
         </Dimmer>
         <div>
-          <StorySteps state={this.state}/>
+          <StorySteps sid={this.state.sid} step={this.state.step} history={this.props.history} setSteps={this.setSteps} state={this.state}/>
           <Button.Group fluid>
             <Button animated primary floated="left">
               <Button.Content visible>Prev</Button.Content>
@@ -367,99 +371,203 @@ class stage extends Component {
              {(this.state.stageStep === 'Pictures') ? <StagePictures onChangeHandler={this.onChangeHandler} setPictures={this.setPictures}/> : ''}
              {(this.state.stageStep === 'Video') ? 'stage video' : ''}
              {(this.state.stageStep === 'Audio') ? 'stage audio' : ''}
-
-
-           <Divider />
-
-
          </Segment>
          </Sidebar>
 
          <Ref innerRef={this.segmentRef}>
            <Segment className='slide-out'>
              <header as='h1'>{this.state.stage.name}</header>
+             <Segment.Group horizontal >
+               <Segment circular >
+                 <Placeholder fluid>
+                   <Placeholder.Image style={{ width: '500', height: '500'}}/>
+                 </Placeholder>
+               </Segment>
+               <Segment>
+                 <Placeholder fluid>
+                   <Placeholder.Paragraph>
+                     <Placeholder.Line />
+                     <Placeholder.Line />
+                     <Placeholder.Line />
+                     <Placeholder.Line />
+                     <Placeholder.Line />
+                   </Placeholder.Paragraph>
+                   <Placeholder.Paragraph>
+                     <Placeholder.Line />
+                     <Placeholder.Line />
+                     <Placeholder.Line />
+                   </Placeholder.Paragraph>
+                   <Placeholder.Paragraph>
+                     <Placeholder.Line />
+                     <Placeholder.Line />
+                     <Placeholder.Line />
+                   </Placeholder.Paragraph>
+                   <Placeholder.Paragraph>
+                     <Placeholder.Line />
+                     <Placeholder.Line />
+                     <Placeholder.Line />
+                   </Placeholder.Paragraph>
+                   <Placeholder.Paragraph>
+                     <Placeholder.Line />
+                     <Placeholder.Line />
+                   </Placeholder.Paragraph>
+               </Placeholder>
+               </Segment>
+             </Segment.Group>
+             <Segment.Group horizontal >
+               <Segment>
+                 <Placeholder fluid>
+                  <Placeholder.Header image>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Header>
+                  <Placeholder.Paragraph>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Paragraph>
+                  <Placeholder.Header image>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Header>
+                  <Placeholder.Paragraph>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Paragraph>
+                  <Placeholder.Header image>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Header>
+                  <Placeholder.Paragraph>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Paragraph>
+                  <Placeholder.Header image>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Header>
+                  <Placeholder.Paragraph>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Paragraph>
+                  <Placeholder.Header image>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Header>
+                  <Placeholder.Paragraph>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Paragraph>
+                </Placeholder>
+               </Segment>
+               <Segment>
+                 <Placeholder fluid>
+                  <Placeholder.Header image>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Header>
+                  <Placeholder.Paragraph>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Paragraph>
+                  <Placeholder.Header image>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Header>
+                  <Placeholder.Paragraph>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Paragraph>
+                  <Placeholder.Header image>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Header>
+                  <Placeholder.Paragraph>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Paragraph>
+                  <Placeholder.Header image>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Header>
+                  <Placeholder.Paragraph>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Paragraph>
+                  <Placeholder.Header image>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Header>
+                  <Placeholder.Paragraph>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Paragraph>
+                </Placeholder>
+               </Segment>
+               <Segment>
+                 <Placeholder fluid>
+                  <Placeholder.Header image>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Header>
+                  <Placeholder.Paragraph>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Paragraph>
+                  <Placeholder.Header image>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Header>
+                  <Placeholder.Paragraph>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Paragraph>
+                  <Placeholder.Header image>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Header>
+                  <Placeholder.Paragraph>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Paragraph>
+                  <Placeholder.Header image>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Header>
+                  <Placeholder.Paragraph>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Paragraph>
+                  <Placeholder.Header image>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Header>
+                  <Placeholder.Paragraph>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Paragraph>
+                </Placeholder>
+               </Segment>
 
-              <Placeholder style={{ float: 'left', height: 400, width: 400 }}>
-                <Placeholder.Image />
-              </Placeholder>
+             </Segment.Group>
 
-              <Placeholder fluid>
-                <Placeholder.Paragraph>
-                  <Placeholder.Line />
-                  <Placeholder.Line />
-                  <Placeholder.Line />
-                  <Placeholder.Line />
-                  <Placeholder.Line />
-                </Placeholder.Paragraph>
-                <Placeholder.Paragraph>
-                  <Placeholder.Line />
-                  <Placeholder.Line />
-                  <Placeholder.Line />
-                </Placeholder.Paragraph>
-                <Placeholder.Paragraph>
-                  <Placeholder.Line />
-                  <Placeholder.Line />
-                  <Placeholder.Line />
-                </Placeholder.Paragraph>
-                <Placeholder.Paragraph>
-                  <Placeholder.Line />
-                  <Placeholder.Line />
-                  <Placeholder.Line />
-                </Placeholder.Paragraph>
-                <Placeholder.Paragraph>
-                  <Placeholder.Line />
-                  <Placeholder.Line />
-                </Placeholder.Paragraph>
-            </Placeholder>
 
-            <Placeholder fluid>
 
-             <Placeholder.Header image>
-               <Placeholder.Line />
-               <Placeholder.Line />
-             </Placeholder.Header>
-             <Placeholder.Paragraph>
-               <Placeholder.Line />
-               <Placeholder.Line />
-               <Placeholder.Line />
-             </Placeholder.Paragraph>
-             <Placeholder.Header image>
-               <Placeholder.Line />
-               <Placeholder.Line />
-             </Placeholder.Header>
-             <Placeholder.Paragraph>
-               <Placeholder.Line />
-               <Placeholder.Line />
-               <Placeholder.Line />
-             </Placeholder.Paragraph>
-             <Placeholder.Header image>
-               <Placeholder.Line />
-               <Placeholder.Line />
-             </Placeholder.Header>
-             <Placeholder.Paragraph>
-               <Placeholder.Line />
-               <Placeholder.Line />
-               <Placeholder.Line />
-             </Placeholder.Paragraph>
-             <Placeholder.Header image>
-               <Placeholder.Line />
-               <Placeholder.Line />
-             </Placeholder.Header>
-             <Placeholder.Paragraph>
-               <Placeholder.Line />
-               <Placeholder.Line />
-               <Placeholder.Line />
-             </Placeholder.Paragraph>
-             <Placeholder.Header image>
-               <Placeholder.Line />
-               <Placeholder.Line />
-             </Placeholder.Header>
-             <Placeholder.Paragraph>
-               <Placeholder.Line />
-               <Placeholder.Line />
-               <Placeholder.Line />
-             </Placeholder.Paragraph>
-           </Placeholder>
+
            </Segment>
          </Ref>
        </Sidebar.Pushable>

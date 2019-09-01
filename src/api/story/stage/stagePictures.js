@@ -1,6 +1,6 @@
 import React, {useEffect, useState } from 'react';
 import {useDropzone} from 'react-dropzone';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+
 import {
   Segment,
   Placeholder,
@@ -16,9 +16,6 @@ const thumbsContainer = {
   flexWrap: 'wrap',
   marginTop: 16
 };
-
-
-
 
 function StagePictures(props) {
   const [files, setFiles] = useState([]);

@@ -9,19 +9,21 @@ import { FormattedMessage } from 'react-intl';
 class storySteps extends Component {
   constructor(props) {
     super(props);
+    console.log(props);
     this.state = {
       sid: this.props.sid,
       mapPath: (this.props.active === 'Map') ? window.location.reload : this.props.sid + '/map',
       stagesPath: (this.props.active === 'Stages') ? window.location.reload : this.props.sid + '/stages',
       step: this.props.step,
+      setStep: this.props.state.setStep,
       steps: [{
-
           index: 0,
           name: 'Story',
           desc: 'things',
           icon: 'star',
           title: 'Story',
-          url: '/storie/' + this.props.sid
+          as: 'Link',
+          to: '/stories/' + this.props.sid
         },
         {
           index: 1,
@@ -29,7 +31,8 @@ class storySteps extends Component {
           desc: 'of the story',
           icon: 'sun',
           title: 'Sinopsys',
-          url: '/storie/' + this.props.sid
+          as: 'Link',
+          to: '/stories/' + this.props.sid + '/sinopsys'
         },
         {
           index: 2,
@@ -37,7 +40,8 @@ class storySteps extends Component {
           desc: 'of the story',
           icon: 'google wallet',
           title: 'Stages',
-          url: '/storie/' + this.props.sid
+          as: 'Link',
+          to: '/stories/' + this.props.sid + '/stages'
         },
         {
          index: 3,
@@ -45,7 +49,8 @@ class storySteps extends Component {
          desc: 'of the story',
          icon: 'map',
          title: 'Map',
-         url: '/storie/' + this.props.sid
+         as: 'Link',
+         to: '/stories/' + this.props.sid + '/Map'
        },
        {
         index: 4,
@@ -53,18 +58,20 @@ class storySteps extends Component {
         desc: 'of the story',
         icon: 'credit card',
         title: 'Credits',
-        url: '/storie/' + this.props.sid
+        as: 'Link',
+        to: '/stories/' + this.props.sid + '/credits'
       }]
     };
     this.handleSteps = this.handleSteps.bind(this);
   }
   handleSteps = (e) => {
     // get if we are in Stories pages or in Stage pages
-    let url = this.props.location;
-    console.log(url);
-    e.preventDefault();
+    //e.preventDefault();
     let step = (e.target.name) ? e.target.name : null;
-    if (step) this.props.state.setSteps({step: step});
+    let url = (e.target.href) ? e.target.href : null;
+    console.log(url);
+    if (step) this.props.setSteps({step: step});
+    //this.props.history.push(url);
   }
   render() {
     return (
@@ -77,7 +84,7 @@ class storySteps extends Component {
             name={step.name}
             onClick={this.handleSteps}
             as={Link}
-            to={step.url}
+            to={step.to}
             title={step.title}
             description={step.desc}
           />
