@@ -1,0 +1,92 @@
+{
+  "lanes": [
+    {
+      "id": "SCENE",
+      "title": "Scene Editor",
+      "label": "20/70",
+      "style": {"width": 280},
+      "cards": [
+        {
+          "id": "TITLE",
+          "title": "Title",
+          "label": "15 mins",
+          "cardStyle": { "width": 270, "maxWidth": 270, "margin": "auto", "marginBottom": 5 },
+          "description": "2 Gallons of milk at the Deli store"
+        },
+        {
+          "id": "PHOTO",
+          "title": "Photo",
+          "label": "10 mins",
+          "cardStyle": { "width": 270, "maxWidth": 270, "margin": "auto", "marginBottom": 5 },
+          "description": "<img src='https://www.ikea.com/PIAimages/0711719_PE728446_S5.JPG' />"
+        },
+        {
+          "id": "DESCRIPTION",
+          "title": "Description",
+          "label": "30 mins",
+          "cardStyle": { "width": 270, "maxWidth": 270, "margin": "auto", "marginBottom": 5 },
+          "description": "Can AI make memes?"
+        }
+      ]
+    },
+    {
+      "id": "SCENE_ENTER",
+      "title": "While entering into the zone",
+      "label": "10/20",
+      "style": {"width": 280},
+      "cards": [
+        {
+          "id": "AUDIO",
+          "title": "Audio",
+          "label": "30 mins",
+          "cardStyle": { "width": 270, "maxWidth": 270, "margin": "auto", "marginBottom": 5 },
+          "description": "Soap wash and polish floor. Polish windows and doors. Scrap all broken glasses"
+        }
+      ]
+    },
+    {
+      "id": "AR_PICTURES",
+      "title": "AR Pictures",
+      "label": "0/0",
+      "style": {"width": 280},
+      "cards": []
+    },
+    {
+      "id": "MATCH_PICTURE",
+      "title": "On Picture Match",
+      "style": {"width": 280},
+      "label": "2/5",
+      "cards": [
+        {
+          "id": "VIDEO",
+          "title": "Video",
+          "label": "15 mins",
+          "cardStyle": { "width": 270, "maxWidth": 270, "margin": "auto", "marginBottom": 5 },
+          "description": "Use Headspace app"
+        },
+        {
+          "id": "Audio",
+          "title": "Audio",
+          "label": "15 mins",
+          "cardStyle": { "width": 270, "maxWidth": 270, "margin": "auto", "marginBottom": 5 },
+          "description": "Use Spreadsheet for now"
+        }
+      ]
+    },
+    {
+      "id": "LEAVING_ZONE",
+      "title": "On Leaving Zone",
+      "style": {"width": 280},
+      "label": "2/5",
+      "cards": [
+        {
+          "id": "Audio",
+          "title": "Audio",
+          "label": "15 mins",
+          "cardStyle": { "width": 270, "maxWidth": 270, "margin": "auto", "marginBottom": 5 },
+          "description": "Use Headspace app"
+        }
+      ]
+    }
+  ]
+}
