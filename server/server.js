@@ -313,7 +313,7 @@ const createStage = async ({ sid, name, adress, description, tessellate, picture
   try {
     let res = await Stages.create({ sid, name, adress, description, tessellate, picture, type, geometry });
     const ssid = res.dataValues.id;
-    var dir = __dirname + '/public/stages/'+ssid;
+    var dir = __dirname + '/public/stories/'+ sid + '/stages/'+ssid;
     if (!fs.existsSync(dir)) { fs.mkdirSync(dir, 0o744); }
     return res;
   } catch(e) {

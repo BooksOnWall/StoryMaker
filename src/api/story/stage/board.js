@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import {
   Segment,
+  Image
 
 } from 'semantic-ui-react';
+
 
 class DragDrop extends Component {
     state = {
@@ -13,32 +15,15 @@ class DragDrop extends Component {
           onPictureMatch: [],
           onZoneLeave: []
         },
-        files: [
-            {name:"Learn Angular",category:"wip", bgcolor: "yellow"},
-            {name:"React", category:"wip", bgcolor:"pink"},
-            {name:"Vue", category:"wip", bgcolor:"skyblue"}
+        tasks: [
+            {name:"Text",type: 'text',category:"wip", bgcolor: "yellow"},
+            {name:"Image", type: 'image' , src: 'http://myimage.jpg', category:"wip", bgcolor:"pink"},
+            {name:"Audio", type: 'audio' , src: 'http://myaudio.mp3', category:"wip", bgcolor:"skyblue"},
+            {name:"Video", type: 'video' , src: 'http://myvideo.mp4', category:"wip", bgcolor:"skyblue"},
+            {name:"Text 2", type: 'text' , category:"wip", bgcolor:"skyblue"}
           ]
     }
-    async componentDidMount() {
-      await this.buildFiles();
-    }
-    buildFiles =  () => {
-      var files = this.state.build;
-      this.state.files.forEach ((t) => {
-          files[t.category].push(
-              <div key={t.name}
-                  onDragStart = {(e) => this.onDragStart(e, t.name)}
-                  draggable
-                  className="draggable"
-                  style = {{backgroundColor: t.bgcolor}}
-              >
-                  {t.name}
-              </div>
-          );
-      });
-      this.setState({build: files});
 
-    }
     onDragStart = (ev, id) => {
         console.log('dragstart:',id);
         ev.dataTransfer.setData("id", id);
@@ -51,20 +36,73 @@ class DragDrop extends Component {
     onDrop = (ev, cat) => {
        let id = ev.dataTransfer.getData("id");
 
-       let files = this.state.files.filter((task) => {
-           task.category = (task.name === id) ? cat : null;
+       let tasks = this.state.tasks.filter((task) => {
+            if(task.name === id) task.category = cat ;
            return task;
        });
 
        this.setState({
            ...this.state,
-           files
+           tasks
        });
     }
 
     render() {
+        const { build} = this.state;
+        var tasks = {
+          wip: [],
+          editStage: [],
+          onZoneEnter: [],
+          onPictureMatch: [],
+          onZoneLeave: []
+        };
 
-        console.log(this.state.build);
+          this.state.tasks.forEach ((t) => {
+
+
+              switch(t.type) {
+
+                case 'text':
+                  tasks[t.category].push(
+                    <div key={t.name}
+                    onDragStart = {(e) => this.onDragStart(e, t.name)}
+                    draggable
+                    className="draggable"
+                    style = {{backgroundColor: t.bgcolor}}
+                    >
+                    {t.name}
+                    </div>
+                  );
+                  break;
+                case 'image':
+                    tasks[t.category].push(
+                      <Image key={t.name}
+                      onDragStart = {(e) => this.onDragStart(e, t.name)}
+                      draggable
+                      className="draggable"
+                      src={t.src}
+                      style = {{backgroundColor: t.bgcolor}}
+                      />
+                    );
+                  break;
+                case 'video':
+                  tasks[t.category].push(
+                    <div key={t.name}
+                    onDragStart = {(e) => this.onDragStart(e, t.name)}
+                    draggable
+                    className="draggable"
+                    style = {{backgroundColor: t.bgcolor}}
+                    >
+                    {t.name}
+                    </div>
+                  );
+                break;
+                default:
+                break;
+              }
+          });
+
+
         return (
 
             <div className="container-drag">
@@ -72,7 +110,8 @@ class DragDrop extends Component {
                   onDragOver={(e)=>this.onDragOver(e)}
                   onDrop={(e)=>{this.onDrop(e, "wip")}}>
                   <span className="task-header">WIP</span>
-                  {this.state.build.wip}
+                  {tasks.wip}
+
               </div>
               <Segment.Group horizontal >
                 <Segment>
@@ -80,7 +119,7 @@ class DragDrop extends Component {
                         onDragOver={(e)=>this.onDragOver(e)}
                         onDrop={(e)=>this.onDrop(e, "editStage")}>
                          <span className="task-header">Edit Stage</span>
-                         {this.state.build.editStage}
+                         {tasks.editStage}
                     </div>
                 </Segment>
                 <Segment>
@@ -88,7 +127,7 @@ class DragDrop extends Component {
                         onDragOver={(e)=>this.onDragOver(e)}
                         onDrop={(e)=>this.onDrop(e, "onZoneEnter")}>
                          <span className="task-header">On Zone Enter</span>
-                         {this.state.build.onZoneEnter}
+                         {tasks.onZoneEnter}
                     </div>
                 </Segment>
                 <Segment>
@@ -96,7 +135,7 @@ class DragDrop extends Component {
                         onDragOver={(e)=>this.onDragOver(e)}
                         onDrop={(e)=>this.onDrop(e, "onPictureMatch")}>
                          <span className="task-header">On Picture Match</span>
-                         {this.state.build.onPictureMatch}
+                         {tasks.onPictureMatch}
                     </div>
                 </Segment>
                 <Segment>
@@ -104,7 +143,7 @@ class DragDrop extends Component {
                         onDragOver={(e)=>this.onDragOver(e)}
                         onDrop={(e)=>this.onDrop(e, "onZoneLeave")}>
                          <span className="task-header">On Zone Leave</span>
-                         {this.state.build.onZoneLeave}
+                         {tasks.onZoneLeave}
                     </div>
                 </Segment>
               </Segment.Group>
