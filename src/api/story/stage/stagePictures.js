@@ -33,15 +33,6 @@ function StagePictures(props) {
     }
   });
 
-  const thumbs = files.map(file => (
-    <List.Item key={file.name} className='slide-out'>
-      <Button key={file.name} floated="right" onClick circular simple color='violet'><Icon name="delete" size='mini'/></Button>
-      <Image size='small' src={file.preview} />
-      <List.Content>
-        <List.Header>{file.name}</List.Header>
-      </List.Content>
-    </List.Item>
-  ));
 
   useEffect(() => () => {
     // Make sure to revoke the data uris to avoid memory leaks
@@ -61,7 +52,21 @@ function StagePictures(props) {
 
         <aside style={thumbsContainer}>
           <List animated celled verticalAlign='middle'>
-            {thumbs}
+            {
+              files.map(file => (
+                <List.Item
+                  onDragStart = {(e) => this.props.onDragStart(e, e.key)}
+                  draggable
+                  key={file.name}
+                  className='slide-out draggable'>
+                  <Button key={file.name} floated="right" onClick circular simple color='violet'><Icon name="delete" size='mini'/></Button>
+                  <Image size='small' src={file.preview} />
+                  <List.Content>
+                    <List.Header>{file.name}</List.Header>
+                  </List.Content>
+                </List.Item>
+              ))
+            }
           </List>
         </aside>
       </Segment>

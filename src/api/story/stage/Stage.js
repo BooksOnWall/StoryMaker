@@ -9,7 +9,6 @@ import {
   Button,
   Icon,
   Confirm,
-  Placeholder,
   Ref,
   Sidebar,
   Menu,
@@ -60,6 +59,17 @@ class stage extends Component {
         dimmed: null,
         descLock: 'lock',
         stageStep: 'Stage',
+        tasks: [
+            {name:"Photo",type: 'placeholder',params: {content: 'image'},category:"editStage", bgcolor: "primary"},
+            {name:"Title",type: 'text',category:"editStage", bgcolor: "yellow"},
+            {name:"Image", type: 'image' , src: 'https://www.sample-videos.com/img/Sample-jpg-image-100kb.jpg', category:"onZoneEnter", bgcolor:"pink"},
+            {name:"Picture", type: 'image' , src: 'https://www.sample-videos.com/img/Sample-jpg-image-100kb.jpg', category:"wip", bgcolor:"pink"},
+            {name:"Audio", type: 'audio' , src: 'https://sample-videos.com/audio/mp3/crowd-cheering.mp3', category:"wip", bgcolor:"skyblue"},
+            {name:"Audio 2", type: 'audio' , src: 'https://sample-videos.com/audio/mp3/crowd-cheering.mp3', category:"onZoneEnter", bgcolor:"skyblue"},
+            {name:"Audio 3", type: 'audio' , src: 'https://sample-videos.com/audio/mp3/crowd-cheering.mp3', category:"onZoneLeave", bgcolor:"skyblue"},
+            {name:"Video", type: 'video' , src: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4', category:"onPictureMatch", bgcolor:"skyblue"},
+            {name:"Text 2", type: 'text' , category:"wip", bgcolor:"skyblue"}
+          ],
         sidebarVisible: false,
         botSidebarVisible: false,
         stage: {
@@ -97,6 +107,27 @@ class stage extends Component {
   unlock = () => this.setState({descLock: 'unlock'})
   toggleLock = () => (this.state.descLock === 'lock') ? this.unlock() : this.lock()
   setSteps = (e) => this.setState(e)
+  onDrop = (ev, cat) => {
+     let id = ev.dataTransfer.getData("id");
+
+     let tasks = this.state.tasks.filter((task) => {
+          if(task.name === id) task.category = cat ;
+         return task;
+     });
+
+     this.setState({
+         ...this.state,
+         tasks
+     });
+  }
+  onDragStart = (ev, id) => {
+      console.log('dragstart:',id);
+      ev.dataTransfer.setData("id", id);
+  }
+
+  onDragOver = (ev) => {
+      ev.preventDefault();
+  }
   Location = (lngLat) => {
     this.setState({
       stage : {
@@ -312,104 +343,25 @@ class stage extends Component {
           <Loader active={this.state.loading} >Get stage info</Loader>
         </Dimmer>
         <div>
-          <StorySteps sid={this.state.sid} step={this.state.step} history={this.props.history} setSteps={this.setSteps} state={this.state}/>
-          <Button.Group fluid>
-            <Button animated primary floated="left">
-              <Button.Content visible>Prev</Button.Content>
-              <Button.Content hidden>
-                <Icon name='arrow left' />
-              </Button.Content>
-            </Button>
-            <Button disabled={visible} onClick={this.handleShowClick}>
-              Show sidebar
-            </Button>
-            <Button disabled={!visible} onClick={this.handleHideClick}>
-              Hide sidebar
-            </Button>
-            <Button disabled={visible} onClick={this.handleBotShowClick}>
-              Show bottom bar
-            </Button>
-            <Button disabled={!visible} onClick={this.handleBotHideClick}>
-              Hide bottom bar
-            </Button>
-            <Button animated primary floated="right">
-              <Button.Content visible>Next</Button.Content>
-              <Button.Content hidden>
-                <Icon name='arrow right' />
-              </Button.Content>
-            </Button>
-        </Button.Group
-        >
-        <Sidebar.Pushable as={Segment} >
-          <Sidebar
-            as={Menu}
-            animation='push'
-            direction='bottom'
-            icon='labeled'
-            target={this.segmentRef}
-            onHide={this.handleBotSidebarHide}
-            visible={this.state.botSidebarVisible}
-            width='very wide'
-          >
-          <Segment.Group>
-            <Segment >
-              <Button.Group >
-                <Button name="Stage" onClick={this.handleStageStep} positive={(this.state.stageStep === 'Stage') ? true : false } >Stage</Button>
-                  <Button.Or text='or' />
-                  <Button name="Geo" onClick={this.handleStageStep} positive={(this.state.stageStep === 'Geo') ? true : false }>Geo</Button>
-                  <Button.Or text='or' />
-                  <Button name="Images" onClick={this.handleStageStep} positive={(this.state.stageStep === 'Images') ? true : false }>Images</Button>
-              </Button.Group>
-            </Segment>
-            <Segment>
-              {(this.state.stageStep === 'Stage') ? (
-                this.editStage(),
-                this.stageDescription()
-              ) : ''}
-              {(this.state.stageStep === 'Geo') ? <StageMap setStageLocation={this.state.setStageLocation} stageLocation={this.state.stage.stageLocation}/> : ''}
-            </Segment>
-          </Segment.Group>
+        <StorySteps sid={this.state.sid} step={this.state.step} history={this.props.history} setSteps={this.setSteps} state={this.state}/>
+          <StageBoard
+            tasks={this.state.tasks}
+            onDrop={this.onDrop}
+            onDragStart={this.onDragStart}
+            onDragOver={this.onDragOver}
+            stage={this.state.stage}
+            stageStep={this.state.stageStep}
+            setStep={this.setSteps}
+            handleStageStep={this.handleStageStep}
+            handleShowClick={this.handleShowClick}
+            handleHideClick = {this.handleHideClick}
+            handleSidebarHide = {this.handleSidebarHide}
+            handleBotHideClick = {this.handleBotHideClick}
+            handleBotShowClick = {this.handleBotShowClick}
+            handleBotSidebarHide = {this.handleBotSidebarHide}
+            />
 
-          </Sidebar>
-          <Sidebar
-            as={Menu}
-            animation={this.state.animation}
-            direction='right'
-            vertical
-            style={{padding: 0}}
-            dimmed={this.state.dimmed}
-            onHide={this.handleSidebarHide}
-            target={this.segmentRef}
-            width='very wide'
-            visible={this.state.sidebarVisible}
-          >
-          <Button.Group>
-            <Button name="Pictures" onClick={this.handleStageStep} positive={(this.state.stageStep === 'Pictures') ? true : false }>Pictures</Button>
-            <Button.Or text='or' />
-            <Button name="Video" onClick={this.handleStageStep} positive={(this.state.stageStep === 'Video') ? true : false }>Video</Button>
-              <Button.Or text='or' />
-              <Button name="Audio" onClick={this.handleStageStep} positive={(this.state.stageStep === 'Audio') ? true : false }>Audio</Button>
-          </Button.Group>
-          <Segment >
-
-              {(this.state.stageStep === 'Pictures') ? <StagePictures onChangeHandler={this.onChangeHandler} setPictures={this.setPictures}/> : ''}
-              {(this.state.stageStep === 'Video') ? 'stage video' : ''}
-              {(this.state.stageStep === 'Audio') ? 'stage audio' : ''}
-          </Segment>
-          </Sidebar>
-
-          <Sidebar.Pusher>
-            <Segment basic>
-              <Ref innerRef={this.segmentRef}>
-                <Segment className='slide-out'>
-                  <header as='h1'>{this.state.stage.name}</header>
-                  <StageBoard />
-                </Segment>
-              </Ref>
-            </Segment>
-          </Sidebar.Pusher>
-        </Sidebar.Pushable>
-     </div>
+        </div>
       </Segment>
     );
   }

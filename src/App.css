@@ -31,11 +31,6 @@
 }
 
 .wip {
-  position: absolute;
-  width: 150px;
-  height: 100vh;
-  left: 0;
-  z-index: 1;
   top: 10;
   background-color: #EEEEEE;
   border-right: 1px dotted;
@@ -66,11 +61,16 @@
 }
 
 .draggable {
-  width: 100px;
-  height: 100px;
+  width: inherit;
+  height: 10vh;
   background-color: yellow;
-  margin: 5px auto;
+  margin: 0;
+  padding: 0;
   line-height: 5em;
+}
+.ui.segment.video {
+  margin: 0 !important;
+  padding: 0 !important;
 }
 .container {
   display: flex;

@@ -20,12 +20,14 @@
     "moment": "^2.24.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
+    "react-audio-player": "^0.11.1",
     "react-avatar-editor": "^11.0.7",
     "react-dnd-html5-backend": "^9.3.4",
     "react-dom": "^16.8.6",
     "react-draft-wysiwyg": "^1.13.2",
     "react-drag-listview": "^0.1.6",
     "react-dropzone": "^10.1.6",
+    "react-hot-loader": "^4.12.12",
     "react-html-parser": "^2.0.2",
     "react-icons": "^3.7.0",
     "react-intl": "^2.9.0",
@@ -39,7 +41,8 @@
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.87.3",
     "style-loader": "^1.0.0",
-    "styled-components": "^4.3.2"
+    "styled-components": "^4.3.2",
+    "video-react": "^0.14.1"
   },
   "scripts": {
     "start": "react-scripts start",
