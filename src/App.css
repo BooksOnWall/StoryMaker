@@ -27,7 +27,7 @@
 }
 .container-drag {
   text-align: center;
-  height: 50vh;
+  height: 'inherit';
 }
 
 .wip {
@@ -46,12 +46,12 @@
 
 .task-header {
   display: inline-block;
-  background-color: skyblue;
   width:100%;
 }
-
+.ui.segment.stageCol {
+  width: -webkit-fill-available;
+}
 .droppable {
-
   width: inherit;
   height: 100vh;
   right: 0;
@@ -59,7 +59,12 @@
   background-color: #9E9E9E;
   border-left: 1px dotted;
 }
-
+.ui.card .droppable.single {
+  height: 30vh;
+  width: 'inherit';
+  padding: 0;
+  margin: 0;
+}
 .draggable {
   width: inherit;
   height: 10vh;

@@ -60,18 +60,16 @@ class stage extends Component {
         descLock: 'lock',
         stageStep: 'Stage',
         tasks: [
-            {name:"Photo",type: 'placeholder',params: {content: 'image'},category:"editStage", bgcolor: "primary"},
-            {name:"Title",type: 'text',category:"editStage", bgcolor: "yellow"},
-            {name:"Image", type: 'image' , src: 'https://www.sample-videos.com/img/Sample-jpg-image-100kb.jpg', category:"onZoneEnter", bgcolor:"pink"},
-            {name:"Picture", type: 'image' , src: 'https://www.sample-videos.com/img/Sample-jpg-image-100kb.jpg', category:"wip", bgcolor:"pink"},
-            {name:"Audio", type: 'audio' , src: 'https://sample-videos.com/audio/mp3/crowd-cheering.mp3', category:"wip", bgcolor:"skyblue"},
-            {name:"Audio 2", type: 'audio' , src: 'https://sample-videos.com/audio/mp3/crowd-cheering.mp3', category:"onZoneEnter", bgcolor:"skyblue"},
-            {name:"Audio 3", type: 'audio' , src: 'https://sample-videos.com/audio/mp3/crowd-cheering.mp3', category:"onZoneLeave", bgcolor:"skyblue"},
-            {name:"Video", type: 'video' , src: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4', category:"onPictureMatch", bgcolor:"skyblue"},
-            {name:"Text 2", type: 'text' , category:"wip", bgcolor:"skyblue"}
+            {name:"Image", type: "image" , src: "https://www.sample-videos.com/img/Sample-jpg-image-100kb.jpg", category:"onZoneEnter", bgcolor:"pink"},
+            {name:"Picture", type: "image" , src: "https://www.sample-videos.com/img/Sample-jpg-image-100kb.jpg", category:"onZoneLeave", bgcolor:"pink"},
+            {name:"Audio", type: "audio" , src: "https://sample-videos.com/audio/mp3/crowd-cheering.mp3", category:"onZoneLeave", bgcolor:"skyblue"},
+            {name:"Audio 2", type: "audio" , src: "https://sample-videos.com/audio/mp3/crowd-cheering.mp3", category:"onZoneEnter", bgcolor:"skyblue"},
+            {name:"Audio 3", type: "audio" , src: "https://sample-videos.com/audio/mp3/crowd-cheering.mp3", category:"onZoneLeave", bgcolor:"skyblue"},
+            {name:"Video", type: "video" , src: "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4", category:"onPictureMatch", bgcolor:"skyblue"},
+            {name:"Text 2", type: "text" , category:"wip", bgcolor:"skyblue"}
           ],
         sidebarVisible: false,
-        botSidebarVisible: false,
+        topSidebarVisible: false,
         stage: {
           id: null,
           sid: this.props.sid,
@@ -100,9 +98,9 @@ class stage extends Component {
   handleHideClick = () => this.setState({ sidebarVisible: false })
   handleShowClick = () => this.setState({ sidebarVisible: true })
   handleSidebarHide = () => this.setState({ sidebarVisible: false })
-  handleBotHideClick = () => this.setState({ botSidebarVisible: false })
-  handleBotShowClick = () => this.setState({ botSidebarVisible: true })
-  handleBotSidebarHide = () => this.setState({ botSidebarVisible: false })
+  handleTopHideClick = () => this.setState({ topSidebarVisible: false })
+  handleTopShowClick = () => this.setState({ topSidebarVisible: true })
+  handleTopSidebarHide = () => this.setState({ topSidebarVisible: false })
   lock = () => this.setState({descLock: 'lock'})
   unlock = () => this.setState({descLock: 'unlock'})
   toggleLock = () => (this.state.descLock === 'lock') ? this.unlock() : this.lock()
@@ -122,6 +120,7 @@ class stage extends Component {
   }
   onDragStart = (ev, id) => {
       console.log('dragstart:',id);
+      console.log(ev);
       ev.dataTransfer.setData("id", id);
   }
 
@@ -143,11 +142,21 @@ class stage extends Component {
       }
   });
   }
-  onChangeHandler = (e) => {
+  onChangePicturesHandler = (e) => {
     this.setState({stagePictures: e.files})
   }
-  setPictures = (e) => {
-    this.setState({stagePictures: e.files})
+  onChangeImagesHandler = (e) => {
+    console.log(e.files);
+    this.setState({stageImages: e.files});
+    console.log(this.state.stageImages);
+  }
+  setStagePictures = (e) => {
+    this.setState({stagePictures: e});
+  }
+  setStageImages = (e) => {
+    console.log(e);
+    this.setState({stageImages: e});
+    console.log(this.state.stageImages);
   }
   componentDidMount= async () => {
     try {
@@ -157,13 +166,9 @@ class stage extends Component {
     }
   }
 
-  handleAnimationChange = (animation) => () =>
-    this.setState((prevState) => ({ animation, visible: !prevState.visible }))
-
+  handleAnimationChange = (animation) => () => this.setState((prevState) => ({ animation, visible: !prevState.visible }))
   handleDimmedChange = (e, { checked }) => this.setState({ dimmed: checked })
-
-  handleDirectionChange = (direction) => () =>
-    this.setState({ direction, visible: false })
+  handleDirectionChange = (direction) => () => this.setState({ direction, visible: false })
   editStage = () => {
     return (
       <Segment>
@@ -316,7 +321,8 @@ class stage extends Component {
       console.log(e.message);
     }
   }
-  stageDescription = () => {
+
+  setStageDescription = () => {
     return (
       <Button onClick={this.toggleLock}><Icon name={this.state.descLock} /><Icon name="edit" /></Button>,
       (this.state.descLock === 'lock')
@@ -335,8 +341,6 @@ class stage extends Component {
   }
   handleStageStep = (e) => this.setState({stageStep: e.target.name})
   render() {
-    const { log, logCount, visible } = this.state
-
     return (
       <Segment className="view" >
         <Dimmer active={this.state.loading}>
@@ -344,22 +348,31 @@ class stage extends Component {
         </Dimmer>
         <div>
         <StorySteps sid={this.state.sid} step={this.state.step} history={this.props.history} setSteps={this.setSteps} state={this.state}/>
-          <StageBoard
-            tasks={this.state.tasks}
-            onDrop={this.onDrop}
-            onDragStart={this.onDragStart}
-            onDragOver={this.onDragOver}
-            stage={this.state.stage}
-            stageStep={this.state.stageStep}
-            setStep={this.setSteps}
-            handleStageStep={this.handleStageStep}
-            handleShowClick={this.handleShowClick}
-            handleHideClick = {this.handleHideClick}
-            handleSidebarHide = {this.handleSidebarHide}
-            handleBotHideClick = {this.handleBotHideClick}
-            handleBotShowClick = {this.handleBotShowClick}
-            handleBotSidebarHide = {this.handleBotSidebarHide}
-            />
+        <StageBoard
+          tasks={this.state.tasks}
+          onDrop={this.onDrop}
+          onDragStart={this.onDragStart}
+          onDragOver={this.onDragOver}
+          stage={this.state.stage}
+          editStage={this.editStage}
+          setStageLocation={this.setStageLocation}
+          setStageDescription={this.setStageDescription}
+          stageStep={this.state.stageStep}
+          setSteps={this.setSteps}
+          stageImages={this.state.stageImages}
+          stagePictures={this.state.stagePictures}
+          setStageImages= {this.setStageImages}
+          setStagePictures={this.setStagePictures}
+          sidebarVisible={this.state.sidebarVisible}
+          topSidebarVisible={this.state.topSidebarVisible}
+          handleStageStep={this.handleStageStep}
+          handleShowClick={this.handleShowClick}
+          handleHideClick={this.handleHideClick}
+          handleSidebarHide={this.handleSidebarHide}
+          handleTopHideClick={this.handleTopHideClick}
+          handleTopShowClick={this.handleTopShowClick}
+          handleTopSidebarHide={this.handleTopSidebarHide}
+          />
 
         </div>
       </Segment>

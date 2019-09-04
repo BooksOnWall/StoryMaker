@@ -29,7 +29,7 @@ function StagePictures(props) {
       setFiles(acceptedFiles.map(file => Object.assign(file, {
         preview: URL.createObjectURL(file)
       })));
-      props.setPictures(acceptedFiles);
+      props.setStagePictures(acceptedFiles);
     }
   });
 
@@ -41,38 +41,31 @@ function StagePictures(props) {
 
 
   return (
-    <Segment.Group vertical>
+    <Segment.Group >
       <Segment  className="stage">
-        <Placeholder fluid>
-          <Placeholder.Header image >
-            <Placeholder.Line />
-            <Placeholder.Line />
-          </Placeholder.Header>
+        <Placeholder >
+          <Placeholder.Header image />
         </Placeholder>
 
         <aside style={thumbsContainer}>
-          <List animated celled verticalAlign='middle'>
+          <Segment>
             {
               files.map(file => (
-                <List.Item
-                  onDragStart = {(e) => this.props.onDragStart(e, e.key)}
+                <Image
                   draggable
                   key={file.name}
-                  className='slide-out draggable'>
-                  <Button key={file.name} floated="right" onClick circular simple color='violet'><Icon name="delete" size='mini'/></Button>
-                  <Image size='small' src={file.preview} />
-                  <List.Content>
-                    <List.Header>{file.name}</List.Header>
-                  </List.Content>
-                </List.Item>
+                  onDragStart = {(e) => props.onDragStart(e, file.name)}
+                  className='draggable'
+                  src={file.preview}
+                />
               ))
             }
-          </List>
+          </Segment>
         </aside>
       </Segment>
       <Segment className="container">
         <div {...getRootProps({className: 'dropzone'})}>
-          <input  id='stagePictures' name='files' onChange={props.onChangeHandler} ref={ref => this.fileInput = ref} {...getInputProps()} />
+          <input  id='stagePictures' name='files' onChange={props.onChangePicturesHandler} ref={ref => this.fileInput = ref} {...getInputProps()} />
           <p>Drag 'n' drop some files here, or click to select files</p>
           {!isDragActive && 'Click here or drop a file to upload!'}
           {isDragActive && !isDragReject && "Drop it like it's hot!"}
