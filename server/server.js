@@ -309,12 +309,23 @@ const getAllStages = async (sid) => {
   });
 }
 
-const createStage = async ({ sid, name, adress, description, tessellate, picture, type, geometry }) => {
+const createStage = async ({ sid, name, photo, adress, description, images, picture, videos, audios, type, tessellate, geometry }) => {
   try {
-    let res = await Stages.create({ sid, name, adress, description, tessellate, picture, type, geometry });
+    let res = await Stages.create({ sid, name, photo, adress, description, images, picture, videos, audios, type, tessellate, geometry });
     const ssid = res.dataValues.id;
+    // create story stages directory 
     var dir = __dirname + '/public/stories/'+ sid + '/stages/'+ssid;
     if (!fs.existsSync(dir)) { fs.mkdirSync(dir, 0o744); }
+    // create images, pictures, audios, and videos directories
+    var idir = dir + '/images';
+    if (!fs.existsSync(idir)) { fs.mkdirSync(idir, 0o744); }
+    var pdir = dir + '/pictures';
+    if (!fs.existsSync(pdir)) { fs.mkdirSync(pdir, 0o744); }
+    var adir = dir + '/audios';
+    if (!fs.existsSync(adir)) { fs.mkdirSync(adir, 0o744); }
+    var vdir = dir + '/videos';
+    if (!fs.existsSync(vdir)) { fs.mkdirSync(vdir, 0o744); }
+
     return res;
   } catch(e) {
     console.log(e.message);
@@ -329,19 +340,22 @@ const importStages = async (sid, geojson) => {
   //deleteAllStages(sid);
   if (geojson) {
     geojson.map((feature, index ) => {
-      console.log(feature);
       let properties = feature.properties;
-      console.log(typeof(feature));
-
       let name = properties.Name;
+      let photo= '';
+      let adress='';
       let description = properties.description;
+      let images = null;
+      let pictures = null;
+      let videos = null;
+      let audios = null;
+      let type=feature.geometry.type;
       let tessellate = properties.tessellate;
       let geometry = feature.geometry;
-      let adress='';
-      let pictures = null;
-      let type=feature.geometry.type;
+
+
       console.log(name);
-      createStage({ sid, name, adress, description, tessellate, pictures, type, geometry }).then(res =>
+      createStage({ sid, name, photo, adress, description, images, pictures, videos, audios, type, tessellate, geometry }).then(res =>
         console.log(res)
         //res.json({ stage, 'data': stage, msg: 'stage created successfully' })
       );

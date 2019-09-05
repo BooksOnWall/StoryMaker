@@ -8,7 +8,6 @@ import {
   Icon,
   Label,
   Card,
-  Placeholder,
   Button,
 } from 'semantic-ui-react';
 import '../../../../node_modules/video-react/dist/video-react.css';
@@ -229,6 +228,8 @@ class DragDrop extends Component {
                   <Button name="Geo" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Geo') ? true : false }>Geo</Button>
                   <Button.Or text='or' />
                   <Button name="Images" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Images') ? true : false }>Images</Button>
+                  <Button.Or text='or' />
+                  <Button name="Description" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Description') ? true : false }>Description</Button>
               </Button.Group>
             </Segment>
             <Segment>

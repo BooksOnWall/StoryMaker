@@ -9,6 +9,10 @@ module.exports.stages = {
     allowNull: false,
     unique: true,
   },
+  photo: {
+    type: Sequelize.STRING,
+    allowNull: true,
+  },
   adress: {
     type: Sequelize.STRING,
     allowNull: false,
@@ -17,19 +21,34 @@ module.exports.stages = {
     type: Sequelize.TEXT,
     allowNull: true,
   },
-  tessellate: {
-    type: Sequelize.INTEGER,
+  images: {
+    type: Sequelize.JSON,
     allowNull: true,
-    defaultValue: -1
+    defaultValue: null
   },
   pictures: {
-    type: Sequelize.STRING,
+    type: Sequelize.JSON,
+    allowNull: true,
+    defaultValue: null
+  },
+  videos: {
+    type: Sequelize.JSON,
+    allowNull: true,
+    defaultValue: null
+  },
+  audios: {
+    type: Sequelize.JSON,
     allowNull: true,
     defaultValue: null
   },
   type: {
     type: Sequelize.STRING,
     allowNull: false,
+  },
+  tessellate: {
+    type: Sequelize.INTEGER,
+    allowNull: true,
+    defaultValue: -1
   },
   geometry: {
     type: Sequelize.GEOMETRY,
