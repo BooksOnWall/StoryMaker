@@ -45,6 +45,10 @@ module.exports.stages = {
     type: Sequelize.STRING,
     allowNull: false,
   },
+  stageOrder: {
+    type: Sequelize.INTEGER,
+    allowNull: true
+  },
   tessellate: {
     type: Sequelize.INTEGER,
     allowNull: true,

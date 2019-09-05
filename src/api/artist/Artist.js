@@ -379,7 +379,7 @@ class Artist extends Component {
     }
   }
   updateImages = async (files) => {
-
+    console.log(files);
     //console.log(this.state.mode);
     //console.log(values.images);
     if(files) {

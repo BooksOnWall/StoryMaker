@@ -309,11 +309,11 @@ const getAllStages = async (sid) => {
   });
 }
 
-const createStage = async ({ sid, name, photo, adress, description, images, picture, videos, audios, type, tessellate, geometry }) => {
+const createStage = async ({ sid, name, photo, adress, description, images, picture, videos, audios, type, stageOrder, tessellate, geometry }) => {
   try {
-    let res = await Stages.create({ sid, name, photo, adress, description, images, picture, videos, audios, type, tessellate, geometry });
+    let res = await Stages.create({ sid, name, photo, adress, description, images, picture, videos, audios, type, stageOrder, tessellate, geometry });
     const ssid = res.dataValues.id;
-    // create story stages directory 
+    // create story stages directory
     var dir = __dirname + '/public/stories/'+ sid + '/stages/'+ssid;
     if (!fs.existsSync(dir)) { fs.mkdirSync(dir, 0o744); }
     // create images, pictures, audios, and videos directories
@@ -325,7 +325,9 @@ const createStage = async ({ sid, name, photo, adress, description, images, pict
     if (!fs.existsSync(adir)) { fs.mkdirSync(adir, 0o744); }
     var vdir = dir + '/videos';
     if (!fs.existsSync(vdir)) { fs.mkdirSync(vdir, 0o744); }
-
+    // create json directory to set elements from stage board
+    var jdir = dir + '/json';
+    if (!fs.existsSync(jdir)) { fs.mkdirSync(jdir, 0o744); }
     return res;
   } catch(e) {
     console.log(e.message);
@@ -342,21 +344,22 @@ const importStages = async (sid, geojson) => {
     geojson.map((feature, index ) => {
       let properties = feature.properties;
       let name = properties.Name;
-      let photo= '';
-      let adress='';
+      let photo= ''; // need to be added once the geojson export is done
+      let adress=''; // need to be added once the geojson export is done
       let description = properties.description;
-      let images = null;
-      let pictures = null;
-      let videos = null;
-      let audios = null;
+      let images = null; // need to be added once the geojson export is done
+      let pictures = null; // need to be added once the geojson export is done
+      let videos = null; // need to be added once the geojson export is done
+      let audios = null; // need to be added once the geojson export is done
+      let stageOrder = index;
       let type=feature.geometry.type;
       let tessellate = properties.tessellate;
       let geometry = feature.geometry;
 
 
-      console.log(name);
-      createStage({ sid, name, photo, adress, description, images, pictures, videos, audios, type, tessellate, geometry }).then(res =>
-        console.log(res)
+
+      createStage({ sid, name, photo, adress, description, images, pictures, videos, audios, type, stageOrder, tessellate, geometry }).then(res =>
+        console.log('toto')
         //res.json({ stage, 'data': stage, msg: 'stage created successfully' })
       );
       return ('toto')
@@ -369,6 +372,14 @@ const getStage = async obj => {
   return await Stages.findOne({
     where: obj,
   });
+};
+const updateFieldFromStage = async ({ ssid, sid, field, fieldValue }) => {
+  console.log(ssid);
+  console.log(sid);
+  return await Stages.update(
+    { [field]: fieldValue},
+    { where: {id : ssid, sid: sid }}
+  );
 };
 // get static route to serve images
 var staticoptions = {
@@ -407,6 +418,30 @@ app.get('/images/artists/:artistId/:name', function (req, res, next) {
   var aid = req.params.artistId;
   var fileName = req.params.name;
   var path = 'public/artists/'+aid+'/';
+  var options = {
+    root: path ,
+    dotfiles: 'deny',
+    headers: {
+      'x-timestamp': Date.now(),
+      'x-sent': true
+    }
+  }
+
+  res.sendFile(fileName, options, function (err) {
+    if (err) {
+      next(err)
+    } else {
+      console.log('Sent:', fileName)
+    }
+  })
+});
+app.get('/images/stories/:storyId/stages/:stageId/images/:name', function (req, res, next) {
+  var sid = req.params.storyId;
+  var ssid= req.params.stageId;
+  var fileName = req.params.name;
+  console.log(fileName);
+  var path = './public/stories/' + sid + '/stages/' + ssid +'/images/';
+  console.log(path);
   var options = {
     root: path ,
     dotfiles: 'deny',
@@ -733,6 +768,41 @@ app.post('/stories/:storyId/0', function(req, res, next) {
 app.get('/stories/:storyId/stages/:stageId', (req, res) => {
   let ssid = req.params.stageId;
   getStage({id: ssid}).then(stage => res.json(stage));
+});
+//Uploading multiple files
+app.post('/stories/:storyId/stages/:stageId/uploadImages', function (req, res, next) {
+  let sid = req.params.storyId;
+  let ssid = req.params.stageId;
+  let path ='./public/stories/'+ sid + '/stages/' + ssid +'/images';
+  var storage = multer.diskStorage({
+      destination: function(req, file, cb){
+        cb(null, path );
+      },
+      filename: function (req, file, cb) {
+        cb(null, file.originalname);
+      }
+    });
+    var upload = multer({ storage : storage}).any();
+    upload(req,res,function(err) {
+      if(err) {
+        return res.end("Error uploading file." + err);
+      } else {
+        let images=[];
+         req.files.forEach( function(file) {
+           images.push({
+             'image': {
+               'name': file.originalname,
+               'size': file.size,
+               'mimetype': file.mimetype,
+               'path': 'images/stories/'+ sid + '/stages/' + ssid + '/images/' + file.originalname
+             }
+           });
+          });
+        updateFieldFromStage({ssid: ssid, sid: sid, field: 'images', fieldValue: images}).then(stage =>
+            res.json({ stage, images: images, msg: 'Stage updated successfully' })
+          );
+      }
+    });
 });
 // protected route
 app.get('/protected', passport.authenticate('jwt', { session: false }), function(req, res) {

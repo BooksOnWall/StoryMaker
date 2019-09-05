@@ -28,23 +28,24 @@ const resizeStyle = {
   background: "#f0f0f0"
 };
 const ImagesPreview = (props) => {
-console.log(props);
+
 if(props && props.images) {
   let images = props.images;
-  //console.log(images.length);
   const items = images.map(function(e,index){
-    console.log(index);
       return <Image
         name={e.name}
-        draggable
-        onDragStart = {(e) => props.onDragStart(e, e.id)}
-        className='draggable'
+        wrapped
         style={{margin: '1em'}}
         size="small"
-        id={index}
-        key={e.name}
+        id={"images_"+ index}
+        key={"img_"+ index}
         src={e.preview}/>
-  })
+  });
+  items.push(<Button
+    primary
+    loading={props.imagesLoading}
+    onClick={props.uploadImages}
+  >Upload</Button>);
 
     return items
 }
@@ -79,105 +80,7 @@ class DragDrop extends Component {
   segmentRef = createRef()
 
   render() {
-
-    var tasks = {
-      title: [],
-      photo: [],
-      description: [],
-      location: [],
-      wip: [],
-      pictures: [],
-      editStage: [],
-      onZoneEnter: [],
-      onPictureMatch: [],
-      onZoneLeave: []
-    };
-    if (this.props.tasks) {
-      this.props.tasks.forEach ((t) => {
-        switch(t.type) {
-          case 'text':
-          tasks[t.category].push(
-            <Segment
-              inverted
-              name={t.name}
-              color="orange"
-              key={t.name}
-              onDragStart = {(e) => this.props.onDragStart(e, t.name)}
-              draggable
-              className="draggable"
-              style = {{backgroundColor: t.bgcolor}}
-              >
-              {t.name}
-            </Segment>
-          );
-          break;
-          case 'image':
-          tasks[t.category].push(
-            <Image
-              key={t.name}
-              onDragStart = {(e) => this.props.onDragStart(e, t.name)}
-              draggable
-              className="draggable"
-              src={t.src}
-              />
-          );
-          break;
-          case 'pictures':
-          tasks[t.category].push(
-            <Image
-              key={t.name}
-              onDragStart = {(e) => this.props.onDragStart(e, t.name)}
-              draggable
-              className="draggable"
-              src={t.src}
-              />
-          );
-          break;
-          case 'video':
-          tasks[t.category].push(
-            <Segment
-              inverted
-              color="violet"
-              key={t.name}
-              onDragStart = {(e) => this.props.onDragStart(e, t.name)}
-              draggable
-              className="draggable video"
-              >
-              <Player
-                fluid
-                preload="auto"
-                playsInline
-                poster="/assets/poster.png"
-                >
-                <source src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4" />
-              </Player>
-            </Segment>
-
-          );
-          break;
-          case 'audio':
-          tasks[t.category].push(
-            <Segment
-              inverted
-              color="green"
-              key={t.name}
-              onDragStart = {(e) => this.props.onDragStart(e, t.name)}
-              draggable
-              className="draggable"
-              >
-              <ReactAudioPlayer
-                key={t.name}
-                src={t.src}
-                controls
-                />
-            </Segment>
-          );
-          break;
-          default:
-          break;
-        }}
-      )
-    }
+    var tasks = this.props.renderTasks();
     return (
 
       <div className="container-drag">
@@ -236,7 +139,18 @@ class DragDrop extends Component {
 
               {(this.props.stageStep === 'Stage') ? this.props.editStage() : ''}
               {(this.props.stageStep === 'Description') ? this.props.setStageDescription() : ''}
-              {(this.props.stageStep === 'Images') ? <Segment><ImagesPreview name="stageImages" images={this.props.stageImages} onDragStart={this.props.onDragStart} /><StageImages setStageImages={this.props.setStageImages} onChangeImagesHandler={this.props.onChangeImagesHandler} stageImages={this.props.stageImages}/></Segment> : ''}
+              {(this.props.stageStep === 'Images') ? (
+                <Segment>
+                  <Segment
+                    className="images"
+                    onDragOver={(e)=>this.props.onDragOver(e)}
+                    onDrop={(e)=>{this.props.onDrop(e, "images")}}>
+                    <span className="task-header">Images</span>
+                    {tasks.images}
+                  </Segment>
+                  <ImagesPreview imagesLoading={this.props.imagesLoading} uploadImages={this.props.uploadImages} name="stageImages" images={this.props.stageImages} />
+                  <StageImages setStageImages={this.props.setStageImages} onChangeImagesHandler={this.props.onChangeImagesHandler} stageImages={this.props.stageImages}/>
+                </Segment> ) : ''}
               {(this.props.stageStep === 'Geo') ? <StageMap setStageLocation={this.props.setStageLocation} stageLocation={this.props.stage.stageLocation}/> : ''}
             </Segment>
           </Segment.Group>

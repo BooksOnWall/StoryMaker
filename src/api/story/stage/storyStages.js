@@ -210,16 +210,20 @@ class storyStages extends Component {
                     <FormattedMessage id="app.stage.name" defaultMessage={`Name`} />
                   </Table.HeaderCell>
                   <Table.HeaderCell   >
-                    <FormattedMessage id="app.stage.rank" defaultMessage={`Type`} />
+                    <FormattedMessage id="app.stage.type" defaultMessage={`Type`} />
+                  </Table.HeaderCell>
+                  <Table.HeaderCell   >
+                    <FormattedMessage id="app.stage.order" defaultMessage={`Order`} />
                   </Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
               <Table.Body>
-                {_.map(this.state.stages, ({ id, name, type, description , updatedAt, rank }) => (
+                {_.map(this.state.stages, ({ id, name, type, description , stageOrder, updatedAt, rank }) => (
                   <Table.Row className='slide-out' key={id} onClick={() => this.tableRowClickFunc({id})}>
                     <Table.Cell>{<a className="drag-handle" href="void(0)"><Icon name='grab' size='tiny' /> Drage Me</a>}</Table.Cell>
                     <Table.Cell>{name}</Table.Cell>
                     <Table.Cell>{type}</Table.Cell>
+                    <Table.Cell>{stageOrder}</Table.Cell>
                   </Table.Row>
                 ))}
               </Table.Body>
