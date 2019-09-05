@@ -11,8 +11,7 @@ import {
   Button,
 } from 'semantic-ui-react';
 import '../../../../node_modules/video-react/dist/video-react.css';
-import { Player } from 'video-react';
-import ReactAudioPlayer from 'react-audio-player';
+
 import StageMap from '../map/stageMap';
 import StagePictures from './stagePictures';
 import StageImages from './stageImages';
@@ -52,6 +51,34 @@ if(props && props.images) {
 
 return null
 };
+const PicturesPreview = (props) => {
+
+if(props && props.pictures) {
+  let images = props.pictures;
+
+  if(images && images.length > 0) {
+    const items = images.map(function(e,index){
+        return <Image
+          name={e.name}
+          wrapped
+          style={{margin: '1em'}}
+          size="small"
+          id={"picture_"+ index }
+          key={"pic_"+ index }
+          src={e.preview}/>
+    });
+
+    items.push(<Button
+      primary
+      loading={props.picturesLoading}
+      onClick={props.uploadPictures}
+    >Upload</Button>);
+    return items;
+  }
+}
+
+return null
+};
 class DragDrop extends Component {
   constructor(props) {
     super(props);
@@ -65,14 +92,7 @@ class DragDrop extends Component {
       col2DefaultSize: { width: '25%', height: '100%'},
       col3DefaultSize: { width: '25%', height: '100%'},
       col4DefaultSize: { width: '25%', height: '100%'},
-      dimmed: null,
-        build: {
-          wip: [],
-          editStage: [],
-          onZoneEnter: [],
-          onPictureMatch: [],
-          onZoneLeave: []
-        }
+      dimmed: null
     };
 
   }
@@ -179,26 +199,35 @@ class DragDrop extends Component {
           </Button.Group>
 
           <Segment >
-              {(this.props.stageStep === 'Pictures') ? <StagePictures
-                className="pictures"
-                onDragOver={(e)=>this.props.onDragOver(e)}
-                onDrop={(e)=>{this.props.onDrop(e, "pictures")}}
-                tasks={this.props.tasks}
-                onPictureDrop={this.props.onDrop}
-                onDragStart={this.props.onDragStart}
-                onPictureDragOver={this.props.onDragOver}
-                onChangePicturesHandler={this.props.onChangePicturesHandler}
-                setStagePictures={this.props.setStagePictures}/> : ''}
+              {(this.props.stageStep === 'Pictures') ? (
+                <Segment
+                  className="pictures"
+                  onDragOver={(e)=>this.props.onDragOver(e)}
+                  onDrop={(e)=>{this.props.onDrop(e, "pictures")}}>
+                  <Label inverted color="violet" className="task-header">Pictures</Label>
+                  {tasks.pictures}
+
+                <PicturesPreview
+                  picturesLoading={this.props.picturesLoading}
+                  uploadPictures={this.props.uploadPictures}
+                  name="stagePictures"
+                  pictures={this.props.stagePictures} />
+                  <StagePictures
+                    className="pictures"
+                    onDragOver={(e)=>this.props.onDragOver(e)}
+                    onDrop={(e)=>{this.props.onDrop(e, "pictures")}}
+                    tasks={this.props.tasks}
+                    onPictureDrop={this.props.onDrop}
+                    onDragStart={this.props.onDragStart}
+                    onPictureDragOver={this.props.onDragOver}
+                    onChangePicturesHandler={this.props.onChangePicturesHandler}
+                    setStagePictures={this.props.setStagePictures}/>
+              </Segment>
+              ) : ''}
               {(this.props.stageStep === 'Video') ? 'stage video' : ''}
               {(this.props.stageStep === 'Audio') ? 'stage audio' : ''}
           </Segment>
-          <Segment
-            className="wip"
-            onDragOver={(e)=>this.props.onDragOver(e)}
-            onDrop={(e)=>{this.props.onDrop(e, "wip")}}>
-            <span className="task-header">WIP</span>
-            {tasks.wip}
-          </Segment>
+
           </Sidebar>
 
           <Sidebar.Pusher>

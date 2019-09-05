@@ -41,28 +41,7 @@ function StagePictures(props) {
 
 
   return (
-    <Segment.Group >
-      <Segment  className="stage">
-        <Placeholder >
-          <Placeholder.Header image />
-        </Placeholder>
 
-        <aside style={thumbsContainer}>
-          <Segment>
-            {
-              files.map(file => (
-                <Image
-                  draggable
-                  key={file.name}
-                  onDragStart = {(e) => props.onDragStart(e, file.name)}
-                  className='draggable'
-                  src={file.preview}
-                />
-              ))
-            }
-          </Segment>
-        </aside>
-      </Segment>
       <Segment className="container">
         <div {...getRootProps({className: 'dropzone'})}>
           <input  id='stagePictures' name='files' onChange={props.onChangePicturesHandler} ref={ref => this.fileInput = ref} {...getInputProps()} />
@@ -72,7 +51,7 @@ function StagePictures(props) {
           {isDragReject && "File type not accepted, sorry!"}
         </div>
       </Segment>
-      </Segment.Group>
+
   );
 }
 export default StagePictures;

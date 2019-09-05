@@ -54,6 +54,7 @@ class stage extends Component {
         stages: '/stories/' + this.props.match.params.id + '/stages',
         stageURL: server + 'stories/' + this.props.match.params.id + '/stages/' + parseInt(this.props.match.params.sid),
         stageImagesUploadUrl: server + 'stories/' + this.props.match.params.id + '/stages/' + parseInt(this.props.match.params.sid) + '/uploadImages',
+        stagePicturesUploadUrl: server + 'stories/' + this.props.match.params.id + '/stages/' + parseInt(this.props.match.params.sid) + '/uploadPictures',
         map:  '/stories/'+ this.props.match.params.id  + '/map',
         loading: null,
         step: 'Stages',
@@ -86,6 +87,8 @@ class stage extends Component {
           stageLocation: null
         },
         imagesLoading: false,
+        picturesLoading: false,
+        stagePictures: [],
         setSteps: this.setSteps,
         setStageLocation: this.setStageLocation,
         toggleAuthenticateStatus: this.props.childProps.toggleAuthenticateStatus,
@@ -258,6 +261,20 @@ class stage extends Component {
           imageArray.push(json);
         });
         tasks = tasks.concat(imageArray);
+        break;
+        case 'Pictures':
+        let picturesArray =[];
+        list.forEach(function(image) {
+          let img = image.image;
+          let json = {
+            name: img.name,
+            type: "image",
+            category:"pictures",
+            src: server + img.path
+          };
+          picturesArray.push(json);
+        });
+        tasks = tasks.concat(picturesArray);
         break;
         default:
         break;
@@ -488,6 +505,76 @@ class stage extends Component {
       }
     }
   }
+  uploadPictures = async () => {
+    console.log('clicked');
+    this.setState({picturesLoading: true});
+    // get images and prepare for store
+    let images = this.state.stagePictures;
+    if (images  && images.length > 0) {
+      try {
+        let simages =[];
+
+        Array.from(images).forEach(file => {
+          simages.push({
+            'image': {
+              'name': file.name,
+              'size': file.size,
+              'type': file.type,
+              'path': 'images/stories/'+ this.state.sid + '/stages/' + this.state.ssid + '/pictures/' + file.name
+            }
+          });
+        });
+        let files = JSON.stringify(images);
+        let formData = new FormData();
+        for(var x = 0; x < images.length; x++) {
+          formData.append('file', images[x]);
+        };
+        await fetch(this.state.stagePicturesUploadUrl, {
+          method: 'POST',
+          headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin'},
+          files: files,
+          body: formData
+        })
+        .then(response => {
+          if (response && !response.ok) { throw new Error(response.statusText);}
+          return response.json();
+        })
+        .then(data => {
+            if(data) {
+              this.setState({
+                stage: {
+                  id: this.state.stage.id,
+                  sid: this.state.stage.sid,
+                  name: this.state.stage.name,
+                  adress: this.state.stage.adress,
+                  pictures: simages,
+                  images: this.state.stage.images,
+                  type: this.state.stage.type,
+                  description: this.state.stage.description,
+                  geometry: this.state.stage.geometry,
+                  stageLocation: Array.from(this.state.stage.geometry.coordinates)
+                }
+              });
+              //this.setState({initialSValues: data});
+
+              //let tasks = JSON.stringify(this.mergeTasks('Images', simages));
+              //console.log(tasks);
+              this.setState({ stagePictures: null, picturesLoading: false});
+              this.getStage();
+
+            } else {
+              console.log('No Data received from the server');
+            }
+        })
+        .catch((error) => {
+          // Your error is here!
+          console.log({error})
+        });
+      } catch(e) {
+        console.log(e.message);
+      }
+    }
+  }
   getStage = async () => {
     this.setState({loading: true});
     try {
@@ -521,6 +608,7 @@ class stage extends Component {
             this.setState({initialSValues: data});
             this.setState({loading: false});
             this.mergeTasks('Images', data.images);
+            this.mergeTasks('Pictures', data.pictures);
             return data;
           } else {
             console.log('No Data received from the server');
@@ -575,7 +663,8 @@ class stage extends Component {
           renderTasks={this.renderTasks}
           stageImages={this.state.stageImages}
           imagesLoading={this.state.imagesLoading}
-          uploadImages={this.uploadImages}
+          picturesLoading={this.state.picturesLoading}
+          uploadPictures={this.uploadPictures}
           stagePictures={this.state.stagePictures}
           setStageImages= {this.setStageImages}
           setStagePictures={this.setStagePictures}
