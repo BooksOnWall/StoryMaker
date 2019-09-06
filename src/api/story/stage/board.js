@@ -20,6 +20,7 @@ import StageImages from './stageImages';
 import HtmlParser from 'react-html-parser';
 import { Resizable } from "re-resizable";
 import { Player } from 'video-react';
+import ReactAudioPlayer from 'react-audio-player';
 
 const resizeStyle = {
   display: "flex",
@@ -107,6 +108,39 @@ if(props && props.videos) {
       primary
       loading={props.videosLoading}
       onClick={props.uploadVideos}
+    >Upload</Button>);
+    return items;
+  }
+}
+return null
+};
+const AudiosPreview = (props) => {
+
+if(props && props.audios) {
+  let audios = props.audios;
+
+  if(audios && audios.length > 0) {
+    const items = audios.map(function(e,index){
+        return   <Segment
+          inverted
+          color="green"
+          key={e.name}
+          onDragStart = {(e) => this.props.onDragStart(e, e.name)}
+          draggable
+          className="draggable"
+          >
+          <ReactAudioPlayer
+            key={e.name}
+            src={e.src}
+            controls
+            />
+        </Segment>
+    });
+
+    items.push(<Button
+      primary
+      loading={props.audiosLoading}
+      onClick={props.uploadAudios}
     >Upload</Button>);
     return items;
   }
@@ -283,7 +317,33 @@ class DragDrop extends Component {
                     setStageVideos={this.props.setStageVideos}/>
               </Segment>
               ) : ''}
-              {(this.props.stageStep === 'Audio') ? 'stage audio' : ''}
+              {(this.props.stageStep === 'Audios') ? (
+                <Segment
+                  className="audios"
+                  onDragOver={(e)=>this.props.onDragOver(e)}
+                  onDrop={(e)=>{this.props.onDrop(e, "audios")}}>
+                  <Label inverted="true" color="violet" className="task-header">Audios</Label>
+                  {tasks.audios}
+
+                <AudiosPreview
+                  audiosLoading={this.props.audiosLoading}
+                  uploadAudios={this.props.uploadAudios}
+                  name="stageAudios"
+                  audios={this.props.stageAudios}
+                />
+                <StageAudios
+                    className="audios"
+                    onDragOver={(e)=>this.props.onDragOver(e)}
+                    onDrop={(e)=>{this.props.onDrop(e, "audios")}}
+                    tasks={this.props.tasks}
+                    onAudioDrop={this.props.onDrop}
+                    onDragStart={this.props.onDragStart}
+                    onAudiosDragOver={this.props.onDragOver}
+                    onChangeAudiosHandler={this.props.onChangeAudiosHandler}
+                    setStageAudios={this.props.setStageAudios}
+                />
+              </Segment>
+              ) : ''}
           </Segment>
 
           </Sidebar>

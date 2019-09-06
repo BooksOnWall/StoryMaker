@@ -505,6 +505,28 @@ app.get('/images/stories/:storyId/stages/:stageId/videos/:name', function (req, 
     }
   })
 });
+app.get('/images/stories/:storyId/stages/:stageId/audios/:name', function (req, res, next) {
+  var sid = req.params.storyId;
+  var ssid= req.params.stageId;
+  var fileName = req.params.name;
+  var path = './public/stories/' + sid + '/stages/' + ssid +'/audios/';
+  var options = {
+    root: path ,
+    dotfiles: 'deny',
+    headers: {
+      'x-timestamp': Date.now(),
+      'x-sent': true
+    }
+  }
+
+  res.sendFile(fileName, options, function (err) {
+    if (err) {
+      next(err)
+    } else {
+      console.log('Sent:', fileName)
+    }
+  })
+});
 // set some basic routes
 app.get('/', function(req, res) {
   res.json({ message: 'Express is up!' });
@@ -914,6 +936,40 @@ app.post('/stories/:storyId/stages/:stageId/uploadVideos', function (req, res, n
           });
         updateFieldFromStage({ssid: ssid, sid: sid, field: 'videos', fieldValue: videos}).then(stage =>
             res.json({ stage, videos: videos, msg: 'Stage updated successfully' })
+        );
+      }
+    });
+});
+app.post('/stories/:storyId/stages/:stageId/uploadAudios', function (req, res, next) {
+  let sid = req.params.storyId;
+  let ssid = req.params.stageId;
+  let path ='./public/stories/'+ sid + '/stages/' + ssid +'/audios';
+  var storage = multer.diskStorage({
+      destination: function(req, file, cb){
+        cb(null, path );
+      },
+      filename: function (req, file, cb) {
+        cb(null, file.originalname);
+      }
+    });
+    var upload = multer({ storage : storage}).any();
+    upload(req,res,function(err) {
+      if(err) {
+        return res.end("Error uploading file." + err);
+      } else {
+        let audios=[];
+         req.files.forEach( function(file) {
+           audios.push({
+             'audio': {
+               'name': file.originalname,
+               'size': file.size,
+               'type': file.type,
+               'src': 'images/stories/'+ sid + '/stages/' + ssid + '/audios/' + file.originalname
+             }
+           });
+          });
+        updateFieldFromStage({ssid: ssid, sid: sid, field: 'audios', fieldValue: audios}).then(stage =>
+            res.json({ stage, audios: audios, msg: 'Stage updated successfully' })
         );
       }
     });

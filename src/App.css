@@ -50,6 +50,7 @@
 }
 .ui.segment.stageCol {
   width: -webkit-fill-available;
+  height: -webkit-fill-available;
 }
 .droppable {
   width: inherit;

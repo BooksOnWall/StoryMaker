@@ -56,6 +56,7 @@ class stage extends Component {
         stageImagesUploadUrl: server + 'stories/' + this.props.match.params.id + '/stages/' + parseInt(this.props.match.params.sid) + '/uploadImages',
         stagePicturesUploadUrl: server + 'stories/' + this.props.match.params.id + '/stages/' + parseInt(this.props.match.params.sid) + '/uploadPictures',
         stageVideosUploadUrl: server + 'stories/' + this.props.match.params.id + '/stages/' + parseInt(this.props.match.params.sid) + '/uploadVideos',
+        stageAudiosUploadUrl: server + 'stories/' + this.props.match.params.id + '/stages/' + parseInt(this.props.match.params.sid) + '/uploadAudios',
         map:  '/stories/'+ this.props.match.params.id  + '/map',
         loading: null,
         step: 'Stages',
@@ -64,15 +65,7 @@ class stage extends Component {
         dimmed: null,
         descLock: 'lock',
         stageStep: 'Stage',
-        tasks: [
-            {name:"Image", type: "image" , src: "https://www.sample-videos.com/img/Sample-jpg-image-100kb.jpg", category:"onZoneEnter", bgcolor:"pink"},
-            {name:"Picture", type: "image" , src: "https://www.sample-videos.com/img/Sample-jpg-image-100kb.jpg", category:"onZoneLeave", bgcolor:"pink"},
-            {name:"Audio", type: "audio" , src: "https://sample-videos.com/audio/mp3/crowd-cheering.mp3", category:"onZoneLeave", bgcolor:"skyblue"},
-            {name:"Audio 2", type: "audio" , src: "https://sample-videos.com/audio/mp3/crowd-cheering.mp3", category:"onZoneEnter", bgcolor:"skyblue"},
-            {name:"Audio 3", type: "audio" , src: "https://sample-videos.com/audio/mp3/crowd-cheering.mp3", category:"onZoneLeave", bgcolor:"skyblue"},
-            {name:"Video", type: "video" , src: "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4", category:"onPictureMatch", bgcolor:"skyblue"},
-            {name:"Text 2", type: "text" , category:"wip", bgcolor:"skyblue"}
-          ],
+        tasks: [],
         sidebarVisible: false,
         topSidebarVisible: false,
         stage: {
@@ -225,6 +218,7 @@ class stage extends Component {
           );
           break;
           case 'audio':
+          console.log(t);
           tasks[t.category].push(
             <Segment
               inverted
@@ -235,6 +229,7 @@ class stage extends Component {
               className="draggable"
               >
               <ReactAudioPlayer
+                name={t.name}
                 key={t.name}
                 src={t.src}
                 controls
@@ -298,6 +293,21 @@ class stage extends Component {
         });
         tasks = tasks.concat(videosArray);
         break;
+        case 'Audios':
+        let audiosArray =[];
+        list.forEach(function(audio) {
+          console.log(audio);
+          let a = audio.audio;
+          let json = {
+            name: a.name,
+            type: "audio",
+            category:"audios",
+            src: server + a.src
+          };
+          audiosArray.push(json);
+        });
+        tasks = tasks.concat(audiosArray);
+        break;
         default:
         break;
       }
@@ -325,7 +335,9 @@ class stage extends Component {
   onChangeVideosHandler = (e) => this.setState({stageVideos: e.files})
   onChangePicturesHandler = (e) => this.setState({stagePictures: e.files})
   onChangeImagesHandler = (e) => this.setState({stageImages: e.files})
+  onChangeAudiosHandler = (e) => this.setState({stageAudios: e.files})
   setStageVideos = (e) => this.setState({stageVideos: e})
+  setStageAudios = (e) => this.setState({stageAudios: e})
   setStagePictures = (e) => this.setState({stagePictures: e})
   setStageImages = (e) => this.setState({stageImages: e})
   componentDidMount= async () => {
@@ -663,6 +675,78 @@ class stage extends Component {
       }
     }
   }
+  uploadAudios = async () => {
+    console.log('clicked');
+    this.setState({audiosLoading: true});
+    // get images and prepare for store
+    let audios = this.state.stageAudios;
+    if (audios  && audios.length > 0) {
+      try {
+        let saudios =[];
+
+        Array.from(audios).forEach(file => {
+          saudios.push({
+            'audio': {
+              'name': file.name,
+              'size': file.size,
+              'type': file.type,
+              'path': 'images/stories/'+ this.state.sid + '/stages/' + this.state.ssid + '/audios/' + file.name
+            }
+          });
+        });
+        let files = JSON.stringify(audios);
+        let formData = new FormData();
+        for(var x = 0; x < audios.length; x++) {
+          formData.append('file', audios[x]);
+        };
+        await fetch(this.state.stageAudiosUploadUrl, {
+          method: 'POST',
+          headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin'},
+          files: files,
+          body: formData
+        })
+        .then(response => {
+          if (response && !response.ok) { throw new Error(response.statusText);}
+          return response.json();
+        })
+        .then(data => {
+            if(data) {
+              this.setState({
+                stage: {
+                  id: this.state.stage.id,
+                  sid: this.state.stage.sid,
+                  name: this.state.stage.name,
+                  adress: this.state.stage.adress,
+                  pictures: this.state.stage.pictures,
+                  images: this.state.stage.images,
+                  videos: this.state.stage.videos,
+                  audios: saudios,
+                  type: this.state.stage.type,
+                  description: this.state.stage.description,
+                  geometry: this.state.stage.geometry,
+                  stageLocation: Array.from(this.state.stage.geometry.coordinates)
+                }
+              });
+              //this.setState({initialSValues: data});
+
+              //let tasks = JSON.stringify(this.mergeTasks('Images', simages));
+              //console.log(tasks);
+              this.setState({ stageAudios: null, audiosLoading: false});
+              this.getStage();
+
+            } else {
+              console.log('No Data received from the server');
+            }
+        })
+        .catch((error) => {
+          // Your error is here!
+          console.log({error})
+        });
+      } catch(e) {
+        console.log(e.message);
+      }
+    }
+  }
   getStage = async () => {
     this.setState({loading: true});
     try {
@@ -698,6 +782,7 @@ class stage extends Component {
             this.mergeTasks('Images', data.images);
             this.mergeTasks('Pictures', data.pictures);
             this.mergeTasks('Videos', data.videos);
+            this.mergeTasks('Audios', data.audios);
             return data;
           } else {
             console.log('No Data received from the server');
@@ -766,6 +851,13 @@ class stage extends Component {
           stageVideos={this.state.stageVideos}
           setStageVideos={this.setStageVideos}
           onChangeVideosHandler={this.onChangeVideosHandler}
+
+          audiosLoading={this.state.audiosLoading}
+          uploadAudios={this.uploadAudios}
+          stageAudios={this.state.stageAudios}
+          setStageAudios={this.setStageAudios}
+          onChangeAudiosHandler={this.onChangeAudiosHandler}
+
           sidebarVisible={this.state.sidebarVisible}
           topSidebarVisible={this.state.topSidebarVisible}
           handleStageStep={this.handleStageStep}

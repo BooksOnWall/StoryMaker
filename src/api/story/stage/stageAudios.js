@@ -14,7 +14,7 @@ function StageAudios(props) {
 
     accept: 'audio/*',
     minSize: 0,
-    maxSize: 5242880,
+    maxSize: 52428800,
     onDrop: acceptedFiles => {
       setFiles(acceptedFiles.map(file => Object.assign(file, {
         src: URL.createObjectURL(file)
