@@ -53,7 +53,7 @@ const ObjectsPreview = (props) => {
         items.push(<Button
           primary
           loading={props.imagesLoading}
-          onClick={(e) => this.props.uploadObjects(e, e.objType)}
+          onClick={(e) => this.props.uploadObjects(e, objType)}
         >Upload</Button>);
       }
       break;
@@ -85,7 +85,7 @@ if(props && props.images && props.images.length > 0) {
   items.push(<Button
     primary
     loading={props.imagesLoading}
-    onClick={props.uploadImages}
+    onClick={(e) => props.uploadObjects(e, 'images')}
   >Upload</Button>);
 
     return items
@@ -279,14 +279,14 @@ class DragDrop extends Component {
                   <ObjectsPreview
                     objType="Images"
                     imagesLoading={this.props.imagesLoading}
-                    uploadImages={this.props.uploadObjects}
+                    uploadObjects={this.props.uploadObjects}
                     name="stageImages"
                     objValues={this.props.stageImages}
                   />
                   <StageImages
-                    setStageImages={this.props.setStageImages}
-                    onChangeImagesHandler={this.props.onChangeImagesHandler}
-                    stageImages={this.props.stageImages}
+                    setStageObjects={this.props.setStageObjects}
+                    onChangeObjectsHandler={this.props.onChangeObjectsHandler}
+                    objValues={this.props.stageImages}
                   />
                 </Segment> ) : ''}
               {(this.props.stageStep === 'Geo') ? (

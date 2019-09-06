@@ -20,13 +20,13 @@ function StageImages(props){
       setFiles(acceptedFiles.map(file => Object.assign(file, {
         preview: URL.createObjectURL(file)
       })));
-      props.setStageImages(acceptedFiles);
+      props.setStageObjects(acceptedFiles, 'stageImages');
     }
   });
 
     return (
       <div {...getRootProps({className: 'dropzone'})}>
-        <input  id='stageImages' name='files' onChange={props.onChangeImagesHandler} ref={ref => this.fileInput = ref} {...getInputProps()} />
+        <input  id='stageImages' name='files' onChange={(e) => this.props.onChangeObjectsHandler(e, 'stageImages')} ref={ref => this.fileInput = ref} {...getInputProps()} />
         <p>Drag 'n' drop some files here, or click to select files</p>
         {!isDragActive && 'Click here or drop a file to upload!'}
         {isDragActive && !isDragReject && "Drop it like it's hot!"}

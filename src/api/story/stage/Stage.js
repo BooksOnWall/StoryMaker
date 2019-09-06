@@ -346,6 +346,10 @@ class stage extends Component {
   setStageAudios = (e) => this.setState({stageAudios: e})
   setStagePictures = (e) => this.setState({stagePictures: e})
   setStageImages = (e) => this.setState({stageImages: e})
+
+  onChangeObjectsHandler = (e, target) => this.setState({[target]: e.files})
+  setStageObjects = (e, target) => this.setState({[target]: e})
+
   componentDidMount= async () => {
     try {
       await this.getStage();
@@ -471,6 +475,7 @@ class stage extends Component {
   uploadObjects= async (e, objType) => {
     console.log(e);
     console.log(objType);
+
   }
   uploadImages = async () => {
     console.log('clicked');
@@ -859,7 +864,8 @@ class stage extends Component {
           uploadObjects={this.uploadObjects}
 
           uploadObjects={this.uploadObjects}
-
+          setStageObjects={this.setStageObjects}
+          onChangeObjectsHandler={this.onChangeObjectsHandler}
           stageImages={this.state.stageImages}
           imagesLoading={this.state.imagesLoading}
           setStageImages= {this.setStageImages}
