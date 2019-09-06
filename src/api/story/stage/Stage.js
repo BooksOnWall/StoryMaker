@@ -55,6 +55,7 @@ class stage extends Component {
         stageURL: server + 'stories/' + this.props.match.params.id + '/stages/' + parseInt(this.props.match.params.sid),
         stageImagesUploadUrl: server + 'stories/' + this.props.match.params.id + '/stages/' + parseInt(this.props.match.params.sid) + '/uploadImages',
         stagePicturesUploadUrl: server + 'stories/' + this.props.match.params.id + '/stages/' + parseInt(this.props.match.params.sid) + '/uploadPictures',
+        stageVideosUploadUrl: server + 'stories/' + this.props.match.params.id + '/stages/' + parseInt(this.props.match.params.sid) + '/uploadVideos',
         map:  '/stories/'+ this.props.match.params.id  + '/map',
         loading: null,
         step: 'Stages',
@@ -80,7 +81,10 @@ class stage extends Component {
           ssid: parseInt(this.props.match.params.id),
           name: '',
           adress: '',
+          images: null,
           pictures: null,
+          videos: null,
+          audios: null,
           type: null,
           description: '',
           geometry: null,
@@ -88,7 +92,12 @@ class stage extends Component {
         },
         imagesLoading: false,
         picturesLoading: false,
+        videosLoading: false,
+        audiosLoading: false,
         stagePictures: [],
+        stageImages: [],
+        stageVideos: [],
+        stageAudios: [],
         setSteps: this.setSteps,
         setStageLocation: this.setStageLocation,
         toggleAuthenticateStatus: this.props.childProps.toggleAuthenticateStatus,
@@ -144,6 +153,8 @@ class stage extends Component {
       location: [],
       wip: [],
       pictures: [],
+      videos: [],
+      audios: [],
       images: [],
       editStage: [],
       onZoneEnter: [],
@@ -192,6 +203,7 @@ class stage extends Component {
           );
           break;
           case 'video':
+          console.log(t);
           tasks[t.category].push(
             <Segment
               inverted
@@ -205,12 +217,12 @@ class stage extends Component {
                 fluid
                 preload="auto"
                 playsInline
+                name={t.name}
                 poster="/assets/poster.png"
                 >
-                <source src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4" />
+                <source src={t.src} />
               </Player>
             </Segment>
-
           );
           break;
           case 'audio':
@@ -242,16 +254,12 @@ class stage extends Component {
 
     if(list) {
       let tasks = this.state.tasks;
-      console.log(tasks);
-      console.log(list);
       let server = this.state.server;
       switch(cat) {
         case 'Images':
         let imageArray =[];
         list.forEach(function(image) {
-
           let img = image.image;
-          console.log(img);
           let json = {
             name: img.name,
             type: "image",
@@ -275,6 +283,21 @@ class stage extends Component {
           picturesArray.push(json);
         });
         tasks = tasks.concat(picturesArray);
+        break;
+        case 'Videos':
+        let videosArray =[];
+        list.forEach(function(video) {
+          console.log(video);
+          let vid = video.video;
+          let json = {
+            name: vid.name,
+            type: "video",
+            category:"videos",
+            src: server + vid.src
+          };
+          videosArray.push(json);
+        });
+        tasks = tasks.concat(videosArray);
         break;
         default:
         break;
@@ -300,18 +323,12 @@ class stage extends Component {
       }
   });
   }
-  onChangePicturesHandler = (e) => {
-    this.setState({stagePictures: e.files})
-  }
-  onChangeImagesHandler = (e) => {
-    this.setState({stageImages: e.files});
-  }
-  setStagePictures = (e) => {
-    this.setState({stagePictures: e});
-  }
-  setStageImages = (e) => {
-    this.setState({stageImages: e});
-  }
+  onChangeVideosHandler = (e) => this.setState({stageVideos: e.files})
+  onChangePicturesHandler = (e) => this.setState({stagePictures: e.files})
+  onChangeImagesHandler = (e) => this.setState({stageImages: e.files})
+  setStageVideos = (e) => this.setState({stageVideos: e})
+  setStagePictures = (e) => this.setState({stagePictures: e})
+  setStageImages = (e) => this.setState({stageImages: e})
   componentDidMount= async () => {
     try {
       await this.getStage();
@@ -575,6 +592,78 @@ class stage extends Component {
       }
     }
   }
+  uploadVideos = async () => {
+    console.log('clicked');
+    this.setState({videosLoading: true});
+    // get images and prepare for store
+    let videos = this.state.stageVideos;
+    if (videos  && videos.length > 0) {
+      try {
+        let svideos =[];
+
+        Array.from(videos).forEach(file => {
+          svideos.push({
+            'video': {
+              'name': file.name,
+              'size': file.size,
+              'type': file.type,
+              'path': 'images/stories/'+ this.state.sid + '/stages/' + this.state.ssid + '/videos/' + file.name
+            }
+          });
+        });
+        let files = JSON.stringify(videos);
+        let formData = new FormData();
+        for(var x = 0; x < videos.length; x++) {
+          formData.append('file', videos[x]);
+        };
+        await fetch(this.state.stageVideosUploadUrl, {
+          method: 'POST',
+          headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin'},
+          files: files,
+          body: formData
+        })
+        .then(response => {
+          if (response && !response.ok) { throw new Error(response.statusText);}
+          return response.json();
+        })
+        .then(data => {
+            if(data) {
+              this.setState({
+                stage: {
+                  id: this.state.stage.id,
+                  sid: this.state.stage.sid,
+                  name: this.state.stage.name,
+                  adress: this.state.stage.adress,
+                  pictures: this.state.stage.pictures,
+                  images: this.state.stage.images,
+                  videos: svideos,
+                  audios: this.state.stage.audios,
+                  type: this.state.stage.type,
+                  description: this.state.stage.description,
+                  geometry: this.state.stage.geometry,
+                  stageLocation: Array.from(this.state.stage.geometry.coordinates)
+                }
+              });
+              //this.setState({initialSValues: data});
+
+              //let tasks = JSON.stringify(this.mergeTasks('Images', simages));
+              //console.log(tasks);
+              this.setState({ stageVideos: null, videosLoading: false});
+              this.getStage();
+
+            } else {
+              console.log('No Data received from the server');
+            }
+        })
+        .catch((error) => {
+          // Your error is here!
+          console.log({error})
+        });
+      } catch(e) {
+        console.log(e.message);
+      }
+    }
+  }
   getStage = async () => {
     this.setState({loading: true});
     try {
@@ -609,6 +698,7 @@ class stage extends Component {
             this.setState({loading: false});
             this.mergeTasks('Images', data.images);
             this.mergeTasks('Pictures', data.pictures);
+            this.mergeTasks('Videos', data.videos);
             return data;
           } else {
             console.log('No Data received from the server');
@@ -661,13 +751,22 @@ class stage extends Component {
           stageStep={this.state.stageStep}
           setSteps={this.setSteps}
           renderTasks={this.renderTasks}
+
           stageImages={this.state.stageImages}
           imagesLoading={this.state.imagesLoading}
+          setStageImages= {this.setStageImages}
+          onChangeImagesHandler={this.onChangeImagesHandler}
+
           picturesLoading={this.state.picturesLoading}
           uploadPictures={this.uploadPictures}
           stagePictures={this.state.stagePictures}
-          setStageImages= {this.setStageImages}
           setStagePictures={this.setStagePictures}
+          onChangePicturesHandler={this.onChangePicturesHandler}
+          videosLoading={this.state.videosLoading}
+          uploadVideos={this.uploadVideos}
+          stageVideos={this.state.stageVideos}
+          setStageVideos={this.setStageVideos}
+          onChangeVideosHandler={this.onChangeVideosHandler}
           sidebarVisible={this.state.sidebarVisible}
           topSidebarVisible={this.state.topSidebarVisible}
           handleStageStep={this.handleStageStep}

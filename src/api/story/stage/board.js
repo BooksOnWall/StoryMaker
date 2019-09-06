@@ -14,9 +14,12 @@ import '../../../../node_modules/video-react/dist/video-react.css';
 
 import StageMap from '../map/stageMap';
 import StagePictures from './stagePictures';
+import StageVideos from './stageVideos';
+import StageAudios from './stageAudios';
 import StageImages from './stageImages';
 import HtmlParser from 'react-html-parser';
 import { Resizable } from "re-resizable";
+import { Player } from 'video-react';
 
 const resizeStyle = {
   display: "flex",
@@ -77,6 +80,37 @@ if(props && props.pictures) {
   }
 }
 
+return null
+};
+const VideosPreview = (props) => {
+
+if(props && props.videos) {
+  let videos = props.videos;
+
+  if(videos && videos.length > 0) {
+    const items = videos.map(function(e,index){
+        console.log(e);
+        return   <Player
+            fluid
+            preload="auto"
+            playsInline
+            name={e.name}
+            id={"video_"+ index }
+            key={"vid_"+ index }
+            poster="/assets/poster.png"
+            >
+            <source src={e.src} />
+          </Player>
+    });
+
+    items.push(<Button
+      primary
+      loading={props.videosLoading}
+      onClick={props.uploadVideos}
+    >Upload</Button>);
+    return items;
+  }
+}
 return null
 };
 class DragDrop extends Component {
@@ -193,9 +227,9 @@ class DragDrop extends Component {
           <Button.Group>
             <Button name="Pictures" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Pictures') ? true : false }>Pictures</Button>
             <Button.Or text='or' />
-            <Button name="Video" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Video') ? true : false }>Video</Button>
+            <Button name="Videos" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Videos') ? true : false }>Videos</Button>
               <Button.Or text='or' />
-              <Button name="Audio" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Audio') ? true : false }>Audio</Button>
+              <Button name="Audios" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Audios') ? true : false }>Audios</Button>
           </Button.Group>
 
           <Segment >
@@ -224,7 +258,31 @@ class DragDrop extends Component {
                     setStagePictures={this.props.setStagePictures}/>
               </Segment>
               ) : ''}
-              {(this.props.stageStep === 'Video') ? 'stage video' : ''}
+              {(this.props.stageStep === 'Videos') ? (
+                <Segment
+                  className="videos"
+                  onDragOver={(e)=>this.props.onDragOver(e)}
+                  onDrop={(e)=>{this.props.onDrop(e, "videos")}}>
+                  <Label inverted="true" color="violet" className="task-header">Videos</Label>
+                  {tasks.videos}
+
+                <VideosPreview
+                  videosLoading={this.props.videosLoading}
+                  uploadVideos={this.props.uploadVideos}
+                  name="stageVideos"
+                  videos={this.props.stageVideos} />
+                <StageVideos
+                    className="videos"
+                    onDragOver={(e)=>this.props.onDragOver(e)}
+                    onDrop={(e)=>{this.props.onDrop(e, "videos")}}
+                    tasks={this.props.tasks}
+                    onVideosDrop={this.props.onDrop}
+                    onDragStart={this.props.onDragStart}
+                    onVideosDragOver={this.props.onDragOver}
+                    onChangeVideosHandler={this.props.onChangeVideosHandler}
+                    setStageVideos={this.props.setStageVideos}/>
+              </Segment>
+              ) : ''}
               {(this.props.stageStep === 'Audio') ? 'stage audio' : ''}
           </Segment>
 
