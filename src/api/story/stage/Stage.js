@@ -203,7 +203,6 @@ class stage extends Component {
           );
           break;
           case 'video':
-          console.log(t);
           tasks[t.category].push(
             <Segment
               inverted

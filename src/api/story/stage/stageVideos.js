@@ -3,19 +3,8 @@ import {useDropzone} from 'react-dropzone';
 import { FormattedMessage } from 'react-intl';
 import {
   Segment,
-  Placeholder,
-  Icon,
-  Button,
-  List,
-  Image,
 } from 'semantic-ui-react';
 
-const thumbsContainer = {
-  display: 'flex',
-  flexDirection: 'row',
-  flexWrap: 'wrap',
-  marginTop: 16
-};
 
 function StageVideos(props) {
   const [files, setFiles] = useState([]);
