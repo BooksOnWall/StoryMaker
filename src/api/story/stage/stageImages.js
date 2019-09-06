@@ -15,7 +15,7 @@ function StageImages(props){
   const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
     accept: 'image/*',
     minSize: 0,
-    maxSize: 5242880,
+    maxSize: 52428800,
     onDrop: acceptedFiles => {
       setFiles(acceptedFiles.map(file => Object.assign(file, {
         preview: URL.createObjectURL(file)

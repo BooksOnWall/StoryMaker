@@ -26,7 +26,7 @@ import StageBoard from './board';
 import StageMap from '../map/stageMap';
 import StagePictures from './stagePictures';
 import ReactHtmlParser from 'react-html-parser';
-import { Player } from 'video-react';
+import ReactPlayer  from 'react-player';
 import ReactAudioPlayer from 'react-audio-player';
 import { Link } from 'react-router-dom';
 
@@ -155,7 +155,7 @@ class stage extends Component {
       onZoneLeave: []
     };
     if (this.state.tasks) {
-      this.state.tasks.forEach ((t) => {
+      this.state.tasks.forEach ((t, index) => {
         switch(t.type) {
           case 'text':
           tasks[t.category].push(
@@ -163,8 +163,8 @@ class stage extends Component {
               inverted
               name={t.name}
               color="orange"
-              key={t.name}
-              onDragStart = {(e) => this.onDragStart(e, t.name)}
+              key={index}
+              onDragStart = {(e) => this.onDragStart(e, t.key)}
               draggable
               className="draggable"
               style = {{backgroundColor: t.bgcolor}}
@@ -176,6 +176,8 @@ class stage extends Component {
           case 'image':
           tasks[t.category].push(
             <Image
+              wrapped
+              name={t.name}
               key={t.name}
               onDragStart = {(e) => this.onDragStart(e, t.name)}
               draggable
@@ -187,6 +189,7 @@ class stage extends Component {
           case 'picture':
           tasks[t.category].push(
             <Image
+              name={t.name}
               key={t.name}
               onDragStart = {(e) => this.onDragStart(e, t.name)}
               draggable
@@ -199,21 +202,23 @@ class stage extends Component {
           tasks[t.category].push(
             <Segment
               inverted
+              raised
+              curved
               color="violet"
-              key={t.name}
+              name={t.name}
+              key={index}
               onDragStart = {(e) => this.onDragStart(e, t.name)}
               draggable
               className="draggable video"
               >
-              <Player
+              <ReactPlayer
                 fluid
                 preload="auto"
                 playsInline
                 name={t.name}
                 poster="/assets/poster.png"
-                >
-                <source src={t.src} />
-              </Player>
+                src={t.src}
+                />
             </Segment>
           );
           break;
@@ -222,18 +227,19 @@ class stage extends Component {
           tasks[t.category].push(
             <Segment
               inverted
-              color="green"
-              key={t.name}
+              curved
+              color="blue"
+              key={index}
               onDragStart = {(e) => this.props.onDragStart(e, t.name)}
               draggable
-              className="draggable"
+              className="audio draggable"
               >
+              <Label inverted="true" color="violet">{t.name}</Label>
               <ReactAudioPlayer
-                name={t.name}
-                key={t.name}
                 src={t.src}
                 controls
                 />
+
             </Segment>
           );
           break;
@@ -258,7 +264,7 @@ class stage extends Component {
             name: img.name,
             type: "image",
             category:"images",
-            src: server + img.path
+            src: server + img.src
           };
           imageArray.push(json);
         });
@@ -272,7 +278,7 @@ class stage extends Component {
             name: img.name,
             type: "image",
             category:"pictures",
-            src: server + img.path
+            src: server + img.src
           };
           picturesArray.push(json);
         });
@@ -462,7 +468,10 @@ class stage extends Component {
       </Segment>
     );
   }
-
+  uploadObjects= async (e, objType) => {
+    console.log(e);
+    console.log(objType);
+  }
   uploadImages = async () => {
     console.log('clicked');
     this.setState({imagesLoading: true});
@@ -532,6 +541,18 @@ class stage extends Component {
         console.log(e.message);
       }
     }
+  }
+  uploadObjects = async ({e, objType}) => {
+    console.log('clicked');
+    //objTYpe === [images, videos, pictures, audios]
+    let loadingState = objType + 'Loading';
+    let loading = { loadingState : true};
+    let ObjType= objType.charAt(0).toUpperCase() + objType.substring(1);
+    let state = this.state.stage[ObjType];
+    console.log(state);
+    this.setState(loading);
+    // get images and prepare for store
+    let objects = this.state.stagePictures;
   }
   uploadPictures = async () => {
     console.log('clicked');
@@ -835,17 +856,23 @@ class stage extends Component {
           stageStep={this.state.stageStep}
           setSteps={this.setSteps}
           renderTasks={this.renderTasks}
+          uploadObjects={this.uploadObjects}
+
+          uploadObjects={this.uploadObjects}
 
           stageImages={this.state.stageImages}
           imagesLoading={this.state.imagesLoading}
           setStageImages= {this.setStageImages}
           onChangeImagesHandler={this.onChangeImagesHandler}
 
+
+
           picturesLoading={this.state.picturesLoading}
           uploadPictures={this.uploadPictures}
           stagePictures={this.state.stagePictures}
           setStagePictures={this.setStagePictures}
           onChangePicturesHandler={this.onChangePicturesHandler}
+
           videosLoading={this.state.videosLoading}
           uploadVideos={this.uploadVideos}
           stageVideos={this.state.stageVideos}

@@ -862,7 +862,7 @@ app.post('/stories/:storyId/stages/:stageId/uploadImages', function (req, res, n
                'name': file.originalname,
                'size': file.size,
                'mimetype': file.mimetype,
-               'path': 'images/stories/'+ sid + '/stages/' + ssid + '/images/' + file.originalname
+               'src': 'images/stories/'+ sid + '/stages/' + ssid + '/images/' + file.originalname
              }
            });
           });
@@ -896,7 +896,7 @@ app.post('/stories/:storyId/stages/:stageId/uploadPictures', function (req, res,
                'name': file.originalname,
                'size': file.size,
                'mimetype': file.mimetype,
-               'path': 'images/stories/'+ sid + '/stages/' + ssid + '/pictures/' + file.originalname
+               'src': 'images/stories/'+ sid + '/stages/' + ssid + '/pictures/' + file.originalname
              }
            });
           });
