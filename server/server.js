@@ -4,6 +4,7 @@ var http = require('http');
 var https = require('https');
 var multer = require('multer');
 var rimraf = require("rimraf");
+var timeout = require('connect-timeout');
 const bodyParser = require('body-parser');
 //CORS
 var cors = require('cors');
@@ -497,27 +498,15 @@ app.get('/images/stories/:storyId/stages/:stageId/pictures/:name', function (req
     }
   })
 });
-app.get('/images/stories/:storyId/stages/:stageId/videos/:name', function (req, res, next) {
+app.get('/images/stories/:storyId/stages/:stageId/videos/:name', timeout('10m'), function (req, res, next) {
   var sid = req.params.storyId;
   var ssid= req.params.stageId;
   var fileName = req.params.name;
   var path = './public/stories/' + sid + '/stages/' + ssid +'/videos/';
-  var options = {
-    root: path ,
-    dotfiles: 'deny',
-    headers: {
-      'x-timestamp': Date.now(),
-      'x-sent': true
-    }
-  }
-
-  res.sendFile(fileName, options, function (err) {
-    if (err) {
-      next(err)
-    } else {
-      console.log('Sent:', fileName)
-    }
-  })
+  //set a video stream server to serve the file
+  res.setHeader("content-type", "video/*");
+  console.log('Starting streaming: file ' + fileName );
+  fs.createReadStream(path+fileName).pipe(res);
 });
 app.get('/images/stories/:storyId/stages/:stageId/audios/:name', function (req, res, next) {
   var sid = req.params.storyId;

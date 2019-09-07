@@ -9,10 +9,7 @@ import {
   Button,
   Icon,
   Confirm,
-  Ref,
-  Sidebar,
   Image,
-  Menu,
   Segment,
   TextArea,
   Dimmer,
@@ -21,14 +18,10 @@ import {
 import {  FormattedMessage } from 'react-intl';
 import { Formik } from 'formik';
 import StorySteps from '../storySteps';
-import StageSteps from './stageSteps';
 import StageBoard from './board';
-import StageMap from '../map/stageMap';
-import StagePictures from './stagePictures';
 import ReactHtmlParser from 'react-html-parser';
 import ReactPlayer  from 'react-player';
 import ReactAudioPlayer from 'react-audio-player';
-import { Link } from 'react-router-dom';
 
 const stageOptions = [
   { key: 'Point', value: 'Point', text: 'Geo Point' },
@@ -130,8 +123,6 @@ class stage extends Component {
      });
   }
   onDragStart = (ev, id) => {
-      console.log('dragstart:',id);
-      console.log(ev);
       ev.dataTransfer.setData("id", id);
   }
 
@@ -202,23 +193,21 @@ class stage extends Component {
           tasks[t.category].push(
             <Segment
               inverted
-              raised
-              curved
               color="violet"
-              name={t.name}
-              key={index}
+              name={'video_'+index}
+              key={'video'+index}
               onDragStart = {(e) => this.onDragStart(e, t.name)}
               draggable
               className="draggable video"
               >
-              <ReactPlayer
-                fluid
-                preload="auto"
-                playsInline
-                name={t.name}
-                poster="/assets/poster.png"
+              <video
+                id={'vid_'+ index}
+                controls="true"
                 src={t.src}
-                />
+                width='100%'
+                height='100%'
+              />
+
             </Segment>
           );
           break;
@@ -228,9 +217,10 @@ class stage extends Component {
             <Segment
               inverted
               curved
+              name={t.name}
               color="blue"
               key={index}
-              onDragStart = {(e) => this.props.onDragStart(e, t.name)}
+              onDragStart = {(e) => this.onDragStart(e, t.name)}
               draggable
               className="audio draggable"
               >
@@ -239,7 +229,6 @@ class stage extends Component {
                 src={t.src}
                 controls
                 />
-
             </Segment>
           );
           break;
@@ -338,16 +327,12 @@ class stage extends Component {
       }
   });
   }
-  onChangeVideosHandler = (e) => this.setState({stageVideos: e.files})
-  onChangePicturesHandler = (e) => this.setState({stagePictures: e.files})
-  onChangeImagesHandler = (e) => this.setState({stageImages: e.files})
-  onChangeAudiosHandler = (e) => this.setState({stageAudios: e.files})
-  setStageVideos = (e) => this.setState({stageVideos: e})
-  setStageAudios = (e) => this.setState({stageAudios: e})
-  setStagePictures = (e) => this.setState({stagePictures: e})
-  setStageImages = (e) => this.setState({stageImages: e})
 
-  onChangeObjectsHandler = (e, target) => this.setState({[target]: e.files})
+  onChangeObjectsHandler = (e, target) => {
+    console.log(target);
+    console.log(e.files);
+    this.setState({[target]: e.files});
+  }
   setStageObjects = (e, target) => this.setState({[target]: e})
 
   componentDidMount= async () => {
@@ -472,11 +457,7 @@ class stage extends Component {
       </Segment>
     );
   }
-  uploadObjects= async (e, objType) => {
-    console.log(e);
-    console.log(objType);
 
-  }
   uploadImages = async () => {
     console.log('clicked');
     this.setState({imagesLoading: true});
@@ -547,232 +528,103 @@ class stage extends Component {
       }
     }
   }
-  uploadObjects = async ({e, objType}) => {
+  uploadObjects = async (e, objType) => {
+    console.log(objType);
+    console.log(e);
     console.log('clicked');
-    //objTYpe === [images, videos, pictures, audios]
-    let loadingState = objType + 'Loading';
-    let loading = { loadingState : true};
-    let ObjType= objType.charAt(0).toUpperCase() + objType.substring(1);
-    let state = this.state.stage[ObjType];
-    console.log(state);
-    this.setState(loading);
-    // get images and prepare for store
-    let objects = this.state.stagePictures;
-  }
-  uploadPictures = async () => {
-    console.log('clicked');
-    this.setState({picturesLoading: true});
-    // get images and prepare for store
-    let images = this.state.stagePictures;
-    if (images  && images.length > 0) {
-      try {
-        let simages =[];
 
-        Array.from(images).forEach(file => {
-          simages.push({
-            'image': {
-              'name': file.name,
-              'size': file.size,
-              'type': file.type,
-              'path': 'images/stories/'+ this.state.sid + '/stages/' + this.state.ssid + '/pictures/' + file.name
-            }
-          });
-        });
-        let files = JSON.stringify(images);
-        let formData = new FormData();
-        for(var x = 0; x < images.length; x++) {
-          formData.append('file', images[x]);
-        };
-        await fetch(this.state.stagePicturesUploadUrl, {
-          method: 'POST',
-          headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin'},
-          files: files,
-          body: formData
-        })
-        .then(response => {
-          if (response && !response.ok) { throw new Error(response.statusText);}
-          return response.json();
-        })
-        .then(data => {
-            if(data) {
-              this.setState({
-                stage: {
-                  id: this.state.stage.id,
-                  sid: this.state.stage.sid,
-                  name: this.state.stage.name,
-                  adress: this.state.stage.adress,
-                  pictures: simages,
-                  images: this.state.stage.images,
-                  type: this.state.stage.type,
-                  description: this.state.stage.description,
-                  geometry: this.state.stage.geometry,
-                  stageLocation: Array.from(this.state.stage.geometry.coordinates)
-                }
-              });
-              //this.setState({initialSValues: data});
-
-              //let tasks = JSON.stringify(this.mergeTasks('Images', simages));
-              //console.log(tasks);
-              this.setState({ stagePictures: null, picturesLoading: false});
-              this.getStage();
-
-            } else {
-              console.log('No Data received from the server');
-            }
-        })
-        .catch((error) => {
-          // Your error is here!
-          console.log({error})
-        });
-      } catch(e) {
-        console.log(e.message);
+      //objType === [images, videos, pictures, audios]
+      let loadingState = objType.toLowerCase() + 'Loading';
+      let stageObject = 'stage'+[objType];
+      let objectName = objType.toLowerCase();
+      let object = objType.toLowerCase().substring(0, -1);
+      console.log(object);
+      this.setState({ [loadingState] : true});
+      let objects = this.state[stageObject];
+      console.log(objects);
+      let url=null;
+      switch(objType) {
+        case 'Images':
+        url=this.state.stageImagesUploadUrl;
+        break;
+        case 'Pictures':
+        url=this.state.stagePicturesUploadUrl;
+        break;
+        case 'Videos':
+        url=this.state.stageVideosUploadUrl;
+        break;
+        case 'Audios':
+        url=this.state.stageAudiosUploadUrl;
+        break;
+        default:
+        break;
       }
-    }
-  }
-  uploadVideos = async () => {
-    console.log('clicked');
-    this.setState({videosLoading: true});
-    // get images and prepare for store
-    let videos = this.state.stageVideos;
-    if (videos  && videos.length > 0) {
-      try {
-        let svideos =[];
+      if (objects  && objects.length > 0) {
+        try {
+          let sobjects =[];
 
-        Array.from(videos).forEach(file => {
-          svideos.push({
-            'video': {
-              'name': file.name,
-              'size': file.size,
-              'type': file.type,
-              'path': 'images/stories/'+ this.state.sid + '/stages/' + this.state.ssid + '/videos/' + file.name
-            }
+          Array.from(objects).forEach(file => {
+            sobjects.push({
+              object : {
+                'name': file.name,
+                'size': file.size,
+                'type': file.type,
+                'src': 'images/stories/'+ this.state.sid + '/stages/' + this.state.ssid + '/' + objectName + '/' + file.name
+              }
+            });
           });
-        });
-        let files = JSON.stringify(videos);
-        let formData = new FormData();
-        for(var x = 0; x < videos.length; x++) {
-          formData.append('file', videos[x]);
-        };
-        await fetch(this.state.stageVideosUploadUrl, {
-          method: 'POST',
-          headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin'},
-          files: files,
-          body: formData
-        })
-        .then(response => {
-          if (response && !response.ok) { throw new Error(response.statusText);}
-          return response.json();
-        })
-        .then(data => {
-            if(data) {
-              this.setState({
-                stage: {
-                  id: this.state.stage.id,
-                  sid: this.state.stage.sid,
-                  name: this.state.stage.name,
-                  adress: this.state.stage.adress,
-                  pictures: this.state.stage.pictures,
-                  images: this.state.stage.images,
-                  videos: svideos,
-                  audios: this.state.stage.audios,
-                  type: this.state.stage.type,
-                  description: this.state.stage.description,
-                  geometry: this.state.stage.geometry,
-                  stageLocation: Array.from(this.state.stage.geometry.coordinates)
-                }
-              });
-              //this.setState({initialSValues: data});
+          let files = JSON.stringify(objects);
+          let formData = new FormData();
+          for(var x = 0; x < objects.length; x++) {
+            formData.append('file', objects[x]);
+          };
+          await fetch(url, {
+            method: 'POST',
+            headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin'},
+            files: files,
+            body: formData
+          })
+          .then(response => {
+            if (response && !response.ok) { throw new Error(response.statusText);}
+            return response.json();
+          })
+          .then(data => {
+              if(data) {
+                this.setState({
+                  stage: {
+                    id: this.state.stage.id,
+                    sid: this.state.stage.sid,
+                    name: this.state.stage.name,
+                    adress: this.state.stage.adress,
+                    pictures: (objType === 'Pictures') ? sobjects : this.state.stage.pictures ,
+                    images: (objType === 'Images') ? sobjects : this.state.stage.images,
+                    videos: (objType === 'Videos') ? sobjects : this.state.stage.videos,
+                    audios: (objType === 'Audios') ? sobjects : this.state.stage.audios,
+                    type: this.state.stage.type,
+                    description: this.state.stage.description,
+                    geometry: this.state.stage.geometry,
+                    stageLocation: Array.from(this.state.stage.geometry.coordinates)
+                  }
+                });
+                this.setState({ [stageObject]: null, [loadingState]: false});
+                this.getStage();
 
-              //let tasks = JSON.stringify(this.mergeTasks('Images', simages));
-              //console.log(tasks);
-              this.setState({ stageVideos: null, videosLoading: false});
-              this.getStage();
-
-            } else {
-              console.log('No Data received from the server');
-            }
-        })
-        .catch((error) => {
-          // Your error is here!
-          console.log({error})
-        });
-      } catch(e) {
-        console.log(e.message);
-      }
-    }
-  }
-  uploadAudios = async () => {
-    console.log('clicked');
-    this.setState({audiosLoading: true});
-    // get images and prepare for store
-    let audios = this.state.stageAudios;
-    if (audios  && audios.length > 0) {
-      try {
-        let saudios =[];
-
-        Array.from(audios).forEach(file => {
-          saudios.push({
-            'audio': {
-              'name': file.name,
-              'size': file.size,
-              'type': file.type,
-              'path': 'images/stories/'+ this.state.sid + '/stages/' + this.state.ssid + '/audios/' + file.name
-            }
+              } else {
+                console.log('No Data received from the server');
+              }
+          })
+          .catch((error) => {
+            // Your error is here!
+            console.log({error})
           });
-        });
-        let files = JSON.stringify(audios);
-        let formData = new FormData();
-        for(var x = 0; x < audios.length; x++) {
-          formData.append('file', audios[x]);
-        };
-        await fetch(this.state.stageAudiosUploadUrl, {
-          method: 'POST',
-          headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin'},
-          files: files,
-          body: formData
-        })
-        .then(response => {
-          if (response && !response.ok) { throw new Error(response.statusText);}
-          return response.json();
-        })
-        .then(data => {
-            if(data) {
-              this.setState({
-                stage: {
-                  id: this.state.stage.id,
-                  sid: this.state.stage.sid,
-                  name: this.state.stage.name,
-                  adress: this.state.stage.adress,
-                  pictures: this.state.stage.pictures,
-                  images: this.state.stage.images,
-                  videos: this.state.stage.videos,
-                  audios: saudios,
-                  type: this.state.stage.type,
-                  description: this.state.stage.description,
-                  geometry: this.state.stage.geometry,
-                  stageLocation: Array.from(this.state.stage.geometry.coordinates)
-                }
-              });
-              //this.setState({initialSValues: data});
-
-              //let tasks = JSON.stringify(this.mergeTasks('Images', simages));
-              //console.log(tasks);
-              this.setState({ stageAudios: null, audiosLoading: false});
-              this.getStage();
-
-            } else {
-              console.log('No Data received from the server');
-            }
-        })
-        .catch((error) => {
-          // Your error is here!
-          console.log({error})
-        });
-      } catch(e) {
-        console.log(e.message);
+        } catch(e) {
+          console.log(e.message);
+        }
       }
-    }
+      //this.setState({ [loadingState] : false});
+      console.log(objects);
   }
+
   getStage = async () => {
     this.setState({loading: true});
     try {
@@ -861,35 +713,15 @@ class stage extends Component {
           stageStep={this.state.stageStep}
           setSteps={this.setSteps}
           renderTasks={this.renderTasks}
-          uploadObjects={this.uploadObjects}
 
           uploadObjects={this.uploadObjects}
           setStageObjects={this.setStageObjects}
           onChangeObjectsHandler={this.onChangeObjectsHandler}
+
           stageImages={this.state.stageImages}
-          imagesLoading={this.state.imagesLoading}
-          setStageImages= {this.setStageImages}
-          onChangeImagesHandler={this.onChangeImagesHandler}
-
-
-
-          picturesLoading={this.state.picturesLoading}
-          uploadPictures={this.uploadPictures}
           stagePictures={this.state.stagePictures}
-          setStagePictures={this.setStagePictures}
-          onChangePicturesHandler={this.onChangePicturesHandler}
-
-          videosLoading={this.state.videosLoading}
-          uploadVideos={this.uploadVideos}
           stageVideos={this.state.stageVideos}
-          setStageVideos={this.setStageVideos}
-          onChangeVideosHandler={this.onChangeVideosHandler}
-
-          audiosLoading={this.state.audiosLoading}
-          uploadAudios={this.uploadAudios}
           stageAudios={this.state.stageAudios}
-          setStageAudios={this.setStageAudios}
-          onChangeAudiosHandler={this.onChangeAudiosHandler}
 
           sidebarVisible={this.state.sidebarVisible}
           topSidebarVisible={this.state.topSidebarVisible}

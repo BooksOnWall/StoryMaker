@@ -19,7 +19,7 @@ function StageAudios(props) {
       setFiles(acceptedFiles.map(file => Object.assign(file, {
         src: URL.createObjectURL(file)
       })));
-      props.setStageAudios(acceptedFiles);
+      props.setStageObjects(acceptedFiles, 'stageAudios');
     }
   });
 
@@ -34,7 +34,7 @@ function StageAudios(props) {
 
       <Segment className="container">
         <div {...getRootProps({className: 'dropzone'})}>
-          <input  id='stageAudios' name='files' onChange={props.onChangeAudiosHandler} ref={ref => this.fileInput = ref} {...getInputProps()} />
+          <input  id='stageAudios' name='files' onChange={(e) => this.props.onChangeObjectsHandler(e, 'stageAudios')} ref={ref => this.fileInput = ref} {...getInputProps()} />
           <p>Drag 'n' drop some files here, or click to select files</p>
           {!isDragActive && 'Click here or drop a file to upload!'}
           {isDragActive && !isDragReject && "Drop it like it's hot!"}

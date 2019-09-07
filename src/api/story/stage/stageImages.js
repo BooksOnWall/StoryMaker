@@ -1,14 +1,7 @@
 import React, {useEffect, useState, useCallback } from 'react';
 import {useDropzone} from 'react-dropzone';
 import { FormattedMessage } from 'react-intl';
-import {
-  Segment,
-  Placeholder,
-  Icon,
-  Button,
-  List,
-  Image,
-} from 'semantic-ui-react';
+
 
 function StageImages(props){
   const [files, setFiles] = useState([]);
@@ -18,12 +11,15 @@ function StageImages(props){
     maxSize: 52428800,
     onDrop: acceptedFiles => {
       setFiles(acceptedFiles.map(file => Object.assign(file, {
-        preview: URL.createObjectURL(file)
+        src: URL.createObjectURL(file)
       })));
       props.setStageObjects(acceptedFiles, 'stageImages');
     }
   });
-
+  useEffect(() => () => {
+    // Make sure to revoke the data uris to avoid memory leaks
+    files.forEach(file => URL.revokeObjectURL(file.src));
+  }, [files]);
     return (
       <div {...getRootProps({className: 'dropzone'})}>
         <input  id='stageImages' name='files' onChange={(e) => this.props.onChangeObjectsHandler(e, 'stageImages')} ref={ref => this.fileInput = ref} {...getInputProps()} />

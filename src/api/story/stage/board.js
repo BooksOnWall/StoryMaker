@@ -32,161 +32,135 @@ const resizeStyle = {
 };
 const ObjectsPreview = (props) => {
   let objType=props.objType;
-  console.log(objType);
   if(objType) {
     let items = [];
-    switch(objType) {
-      case 'Images':
-      let images = props.objValues;
-      items = images.map(function(e,index){
-          return <Image
-            name={e.name}
-            wrapped
-            curved
-            style={{margin: '1em'}}
-            size="small"
-            id={index}
-            key={"file_"+index}
-            src={e.preview}/>
-      });
-      if(images.length >0) {
-        items.push(<Button
-          primary
-          loading={props.imagesLoading}
-          onClick={(e) => this.props.uploadObjects(e, objType)}
-        >Upload</Button>);
+    let objects = props.objValues;
+    console.log(props.objValues);
+    if (objects && objects.length > 0 ) {
+      switch(objType) {
+        case 'Images':
+        items = objects.map(function(e,index){
+            return <Image
+              name={e.name}
+              wrapped
+              style={{margin: '1em'}}
+              size="mini"
+              id={index}
+              key={"file_"+index}
+              src={e.src}/>
+        });
+        if(objects.length >0) {
+          items.push(<Button
+            primary
+            key='btn'
+            loading={props.imagesLoading}
+            onClick={(e) => props.uploadObjects(e, objType)}
+          >Upload</Button>);
+        }
+        break;
+        case 'Pictures':
+        items = objects.map(function(e,index){
+            return <Image
+              name={e.name}
+              wrapped
+              style={{margin: '1em'}}
+              size="mini"
+              id={index}
+              key={"file_"+index}
+              src={e.src}/>
+        });
+        if(objects.length >0) {
+          items.push(<Button
+            primary
+            key='btn'
+            loading={props.imagesLoading}
+            onClick={(e) => props.uploadObjects(e, objType)}
+          >Upload</Button>);
+        }
+        break;
+        case 'Videos':
+        items = objects.map(function(e,index){
+
+            return   <Segment
+              inverted
+              stacked
+              name={'video_'+ index}
+              color="green"
+              key={'video_'+ index}
+              style={{minHeight: '360px'}}
+              onDragStart = {(e) => props.onDragStart(e, e.name)}
+              draggable
+              className="draggable"
+              >
+
+
+              <ReactPlayer
+                playsinline={false}
+                playing={false}
+                preload={true}
+                light={true}
+                name={e.name}
+                controls={true}
+                pip={true}
+                config={{file: {
+                    attributes:  {
+                      crossorigin: 'anonymous',
+                      height: '360px'
+                    },
+                    forceVideo: true
+                  }
+                }}
+                style={{height: '360px'}}
+                id={"video_"+ index }
+                key={"vid_"+ index }
+                url={e.src}
+                />
+
+              </Segment>
+        });
+        if(objects.length >0) {
+            items.push(<Button
+              primary
+              loading={props.videosLoading}
+              onClick={(e) => props.uploadObjects(e, objType)}
+            >Upload</Button>);
+        }
+        break;
+        case 'Audios':
+        items = objects.map(function(e,index){
+            return   <Segment
+              inverted
+              name={'audios_'+ index}
+              color="blue"
+              key={'audio' + index}
+              onDragStart = {(e) => props.onDragStart(e, e.key)}
+              draggable
+              className="draggable"
+              >
+              <ReactAudioPlayer
+                name={e.name}
+                src={e.src}
+                key={'player_'+ index}
+                controls
+              />
+            </Segment>
+        });
+        if(objects.length >0) {
+          items.push(<Button
+            primary
+            loading={props.audiosLoading}
+            onClick={(e) => props.uploadObjects(e, objType)}
+          >Upload</Button>);
+        }
+        break;
+        default:
+        break;
       }
-      break;
-      default:
-      break;
     }
     return items;
   }
-
-
 };
-const ImagesPreview = (props) => {
-  console.log(props);
-if(props && props.images && props.images.length > 0) {
-  let images = props.images;
-  console.log(typeof(images));
-  const items = images.map(function(e,index){
-      console.log(index);
-      console.log(e);
-      return <Image
-        name={e.name}
-        wrapped
-        style={{margin: '1em'}}
-        size="small"
-        id={index}
-        key={"file_"+index}
-        src={e.preview}/>
-  });
-  items.push(<Button
-    primary
-    loading={props.imagesLoading}
-    onClick={(e) => props.uploadObjects(e, 'images')}
-  >Upload</Button>);
 
-    return items
-}
-
-return null
-};
-const PicturesPreview = (props) => {
-
-if(props && props.pictures) {
-  let images = props.pictures;
-
-  if(images && images.length > 0) {
-    const items = images.map(function(e,index){
-        return  <Image
-            name={e.name}
-            wrapped
-            style={{margin: '1em'}}
-            size="small"
-            circular
-            id={"picture_"+ index }
-            key={e.name}
-            src={e.preview}/>
-    });
-
-    items.push(<Button
-      primary
-      loading={props.picturesLoading}
-      onClick={props.uploadPictures}
-    >Upload</Button>);
-    return items;
-  }
-}
-
-return null
-};
-const VideosPreview = (props) => {
-
-if(props && props.videos) {
-  let videos = props.videos;
-
-  if(videos && videos.length > 0) {
-    const items = videos.map(function(e,index){
-        console.log(e);
-        return   <ReactPlayer
-            fluid
-            preload="auto"
-            playsInline
-            name={e.name}
-            id={"video_"+ index }
-            key={"vid_"+ index }
-            url={e.src}
-            poster="/assets/poster.png"
-            />
-
-    });
-
-    items.push(<Button
-      primary
-      loading={props.videosLoading}
-      onClick={props.uploadVideos}
-    >Upload</Button>);
-    return items;
-  }
-}
-return null
-};
-const AudiosPreview = (props) => {
-
-if(props && props.audios) {
-  let audios = props.audios;
-
-  if(audios && audios.length > 0) {
-    const items = audios.map(function(e,index){
-        return   <Segment
-          inverted
-          name={e.name}
-          color="blue"
-          key={index}
-          onDragStart = {(e) => this.props.onDragStart(e, e.name)}
-          draggable
-          className="draggable"
-          >
-          <ReactAudioPlayer
-            name={e.name}
-            src={e.src}
-            controls
-            />
-        </Segment>
-    });
-
-    items.push(<Button
-      primary
-      loading={props.audiosLoading}
-      onClick={props.uploadAudios}
-    >Upload</Button>);
-    return items;
-  }
-}
-return null
-};
 class DragDrop extends Component {
   constructor(props) {
     super(props);
@@ -195,7 +169,7 @@ class DragDrop extends Component {
       animation: 'overlay',
       direction: 'right',
       animation2: 'push',
-      direction2: 'top',
+      direction2: 'bottom',
       col1DefaultSize: { width: '25%', height: '100%'},
       col2DefaultSize: { width: '25%', height: '100%'},
       col3DefaultSize: { width: '25%', height: '100%'},
@@ -284,9 +258,9 @@ class DragDrop extends Component {
                     objValues={this.props.stageImages}
                   />
                   <StageImages
+                    className="images"
                     setStageObjects={this.props.setStageObjects}
                     onChangeObjectsHandler={this.props.onChangeObjectsHandler}
-                    objValues={this.props.stageImages}
                   />
                 </Segment> ) : ''}
               {(this.props.stageStep === 'Geo') ? (
@@ -329,16 +303,17 @@ class DragDrop extends Component {
                   <Label inverted="true" color="violet" className="task-header">Pictures</Label>
                   {tasks.pictures}
 
-                  <PicturesPreview
+                  <ObjectsPreview
+                    objType="Pictures"
                     picturesLoading={this.props.picturesLoading}
-                    uploadPictures={this.props.uploadPictures}
+                    uploadObjects={this.props.uploadObjects}
                     name="stagePictures"
-                    pictures={this.props.stagePictures} />
+                    objValues={this.props.stagePictures}
+                  />
                   <StagePictures
                     className="pictures"
-                    tasks={this.props.tasks}
-                    onChangePicturesHandler={this.props.onChangePicturesHandler}
-                    setStagePictures={this.props.setStagePictures}/>
+                    onChangeObjectHandler={this.props.onChangeObjectHandler}
+                    setStageObjects={this.props.setStageObjects}/>
                 </Segment>
               ) : ''}
               {(this.props.stageStep === 'Videos') ? (
@@ -349,18 +324,18 @@ class DragDrop extends Component {
                   <Label inverted="true" color="violet" className="task-header">Videos</Label>
                   {tasks.videos}
 
-                  <VideosPreview
-                    videosLoading={this.props.videosLoading}
-                    uploadVideos={this.props.uploadVideos}
-                    name="stageVideos"
-                    videos={this.props.stageVideos} />
                   <StageVideos
                     className="videos"
-                    onDragOver={(e)=>this.props.onDragOver(e)}
-                    onDrop={(e)=>{this.props.onDrop(e, "videos")}}
-                    tasks={this.props.tasks}
-                    onChangeVideosHandler={this.props.onChangeVideosHandler}
-                    setStageVideos={this.props.setStageVideos}/>
+                    onChangeObjectHandler={this.props.onChangeObjectHandler}
+                    setStageObjects={this.props.setStageObjects}
+                  />
+                  <ObjectsPreview
+                    objType="Videos"
+                    videosLoading={this.props.videosLoading}
+                    uploadObjects={this.props.uploadObjects}
+                    name="stageVideos"
+                    objValues={this.props.stageVideos}
+                  />
                 </Segment>
               ) : ''}
               {(this.props.stageStep === 'Audios') ? (
@@ -371,20 +346,19 @@ class DragDrop extends Component {
                   <Label inverted="true" color="violet" className="task-header">Audios</Label>
                   {tasks.audios}
 
-                  <AudiosPreview
+                  <ObjectsPreview
+                    objType="Audios"
                     audiosLoading={this.props.audiosLoading}
-                    uploadAudios={this.props.uploadAudios}
+                    uploadObjects={this.props.uploadObjects}
                     name="stageAudios"
-                    audios={this.props.stageAudios}
-                    />
+                    objValues={this.props.stageAudios}
+                  />
                   <StageAudios
                     className="audios"
-                    onDragOver={(e)=>this.props.onDragOver(e)}
-                    onDrop={(e)=>{this.props.onDrop(e, "audios")}}
-                    tasks={this.props.tasks}
-                    onChangeAudiosHandler={this.props.onChangeAudiosHandler}
-                    setStageAudios={this.props.setStageAudios}
-                    />
+                    onChangeObjectHandler={this.props.onChangeObjectHandler}
+                    setStageObjects={this.props.setStageObjects}
+                  />
+                
                 </Segment>
               ) : ''}
             </Segment>
