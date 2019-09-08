@@ -186,9 +186,9 @@ class DragDrop extends Component {
       animation2: 'push',
       direction2: 'bottom',
       col1DefaultSize: { width: '25%', height: '100%'},
-      col2DefaultSize: { width: '20%', height: '100%'},
-      col3DefaultSize: { width: '30%', height: '100%'},
-      col4DefaultSize: { width: '20%', height: '100%'},
+      col2DefaultSize: { width: '15%', height: '100%'},
+      col3DefaultSize: { width: '45%', height: '100%'},
+      col4DefaultSize: { width: '15%', height: '100%'},
       dimmed: null
     };
 

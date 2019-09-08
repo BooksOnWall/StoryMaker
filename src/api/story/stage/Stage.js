@@ -153,6 +153,9 @@ class stage extends Component {
   onDragOver = (ev) => {
       ev.preventDefault();
   }
+  handleSeekChange = e => {
+    this.setState({ played: parseFloat(e.target.value) })
+  }
   renderTasks = () => {
     var tasks = {
       title: [],
@@ -247,8 +250,12 @@ class stage extends Component {
                 preload
                 light={true}
                 name={t.name}
+                muted={false}
+                ref={this.ref}
                 controls={true}
+                loop={false}
                 pip={true}
+                seeking={true}
                 config={{file: {
                     attributes:  {
                       crossorigin: 'anonymous',
@@ -389,7 +396,9 @@ class stage extends Component {
       }
   });
   }
-
+  ref = player => {
+    this.player = player
+  }
   onChangeObjectsHandler = (e, target) => {
     console.log(target);
     console.log(e.files);
