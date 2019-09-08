@@ -22,6 +22,7 @@ import StageBoard from './board';
 import ReactHtmlParser from 'react-html-parser';
 import ReactPlayer  from 'react-player';
 import ReactAudioPlayer from 'react-audio-player';
+import { Resizable } from "re-resizable";
 
 const stageOptions = [
   { key: 'Point', value: 'Point', text: 'Geo Point' },
@@ -29,7 +30,29 @@ const stageOptions = [
   { key: 'audio', value: 'audio', text: 'Audio' }
 ];
 
+const resizeStyle = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  float: "left",
+  border: "solid 2px #ddd",
+};
 
+function humanFileSize(bytes, si) {
+    var thresh = si ? 1000 : 1024;
+    if(Math.abs(bytes) < thresh) {
+        return bytes + ' B';
+    }
+    var units = si
+        ? ['kB','MB','GB','TB','PB','EB','ZB','YB']
+        : ['KiB','MiB','GiB','TiB','PiB','EiB','ZiB','YiB'];
+    var u = -1;
+    do {
+        bytes /= thresh;
+        ++u;
+    } while(Math.abs(bytes) >= thresh && u < units.length - 1);
+    return bytes.toFixed(1)+' '+units[u];
+}
 class stage extends Component {
   constructor(props) {
       super(props);
@@ -84,6 +107,7 @@ class stage extends Component {
         stageImages: [],
         stageVideos: [],
         stageAudios: [],
+        videoDefaultSize: '350',
         setSteps: this.setSteps,
         setStageLocation: this.setStageLocation,
         toggleAuthenticateStatus: this.props.childProps.toggleAuthenticateStatus,
@@ -166,49 +190,83 @@ class stage extends Component {
           break;
           case 'image':
           tasks[t.category].push(
+            <Segment
+              inverted
+              color="violet"
+              name={'image_'+index}
+              key={'img_'+index}
+              onDragStart = {(e) => this.onDragStart(e, t.name)}
+              draggable
+              className="draggable image"
+              >
             <Image
               wrapped
               name={t.name}
               key={t.name}
-              onDragStart = {(e) => this.onDragStart(e, t.name)}
-              draggable
-              className="draggable"
               src={t.src}
               />
+            <Label inverted="true" color="violet">{t.name}:{humanFileSize(t.size)}</Label>
+            </Segment>
           );
           break;
           case 'picture':
           tasks[t.category].push(
+            <Segment
+              inverted
+              color="violet"
+              name={'picture_'+index}
+              key={'pic_'+index}
+              onDragStart = {(e) => this.onDragStart(e, t.name)}
+              draggable
+              className="draggable picture"
+              >
             <Image
               name={t.name}
               key={t.name}
-              onDragStart = {(e) => this.onDragStart(e, t.name)}
-              draggable
-              className="draggable"
-              src={t.src}
               />
+              <Label inverted="true" color="violet">{t.name}:{humanFileSize(t.size)}</Label>
+          </Segment>
           );
           break;
           case 'video':
+          console.log(t);
           tasks[t.category].push(
             <Segment
               inverted
               color="violet"
               name={'video_'+index}
               key={'video'+index}
+              style={{height: 'auto', weight: 'inherit'}}
               onDragStart = {(e) => this.onDragStart(e, t.name)}
               draggable
               className="draggable video"
               >
-              <video
-                id={'vid_'+ index}
-                controls="true"
-                src={t.src}
-                width='100%'
-                height='100%'
-              />
+              <ReactPlayer
+                playsinline={true}
+                playing={false}
+                preload
+                light={true}
+                name={t.name}
+                controls={true}
+                pip={true}
+                config={{file: {
+                    attributes:  {
+                      crossorigin: 'anonymous',
+                      height: 'inherit',
+                      width: 'inherit'
+                    },
+                    forceVideo: true
+                  }
+                }}
+                style={{height: '360px'}}
+                id={"video_"+ index }
+                key={"vid_"+ index }
+                url={t.src}
+                />
 
+            <Label inverted="true" color="violet" >{t.name}: {humanFileSize(t.size)}</Label>
             </Segment>
+
           );
           break;
           case 'audio':
@@ -224,7 +282,7 @@ class stage extends Component {
               draggable
               className="audio draggable"
               >
-              <Label inverted="true" color="violet">{t.name}</Label>
+              <Label inverted="true" color="violet">{t.name}: {humanFileSize(t.size)}</Label>
               <ReactAudioPlayer
                 src={t.src}
                 controls
@@ -252,6 +310,7 @@ class stage extends Component {
           let json = {
             name: img.name,
             type: "image",
+            size: img.size,
             category:"images",
             src: server + img.src
           };
@@ -267,6 +326,7 @@ class stage extends Component {
             name: img.name,
             type: "image",
             category:"pictures",
+            size: img.size,
             src: server + img.src
           };
           picturesArray.push(json);
@@ -282,6 +342,7 @@ class stage extends Component {
             name: vid.name,
             type: "video",
             category:"videos",
+            size: vid.size,
             src: server + vid.src
           };
           videosArray.push(json);
@@ -297,6 +358,7 @@ class stage extends Component {
             name: a.name,
             type: "audio",
             category:"audios",
+            size: a.size,
             src: server + a.src
           };
           audiosArray.push(json);

@@ -18,7 +18,10 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
-
+video {
+  width: 100%    !important;
+  height: auto   !important;
+}
 .App-link {
   color: #61dafb;
 }

@@ -30,6 +30,21 @@ const resizeStyle = {
   border: "solid 1px #ddd",
   background: "#f0f0f0"
 };
+function humanFileSize(bytes, si) {
+    var thresh = si ? 1000 : 1024;
+    if(Math.abs(bytes) < thresh) {
+        return bytes + ' B';
+    }
+    var units = si
+        ? ['kB','MB','GB','TB','PB','EB','ZB','YB']
+        : ['KiB','MiB','GiB','TiB','PiB','EiB','ZiB','YiB'];
+    var u = -1;
+    do {
+        bytes /= thresh;
+        ++u;
+    } while(Math.abs(bytes) >= thresh && u < units.length - 1);
+    return bytes.toFixed(1)+' '+units[u];
+}
 const ObjectsPreview = (props) => {
   let objType=props.objType;
   if(objType) {
@@ -171,9 +186,9 @@ class DragDrop extends Component {
       animation2: 'push',
       direction2: 'bottom',
       col1DefaultSize: { width: '25%', height: '100%'},
-      col2DefaultSize: { width: '25%', height: '100%'},
-      col3DefaultSize: { width: '25%', height: '100%'},
-      col4DefaultSize: { width: '25%', height: '100%'},
+      col2DefaultSize: { width: '20%', height: '100%'},
+      col3DefaultSize: { width: '30%', height: '100%'},
+      col4DefaultSize: { width: '20%', height: '100%'},
       dimmed: null
     };
 
@@ -358,7 +373,7 @@ class DragDrop extends Component {
                     onChangeObjectHandler={this.props.onChangeObjectHandler}
                     setStageObjects={this.props.setStageObjects}
                   />
-                
+
                 </Segment>
               ) : ''}
             </Segment>
