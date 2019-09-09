@@ -195,7 +195,7 @@ class DragDrop extends Component {
             </Button.Content>
           </Button>
           <Button disabled={this.props.topSidebarVisible} onClick={this.props.handleTopShowClick}>
-            Show top bar
+            Show bottom bar
           </Button>
           <Button disabled={!this.props.topSidebarVisible} onClick={this.props.handleTopHideClick}>
             Hide Top bar

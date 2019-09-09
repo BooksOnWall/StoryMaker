@@ -234,7 +234,6 @@ class stage extends Component {
           );
           break;
           case 'image':
-          console.log(t.category);
           tasks[t.category].push(
             <Segment
               inverted
@@ -246,11 +245,11 @@ class stage extends Component {
               className="draggable image"
               style={{height: 'auto', width: 'inherit'}}
               >
-              <ReactCardFlip style={{height: 'auto', width: 'inherit'}} isFlipped={t.isFlipped} flipDirection="vertical">
+              <ReactCardFlip style={{height: 'auto', width: 'inherit'}} isFlipped={t.isFlipped} flipDirection="horizontal">
                 <Card className="fluid" key="front">
                   <Image
-                    wrapped
-                    size={(t.category==='images' ? 'small': null)}
+                    wrapped={(t.category ==='Images') ? true : null}
+                    size={(t.category ==='Images') ? 'small': null}
                     name={t.name}
                     key={t.name}
                     src={t.src}
@@ -292,6 +291,7 @@ class stage extends Component {
           );
           break;
           case 'picture':
+          console.log(t.category);
           tasks[t.category].push(
             <Segment
               inverted
@@ -303,11 +303,11 @@ class stage extends Component {
               draggable
               className="draggable picture"
               >
-              <ReactCardFlip style={{height: 'auto', width: 'inherit'}} isFlipped={t.isFlipped} flipDirection="vertical">
+              <ReactCardFlip style={{height: 'auto', width: 'inherit'}} isFlipped={t.isFlipped} flipDirection="horizontal">
                 <Card className="fluid" key="front">
                   <Image
-                    wrapped
-                      size={(t.category==='pictures' ? 'small': null)}
+                    wrapped={(t.category === 'Pictures') ? true : null}
+                    size={(t.category === 'Pictures') ? 'mini': null}
                     name={t.name}
                     key={t.name}
                     />
