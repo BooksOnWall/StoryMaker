@@ -194,18 +194,7 @@ class DragDrop extends Component {
               <Icon name='arrow left' />
             </Button.Content>
           </Button>
-          <Button disabled={this.props.topSidebarVisible} onClick={this.props.handleTopShowClick}>
-            Show bottom bar
-          </Button>
-          <Button disabled={!this.props.topSidebarVisible} onClick={this.props.handleTopHideClick}>
-            Hide Top bar
-          </Button>
-          <Button disabled={this.props.sidebarVisible} onClick={this.props.handleShowClick}>
-            Show sidebar
-          </Button>
-          <Button disabled={!this.props.sidebarVisible} onClick={this.props.handleHideClick}>
-            Hide sidebar
-          </Button>
+        <Button color="grey"><header as='h1'>{this.props.stage.name}</header></Button>
 
           <Button animated primary floated="right">
             <Button.Content visible={this.props.sidebarVisible}>Next</Button.Content>
@@ -370,13 +359,12 @@ class DragDrop extends Component {
             <Segment >
               <Ref innerRef={this.segmentRef}>
                 <Segment className='slide-out' fluid="true">
-                  <header as='h1'>{this.props.stage.name}</header>
+
                   <Resizable
                     style={resizeStyle}
                     defaultSize={this.state.col1DefaultSize}
                     >
                     <Segment className="stageCol">
-                      <Label inverted="true" color="violet" className="task-header">Edit Stage</Label>
                       <Card.Group >
                         <Card>
                           <Card.Content
