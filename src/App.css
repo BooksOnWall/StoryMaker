@@ -73,9 +73,11 @@ video {
 }
 .droppable {
   width: inherit;
-  height: 100vh;
+  height: 65vh;
   right: 0;
-  top: 10;
+  top: 0;
+  overflow-y: auto;
+  overflow-x: none;
   background-color: #9E9E9E;
   border-left: 1px dotted;
 }
@@ -88,9 +90,9 @@ video {
 .draggable {
   width: inherit;
   height: 10vh;
-  background-color: yellow;
   margin: 0;
   padding: 0;
+
   line-height: 5em;
 }
 .ui.segment.video {

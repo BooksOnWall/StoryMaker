@@ -234,10 +234,11 @@ class stage extends Component {
           );
           break;
           case 'image':
+          console.log(t.category);
           tasks[t.category].push(
             <Segment
               inverted
-              color="violet"
+              color="yellow"
               name={'image_'+index}
               key={'img_'+index}
               onDragStart = {(e) => this.onDragStart(e, t.name)}
@@ -245,15 +246,48 @@ class stage extends Component {
               className="draggable image"
               style={{height: 'auto', width: 'inherit'}}
               >
-            <Image
-              wrapped
-              name={t.name}
-              key={t.name}
-              src={t.src}
-              />
-              <Button  size="mini" primary floated="left"><Icon  name="edit" /></Button>
-              <Button  size="mini" primary floated="right"><Icon  name="delete" /></Button>
-            <Label inverted="true" color="violet">{t.name}:{humanFileSize(t.size)}</Label>
+              <ReactCardFlip style={{height: 'auto', width: 'inherit'}} isFlipped={t.isFlipped} flipDirection="vertical">
+                <Card className="fluid" key="front">
+                  <Image
+                    wrapped
+                    size={(t.category==='images' ? 'small': null)}
+                    name={t.name}
+                    key={t.name}
+                    src={t.src}
+                    />
+                  <Label inverted="true" color="violet" >
+                    <Icon className="button" size="mini" floated="left"  name="edit" onClick={(e) => this.handleCardClick(e,t)} />
+                    <Icon className="button" size="mini" floated="right" name="delete"  onClick={(e) => this.handleObjectDeleteConfirm(e,t)} />
+                    <Confirm
+                      content='Are you sure you want to delete this ??? '
+                      open={t.confirm}
+                      cancelButton='Never mind'
+                      confirmButton="Yes ! let's destroy it !"
+                      onCancel={(e) => this.handleObjectDeleteCancel(e,t)}
+                      onConfirm={(e) => this.handleObjectDelete(e,t)}
+                      />
+
+                  </Label>
+                </Card>
+                <Card fluid key="back">
+                  <Form style={{textAlign: 'left'}}>
+                    <Label.Group color='blue' style={{padding: '2em'}}>
+                      <Label as='a'>
+                        Name:
+                        <Label.Detail>{t.name}</Label.Detail>
+                      </Label>
+                      <Label as='a'>
+                        Size:
+                        <Label.Detail>{humanFileSize(t.size)}</Label.Detail>
+                      </Label>
+                      <Label as='a'>Url:
+                        <Label.Detail>{t.src}</Label.Detail>
+                      </Label>
+                    </Label.Group>
+                  </Form>
+                  <Button primary onClick={(e) => this.handleCardClick(e,t)}><Icon name="arrow left" /> Back</Button>
+                </Card>
+              </ReactCardFlip>
             </Segment>
           );
           break;
@@ -261,7 +295,7 @@ class stage extends Component {
           tasks[t.category].push(
             <Segment
               inverted
-              color="violet"
+              color="blue"
               name={'picture_'+index}
               key={'pic_'+index}
               style={{height: 'auto', width: 'inherit'}}
@@ -269,15 +303,47 @@ class stage extends Component {
               draggable
               className="draggable picture"
               >
-
-            <Image
-              wrapped
-              name={t.name}
-              key={t.name}
-              />
-              <Button  size="mini" primary floated="left"><Icon  name="edit" /></Button>
-              <Button  size="mini" primary floated="right"><Icon  name="delete" /></Button>
-              <Label inverted="true" color="violet">{t.name}:{humanFileSize(t.size)}</Label>
+              <ReactCardFlip style={{height: 'auto', width: 'inherit'}} isFlipped={t.isFlipped} flipDirection="vertical">
+                <Card className="fluid" key="front">
+                  <Image
+                    wrapped
+                      size={(t.category==='pictures' ? 'small': null)}
+                    name={t.name}
+                    key={t.name}
+                    />
+                  <Label inverted="true" color="violet" >
+                    <Icon className="button" size="mini" floated="left"  name="edit" onClick={(e) => this.handleCardClick(e,t)} />
+                    <Icon className="button" size="mini" floated="right" name="delete"  onClick={(e) => this.handleObjectDeleteConfirm(e,t)} />
+                    <Confirm
+                      content='Are you sure you want to delete this ??? '
+                      open={t.confirm}
+                      cancelButton='Never mind'
+                      confirmButton="Yes ! let's destroy it !"
+                      onCancel={(e) => this.handleObjectDeleteCancel(e,t)}
+                      onConfirm={(e) => this.handleObjectDelete(e,t)}
+                      />
+                    {t.name}: {humanFileSize(t.size)}
+                  </Label>
+                </Card>
+                <Card fluid key="back">
+                  <Form style={{textAlign: 'left'}}>
+                    <Label.Group color='blue' style={{padding: '2em'}}>
+                      <Label as='a'>
+                        Name:
+                        <Label.Detail>{t.name}</Label.Detail>
+                      </Label>
+                      <Label as='a'>
+                        Size:
+                        <Label.Detail>{humanFileSize(t.size)}</Label.Detail>
+                      </Label>
+                      <Label as='a'>Url:
+                        <Label.Detail>{t.src}</Label.Detail>
+                      </Label>
+                    </Label.Group>
+                  </Form>
+                  <Button primary onClick={(e) => this.handleCardClick(e,t)}><Icon name="arrow left" /> Back</Button>
+                </Card>
+              </ReactCardFlip>
           </Segment>
           );
           break;
@@ -285,7 +351,7 @@ class stage extends Component {
           tasks[t.category].push(
             <Segment
               inverted
-              color="violet"
+              color="teal"
               name={'video_'+index}
               key={'video'+index}
               style={{height: 'auto', width: 'inherit'}}
@@ -293,8 +359,8 @@ class stage extends Component {
               draggable
               className="draggable video"
               >
-              <ReactCardFlip style={{height: 'auto', width: 'inherit'}} isFlipped={t.isFlipped} flipDirection="vertical">
-                <Card className="fluid" key="front">
+              <ReactCardFlip style={{height: 'auto', backgroundColor: 'transparent' , width: 'inherit'}} isFlipped={t.isFlipped} flipDirection="vertical">
+                <Card className="fluid" style={{ backgroundColor: 'transparent' }} key="front">
                   <ReactPlayer
                     playsinline={true}
                     playing={t.autoplay}
@@ -325,8 +391,8 @@ class stage extends Component {
                     />
 
                 <Label inverted="true" color="violet" >
-                  <Button  size="mini" primary floated="left" onClick={(e) => this.handleCardClick(e,t)} ><Icon  name="edit" /></Button>
-                  <Button  size="mini" primary floated="right" onClick={(e) => this.handleObjectDeleteConfirm(e,t)}><Icon  name="delete" /></Button>
+                  <Icon className="button" size="mini" floated="left"  name="edit" onClick={(e) => this.handleCardClick(e,t)} />
+                  <Icon className="button" size="mini" floated="right" name="delete"  onClick={(e) => this.handleObjectDeleteConfirm(e,t)} />
                     <Confirm
                       content='Are you sure you want to delete this ??? '
                       open={t.confirm}
@@ -335,10 +401,9 @@ class stage extends Component {
                       onCancel={(e) => this.handleObjectDeleteCancel(e,t)}
                       onConfirm={(e) => this.handleObjectDelete(e,t)}
                     />
-                  {t.name}: {humanFileSize(t.size)}
                 </Label>
                 </Card>
-                <Card fluid key="back">
+                <Card fluid key="back" >
                   <Form style={{textAlign: 'left'}}>
                     <Label.Group color='blue' style={{padding: '2em'}}>
                      <Label as='a'>
@@ -368,17 +433,17 @@ class stage extends Component {
             <Segment
               inverted
               name={t.name}
-              color="blue"
+              color="purple"
               key={index}
               onDragStart = {(e) => this.onDragStart(e, t.name)}
               draggable
               className="audio draggable"
               >
-              <ReactCardFlip style={{height: 'auto', width: 'inherit'}} isFlipped={t.isFlipped} flipDirection="vertical">
-                <Card  color='blue' className="fluid" key="front">
+              <ReactCardFlip style={{height: 'auto', backgroundColor: 'transparent' , width: 'inherit'}} isFlipped={t.isFlipped} flipDirection="vertical">
+                <Card  color='blue' className="fluid" key="front" style={{ backgroundColor: 'transparent' }}>
                   <Label inverted="true" color="violet">
-                    <Button  size="mini" primary floated="left" onClick={(e) => this.handleCardClick(e,t)}><Icon  name="edit" /></Button>
-                    <Button  size="mini" primary floated="right" onClick={(e) => this.handleObjectDeleteConfirm(e,t)}><Icon  name="delete" /></Button>
+                    <Icon className="button" size="mini" floated="left"  name="edit" onClick={(e) => this.handleCardClick(e,t)} />
+                    <Icon className="button" size="mini" floated="right" name="delete"  onClick={(e) => this.handleObjectDeleteConfirm(e,t)} />
                       <Confirm
                         content='Are you sure you want to delete this ??? '
                         open={t.confirm}

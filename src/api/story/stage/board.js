@@ -36,7 +36,6 @@ const ObjectsPreview = (props) => {
   if(objType) {
     let items = [];
     let objects = props.objValues;
-    console.log(props.objValues);
     if (objects && objects.length > 0 ) {
       switch(objType) {
         case 'Images':
@@ -225,6 +224,7 @@ class DragDrop extends Component {
             onHide={this.props.handleTopSidebarHide}
             visible={this.props.topSidebarVisible}
             width='very wide'
+            style={{maxHeight: '30vh'}}
           >
           <Segment.Group style={{width: 'inherit'}}>
             <Segment >
