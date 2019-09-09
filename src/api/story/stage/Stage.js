@@ -8,6 +8,7 @@ import {
   Label,
   Button,
   Icon,
+  Checkbox,
   Confirm,
   Image,
   Segment,
@@ -297,8 +298,12 @@ class stage extends Component {
                 </Card>
 
                 <Card fluid key="back">
-                  This is the back of the card.
-                  <Button primary onClick={(e) => this.handleCardClick(e,t)}>Click to flip</Button>
+                  <Form>
+                    <Label>Loop <Checkbox name="loop" defaultValue={t.loop} toggle onChange={this.handleLoopChange}/></Label>
+
+                  </Form>
+
+                  <Button primary onClick={(e) => this.handleCardClick(e,t)}><Icon name="arrow left" /> Back</Button>
                 </Card>
               </ReactCardFlip>
 
@@ -332,8 +337,11 @@ class stage extends Component {
                     />
                 </Card>
                 <Card fluid key="back">
-                  This is the back of the card.
-                  <Button primary onClick={(e) => this.handleCardClick(e,t)}>Click to flip</Button>
+                  <Form>
+                    <Label>Loop <Checkbox name="loop" defaultValue={t.loop} toggle onChange={this.handleLoopChange}/></Label>
+
+                  </Form>
+                  <Button primary onClick={(e) => this.handleCardClick(e,t)}><Icon name="arrow left" /> Back</Button>
                 </Card>
               </ReactCardFlip>
 
