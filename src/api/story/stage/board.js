@@ -117,15 +117,15 @@ const ObjectsPreview = (props) => {
                 name={e.name}
                 controls={true}
                 pip={true}
+                width='100%'
+                height='auto'
                 config={{file: {
                     attributes:  {
                       crossorigin: 'anonymous',
-                      height: '360px'
                     },
                     forceVideo: true
                   }
                 }}
-                style={{height: '360px'}}
                 id={"video_"+ index }
                 key={"vid_"+ index }
                 url={e.src}

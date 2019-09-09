@@ -22,7 +22,8 @@ import StageBoard from './board';
 import ReactHtmlParser from 'react-html-parser';
 import ReactPlayer  from 'react-player';
 import ReactAudioPlayer from 'react-audio-player';
-import { Resizable } from "re-resizable";
+import ReactCardFlip from 'react-card-flip';
+
 
 const stageOptions = [
   { key: 'Point', value: 'Point', text: 'Geo Point' },
@@ -30,13 +31,6 @@ const stageOptions = [
   { key: 'audio', value: 'audio', text: 'Audio' }
 ];
 
-const resizeStyle = {
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  float: "left",
-  border: "solid 2px #ddd",
-};
 
 function humanFileSize(bytes, si) {
     var thresh = si ? 1000 : 1024;
@@ -76,6 +70,7 @@ class stage extends Component {
         map:  '/stories/'+ this.props.match.params.id  + '/map',
         loading: null,
         step: 'Stages',
+        isFlipped: false,
         animation: 'slide along',
         direction: 'right',
         dimmed: null,
@@ -113,16 +108,25 @@ class stage extends Component {
         toggleAuthenticateStatus: this.props.childProps.toggleAuthenticateStatus,
         authenticated: this.props.childProps.authenticated,
       };
+      this.handleCardClick = this.handleCardClick.bind(this);
       this.mergeTasks = this.mergeTasks.bind(this);
-      this.uploadImages = this.uploadImages.bind(this);
       this.setSteps = this.setSteps.bind(this);
       this.getStage= this.getStage.bind(this);
       this.lock=this.lock.bind(this);
       this.unlock=this.unlock.bind(this);
       this.toggleLock = this.toggleLock.bind(this);
   }
-  segmentRef = createRef()
 
+  segmentRef = createRef()
+  handleCardClick(e, t) {
+    e.preventDefault();
+    const index = this.state.tasks.findIndex(el => (el.category === t.category && el.name === t.name));
+    let flipped = (this.state.tasks[index].isFlipped === false) ? true : false;
+    let tasks = this.state.tasks;
+    tasks[index].isFlipped = flipped;
+    this.setState({tasks: tasks});
+
+  }
   handleHideClick = () => this.setState({ sidebarVisible: false })
   handleShowClick = () => this.setState({ sidebarVisible: true })
   handleSidebarHide = () => this.setState({ sidebarVisible: false })
@@ -201,6 +205,7 @@ class stage extends Component {
               onDragStart = {(e) => this.onDragStart(e, t.name)}
               draggable
               className="draggable image"
+              style={{height: 'auto', width: 'inherit'}}
               >
             <Image
               wrapped
@@ -208,6 +213,8 @@ class stage extends Component {
               key={t.name}
               src={t.src}
               />
+              <Button  size="mini" primary floated="left"><Icon  name="edit" /></Button>
+              <Button  size="mini" primary floated="right"><Icon  name="delete" /></Button>
             <Label inverted="true" color="violet">{t.name}:{humanFileSize(t.size)}</Label>
             </Segment>
           );
@@ -219,59 +226,82 @@ class stage extends Component {
               color="violet"
               name={'picture_'+index}
               key={'pic_'+index}
+              style={{height: 'auto', width: 'inherit'}}
               onDragStart = {(e) => this.onDragStart(e, t.name)}
               draggable
               className="draggable picture"
               >
+
             <Image
+              wrapped
               name={t.name}
               key={t.name}
               />
+              <Button  size="mini" primary floated="left"><Icon  name="edit" /></Button>
+              <Button  size="mini" primary floated="right"><Icon  name="delete" /></Button>
               <Label inverted="true" color="violet">{t.name}:{humanFileSize(t.size)}</Label>
           </Segment>
           );
           break;
           case 'video':
-          console.log(t);
+
           tasks[t.category].push(
             <Segment
               inverted
               color="violet"
               name={'video_'+index}
               key={'video'+index}
-              style={{height: 'auto', weight: 'inherit'}}
+              style={{height: 'auto', width: 'inherit'}}
               onDragStart = {(e) => this.onDragStart(e, t.name)}
               draggable
               className="draggable video"
               >
-              <ReactPlayer
-                playsinline={true}
-                playing={false}
-                preload
-                light={true}
-                name={t.name}
-                muted={false}
-                ref={this.ref}
-                controls={true}
-                loop={false}
-                pip={true}
-                seeking={true}
-                config={{file: {
-                    attributes:  {
-                      crossorigin: 'anonymous',
-                      height: 'inherit',
-                      width: 'inherit'
-                    },
-                    forceVideo: true
-                  }
-                }}
-                style={{height: '360px'}}
-                id={"video_"+ index }
-                key={"vid_"+ index }
-                url={t.src}
-                />
+              <ReactCardFlip style={{height: 'auto', width: 'inherit'}} isFlipped={t.isFlipped} flipDirection="vertical">
+                <Card className="fluid" key="front">
+                  <ReactPlayer
+                    playsinline={true}
+                    playing={false}
+                    preload="true"
+                    light={true}
+                    name={t.name}
+                    muted={false}
+                    ref={this.ref}
+                    controls={true}
+                    loop={false}
+                    width='100%'
+                    height='auto'
+                    pip={true}
+                    seeking="true"
+                    config={{file: {
+                        attributes:  {
+                          crossOrigin: 'anonymous',
+                          width: '100%',
+                          height: 'auto'
+                        },
+                        forceVideo: true
+                      }
+                    }}
 
-            <Label inverted="true" color="violet" >{t.name}: {humanFileSize(t.size)}</Label>
+                    id={"video_"+ index }
+                    key={"vid_"+ index }
+                    url={t.src}
+                    />
+
+                <Label inverted="true" color="violet" >
+                  <Button  size="mini" primary floated="left" onClick={(e) => this.handleCardClick(e,t)} ><Icon  name="edit" /></Button>
+                  <Button  size="mini" primary floated="right"><Icon  name="delete" /></Button>
+                  {t.name}: {humanFileSize(t.size)}
+                </Label>
+
+
+                </Card>
+
+                <Card fluid key="back">
+                  This is the back of the card.
+                  <Button primary onClick={(e) => this.handleCardClick(e,t)}>Click to flip</Button>
+                </Card>
+              </ReactCardFlip>
+
             </Segment>
 
           );
@@ -289,11 +319,24 @@ class stage extends Component {
               draggable
               className="audio draggable"
               >
-              <Label inverted="true" color="violet">{t.name}: {humanFileSize(t.size)}</Label>
-              <ReactAudioPlayer
-                src={t.src}
-                controls
-                />
+              <ReactCardFlip style={{height: 'auto', width: 'inherit'}} isFlipped={t.isFlipped} flipDirection="vertical">
+                <Card  className="fluid" key="front">
+                  <Label inverted="true" color="violet">
+                    <Button  size="mini" primary floated="left" onClick={(e) => this.handleCardClick(e,t)}><Icon  name="edit" /></Button>
+                    <Button  size="mini" primary floated="right"><Icon  name="delete" /></Button>
+                    {t.name}: {humanFileSize(t.size)}
+                  </Label>
+                  <ReactAudioPlayer
+                    src={t.src}
+                    controls
+                    />
+                </Card>
+                <Card fluid key="back">
+                  This is the back of the card.
+                  <Button primary onClick={(e) => this.handleCardClick(e,t)}>Click to flip</Button>
+                </Card>
+              </ReactCardFlip>
+
             </Segment>
           );
           break;
@@ -318,6 +361,7 @@ class stage extends Component {
             name: img.name,
             type: "image",
             size: img.size,
+            isFlipped: false,
             category:"images",
             src: server + img.src
           };
@@ -334,6 +378,7 @@ class stage extends Component {
             type: "image",
             category:"pictures",
             size: img.size,
+            isFlipped: false,
             src: server + img.src
           };
           picturesArray.push(json);
@@ -343,12 +388,13 @@ class stage extends Component {
         case 'Videos':
         let videosArray =[];
         list.forEach(function(video) {
-          console.log(video);
           let vid = video.video;
           let json = {
             name: vid.name,
             type: "video",
             category:"videos",
+            isFlipped: false,
+            loop: false,
             size: vid.size,
             src: server + vid.src
           };
@@ -359,12 +405,13 @@ class stage extends Component {
         case 'Audios':
         let audiosArray =[];
         list.forEach(function(audio) {
-          console.log(audio);
           let a = audio.audio;
           let json = {
             name: a.name,
             type: "audio",
             category:"audios",
+            loop: false,
+            isFlipped: false,
             size: a.size,
             src: server + a.src
           };
@@ -376,7 +423,7 @@ class stage extends Component {
         break;
       }
       this.setState({tasks:tasks});
-      console.log(tasks);
+
       //return tasks;
       return true;
     }
@@ -388,22 +435,19 @@ class stage extends Component {
         sid: this.state.stage.sid,
         name: this.state.stage.name,
         adress: this.state.stage.adress,
+        images: this.state.stage.images,
         pictures: this.state.stage.pictures,
+        videos: this.state.stage.videos,
+        audios: this.state.stage.audios,
         type: this.state.stage.type,
         description: this.state.stage.description,
         geometry: this.state.stage.geometry,
         stageLocation: lngLat
       }
-  });
+    });
   }
-  ref = player => {
-    this.player = player
-  }
-  onChangeObjectsHandler = (e, target) => {
-    console.log(target);
-    console.log(e.files);
-    this.setState({[target]: e.files});
-  }
+  ref = player => this.player = player
+  onChangeObjectsHandler = (e, target) => this.setState({[target]: e.files})
   setStageObjects = (e, target) => this.setState({[target]: e})
 
   componentDidMount= async () => {
@@ -529,76 +573,6 @@ class stage extends Component {
     );
   }
 
-  uploadImages = async () => {
-    console.log('clicked');
-    this.setState({imagesLoading: true});
-    // get images and prepare for store
-    let images = this.state.stageImages;
-    if (images  && images.length > 0) {
-      try {
-        let simages =[];
-
-        Array.from(images).forEach(file => {
-          simages.push({
-            'image': {
-              'name': file.name,
-              'size': file.size,
-              'type': file.type,
-              'path': 'images/stories/'+ this.state.sid + '/stages/' + this.state.ssid + '/images/' + file.name
-            }
-          });
-        });
-        let files = JSON.stringify(images);
-        let formData = new FormData();
-        for(var x = 0; x < images.length; x++) {
-          formData.append('file', images[x]);
-        };
-        await fetch(this.state.stageImagesUploadUrl, {
-          method: 'POST',
-          headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin'},
-          files: files,
-          body: formData
-        })
-        .then(response => {
-          if (response && !response.ok) { throw new Error(response.statusText);}
-          return response.json();
-        })
-        .then(data => {
-            if(data) {
-              this.setState({
-                stage: {
-                  id: this.state.stage.id,
-                  sid: this.state.stage.sid,
-                  name: this.state.stage.name,
-                  adress: this.state.stage.adress,
-                  pictures: this.state.stage.pictures,
-                  images: simages,
-                  type: this.state.stage.type,
-                  description: this.state.stage.description,
-                  geometry: this.state.stage.geometry,
-                  stageLocation: Array.from(this.state.stage.geometry.coordinates)
-                }
-              });
-              //this.setState({initialSValues: data});
-
-              //let tasks = JSON.stringify(this.mergeTasks('Images', simages));
-              //console.log(tasks);
-              this.setState({topSidebarVisible: false, stageImages: null, imagesLoading: false});
-              this.getStage();
-
-            } else {
-              console.log('No Data received from the server');
-            }
-        })
-        .catch((error) => {
-          // Your error is here!
-          console.log({error})
-        });
-      } catch(e) {
-        console.log(e.message);
-      }
-    }
-  }
   uploadObjects = async (e, objType) => {
     console.log(objType);
     console.log(e);
