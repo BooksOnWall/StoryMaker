@@ -248,7 +248,7 @@ class DragDrop extends Component {
                     className="images"
                     onDragOver={(e)=>this.props.onDragOver(e)}
                     onDrop={(e)=>{this.props.onDrop(e, "images")}}>
-                    <span className="task-header">Images</span>
+                    <Button className="task-header">Images</Button>
                     {tasks.images}
                   </Segment>
                   <ObjectsPreview
@@ -384,7 +384,7 @@ class DragDrop extends Component {
                             onDragOver={(e)=>this.props.onDragOver(e)}
                             onDrop={(e)=>this.props.onDrop(e, "photo")}
                             >
-                            <Label inverted="true" color="violet" className="task-header">Photo</Label>
+                            <Button  color="violet" onClick={this.props.handleTopShowClick} className="task-header">Photo</Button>
                             {(tasks.photo.length > 0) ? tasks.photo : <Image  src='https://react.semantic-ui.com/images/avatar/large/matthew.png' wrapped  /> }
                             <Card.Header>{this.props.stage.name}</Card.Header>
                             <Card.Meta>Drag your image here </Card.Meta>
@@ -393,7 +393,7 @@ class DragDrop extends Component {
                         <Card >
                           <Card.Content>
                             <Card.Description className="single">
-                              <Label inverted="true" color="violet" className="task-header">Description</Label>
+                              <Button  color="violet" onClick={this.props.handleTopShowClick}  className="task-header">Description</Button>
                               {HtmlParser(this.props.stage.description)}
                             </Card.Description>
                           </Card.Content>
@@ -403,7 +403,7 @@ class DragDrop extends Component {
                             onDragOver={(e)=>this.props.onDragOver(e)}
                             onDrop={(e)=>this.props.onDrop(e, "location")}
                             >
-                            <Label inverted="true" color="violet" className="task-header">Location</Label>
+                          <Button  color="violet" onClick={this.props.handleTopShowClick}  className="task-header">Location</Button>
                             {tasks.location}
                           </Card.Content>
                         </Card>
@@ -418,7 +418,7 @@ class DragDrop extends Component {
                       <div className="droppable"
                         onDragOver={(e)=>this.props.onDragOver(e)}
                         onDrop={(e)=>this.props.onDrop(e, "onZoneEnter")}>
-                        <Label inverted="true" color="violet" className="task-header">On Zone Enter</Label>
+                        <Button  color="violet" onClick={this.props.handleShowClick} className="task-header">On Zone Enter</Button>
                         {tasks.onZoneEnter}
                       </div>
                     </Segment>
@@ -431,7 +431,7 @@ class DragDrop extends Component {
                       <div className="droppable"
                         onDragOver={(e)=>this.props.onDragOver(e)}
                         onDrop={(e)=>this.props.onDrop(e, "onPictureMatch")}>
-                        <Label inverted="true" color="violet" className="task-header">On Picture Match</Label>
+                        <Button  color="violet" onClick={this.props.handleShowClick} className="task-header">On Picture Match</Button>
                         {tasks.onPictureMatch}
                       </div>
                     </Segment>
@@ -444,7 +444,7 @@ class DragDrop extends Component {
                       <div className="droppable"
                         onDragOver={(e)=>this.props.onDragOver(e)}
                         onDrop={(e)=>this.props.onDrop(e, "onZoneLeave")}>
-                        <Label inverted="true" color="violet" className="task-header">On Zone Leave</Label>
+                        <Button  color="violet" onClick={this.props.handleShowClick} className="task-header">On Zone Leave</Button>
                         {tasks.onZoneLeave}
                       </div>
                     </Segment>
