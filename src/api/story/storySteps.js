@@ -9,7 +9,6 @@ import { FormattedMessage } from 'react-intl';
 class storySteps extends Component {
   constructor(props) {
     super(props);
-    console.log(props);
     this.state = {
       sid: this.props.sid,
       mapPath: (this.props.active === 'Map') ? window.location.reload : this.props.sid + '/map',

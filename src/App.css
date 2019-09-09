@@ -22,6 +22,10 @@ video {
   width: 100%    !important;
   height: auto   !important;
 }
+
+.ui.segment.audio .react-audio-player {
+  width: inherit;
+}
 .App-link {
   color: #61dafb;
 }

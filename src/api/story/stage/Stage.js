@@ -77,6 +77,7 @@ class stage extends Component {
         dimmed: null,
         descLock: 'lock',
         stageStep: 'Stage',
+        confirm: false,
         tasks: [],
         sidebarVisible: false,
         topSidebarVisible: false,
@@ -128,6 +129,42 @@ class stage extends Component {
     this.setState({tasks: tasks});
 
   }
+  handleObjectDelete = async (e, t) => {
+    try {
+      let tasks= this.state.tasks;
+      const index = tasks.findIndex(el => (el.category === t.category && el.name === t.name));
+      let confirm = (tasks[index].confirm === false) ? true : false;
+      tasks[index].confirm = confirm;
+      this.setState({tasks: tasks});
+      // send delete request to server
+      let type = t.type;
+      let name= t.name;
+      let sid = this.state.sid;
+      let ssid = this.type.ssid;
+
+    } catch(e) {
+      console.log(e.message);
+    }
+
+
+  }
+  handleObjectDeleteConfirm = (e, t) => {
+    console.log(t);
+
+    let tasks= this.state.tasks;
+    const index = tasks.findIndex(el => (el.category === t.category && el.name === t.name));
+    let confirm = (tasks[index].confirm === false) ? true : false;
+    tasks[index].confirm = confirm;
+    this.setState({tasks: tasks});
+
+  }
+  handleObjectDeleteCancel = (e, t) => {
+    let tasks= this.state.tasks;
+    const index = tasks.findIndex(el => (el.category === t.category && el.name === t.name));
+    tasks[index].confirm = false;
+    this.setState({tasks: tasks});
+  }
+  handleCancel = () => this.setState({ confirm: false })
   handleHideClick = () => this.setState({ sidebarVisible: false })
   handleShowClick = () => this.setState({ sidebarVisible: true })
   handleSidebarHide = () => this.setState({ sidebarVisible: false })
@@ -245,7 +282,6 @@ class stage extends Component {
           );
           break;
           case 'video':
-
           tasks[t.category].push(
             <Segment
               inverted
@@ -261,14 +297,14 @@ class stage extends Component {
                 <Card className="fluid" key="front">
                   <ReactPlayer
                     playsinline={true}
-                    playing={false}
+                    playing={t.autoplay}
                     preload="true"
-                    light={true}
+                    light={false}
                     name={t.name}
                     muted={false}
                     ref={this.ref}
                     controls={true}
-                    loop={false}
+                    loop={t.loop}
                     width='100%'
                     height='auto'
                     pip={true}
@@ -290,19 +326,35 @@ class stage extends Component {
 
                 <Label inverted="true" color="violet" >
                   <Button  size="mini" primary floated="left" onClick={(e) => this.handleCardClick(e,t)} ><Icon  name="edit" /></Button>
-                  <Button  size="mini" primary floated="right"><Icon  name="delete" /></Button>
+                  <Button  size="mini" primary floated="right" onClick={(e) => this.handleObjectDeleteConfirm(e,t)}><Icon  name="delete" /></Button>
+                    <Confirm
+                      content='Are you sure you want to delete this ??? '
+                      open={t.confirm}
+                      cancelButton='Never mind'
+                      confirmButton="Yes ! let's destroy it !"
+                      onCancel={(e) => this.handleObjectDeleteCancel(e,t)}
+                      onConfirm={(e) => this.handleObjectDelete(e,t)}
+                    />
                   {t.name}: {humanFileSize(t.size)}
                 </Label>
-
-
                 </Card>
-
                 <Card fluid key="back">
-                  <Form>
-                    <Label>Loop <Checkbox name="loop" defaultValue={t.loop} toggle onChange={this.handleLoopChange}/></Label>
-
+                  <Form style={{textAlign: 'left'}}>
+                    <Label.Group color='blue' style={{padding: '2em'}}>
+                     <Label as='a'>
+                       Name:
+                        <Label.Detail>{t.name}</Label.Detail>
+                     </Label>
+                     <Label as='a'>
+                       Size:
+                       <Label.Detail>{humanFileSize(t.size)}</Label.Detail>
+                     </Label>
+                     <Label as='a'>Url:
+                       <Label.Detail>{t.src}</Label.Detail>
+                     </Label>
+                      <Checkbox label="Use as a loop" name="loop" defaultValue={t.loop} toggle onChange={this.handleLoopChange}/>
+                   </Label.Group>
                   </Form>
-
                   <Button primary onClick={(e) => this.handleCardClick(e,t)}><Icon name="arrow left" /> Back</Button>
                 </Card>
               </ReactCardFlip>
@@ -312,11 +364,9 @@ class stage extends Component {
           );
           break;
           case 'audio':
-          console.log(t);
           tasks[t.category].push(
             <Segment
               inverted
-              curved
               name={t.name}
               color="blue"
               key={index}
@@ -325,23 +375,50 @@ class stage extends Component {
               className="audio draggable"
               >
               <ReactCardFlip style={{height: 'auto', width: 'inherit'}} isFlipped={t.isFlipped} flipDirection="vertical">
-                <Card  className="fluid" key="front">
+                <Card  color='blue' className="fluid" key="front">
                   <Label inverted="true" color="violet">
                     <Button  size="mini" primary floated="left" onClick={(e) => this.handleCardClick(e,t)}><Icon  name="edit" /></Button>
-                    <Button  size="mini" primary floated="right"><Icon  name="delete" /></Button>
+                    <Button  size="mini" primary floated="right" onClick={(e) => this.handleObjectDeleteConfirm(e,t)}><Icon  name="delete" /></Button>
+                      <Confirm
+                        content='Are you sure you want to delete this ??? '
+                        open={t.confirm}
+                        cancelButton='Never mind'
+                        confirmButton="Yes ! let's destroy it !"
+                        onCancel={(e) => this.handleObjectDeleteCancel(e,t)}
+                        onConfirm={(e) => this.handleObjectDelete(e, t)}
+                      />
                     {t.name}: {humanFileSize(t.size)}
                   </Label>
                   <ReactAudioPlayer
                     src={t.src}
+                    autoPlay={t.autoplay}
+                    loop={t.loop}
                     controls
                     />
                 </Card>
-                <Card fluid key="back">
-                  <Form>
-                    <Label>Loop <Checkbox name="loop" defaultValue={t.loop} toggle onChange={this.handleLoopChange}/></Label>
-
+                <Card color='blue' fluid key="back">
+                  <Form style={{textAlign: 'left'}}>
+                    <Label.Group color='blue' style={{padding: '2em'}}>
+                      <Label as='a'>
+                        Name:
+                        <Label.Detail>{t.name}</Label.Detail>
+                      </Label>
+                      <Label as='a'>
+                        Size:
+                        <Label.Detail>{humanFileSize(t.size)}</Label.Detail>
+                      </Label>
+                      <Label as='a'>Url:
+                        <Label.Detail>{t.src}</Label.Detail>
+                      </Label>
+                      <Checkbox
+                        label="Use as a loop"
+                        name="loop"
+                        defaultValue={t.loop}
+                        toggle
+                        onChange={this.handleLoopChange}/>
+                    </Label.Group>
+                    <Button primary onClick={(e) => this.handleCardClick(e,t)}><Icon name="arrow left" /> Back</Button>
                   </Form>
-                  <Button primary onClick={(e) => this.handleCardClick(e,t)}><Icon name="arrow left" /> Back</Button>
                 </Card>
               </ReactCardFlip>
 
@@ -371,6 +448,7 @@ class stage extends Component {
             size: img.size,
             isFlipped: false,
             category:"images",
+            confirm: false,
             src: server + img.src
           };
           imageArray.push(json);
@@ -386,6 +464,7 @@ class stage extends Component {
             type: "image",
             category:"pictures",
             size: img.size,
+            confirm: false,
             isFlipped: false,
             src: server + img.src
           };
@@ -402,6 +481,8 @@ class stage extends Component {
             type: "video",
             category:"videos",
             isFlipped: false,
+            autoplay: false,
+            confirm: false,
             loop: false,
             size: vid.size,
             src: server + vid.src
@@ -418,7 +499,9 @@ class stage extends Component {
             name: a.name,
             type: "audio",
             category:"audios",
+            confirm: false,
             loop: false,
+            autoplay: false,
             isFlipped: false,
             size: a.size,
             src: server + a.src
