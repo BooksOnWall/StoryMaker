@@ -1,5 +1,5 @@
 import React, { Component, createRef } from 'react';
-
+import { Link, withRouter } from 'react-router-dom';
 import {
   Form,
   Select,
@@ -48,6 +48,7 @@ function humanFileSize(bytes, si) {
     } while(Math.abs(bytes) >= thresh && u < units.length - 1);
     return bytes.toFixed(1)+' '+units[u];
 }
+
 class stage extends Component {
   constructor(props) {
       super(props);
@@ -62,7 +63,8 @@ class stage extends Component {
         ssid: (!this.props.match.params.sid) ? (0) : (parseInt(this.props.match.params.sid)),
         mode: (parseInt(this.props.match.params.id) === 0) ? ('create') : ('update'),
         name: null,
-        stages: '/stories/' + this.props.match.params.id + '/stages',
+        stages: null,
+        stagesURI: server + 'stories/' + parseInt(this.props.match.params.id) +'/stages',
         stageURL: server + 'stories/' + this.props.match.params.id + '/stages/' + parseInt(this.props.match.params.sid),
         stageImagesUploadUrl: server + 'stories/' + this.props.match.params.id + '/stages/' + parseInt(this.props.match.params.sid) + '/uploadImages',
         stagePicturesUploadUrl: server + 'stories/' + this.props.match.params.id + '/stages/' + parseInt(this.props.match.params.sid) + '/uploadPictures',
@@ -96,6 +98,9 @@ class stage extends Component {
           geometry: null,
           stageLocation: null
         },
+        index: null,
+        prev: null,
+        next: null,
         imagesLoading: false,
         picturesLoading: false,
         videosLoading: false,
@@ -129,6 +134,54 @@ class stage extends Component {
     this.setState({tasks: tasks});
 
   }
+  handleStages = async () => {
+    try {
+      await fetch(this.state.stagesURI, {
+        method: 'get',
+        headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'}
+      })
+      .then(response => {
+        if (response && !response.ok) { throw new Error(response.statusText);}
+        return response.json();
+      })
+      .then(data => {
+          if(data) {
+            this.setState({ stages: data });
+            return this.handleStageNav(data, this.state.stage);
+          } else {
+            console.log('No Data received from the server');
+          }
+      })
+      .catch((error) => {
+        // Your error is here!
+        console.log(error)
+      });
+    } catch(e) {
+      console.log(e.message);
+    }
+  }
+  handleStageNav = (stages , stage) => {
+    // get only first render with stages datas
+    console.log(stages);
+    console.log(stage);
+
+    let index = (stages && stage ) ? stages.map(function(e) { return parseInt(e.id); }).indexOf(parseInt(stage.sid)) : null ;
+    console.log(index);
+    if (stages && stage && index && index > -1  ) {
+      const prevIndex = index -1;
+      const nextIndex = index + 1;
+      let prev = stages[prevIndex].id;
+      let next = stages[nextIndex].id;
+      let url = "/stories/" + this.state.stage.sid + "/stages/";
+      let prevUrl = (prev) ? (url + prev) : null;
+      let nextUrl = (next) ? (url + next) : null;
+      if (prevUrl && nextUrl) {
+        this.setState({index: index, prev: prevUrl, next: nextUrl});
+      }
+    }
+    return true;
+
+  }
   handleObjectDelete = async (e, t) => {
     try {
       let tasks= this.state.tasks;
@@ -145,18 +198,13 @@ class stage extends Component {
     } catch(e) {
       console.log(e.message);
     }
-
-
   }
   handleObjectDeleteConfirm = (e, t) => {
-    console.log(t);
-
     let tasks= this.state.tasks;
     const index = tasks.findIndex(el => (el.category === t.category && el.name === t.name));
     let confirm = (tasks[index].confirm === false) ? true : false;
     tasks[index].confirm = confirm;
     this.setState({tasks: tasks});
-
   }
   handleObjectDeleteCancel = (e, t) => {
     let tasks= this.state.tasks;
@@ -606,7 +654,7 @@ class stage extends Component {
   onChangeObjectsHandler = (e, target) => this.setState({[target]: e.files})
   setStageObjects = (e, target) => this.setState({[target]: e})
 
-  componentDidMount= async () => {
+  componentDidMount = async () => {
     try {
       await this.getStage();
     } catch(e) {
@@ -871,12 +919,14 @@ class stage extends Component {
         // Your error is here!
         console.log({error})
       });
+      await this.handleStages();
     } catch(e) {
       console.log(e.message);
     }
   }
 
   setStageDescription = () => {
+
     return (
       <Button onClick={this.toggleLock}><Icon name={this.state.descLock} /><Icon name="edit" /></Button>,
       (this.state.descLock === 'lock')
@@ -895,50 +945,54 @@ class stage extends Component {
   }
   handleStageStep = (e) => this.setState({stageStep: e.target.name})
   render() {
-    return (
-      <Segment className="view" >
-        <Dimmer active={this.state.loading}>
-          <Loader active={this.state.loading} >Get stage info</Loader>
-        </Dimmer>
-        <Segment>
-        <StorySteps sid={this.state.sid} step={this.state.step} history={this.props.history} setSteps={this.setSteps} state={this.state}/>
-        <StageBoard
-          tasks={this.state.tasks}
-          onDrop={this.onDrop}
-          onDragStart={this.onDragStart}
-          onDragOver={this.onDragOver}
-          stage={this.state.stage}
-          editStage={this.editStage}
-          setStageLocation={this.setStageLocation}
-          setStageDescription={this.setStageDescription}
-          stageStep={this.state.stageStep}
-          setSteps={this.setSteps}
-          renderTasks={this.renderTasks}
+      return (
+        <Segment className="view" >
+          <Dimmer active={this.state.loading}>
+            <Loader active={this.state.loading} >Get stage info</Loader>
+          </Dimmer>
+          <Segment>
+            <StorySteps sid={this.state.sid} step={this.state.step} history={this.props.history} setSteps={this.setSteps} state={this.state}/>
+            {(this.state.stages) ? <StageBoard
+                history={this.props.history}
+                tasks={this.state.tasks}
+                onDrop={this.onDrop}
+                onDragStart={this.onDragStart}
+                onDragOver={this.onDragOver}
+                state={this.state}
+                stage={(this.state.stage) ? this.state.stage :  null }
+                stages={this.state.stages}
+                editStage={this.editStage}
+                setStageLocation={this.setStageLocation}
+                setStageDescription={this.setStageDescription}
+                stageStep={this.state.stageStep}
+                setSteps={this.setSteps}
+                renderTasks={this.renderTasks}
+                getStage={this.getStage}
+                uploadObjects={this.uploadObjects}
+                setStageObjects={this.setStageObjects}
+                onChangeObjectsHandler={this.onChangeObjectsHandler}
 
-          uploadObjects={this.uploadObjects}
-          setStageObjects={this.setStageObjects}
-          onChangeObjectsHandler={this.onChangeObjectsHandler}
+                stageImages={this.state.stageImages}
+                stagePictures={this.state.stagePictures}
+                stageVideos={this.state.stageVideos}
+                stageAudios={this.state.stageAudios}
 
-          stageImages={this.state.stageImages}
-          stagePictures={this.state.stagePictures}
-          stageVideos={this.state.stageVideos}
-          stageAudios={this.state.stageAudios}
-
-          sidebarVisible={this.state.sidebarVisible}
-          topSidebarVisible={this.state.topSidebarVisible}
-          handleStageStep={this.handleStageStep}
-          handleShowClick={this.handleShowClick}
-          handleHideClick={this.handleHideClick}
-          handleSidebarHide={this.handleSidebarHide}
-          handleTopHideClick={this.handleTopHideClick}
-          handleTopShowClick={this.handleTopShowClick}
-          handleTopSidebarHide={this.handleTopSidebarHide}
-          />
-
-      </Segment>
-      </Segment>
-    );
+                sidebarVisible={this.state.sidebarVisible}
+                topSidebarVisible={this.state.topSidebarVisible}
+                handleStageStep={this.handleStageStep}
+                handleShowClick={this.handleShowClick}
+                handleHideClick={this.handleHideClick}
+                handleSidebarHide={this.handleSidebarHide}
+                handleTopHideClick={this.handleTopHideClick}
+                handleTopShowClick={this.handleTopShowClick}
+                handleTopSidebarHide={this.handleTopSidebarHide}
+                />
+              : ''
+            }
+          </Segment>
+        </Segment>
+      );
   }
 }
 
-export default stage;
+export default withRouter(stage);
