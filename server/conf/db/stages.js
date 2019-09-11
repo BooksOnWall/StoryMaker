@@ -41,6 +41,21 @@ module.exports.stages = {
     allowNull: true,
     defaultValue: null
   },
+  onZoneEnter: {
+    type: Sequelize.JSON,
+    allowNull: true,
+    defaultValue: null
+  },
+  onPictureMatch: {
+    type: Sequelize.JSON,
+    allowNull: true,
+    defaultValue: null
+  },
+  onZoneLeave: {
+    type: Sequelize.JSON,
+    allowNull: true,
+    defaultValue: null
+  },
   type: {
     type: Sequelize.STRING,
     allowNull: false,
