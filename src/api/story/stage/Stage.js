@@ -1,5 +1,5 @@
 import React, { Component, createRef } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import {
   Form,
   Select,
@@ -101,6 +101,8 @@ class stage extends Component {
         index: null,
         prev: null,
         next: null,
+        objDelUrl: server + 'Stories/'+ this.props.match.params.id + '/stages/' + this.props.match.params.sid + '/objDelete',
+        objMvUrl: server + 'Stories/'+ this.props.match.params.id + '/stages/' + this.props.match.params.sid + '/objMv',
         imagesLoading: false,
         picturesLoading: false,
         videosLoading: false,
@@ -182,18 +184,54 @@ class stage extends Component {
     return true;
 
   }
+  toggleSideBar = (e, step , bar) => {
+    (bar ==='bottom')
+    ? this.setState({
+      stageStep: step,
+      sidebarVisible: false,
+      topSidebarVisible: true,
+    })
+    : this.setState({
+      stageStep: step,
+      sidebarVisible: true,
+      topSidebarVisible: false,
+    });
+
+  }
   handleObjectDelete = async (e, t) => {
     try {
       let tasks= this.state.tasks;
+      //close confirm modal
       const index = tasks.findIndex(el => (el.category === t.category && el.name === t.name));
       let confirm = (tasks[index].confirm === false) ? true : false;
       tasks[index].confirm = confirm;
+      // update tasks
       this.setState({tasks: tasks});
       // send delete request to server
-      let type = t.type;
-      let name= t.name;
-      let sid = this.state.sid;
-      let ssid = this.type.ssid;
+      await fetch(this.state.objDelUrl, {
+        method: 'delete',
+        headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'},
+        body:JSON.stringify({ id: this.state.ssid, sid: this.state.sid, obj: t })
+      })
+      .then(response => {
+        if (response && !response.ok) { throw new Error(response.statusText);}
+        return response.json();
+      })
+      .then(data => {
+        if(data) {
+          //remove object from this.state.tasks
+          tasks = tasks.filter(function( obj ) {
+            return obj.name !== t.name;
+          });
+          this.setState({tasks: tasks});
+          // reload stage
+          return this.getStage();
+        }
+      })
+      .catch((error) => {
+        // Your error is here!
+        console.log(error)
+      });
 
     } catch(e) {
       console.log(e.message);
@@ -971,7 +1009,7 @@ class stage extends Component {
                 uploadObjects={this.uploadObjects}
                 setStageObjects={this.setStageObjects}
                 onChangeObjectsHandler={this.onChangeObjectsHandler}
-
+                toggleSideBar = {this.toggleSideBar}
                 stageImages={this.state.stageImages}
                 stagePictures={this.state.stagePictures}
                 stageVideos={this.state.stageVideos}

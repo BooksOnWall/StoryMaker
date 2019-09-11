@@ -171,10 +171,10 @@ class DragDrop extends Component {
       animation2: 'push',
       direction2: 'bottom',
       selectedIndex: null,
-      col1DefaultSize: { width: '25%', height: '100%'},
-      col2DefaultSize: { width: '15%', height: '100%'},
-      col3DefaultSize: { width: '45%', height: '100%'},
-      col4DefaultSize: { width: '15%', height: '100%'},
+      col1DefaultSize: { width: '31%', height: 'inherit'},
+      col2DefaultSize: { width: '12%', height: 'inherit'},
+      col3DefaultSize: { width: '45%', height: 'inherit'},
+      col4DefaultSize: { width: '12%', height: 'inherit'},
       dimmed: null
     };
 
@@ -393,7 +393,7 @@ class DragDrop extends Component {
                               onDragOver={(e)=>this.props.onDragOver(e)}
                               onDrop={(e)=>this.props.onDrop(e, "photo")}
                               >
-                              <Button  color="violet" onClick={this.props.handleTopShowClick} className="task-header">Photo</Button>
+                              <Button  color="violet" onClick={(e) => this.props.toggleSideBar(e, 'Images', 'bottom')} className="task-header">Photo</Button>
                               {(tasks.photo.length > 0) ? tasks.photo : <Image  src='https://react.semantic-ui.com/images/avatar/large/matthew.png' wrapped  /> }
                               <Card.Header>{this.props.stage.name}</Card.Header>
                               <Card.Meta>Drag your image here </Card.Meta>
@@ -402,7 +402,7 @@ class DragDrop extends Component {
                           <Card >
                             <Card.Content>
                               <Card.Description className="single">
-                                <Button  color="violet" onClick={this.props.handleTopShowClick}  className="task-header">Description</Button>
+                                <Button  color="violet" onClick={(e) => this.props.toggleSideBar(e, 'Description', 'bottom')}  className="task-header">Description</Button>
                                 {HtmlParser(this.props.stage.description)}
                               </Card.Description>
                             </Card.Content>
@@ -412,7 +412,7 @@ class DragDrop extends Component {
                               onDragOver={(e)=>this.props.onDragOver(e)}
                               onDrop={(e)=>this.props.onDrop(e, "location")}
                               >
-                              <Button  color="violet" onClick={this.props.handleTopShowClick}  className="task-header">Location</Button>
+                              <Button  color="violet" onClick={(e) => this.props.toggleSideBar(e, 'Geo', 'bottom')}  className="task-header">Location</Button>
                               {tasks.location}
                             </Card.Content>
                           </Card>
@@ -427,7 +427,7 @@ class DragDrop extends Component {
                         <div className="droppable"
                           onDragOver={(e)=>this.props.onDragOver(e)}
                           onDrop={(e)=>this.props.onDrop(e, "onZoneEnter")}>
-                          <Button  color="violet" onClick={this.props.handleShowClick} className="task-header">On Zone Enter</Button>
+                          <Button  color="violet" onClick={(e) => this.props.toggleSideBar(e, 'Audios', 'right')} className="task-header">On Zone Enter</Button>
                           {tasks.onZoneEnter}
                         </div>
                       </Segment>
@@ -440,7 +440,7 @@ class DragDrop extends Component {
                         <div className="droppable"
                           onDragOver={(e)=>this.props.onDragOver(e)}
                           onDrop={(e)=>this.props.onDrop(e, "onPictureMatch")}>
-                          <Button  color="violet" onClick={this.props.handleShowClick} className="task-header">On Picture Match</Button>
+                          <Button  color="violet" onClick={(e) => this.props.toggleSideBar(e, 'Videos', 'right')} className="task-header">On Picture Match</Button>
                           {tasks.onPictureMatch}
                         </div>
                       </Segment>
@@ -453,7 +453,7 @@ class DragDrop extends Component {
                         <div className="droppable"
                           onDragOver={(e)=>this.props.onDragOver(e)}
                           onDrop={(e)=>this.props.onDrop(e, "onZoneLeave")}>
-                          <Button  color="violet" onClick={this.props.handleShowClick} className="task-header">On Zone Leave</Button>
+                          <Button  color="violet" onClick={(e) => this.props.toggleSideBar(e, 'Audios', 'right')} className="task-header">On Zone Leave</Button>
                           {tasks.onZoneLeave}
                         </div>
                       </Segment>

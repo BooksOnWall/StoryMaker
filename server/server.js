@@ -12,6 +12,7 @@ var cors = require('cors');
 
 // ENV set url(localhost/other) port (1234) and protocol (http/https)
 require('dotenv').config();
+
 const host = process.env.SERVER_HOST;
 const protocol = process.env.SERVER_PROTOCOL;
 const port = process.env.SERVER_PORT;
@@ -340,6 +341,15 @@ const createStage = async ({ sid, name, photo, adress, description, images, pict
     if (!fs.existsSync(adir)) { fs.mkdirSync(adir, 0o744); }
     var vdir = dir + '/videos';
     if (!fs.existsSync(vdir)) { fs.mkdirSync(vdir, 0o744); }
+    // create directory photo, onZoneEnter, onPictureMatch , onZoneLeave
+    var photodir = dir + '/photo';
+    if (!fs.existsSync(photodir)) { fs.mkdirSync(photodir, 0o744); }
+    var ozedir = dir + '/onZoneEnter';
+    if (!fs.existsSync(ozedir)) { fs.mkdirSync(ozedir, 0o744); }
+    var opmdir = dir + '/onPictureMatch';
+    if (!fs.existsSync(opmdir)) { fs.mkdirSync(opmdir, 0o744); }
+    var ozldir = dir + '/onZoneLeave';
+    if (!fs.existsSync(ozldir)) { fs.mkdirSync(ozldir, 0o744); }
     // create json directory to set elements from stage board
     var jdir = dir + '/json';
     if (!fs.existsSync(jdir)) { fs.mkdirSync(jdir, 0o744); }
@@ -396,6 +406,33 @@ const updateFieldFromStage = async ({ ssid, sid, field, fieldValue }) => {
     { where: {id : ssid, sid: sid }}
   );
 };
+const removeObjectFromField = async ({ssid, sid, category, obj}) => {
+  console.log('remove obj');
+  try {
+    let objName = obj.name;
+    let objType = obj.type;
+    let list = await Stages.findAll(
+      { where: {id : ssid, sid: sid }}
+    ).then(function(result){
+      //extract objects array list for this category
+      result = result[0].dataValues[category];
+      return result;
+    });
+    // remove object by name from array
+    list = list.filter(function( lobj ) {
+      lobj =  lobj[objType];
+      return lobj.name !== objName;
+    });
+    list = (list.length > 0 ) ? list : null;
+    let field = category;
+    let fieldValue = list;
+    //update category in db
+    await updateFieldFromStage({ssid, sid, field, fieldValue });
+  } catch(e) {
+    console.log(e.message);
+  }
+};
+
 // get static route to serve images
 var staticoptions = {
   dotfiles: 'ignore',
@@ -588,6 +625,7 @@ app.delete('/users/:userId', function(req, res, next) {
   deleteUser(uid).then(user =>
     res.json({ user, msg: 'account destroyed successfully' })
   );
+
 });
 // register route register create the new user but set it as inactive
 app.post('/register', function(req, res, next) {
@@ -976,6 +1014,25 @@ app.post('/stories/:storyId/stages/:stageId/uploadAudios', function (req, res, n
         );
       }
     });
+});
+app.delete('/stories/:storyId/stages/:stageId/objDelete', function(req, res, next) {
+  let sid = parseInt(req.params.storyId);
+  let ssid = parseInt(req.params.stageId);
+  let obj = req.body.obj;
+  let objName = obj.name;
+  let category = obj.category;
+
+  let path = './public/stories/'+ sid + '/stages/' + ssid +'/'+ obj.category + '/';
+  //delete file
+  rimraf.sync( path + objName);
+  // remove file from db
+  console.log(obj);
+   removeObjectFromField({ssid, sid, category, obj}).then(user => {
+       res.json({ user, msg: obj.name +' destroyed successfully' })
+   });
+  // deleteStageObject(sid, ssid, obj).then(user => {
+  //     res.json({ user, msg: obj.name +' destroyed successfully' })
+  // });
 });
 // protected route
 app.get('/protected', passport.authenticate('jwt', { session: false }), function(req, res) {
