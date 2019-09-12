@@ -401,6 +401,8 @@ const getStage = async obj => {
 const updateFieldFromStage = async ({ ssid, sid, field, fieldValue }) => {
   console.log(ssid);
   console.log(sid);
+  console.log(field);
+  console.log(fieldValue);
   return await Stages.update(
     { [field]: fieldValue},
     { where: {id : ssid, sid: sid }}
@@ -409,21 +411,18 @@ const updateFieldFromStage = async ({ ssid, sid, field, fieldValue }) => {
 const removeObjectFromField = async ({ssid, sid, category, obj}) => {
   console.log('remove obj');
   try {
+
     let objName = obj.name;
-    let objType = obj.type;
-    let list = await Stages.findAll(
-      { where: {id : ssid, sid: sid }}
-    ).then(function(result){
+    let list = await Stages.findAll({ where: {id : ssid, sid: sid }}).then(function(result){
       //extract objects array list for this category
-      result = result[0].dataValues[category];
+      result = result[0].dataValues[category].filter(function( lobj ) {
+        // remove object by name from array
+        lobj = (lobj.name) ? lobj : lobj[obj.type];
+
+        return lobj.name !== objName;
+      });
       return result;
     });
-    // remove object by name from array
-    list = list.filter(function( lobj ) {
-      lobj =  lobj[objType];
-      return lobj.name !== objName;
-    });
-    list = (list.length > 0 ) ? list : null;
     let field = category;
     let fieldValue = list;
     //update category in db
@@ -435,37 +434,40 @@ const removeObjectFromField = async ({ssid, sid, category, obj}) => {
 // move file from category (zones)
 const moveObjectFromField = async ({ssid, sid, oldDir, newDir, newObj}) => {
   try {
-
     let objName = newObj.name;
     let objType = newObj.type;
     let newList = [];
-    let list = await Stages.findAll(
-      { where: {id : ssid, sid: sid }}
-    ).then(function(result){
+    let list = await Stages.findAll({ where: {id : ssid, sid: sid }}).then(function(result){
       //extract objects array list for this category
       result = result[0].dataValues[oldDir];
         // remove object by name from array
       result = (result) ? result.filter(function (lobj) {
         lobj =  lobj[objType];
-        if (lobj.name === objName) newObj = lobj;
         return lobj.name !== objName;
       }) : null ;
       newList = (result[0] && result[0].dataValues[newDir]) ? result[0].dataValues[newDir] : null ;
       return result;
     });
+    console.log('list');
+    console.log(list);
     // update removed array with database
-    list = (list.length > 0 ) ? list : null;
+    list = (list && list.length > 0 ) ? list : null;
     let field = oldDir;
     let fieldValue = list;
     //update category in db
     await updateFieldFromStage({ssid, sid, field, fieldValue }).then(function(result){
-      //extract objects array list for this category
-      newList = (newList.length > 0 ) ? newList : null;
-      field = newDir;
-      fieldValue = newList.push(newObj);
-      updateFieldFromStage({ssid, sid, field, fieldValue }).then(function(res){
-       return res;
-      });
+      if(result) {
+        newList = (newList && newList.length > 0 ) ? newList : null;
+        field = newDir;
+        newList = (!newList) ? []  : newList;
+        console.log('new list');
+        (newList.length === 0) ? newList[0]= newObj : newList.push(newObj);
+        fieldValue = newList;
+        //update destination folder in db
+        updateFieldFromStage({ssid, sid, field, fieldValue }).then(function(res){
+         return newObj;
+        });
+      }
     });
     //update new category in db
 
@@ -485,8 +487,8 @@ var staticoptions = {
     res.set('x-timestamp', Date.now());
   }
 }
-app.use('/images', express.static(__dirname + 'public', staticoptions));
-app.get('/images/users/:userId/:name', function (req, res, next) {
+app.use('/assets', express.static(__dirname + 'public', staticoptions));
+app.get('/assets/users/:userId/:name', function (req, res, next) {
   var uid = req.params.userId;
   var fileName = req.params.name;
   var path = 'public/users/'+uid+'/';
@@ -506,7 +508,7 @@ app.get('/images/users/:userId/:name', function (req, res, next) {
     }
   })
 });
-app.get('/images/artists/:artistId/:name', function (req, res, next) {
+app.get('/assets/artists/:artistId/:name', function (req, res, next) {
   var aid = req.params.artistId;
   var fileName = req.params.name;
   var path = 'public/artists/'+aid+'/';
@@ -527,7 +529,7 @@ app.get('/images/artists/:artistId/:name', function (req, res, next) {
     }
   })
 });
-app.get('/images/stories/:storyId/stages/:stageId/images/:name', function (req, res, next) {
+app.get('/assets/stories/:storyId/stages/:stageId/images/:name', function (req, res, next) {
   var sid = req.params.storyId;
   var ssid= req.params.stageId;
   var fileName = req.params.name;
@@ -551,13 +553,24 @@ app.get('/images/stories/:storyId/stages/:stageId/images/:name', function (req, 
     }
   })
 });
-app.get('/images/stories/:storyId/stages/:stageId/pictures/:name', function (req, res, next) {
+
+// app.get('/assets/stories/:storyId/stages/:stageId/videos/:name', timeout('10m'), function (req, res, next) {
+//   var sid = req.params.storyId;
+//   var ssid= req.params.stageId;
+//   var fileName = req.params.name;
+//   var path = './public/stories/' + sid + '/stages/' + ssid +'/videos/';
+//   //set a video stream server to serve the file
+//   res.setHeader("content-type", "video/*");
+//   console.log('Starting streaming: file ' + fileName );
+//   fs.createReadStream(path+fileName).pipe(res);
+// });
+
+app.get('/assets/stories/:storyId/stages/:stageId/:category/:name', function (req, res, next) {
   var sid = req.params.storyId;
   var ssid= req.params.stageId;
+  var cat = req.params.category;
   var fileName = req.params.name;
-  console.log(fileName);
-  var path = './public/stories/' + sid + '/stages/' + ssid +'/pictures/';
-  console.log(path);
+  var path = './public/stories/' + sid + '/stages/' + ssid +'/'+cat+'/';
   var options = {
     root: path ,
     dotfiles: 'deny',
@@ -566,46 +579,18 @@ app.get('/images/stories/:storyId/stages/:stageId/pictures/:name', function (req
       'x-sent': true
     }
   }
-
-  res.sendFile(fileName, options, function (err) {
-    if (err) {
-      next(err)
-    } else {
-      console.log('Sent:', fileName)
-    }
-  })
-});
-app.get('/images/stories/:storyId/stages/:stageId/videos/:name', timeout('10m'), function (req, res, next) {
-  var sid = req.params.storyId;
-  var ssid= req.params.stageId;
-  var fileName = req.params.name;
-  var path = './public/stories/' + sid + '/stages/' + ssid +'/videos/';
-  //set a video stream server to serve the file
-  res.setHeader("content-type", "video/*");
-  console.log('Starting streaming: file ' + fileName );
-  fs.createReadStream(path+fileName).pipe(res);
-});
-app.get('/images/stories/:storyId/stages/:stageId/audios/:name', function (req, res, next) {
-  var sid = req.params.storyId;
-  var ssid= req.params.stageId;
-  var fileName = req.params.name;
-  var path = './public/stories/' + sid + '/stages/' + ssid +'/audios/';
-  var options = {
-    root: path ,
-    dotfiles: 'deny',
-    headers: {
-      'x-timestamp': Date.now(),
-      'x-sent': true
-    }
+  // check if file exist
+  if (fs.existsSync(path+fileName)) {
+    res.sendFile(fileName, options, function (err) {
+      if (err) {
+        next(err)
+      } else {
+        console.log('Sent:', fileName)
+      }
+    });
+  } else {
+    console.log('File not found :', fileName)
   }
-
-  res.sendFile(fileName, options, function (err) {
-    if (err) {
-      next(err)
-    } else {
-      console.log('Sent:', fileName)
-    }
-  })
 });
 // set some basic routes
 app.get('/', function(req, res) {
@@ -943,7 +928,7 @@ app.post('/stories/:storyId/stages/:stageId/uploadImages', function (req, res, n
                'name': file.originalname,
                'size': file.size,
                'mimetype': file.mimetype,
-               'src': 'images/stories/'+ sid + '/stages/' + ssid + '/images/' + file.originalname
+               'src': 'assets/stories/'+ sid + '/stages/' + ssid + '/images/' + file.originalname
              }
            });
           });
@@ -977,7 +962,7 @@ app.post('/stories/:storyId/stages/:stageId/uploadPictures', function (req, res,
                'name': file.originalname,
                'size': file.size,
                'mimetype': file.mimetype,
-               'src': 'images/stories/'+ sid + '/stages/' + ssid + '/pictures/' + file.originalname
+               'src': 'assets/stories/'+ sid + '/stages/' + ssid + '/pictures/' + file.originalname
              }
            });
           });
@@ -1011,7 +996,7 @@ app.post('/stories/:storyId/stages/:stageId/uploadVideos', function (req, res, n
                'name': file.originalname,
                'size': file.size,
                'type': file.type,
-               'src': 'images/stories/'+ sid + '/stages/' + ssid + '/videos/' + file.originalname
+               'src': 'assets/stories/'+ sid + '/stages/' + ssid + '/videos/' + file.originalname
              }
            });
           });
@@ -1045,7 +1030,7 @@ app.post('/stories/:storyId/stages/:stageId/uploadAudios', function (req, res, n
                'name': file.originalname,
                'size': file.size,
                'type': file.type,
-               'src': 'images/stories/'+ sid + '/stages/' + ssid + '/audios/' + file.originalname
+               'src': 'assets/stories/'+ sid + '/stages/' + ssid + '/audios/' + file.originalname
              }
            });
           });
@@ -1062,12 +1047,21 @@ app.delete('/stories/:storyId/stages/:stageId/objDelete', function(req, res, nex
   let objName = obj.name;
   let category = obj.category;
   let path = './public/stories/'+ sid + '/stages/' + ssid +'/'+ obj.category + '/';
-  //delete file
-  rimraf.sync( path + objName);
+
   // remove file from db
-  console.log(obj);
+  // console.log('Delete: ', objName);
+  // console.log('From category: ', category);
+  // console.log(obj);
    removeObjectFromField({ssid, sid, category, obj}).then(user => {
-       res.json({ user, msg: obj.name +' destroyed successfully' })
+    //delete file if exist
+    if (fs.existsSync(path + objName)) {
+    //file exists
+      rimraf.sync( path + objName);
+    } else {
+      console.log('File no exist :', path + objName);
+    }
+
+    res.json({ user, msg: obj.name +' destroyed successfully' })
    });
 });
 app.patch('/stories/:storyId/stages/:stageId/objMv', function(req, res, next) {
@@ -1085,30 +1079,21 @@ app.patch('/stories/:storyId/stages/:stageId/objMv', function(req, res, next) {
   console.log(newDir);
   if (oldDir !== newDir) {
     // move file from directory
-    fs.rename(path+objName, newPath+objName, (err)=>{
-      if(err) console.log({err});
-      else {
-
-        moveObjectFromField({ssid, sid, oldDir, newDir, newObj}).then(user => {
-            res.json({ user, msg: newObj.name +' destroyed successfully' })
-        });
-
-      }
-    });
-    // remove object in old field === obj.category
-    // add object to new field === newObj.category
-
+    // check if file exist
+    if (fs.existsSync(path+objName)) {
+      newObj.src = newObj.src.replace(oldDir, newDir);
+      moveObjectFromField({ssid, sid, oldDir, newDir, newObj}).then(user => {
+           //res.json({ res, msg: newObj.name +' moved successfully' })
+      });
+    //file exists
+      fs.rename(path+objName, newPath+objName, (err)=>{
+        if(err) console.log({err});
+        else {
+          res.json({obj: newObj, msg: newObj.name + 'moved successfully'})
+        }
+      });
+    }
   }
-
-
-
-  //delete file
-  // rimraf.sync( path + objName);
-  // remove file from db
-  // console.log(obj);
-  //  removeObjectFromField({ssid, sid, category, obj}).then(user => {
-  //      res.json({ user, msg: obj.name +' destroyed successfully' })
-  //  });
 });
 // protected route
 app.get('/protected', passport.authenticate('jwt', { session: false }), function(req, res) {

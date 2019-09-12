@@ -89,10 +89,14 @@ class stage extends Component {
           ssid: parseInt(this.props.match.params.id),
           name: '',
           adress: '',
+          photo: null,
           images: null,
           pictures: null,
           videos: null,
           audios: null,
+          onZoneEnter: null,
+          onPictureMatch: null,
+          onZoneLeave: null,
           type: null,
           description: '',
           geometry: null,
@@ -263,28 +267,26 @@ class stage extends Component {
   toggleLock = () => (this.state.descLock === 'lock') ? this.unlock() : this.lock()
   setSteps = (e) => this.setState(e)
   onDrop = async (ev, cat) => {
-
+    // move object from category
     try {
       let id = ev.dataTransfer.getData("id");
-      console.log(id);
       let obj ={};
       let newObj={};
       let old;
+      // change category
       let tasks = this.state.tasks.filter((task) => {
         if(task.name === id) {
           old = task.category;
           obj = task;
           task.category = cat ;
+          //extract newObj
           newObj = task;
         }
         return task;
       });
       newObj.category=cat;
-      
+
       // send request to server to mobve file from directory
-      console.log(old);
-      console.log(obj.category);
-      console.log(newObj.category);
       if(old !== newObj.category) {
         // uri objMvUrl
         await fetch(this.state.objMvUrl, {
@@ -304,13 +306,19 @@ class stage extends Component {
         })
         .then(data => {
           if(data) {
-            //remove object from this.state.tasks
-            // tasks = tasks.filter(function( obj ) {
-            //   return obj.name !== t.name;
-            // });
-            // this.setState({tasks: tasks});
-            // // reload stage
-            // return this.getStage();
+            //return new object with new src path
+            console.log(data);
+            tasks = this.state.tasks.filter((task) => {
+              if(task.name === id) {
+                task.src = data.obj.src;
+              }
+              return task;
+            });
+            this.setState({
+                ...this.state,
+                tasks
+            });
+
           }
         })
         .catch((error) => {
@@ -319,16 +327,9 @@ class stage extends Component {
         });
 
       }
-
-
-      this.setState({
-          ...this.state,
-          tasks
-      });
     } catch(e) {
       console.log(e.message);
     }
-
   }
   onDragStart = (ev, id) => {
       ev.dataTransfer.setData("id", id);
@@ -718,6 +719,35 @@ class stage extends Component {
         });
         tasks = tasks.concat(audiosArray);
         break;
+        case 'photo':
+        let photoArray =[];
+        list.forEach(function(photo) {
+          let json = photo;
+          photoArray.push(json);
+        });
+        tasks = tasks.concat(photoArray);
+        break;
+        case 'onZoneEnter':
+        let ozeArray =[];
+        list.forEach(function(oze) {
+          ozeArray.push(oze);
+        });
+        tasks = tasks.concat(ozeArray);
+        break;
+        case 'onPictureMatch':
+        let opmArray =[];
+        list.forEach(function(opm) {
+          opmArray.push(opm);
+        });
+        tasks = tasks.concat(opmArray);
+        break;
+        case 'onZoneLeave':
+        let ozlArray =[];
+        list.forEach(function(ozl) {
+          ozlArray.push(ozl);
+        });
+        tasks = tasks.concat(ozlArray);
+        break;
         default:
         break;
       }
@@ -738,6 +768,10 @@ class stage extends Component {
         pictures: this.state.stage.pictures,
         videos: this.state.stage.videos,
         audios: this.state.stage.audios,
+        photo: this.state.stage.photo,
+        onZoneEnter: this.state.stage.onZoneEnter,
+        onPictureMatch: this.state.stage.onPictureMatch,
+        onZoneLeave: this.state.stage.onZoneLeave,
         type: this.state.stage.type,
         description: this.state.stage.description,
         geometry: this.state.stage.geometry,
@@ -944,13 +978,17 @@ class stage extends Component {
                     images: (objType === 'Images') ? sobjects : this.state.stage.images,
                     videos: (objType === 'Videos') ? sobjects : this.state.stage.videos,
                     audios: (objType === 'Audios') ? sobjects : this.state.stage.audios,
+                    photo: this.state.stage.photo,
+                    onZoneEnter: this.state.stage.onZoneEnter,
+                    onPictureMatch: this.state.stage.onPictureMatch,
+                    onZoneLeave: this.state.stage.onZoneLeave,
                     type: this.state.stage.type,
                     description: this.state.stage.description,
                     geometry: this.state.stage.geometry,
                     stageLocation: Array.from(this.state.stage.geometry.coordinates)
                   }
                 });
-                this.setState({ [stageObject]: null, [loadingState]: false});
+                this.setState({ [stageObject]: null, [loadingState]: false, tasks: []});
                 this.getStage();
 
               } else {
@@ -971,6 +1009,7 @@ class stage extends Component {
 
   getStage = async () => {
     this.setState({loading: true});
+    this.setState({tasks: []});
     try {
       await fetch(this.state.stageURL, {
         method: 'get',
@@ -982,16 +1021,21 @@ class stage extends Component {
       })
       .then(data => {
           if(data) {
+            console.log(data);
             this.setState({
               stage: {
                 id: data.id,
                 sid: data.sid,
                 name: data.name,
                 adress: data.adress,
+                photo: data.photo,
                 pictures: data.pictures,
                 images: data.images,
                 videos: data.videos,
                 audios: data.audios,
+                onZoneEnter: data.onZoneEnter,
+                onPictureMatch: data.onPictureMatch,
+                onZoneLeave: data.onZoneLeave,
                 type: data.type,
                 description: data.description,
                 geometry: data.geometry,
@@ -1005,6 +1049,10 @@ class stage extends Component {
             this.mergeTasks('Pictures', data.pictures);
             this.mergeTasks('Videos', data.videos);
             this.mergeTasks('Audios', data.audios);
+            this.mergeTasks('photo', data.photo);
+            this.mergeTasks('onZoneEnter', data.onZoneEnter);
+            this.mergeTasks('onPictureMatch', data.onPictureMatch);
+            this.mergeTasks('onZoneLeave', data.onZoneLeave);
             return data;
           } else {
             console.log('No Data received from the server');
