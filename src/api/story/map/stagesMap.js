@@ -5,8 +5,11 @@ import {
   Dimmer,
   Loader,
   Image,
+  Label,
+  Button,
   Icon,
 } from 'semantic-ui-react';
+import { Link , withRouter} from 'react-router-dom';
 
 import MapGL, { Marker, Popup, LinearInterpolator, FlyToInterpolator } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -117,10 +120,21 @@ class stagesMap extends Component {
               <Card.Description>{ReactHtmlParser(popupInfo.description)}</Card.Description>
             </Card.Content>
             <Card.Content extra>
-              <a>
-                <Icon name='user' />
-                10 Friends
-              </a>
+              <Button.Group>
+                <Button primary as={Link} to={'/stories/'+popupInfo.sid+'/stages/'+popupInfo.id} >
+                  <Icon name='edit' />
+                  Edit
+                </Button>
+                <Button inverted color="pink" as='div' labelPosition='right'>
+                 <Button icon>
+                   <Icon name='heart' />
+                   Like
+                 </Button>
+                 <Label as='a' basic pointing='left'>
+                   2,048
+                 </Label>
+               </Button>
+              </Button.Group>
             </Card.Content>
           </Card>
           </Popup>
