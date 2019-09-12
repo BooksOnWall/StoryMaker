@@ -82,7 +82,7 @@ video {
   border-left: 1px dotted;
 }
 .ui.card .droppable.single {
-  height: 30vh;
+
   width: 'inherit';
   padding: 0;
   margin: 0;
