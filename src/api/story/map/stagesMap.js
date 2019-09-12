@@ -4,6 +4,8 @@ import {
   Card,
   Dimmer,
   Loader,
+  Image,
+  Icon,
 } from 'semantic-ui-react';
 
 import MapGL, { Marker, Popup, LinearInterpolator, FlyToInterpolator } from 'react-map-gl';
@@ -100,11 +102,27 @@ class stagesMap extends Component {
             closeOnClick={false}
             onClose={() => this.setState({popupInfo: null})}
           >
-            <Card
-              header={popupInfo.name}
-              meta='Point'
-              description={ReactHtmlParser(popupInfo.description)}
-            />
+          <Card>
+            {
+              (popupInfo.photo)
+              ? <Image
+              src={popupInfo.photo[0].src}
+              wrapped
+              ui={false}
+              />
+            : false}
+            <Card.Content>
+              <Card.Header>{popupInfo.name}</Card.Header>
+              <Card.Meta>Joined in 2016</Card.Meta>
+              <Card.Description>{ReactHtmlParser(popupInfo.description)}</Card.Description>
+            </Card.Content>
+            <Card.Content extra>
+              <a>
+                <Icon name='user' />
+                10 Friends
+              </a>
+            </Card.Content>
+          </Card>
           </Popup>
         )
       );
