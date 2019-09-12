@@ -237,6 +237,7 @@ class stage extends Component {
       console.log(e.message);
     }
   }
+
   handleObjectDeleteConfirm = (e, t) => {
     let tasks= this.state.tasks;
     const index = tasks.findIndex(el => (el.category === t.category && el.name === t.name));
@@ -261,18 +262,73 @@ class stage extends Component {
   unlock = () => this.setState({descLock: 'unlock'})
   toggleLock = () => (this.state.descLock === 'lock') ? this.unlock() : this.lock()
   setSteps = (e) => this.setState(e)
-  onDrop = (ev, cat) => {
-     let id = ev.dataTransfer.getData("id");
+  onDrop = async (ev, cat) => {
 
-     let tasks = this.state.tasks.filter((task) => {
-          if(task.name === id) task.category = cat ;
-         return task;
-     });
+    try {
+      let id = ev.dataTransfer.getData("id");
+      console.log(id);
+      let obj ={};
+      let newObj={};
+      let old;
+      let tasks = this.state.tasks.filter((task) => {
+        if(task.name === id) {
+          old = task.category;
+          obj = task;
+          task.category = cat ;
+          newObj = task;
+        }
+        return task;
+      });
+      newObj.category=cat;
+      
+      // send request to server to mobve file from directory
+      console.log(old);
+      console.log(obj.category);
+      console.log(newObj.category);
+      if(old !== newObj.category) {
+        // uri objMvUrl
+        await fetch(this.state.objMvUrl, {
+          method: 'PATCH',
+          headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'},
+          body:JSON.stringify({
+            id: this.state.ssid,
+            sid: this.state.sid,
+            old: old,
+            obj: obj,
+            newObj : newObj
+          })
+        })
+        .then(response => {
+          if (response && !response.ok) { throw new Error(response.statusText);}
+          return response.json();
+        })
+        .then(data => {
+          if(data) {
+            //remove object from this.state.tasks
+            // tasks = tasks.filter(function( obj ) {
+            //   return obj.name !== t.name;
+            // });
+            // this.setState({tasks: tasks});
+            // // reload stage
+            // return this.getStage();
+          }
+        })
+        .catch((error) => {
+          // Your error is here!
+          console.log(error)
+        });
 
-     this.setState({
-         ...this.state,
-         tasks
-     });
+      }
+
+
+      this.setState({
+          ...this.state,
+          tasks
+      });
+    } catch(e) {
+      console.log(e.message);
+    }
+
   }
   onDragStart = (ev, id) => {
       ev.dataTransfer.setData("id", id);
@@ -280,6 +336,7 @@ class stage extends Component {
 
   onDragOver = (ev) => {
       ev.preventDefault();
+
   }
   handleSeekChange = e => {
     this.setState({ played: parseFloat(e.target.value) })

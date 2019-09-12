@@ -432,7 +432,47 @@ const removeObjectFromField = async ({ssid, sid, category, obj}) => {
     console.log(e.message);
   }
 };
+// move file from category (zones)
+const moveObjectFromField = async ({ssid, sid, oldDir, newDir, newObj}) => {
+  try {
 
+    let objName = newObj.name;
+    let objType = newObj.type;
+    let newList = [];
+    let list = await Stages.findAll(
+      { where: {id : ssid, sid: sid }}
+    ).then(function(result){
+      //extract objects array list for this category
+      result = result[0].dataValues[oldDir];
+        // remove object by name from array
+      result = (result) ? result.filter(function (lobj) {
+        lobj =  lobj[objType];
+        if (lobj.name === objName) newObj = lobj;
+        return lobj.name !== objName;
+      }) : null ;
+      newList = (result[0] && result[0].dataValues[newDir]) ? result[0].dataValues[newDir] : null ;
+      return result;
+    });
+    // update removed array with database
+    list = (list.length > 0 ) ? list : null;
+    let field = oldDir;
+    let fieldValue = list;
+    //update category in db
+    await updateFieldFromStage({ssid, sid, field, fieldValue }).then(function(result){
+      //extract objects array list for this category
+      newList = (newList.length > 0 ) ? newList : null;
+      field = newDir;
+      fieldValue = newList.push(newObj);
+      updateFieldFromStage({ssid, sid, field, fieldValue }).then(function(res){
+       return res;
+      });
+    });
+    //update new category in db
+
+  } catch(e) {
+    console.log(e.message);
+  }
+};
 // get static route to serve images
 var staticoptions = {
   dotfiles: 'ignore',
@@ -1021,7 +1061,6 @@ app.delete('/stories/:storyId/stages/:stageId/objDelete', function(req, res, nex
   let obj = req.body.obj;
   let objName = obj.name;
   let category = obj.category;
-
   let path = './public/stories/'+ sid + '/stages/' + ssid +'/'+ obj.category + '/';
   //delete file
   rimraf.sync( path + objName);
@@ -1030,9 +1069,46 @@ app.delete('/stories/:storyId/stages/:stageId/objDelete', function(req, res, nex
    removeObjectFromField({ssid, sid, category, obj}).then(user => {
        res.json({ user, msg: obj.name +' destroyed successfully' })
    });
-  // deleteStageObject(sid, ssid, obj).then(user => {
-  //     res.json({ user, msg: obj.name +' destroyed successfully' })
-  // });
+});
+app.patch('/stories/:storyId/stages/:stageId/objMv', function(req, res, next) {
+  let sid = parseInt(req.params.storyId);
+  let ssid = parseInt(req.params.stageId);
+  let obj = req.body.obj;
+  let newObj = req.body.newObj;
+  let oldDir = req.body.old;
+  let newDir = newObj.category;
+  let objName = obj.name;
+
+  let path = './public/stories/'+ sid + '/stages/' + ssid +'/'+ oldDir + '/';
+  let newPath = './public/stories/'+ sid + '/stages/' + ssid +'/'+ newDir + '/';
+  console.log(oldDir);
+  console.log(newDir);
+  if (oldDir !== newDir) {
+    // move file from directory
+    fs.rename(path+objName, newPath+objName, (err)=>{
+      if(err) console.log({err});
+      else {
+
+        moveObjectFromField({ssid, sid, oldDir, newDir, newObj}).then(user => {
+            res.json({ user, msg: newObj.name +' destroyed successfully' })
+        });
+
+      }
+    });
+    // remove object in old field === obj.category
+    // add object to new field === newObj.category
+
+  }
+
+
+
+  //delete file
+  // rimraf.sync( path + objName);
+  // remove file from db
+  // console.log(obj);
+  //  removeObjectFromField({ssid, sid, category, obj}).then(user => {
+  //      res.json({ user, msg: obj.name +' destroyed successfully' })
+  //  });
 });
 // protected route
 app.get('/protected', passport.authenticate('jwt', { session: false }), function(req, res) {

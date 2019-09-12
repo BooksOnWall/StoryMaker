@@ -10,8 +10,9 @@ module.exports.stages = {
     unique: true,
   },
   photo: {
-    type: Sequelize.STRING,
+    type: Sequelize.JSON,
     allowNull: true,
+    defaultValue: null
   },
   adress: {
     type: Sequelize.STRING,
