@@ -1,5 +1,5 @@
 import React, { Component, createRef } from 'react';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import {
   Form,
   Select,
@@ -333,6 +333,7 @@ class stage extends Component {
   }
   onDragStart = (ev, id) => {
       ev.dataTransfer.setData("id", id);
+      // dimmed.blur element
   }
 
   onDragOver = (ev) => {
@@ -424,7 +425,7 @@ class stage extends Component {
                         <Label.Detail>{humanFileSize(t.size)}</Label.Detail>
                       </Label>
                       <Label as='a'>Url:
-                        <Label.Detail>{t.src}</Label.Detail>
+                        <Label.Detail><Button href={t.src}>Source</Button></Label.Detail>
                       </Label>
                     </Label.Group>
                   </Form>
@@ -435,7 +436,6 @@ class stage extends Component {
           );
           break;
           case 'picture':
-          console.log(t.category);
           tasks[t.category].push(
             <Segment
               inverted
@@ -481,7 +481,7 @@ class stage extends Component {
                         <Label.Detail>{humanFileSize(t.size)}</Label.Detail>
                       </Label>
                       <Label as='a'>Url:
-                        <Label.Detail>{t.src}</Label.Detail>
+                        <Label.Detail><Button href={t.src}>Source</Button></Label.Detail>
                       </Label>
                     </Label.Group>
                   </Form>
@@ -559,7 +559,7 @@ class stage extends Component {
                        <Label.Detail>{humanFileSize(t.size)}</Label.Detail>
                      </Label>
                      <Label as='a'>Url:
-                       <Label.Detail>{t.src}</Label.Detail>
+                       <Label.Detail><Button href={t.src}>Source</Button></Label.Detail>
                      </Label>
                       <Checkbox label="Use as a loop" name="loop" defaultValue={t.loop} toggle onChange={this.handleLoopChange}/>
                    </Label.Group>
@@ -617,11 +617,11 @@ class stage extends Component {
                         <Label.Detail>{humanFileSize(t.size)}</Label.Detail>
                       </Label>
                       <Label as='a'>Url:
-                        <Label.Detail>{t.src}</Label.Detail>
+                        <Label.Detail><Button href={t.src}>Source</Button></Label.Detail>
                       </Label>
                       <Checkbox
                         label="Use as a loop"
-                        name="loop"
+                        name={t.name}
                         defaultValue={t.loop}
                         toggle
                         onChange={this.handleLoopChange}/>
@@ -640,6 +640,17 @@ class stage extends Component {
       )
     }
     return tasks;
+  }
+  handleLoopChange = (e, b) => {
+    let ntasks = [];
+    this.state.tasks.forEach(function(task) {
+      task.loop = (task.name !== b.name) ? task.loop : b.checked;
+      ntasks.push(task);
+    });
+    // update server db
+
+    // update tasks
+    this.setState({tasks: ntasks});
   }
   mergeTasks = (cat, list) => {
 
@@ -1021,7 +1032,6 @@ class stage extends Component {
       })
       .then(data => {
           if(data) {
-            console.log(data);
             this.setState({
               stage: {
                 id: data.id,

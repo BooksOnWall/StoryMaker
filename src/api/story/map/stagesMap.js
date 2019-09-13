@@ -111,6 +111,7 @@ class stagesMap extends Component {
               ? <Image
               src={popupInfo.photo[0].src}
               wrapped
+              fluid
               ui={false}
               />
             : false}
