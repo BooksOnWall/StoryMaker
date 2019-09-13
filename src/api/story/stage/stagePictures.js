@@ -34,11 +34,20 @@ function StagePictures(props) {
 
       <Segment className="container">
         <div {...getRootProps({className: 'dropzone'})}>
+<<<<<<< Updated upstream
           <input  id='stagePictures' name='files' onChange={(e) => this.props.onChangeObjectsHandler(e, 'stagePictures')} ref={ref => this.fileInput = ref} {...getInputProps()} />
           <p>Drag 'n' drop some files here, or click to select files</p>
           {!isDragActive && 'Click here or drop a file to upload!'}
           {isDragActive && !isDragReject && "Drop it like it's hot!"}
           {isDragReject && "File type not accepted, sorry!"}
+=======
+          <input  id='stagePictures' name='files' onChange={props.onChangePicturesHandler} ref={ref => this.fileInput = ref} {...getInputProps()} />
+
+            <p>{<FormattedMessage id="app.story.stage.stagepicture.files"  defaultMessage={"Drag and drop some files here, or click to select files"} />}</p>
+          {!isDragActive && <FormattedMessage id="app.stage.stagepicture.files.dragactive"  defaultMessage={"Click here or drop a file to upload!"} />}
+          {isDragActive && !isDragReject &&  <FormattedMessage id="app.story.stage.stagepicture.files.dragactive"  defaultMessage={"Drop it like it's hot!"} />}
+          {isDragReject && <FormattedMessage id="app.story.stage.stagepicture.files.dragreject"  defaultMessage={"File type not accepted, sorry!"} />}
+>>>>>>> Stashed changes
         </div>
       </Segment>
 

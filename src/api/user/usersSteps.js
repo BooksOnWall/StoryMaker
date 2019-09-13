@@ -30,8 +30,8 @@ class userSteps extends Component {
           disabled = {false}
           name='User'
           onClick={this.handleSteps}
-          title='Edit User'
-          description='Edit user things'
+          title={<FormattedMessage id="app.user.usersteps.steps.user.title"  defaultMessage={'Edit User'} />}
+        //  description='Edit user things'
         />
         <Step
           active={this.props.state.step === 'Password'}
@@ -39,8 +39,8 @@ class userSteps extends Component {
           disabled ={(this.props.state.userEdit.mode === 'update') ? false : true }
           name='Password'
           onClick={this.handleSteps}
-          title='Password'
-          description='Change user password'
+          title={<FormattedMessage id="app.user.usersteps.steps.user.password"  defaultMessage={'Password'} />}        
+          //  description='Change user password'
         />
         <Step
           active={this.props.state.step === 'Preferences'}
@@ -48,8 +48,8 @@ class userSteps extends Component {
           disabled ={(this.props.state.userEdit.mode === 'update') ? false : true }
           name='Preferences'
           onClick={this.handleSteps}
-          title='Preferences'
-          description='User preferences'
+          title={<FormattedMessage id="app.user.usersteps.steps.user.preferences"  defaultMessage={'Preferences'} />}
+        //  description='User preferences'
         />
         <Step
           active={this.props.state.step === 'Avatar'}
@@ -57,8 +57,8 @@ class userSteps extends Component {
           disabled ={(this.props.state.userEdit.mode === 'update') ? false : true }
           name='Avatar'
           onClick={this.handleSteps}
-          title='Avatar'
-          description='User avatar'
+          title={<FormattedMessage id="app.user.usersteps.steps.user.avatar"  defaultMessage={'Avatar'} />}
+        //  description='User avatar'
         />
       </Step.Group>
     );

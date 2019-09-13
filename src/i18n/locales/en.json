@@ -28,6 +28,31 @@
         "email": "Email",
         "password": "Password",
         "repeatpassword": "Repeat Password"
+      },
+      "user": {
+        "useravatar": {
+          "file": "choose File",
+          "save": "save",
+          "zoom": "Zoom",
+          "scale": "Broders radius",
+          "width": "Avatar width",
+          "cancel": "cancel",
+          "height": "Avatar height",
+          "rotate": "rotate",
+          "preview": {
+            "": "Preview"
+          }
+        }
+      },
+      "usersteps": {
+        "steps": {
+          "user": {
+            "title": "Edit User",
+            "avatar": "Avatar",
+            "password": "Password",
+            "preferences": "Preferences"
+          }
+        }
       }
     },
     "home": {
@@ -36,14 +61,83 @@
       "subtitle": "This is the home page.",
       "unlogged": "You are not logged in.!"
     },
+    "stage": {
+      "drag": "Drag me",
+      "name": "Name",
+      "type": "Type",
+      "order": "Order",
+      "stageaudios": {
+        "files": {
+          "dragactive": "Click here or drop a file to upload!"
+        }
+      },
+      "stageimages": {
+        "files": {
+          "dragactive": "Click here or drop a file to upload!"
+        }
+      },
+      "stagevideos": {
+        "files": {
+          "dragactive": "Click here or drop a file to upload!"
+        }
+      },
+      "stagepicture": {
+        "files": {
+          "dragactive": "Click here or drop a file to upload!"
+        }
+      }
+    },
     "story": {
-      "delete": "Delete Story"
+      "delete": "Delete Story",
+      "stories": {
+        "getuser": "Get users info",
+        "addstory": "Add Story",
+        "table": {
+          "id": "Id",
+          "city": "City",
+          "state": "State",
+          "title": "Title",
+          "artist": "Artist",
+          "create": "Created",
+          "updated": "Updated"
+        }
+      },
+      "stage": {
+        "stageaudios": {
+          "files": "Drag and drop some files here, or click to select files"
+        },
+        "stageimages": {
+          "files": "Drag and drop some files here, or click to select files"
+        },
+        "stagevideos": {
+          "files": "Drag and drop some files here, or click to select files"
+        },
+        "stagepicture": {
+          "files": "Drag and drop some files here, or click to select files"
+        }
+      }
     },
     "artist": {
-      "delete": "Delete Artist"
+      "delete": "Delete Artist",
+      "artistSteps": {
+        "artist": {
+          "bio": "Bio",
+          "edit": "Edit Artist",
+          "images": "Images"
+        }
+      }
     },
     "userPrefs": {
       "loading": "Get users preferences"
+    },
+    "stories": {
+      "stage": {
+        "stageSteps": {
+          "stage": "Stage",
+          "geoposition": "GeoPosition",
+          "augmentedReality": "Augmented Reality"
+        }
+      }
     }
   }
 }

@@ -19,7 +19,7 @@ class LeftSlideMenu extends Component {
   render() {
     return (
       <Segment  fluid='true' style={{padding: 0}} >
-        <Menu className='bwSidebarMenu'size='large' pointing primary='true' inverted color='violet' vertical fluid  style={{padding: 0}}>
+        <Menu className='bwSidebarMenu' size='large' pointing primary='true' inverted color='black' vertical fluid  style={{padding: 0}}>
           {this.props.childProps.authenticated ? (
             <UserContext.Consumer>{(user) => {
               return(
@@ -35,18 +35,18 @@ class LeftSlideMenu extends Component {
                     </Menu.Item>
                       <Divider horizontal>...</Divider>
                     <Menu.Item name='users' active={this.state.activeItem === 'users'} onClick={this.handleItemClick} as={Link} to='/users' className="sidemenu"  >
-                      <Icon name='address card'  floated='left'/><span className='text'>Users</span>
+                      <Icon name='user circle'  floated='left'/><span className='text'>Users</span>
                     </Menu.Item>
                     <Menu.Item name='artists' active={this.state.activeItem === 'artists'} onClick={this.handleItemClick} as={Link} to='/artists'  >
-                      <Icon name='list' /><span className='text'>Artists</span>
+                      <Icon name='paint brush' /><span className='text'>Artists</span>
                     </Menu.Item>
                     <Menu.Item name='stories' active={this.state.activeItem === 'stories'} onClick={this.handleItemClick} as={Link} to='/stories'  >
-                      <Icon name='list' /><span className='text'>Stories</span>
+                      <Icon name='book' /><span className='text'>Stories</span>
                     </Menu.Item>
 
                       <Divider horizontal>...</Divider>
                     <Menu.Item name='logout' active={this.state.activeItem === 'logout'} onClick={this.handleItemClick} as={Link} to='/logout' >
-                      <Icon name='joget' /><span className='text'>Logout</span>
+                      <Icon name='log out' /><span className='text'>Logout</span>
                     </Menu.Item>
                 </Menu.Menu>
             )}}

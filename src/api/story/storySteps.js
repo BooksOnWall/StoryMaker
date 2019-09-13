@@ -4,7 +4,7 @@ import {
   Step,
 } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, defineMessages } from 'react-intl';
 
 class storySteps extends Component {
   constructor(props) {
@@ -84,8 +84,11 @@ class storySteps extends Component {
             onClick={this.handleSteps}
             as={Link}
             to={step.to}
-            title={step.title}
-            description={step.desc}
+            title= {step.title}
+        
+            // {defineMessages({stepstitle: { id: 'app.story.storySteps.steps.title', defaultMessage: [step.title] }})}
+        
+           // description={<FormattedMessage id="app.story.storySteps.edit"  defaultMessage={step.desc} />}
           />
         ))}
       </Step.Group>

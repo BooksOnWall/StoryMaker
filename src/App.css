@@ -3,13 +3,13 @@
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
+  animation: none;
   height: 40vmin;
   pointer-events: none;
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #f1f1f1;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -173,7 +173,7 @@ div.DraftEditor-root {
   padding-top: 6vw!important;
 }
 .ui.visible.slide.along.sidebar.bwSidebar,.ui.slide.along.sidebar.bwSidebar {
-  background: #6435c9 none no-repeat;
+  background: rgba(0,0,0,.87) none no-repeat;
   height: '100vh';
 }
 .ui.menu.fluid, .ui.vertical.menu.fluid.bwSidebarMenu {
@@ -304,3 +304,8 @@ div.DraftEditor-root {
 .menu a.active:before {
   animation: navdot 0.25s ease-in-out forwards 0.25s;
 }
+
+
+.push .ui.button:not(.icon) > .icon:not(.button):not(.dropdown){ margin: 0 !important}
+
+.ui.icon.header{ text-align: right !important; }

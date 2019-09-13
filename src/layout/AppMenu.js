@@ -8,7 +8,7 @@ import {
 } from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
 
-import Logo from '../logo.svg';
+import Logo from '../logo2.svg';
 
 class AppMenu extends Component {
   constructor(props) {
@@ -27,14 +27,13 @@ class AppMenu extends Component {
 
   render() {
     return (
-      <Menu fixed='top'  inverted color='violet' pointing style={{padding: 0}}>
+      <Menu fixed='top'  inverted color='black' pointing style={{padding: 0}}>
         <Container fluid >
-          <Button primary
+          <Button secondary
             onClick={this.props.state.handleSideBar}
-            ><Icon name='sliders'/></Button>
-          <Menu.Item as={Link} header to='/'  style={{fontSize:'1.8em', padding: 0}}>
-            <Image className='App-logo'  fluid  src={Logo} style={{ height: '5vw', width: '5vw',  marginRight: '1.5em' }} />
-            Books On Wall
+            ><Icon circular name='bars' size='big'/></Button>
+          <Menu.Item as={Link} header to='/'  style={{padding: 0}}>
+            <Image className='App-logo'  fluid  src={Logo} style={{ height: '4vw', width: '12vw',  marginRight: '1.5em', marginLeft: '.5em' }} />
           </Menu.Item>
           
         </Container>

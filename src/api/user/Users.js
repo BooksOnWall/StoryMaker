@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, Container, Dimmer, Loader, Segment, Header, Table, Icon } from 'semantic-ui-react';
+import { Image, Container, Dimmer, Loader, Segment, Header, Table, Icon, Button, Breadcrumb } from 'semantic-ui-react';
 import Moment from 'moment';
 import { Link } from 'react-router-dom';
 import { injectIntl, FormattedMessage } from 'react-intl';
@@ -96,13 +96,26 @@ class Users extends Component {
         </Loader>
       </Dimmer>
       <Segment style={{fontSize: '.9em'}}>
-        <Header as='h6' icon floated='left'>
-          <Link to="/users/0">
-            <Icon name='add user' />
-              <FormattedMessage id="app.users.adduser" defaultMessage={`Add user`}/>
+        <Header as='div'>
+            <Breadcrumb size='big'>
+                <Breadcrumb.Section link>Home</Breadcrumb.Section>
+                <Breadcrumb.Divider icon='right chevron' />
+                <Breadcrumb.Section link>Registration</Breadcrumb.Section>
+                <Breadcrumb.Divider icon='right arrow' />
+                <Breadcrumb.Section active>Personal Information</Breadcrumb.Section>
+              </Breadcrumb>
+          <Link to="/users/0">        
+            <Button secondary animated='vertical'>
+              <Button.Content hidden>
+                  <FormattedMessage id="app.users.adduser" defaultMessage={`Add user`}/>
+              </Button.Content>
+              <Button.Content visible>
+                <Icon name='add user' />
+              </Button.Content>
+            </Button>
           </Link>
         </Header>
-        <Table sortable celled fixed selectable>
+        <Table basic='very' striped sortable fixed selectable>
           <Table.Header className='slide-out'>
             <Table.Row>
               <Table.HeaderCell

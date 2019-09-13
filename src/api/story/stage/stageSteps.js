@@ -24,11 +24,25 @@ class stageSteps extends Component {
   render() {
     return (
       <Button.Group>
-        <Button primary name='Stage' onClick={this.handleSSteps}><Icon name="google wallet" />Stage</Button>
+        <Button primary name='Stage' onClick={this.handleSSteps}><Icon name="google wallet" />
+        {<FormattedMessage 
+                id="app.stories.stage.stageSteps.stage" 
+                defaultMessage={'Stage'}
+            />}
+        </Button>
         <Button.Or />
-       <Button name="geoposition"><Icon name="map marker alternate" />GeoPosition</Button>
+           <Button name="geoposition"><Icon name="map marker alternate" />        {<FormattedMessage 
+                id="app.stories.stage.stageSteps.geoposition" 
+                defaultMessage={'GeoPosition'}
+            />}
+        </Button>
        <Button.Or />
-       <Button positive name="augmentedReality"><Icon name="road" /> Augmented Reality</Button>
+       <Button positive name="augmentedReality"><Icon name="road" /> 
+            {<FormattedMessage 
+                id="app.stories.stage.stageSteps.augmentedReality" 
+                defaultMessage={'Augmented Reality'}
+            />}
+        </Button>
      </Button.Group>
     );
   }

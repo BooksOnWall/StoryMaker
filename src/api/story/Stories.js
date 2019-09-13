@@ -91,13 +91,15 @@ class Stories extends Component {
     <Container className="view" fluid>
       <Segment style={{fontSize: '.9em'}}>
         <Dimmer active={this.state.loading}>
-          <Loader active={this.state.loading} >Get users info</Loader>
+          <Loader active={this.state.loading} >
+        <FormattedMessage id="app.story.stories.getuser"  defaultMessage={'Get users info'} />
+        </Loader>
         </Dimmer>
         <Header as='h6' icon floated='left'>
           <Link to="/stories/0">
             <Icon name='sun' />
-            Add Story
-          </Link>
+        <FormattedMessage id="app.story.stories.addstory"  defaultMessage={'Add Story'} />
+        </Link>
         </Header>
         <Table sortable celled fixed selectable>
           <Table.Header className='slide-out' >
@@ -106,44 +108,38 @@ class Stories extends Component {
                 sorted={column === 'id' ? direction : null}
                 onClick={this.handleSort('id')}
               >
-                Id
-              </Table.HeaderCell>
+                <FormattedMessage id="app.story.stories.table.id"  defaultMessage={'Id'} />             
+            </Table.HeaderCell>
               <Table.HeaderCell
                 sorted={column === 'title' ? direction : null}
                 onClick={this.handleSort('title')}
               >
-                Title
-              </Table.HeaderCell>
+                <FormattedMessage id="app.story.stories.table.title"  defaultMessage={'Title'} />             </Table.HeaderCell>
               <Table.HeaderCell
                 sorted={column === 'artist' ? direction : null}
                 onClick={this.handleSort('artist')}
               >
-                Artist
-              </Table.HeaderCell>
+                <FormattedMessage id="app.story.stories.table.artist"  defaultMessage={'Artist'} />               </Table.HeaderCell>
               <Table.HeaderCell
                 sorted={column === 'state' ? direction : null}
                 onClick={this.handleSort('state')}
               >
-                State
-              </Table.HeaderCell>
+                <FormattedMessage id="app.story.stories.table.state"  defaultMessage={'State'} />               </Table.HeaderCell>
               <Table.HeaderCell
                 sorted={column === 'city' ? direction : null}
                 onClick={this.handleSort('city')}
               >
-                City
-              </Table.HeaderCell>
+                <FormattedMessage id="app.story.stories.table.city"  defaultMessage={'City'} />              </Table.HeaderCell>
               <Table.HeaderCell
                 sorted={column === 'createdAt' ? direction : null}
                 onClick={this.handleSort('createdAt')}
               >
-                Created
-              </Table.HeaderCell>
+                <FormattedMessage id="app.story.stories.table.create"  defaultMessage={'Created'} />              </Table.HeaderCell>
               <Table.HeaderCell
                 sorted={column === 'updatedAt' ? direction : null}
                 onClick={this.handleSort('updatedAt')}
               >
-                Updated
-              </Table.HeaderCell>
+                <FormattedMessage id="app.story.stories.table.updated"  defaultMessage={'Updated'} />             </Table.HeaderCell>
             </Table.Row>
           </Table.Header>
           <Table.Body>

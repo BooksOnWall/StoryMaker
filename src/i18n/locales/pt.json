@@ -28,6 +28,31 @@
         "email": "",
         "password": "",
         "repeatpassword": ""
+      },
+      "user": {
+        "useravatar": {
+          "file": "",
+          "save": "",
+          "zoom": "",
+          "scale": "",
+          "width": "",
+          "cancel": "",
+          "height": "",
+          "rotate": "",
+          "preview": {
+            "": ""
+          }
+        }
+      },
+      "usersteps": {
+        "steps": {
+          "user": {
+            "title": "",
+            "avatar": "",
+            "password": "",
+            "preferences": ""
+          }
+        }
       }
     },
     "home": {
@@ -36,14 +61,83 @@
       "subtitle": "",
       "unlogged": ""
     },
+    "stage": {
+      "drag": "",
+      "name": "",
+      "type": "",
+      "order": "",
+      "stageaudios": {
+        "files": {
+          "dragactive": ""
+        }
+      },
+      "stageimages": {
+        "files": {
+          "dragactive": ""
+        }
+      },
+      "stagevideos": {
+        "files": {
+          "dragactive": ""
+        }
+      },
+      "stagepicture": {
+        "files": {
+          "dragactive": ""
+        }
+      }
+    },
     "story": {
-      "delete": ""
+      "delete": "",
+      "stories": {
+        "getuser": "",
+        "addstory": "",
+        "table": {
+          "id": "",
+          "city": "",
+          "state": "",
+          "title": "",
+          "artist": "",
+          "create": "",
+          "updated": ""
+        }
+      },
+      "stage": {
+        "stageaudios": {
+          "files": ""
+        },
+        "stageimages": {
+          "files": ""
+        },
+        "stagevideos": {
+          "files": ""
+        },
+        "stagepicture": {
+          "files": ""
+        }
+      }
     },
     "artist": {
-      "delete": ""
+      "delete": "",
+      "artistSteps": {
+        "artist": {
+          "bio": "",
+          "edit": "",
+          "images": ""
+        }
+      }
     },
     "userPrefs": {
       "loading": ""
+    },
+    "stories": {
+      "stage": {
+        "stageSteps": {
+          "stage": "",
+          "geoposition": "",
+          "augmentedReality": ""
+        }
+      }
     }
   }
 }

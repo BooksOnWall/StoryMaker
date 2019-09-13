@@ -33,8 +33,8 @@ class artistSteps extends Component {
           completed = {this.props.state.artistCompleted}
           name='Artist'
           onClick={this.handleSteps}
-          title='Edit Artist'
-          description='things'
+          title={<FormattedMessage id="app.artist.artistSteps.artist.edit"  defaultMessage={'Edit Artist'} />}
+          //description={<FormattedMessage id="app.artist.artistSteps.artist.edit.description"  defaultMessage={'Things'} />}
         />
         <Step
           active = {this.props.state.step === 'Images'}
@@ -43,8 +43,8 @@ class artistSteps extends Component {
           name='Images'
           onClick={this.handleSteps}
           icon='images'
-          title='Images'
-          description='images'
+          title={<FormattedMessage id="app.artist.artistSteps.artist.images"  defaultMessage={'Images'} />}
+          //description={<FormattedMessage id='app.artist.artistSteps.artist.images.desc' defaultMesssages={'Images'} />}
         />
         <Step
           active = {this.props.state.step === 'Bio'}
@@ -53,8 +53,8 @@ class artistSteps extends Component {
           name='Bio'
           onClick={this.handleSteps}
           icon='book'
-          title='Bio'
-          description='Biography'
+          title={<FormattedMessage id="app.artist.artistSteps.artist.bio"  defaultMessage={'Bio'} />}
+          //description={<FormattedMessage id="app.artist.artistSteps.artist.bio.biodescription"  defaultMessage={'Biography'} />}
         />
       </Step.Group>
     );

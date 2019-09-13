@@ -1,49 +1,143 @@
 {
   "app": {
     "users": {
-      "id": "",
-      "name": "",
-      "email": "",
-      "active": "",
-      "adduser": "",
-      "created": "",
-      "loading": "",
-      "updated": ""
+      "id": "Id",
+      "name": "Nombre",
+      "email": "Email",
+      "active": "Activo",
+      "adduser": "Añadir usuario",
+      "created": "Creado",
+      "loading": "Obtener información del usuario",
+      "updated": "Actualizado"
     },
     "user": {
-      "edit": "",
-      "theme": "",
-      "create": "",
-      "delete": "",
-      "locale": "",
-      "update": "",
-      "created": "",
-      "loading": "",
-      "required": "",
-      "passwdTitle": "",
-      "wrongPasswd": "",
-      "invalidEmail": "",
+      "edit": "Editar usuario",
+      "theme": "Seleciona tu tema",
+      "create": "Crear usuario",
+      "delete": "Borrar cuenta de usuario",
+      "locale": "Seleciona tu idioma",
+      "update": "Actualizar",
+      "created": "Creado",
+      "loading": "Obtener información del usuario",
+      "required": "Requerido",
+      "passwdTitle": "Cambiar clave",
+      "wrongPasswd": "Clave invalida",
+      "invalidEmail": "Email invalido",
       "userEdit": {
-        "name": "",
-        "email": "",
-        "password": "",
-        "repeatpassword": ""
+        "name": "nombre",
+        "email": "Email",
+        "password": "Clave",
+        "repeatpassword": "Repite tu clave"
+      },
+      "user": {
+        "useravatar": {
+          "file": "Escuge un archivo",
+          "save": "Guardar",
+          "zoom": "Zoom",
+          "scale": "Border Radius",
+          "width": "Ancho del avatar",
+          "cancel": "Cancelar",
+          "height": "Alto del avatar",
+          "rotate": "Rotar",
+          "preview": {
+            "": "Privisulización"
+          }
+        }
+      },
+      "usersteps": {
+        "steps": {
+          "user": {
+            "title": "Editar usuarior",
+            "avatar": "Avatar",
+            "password": "Clave",
+            "preferences": "Preferencias"
+          }
+        }
       }
     },
     "home": {
-      "title": "",
-      "logged": "",
-      "subtitle": "",
-      "unlogged": ""
+      "title": "Books on Wall",
+      "logged": "Ya estas adentro!",
+      "subtitle": "Este es el home",
+      "unlogged": "Debes ingresar con tu usuario y clave secreta"
+    },
+    "stage": {
+      "drag": "Arrastrar",
+      "name": "Nombre",
+      "type": "Tipo",
+      "order": "Orden",
+      "stageaudios": {
+        "files": {
+          "dragactive": "Has clic acá o arrastra un archivo para subirlo!"
+        }
+      },
+      "stageimages": {
+        "files": {
+          "dragactive": "Has clic acá o arrastra un archivo para subirlo!"
+        }
+      },
+      "stagevideos": {
+        "files": {
+          "dragactive": "Has clic acá o arrastra un archivo para subirlo!"
+        }
+      },
+      "stagepicture": {
+        "files": {
+          "dragactive": "Has clic acá o arrastra un archivo para subirlo!"
+        }
+      }
     },
     "story": {
-      "delete": ""
+      "delete": "Eliminar Cuento",
+      "stories": {
+        "getuser": "Obtener información del usuario",
+        "addstory": "Añadir Cuento",
+        "table": {
+          "id": "Id",
+          "city": "Ciudad",
+          "state": "Localidad",
+          "title": "Titulo",
+          "artist": "Autor",
+          "create": "Fecha de creación",
+          "updated": "Última actualización"
+        }
+      },
+      "stage": {
+        "stageaudios": {
+          "files": "Has clic acá o arrastra un archivo para subirlo!"
+        },
+        "stageimages": {
+          "files": "Has clic acá o arrastra un archivo para subirlo!"
+        },
+        "stagevideos": {
+          "files": "Has clic acá o arrastra un archivo para subirlo!"
+        },
+        "stagepicture": {
+          "files": "Has clic acá o arrastra un archivo para subirlo!"
+        }
+      }
     },
     "artist": {
-      "delete": ""
+      "delete": "Eliminar Artista",
+      "artistSteps": {
+        "artist": {
+          "bio": "Bio",
+          "edit": "Editar Artista",
+          "images": "Imagenes"
+        }
+      }
     },
     "userPrefs": {
-      "loading": ""
+      "loading": "Obtener información del usuario"
+    },
+    "stories": {
+      "stage": {
+        "stageSteps": {
+          "stage": "Estación",
+          "geoposition": "Ubicaiíon",
+          "augmentedReality": "Realidad Ahumentada"
+        }
+      }
     }
   }
 }

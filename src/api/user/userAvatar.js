@@ -311,13 +311,13 @@ class userAvatar extends Component {
           />
           <Button
             animated="fade"
-            content="Choose File"
+            content={<FormattedMessage id="app.user.user.useravatar.file"  defaultMessage={'choose File'} />}
             labelPosition="left"
             icon="file"
             onClick={this.handleNewImage}
           />
         <br />
-        Zoom:
+         {<FormattedMessage id="app.user.user.useravatar.zoom"  defaultMessage={'Zoom'} />}        
         <Input
           name="scale"
           type="range"
@@ -336,7 +336,7 @@ class userAvatar extends Component {
           checked={this.state.allowZoomOut}
         />
         <br />
-        Border radius:
+         {<FormattedMessage id="app.user.user.useravatar.scale"  defaultMessage={'Broders radius'} />}        
         <Input
           name="scale"
           type="range"
@@ -347,7 +347,7 @@ class userAvatar extends Component {
           defaultValue="0"
         />
         <br />
-        Avatar Width:
+         {<FormattedMessage id="app.user.user.useravatar.width"  defaultMessage={'Avatar width'} />}        
         <Input
           name="width"
           type="number"
@@ -358,7 +358,7 @@ class userAvatar extends Component {
           value={this.state.width}
         />
         <br />
-        Avatar Height:
+         {<FormattedMessage id="app.user.user.useravatar.height"  defaultMessage={'Avatar height'} />}        
         <Input
           name="height"
           type="number"
@@ -369,7 +369,7 @@ class userAvatar extends Component {
           value={this.state.height}
         />
         <br />
-        X Position:
+         <FormattedMessage id="app.user.user.useravatar.scale.x"  defaultMessage={'Position X'} />      
         <Input
           name="scale"
           type="range"
@@ -380,7 +380,7 @@ class userAvatar extends Component {
           value={this.state.position.x}
         />
         <br />
-        Y Position:
+         <FormattedMessage id="app.user.user.useravatar.scale.y"  defaultMessage={'Position Y'} />        
         <Input
           name="scale"
           type="range"
@@ -391,12 +391,18 @@ class userAvatar extends Component {
           value={this.state.position.y}
         />
         <br />
-        Rotate:
-        <Button onClick={this.rotateLeft}>Left</Button>
-        <Button onClick={this.rotateRight}>Right</Button>
+         <FormattedMessage id="app.user.user.useravatar.rotate"  defaultMessage={'rotate'} />
+        <Button onClick={this.rotateLeft}>
+         {<FormattedMessage id="app.user.user.useravatar.rotate.left"  defaultMessage={'Left'} />}        
+            </Button>
+        <Button onClick={this.rotateRight}>
+         {<FormattedMessage id="app.user.user.useravatar.rotate.right"  defaultMessage={'Right'} />}        
+            </Button>
         <br />
           <Modal
-            trigger={<Button primary onClick={this.handlePreview}>Preview</Button>}
+            trigger={<Button primary onClick={this.handlePreview}>
+                {<FormattedMessage id="app.user.user.useravatar.preview."  defaultMessage={'Preview'} />}
+                </Button>}
             open={this.state.modalOpen}
             onClose={this.handleClose}
             basic
@@ -437,11 +443,12 @@ class userAvatar extends Component {
               </Modal.Content>
               <Modal.Actions>
                 <Button  onClick={this.handleClose} color='red' >
-                  <Icon name='cancel' /> cancel
-                </Button>
+                  <Icon name='cancel' /> 
+                      {<FormattedMessage id="app.user.user.useravatar.cancel"  defaultMessage={'cancel'} />}
+                 </Button>
                 <Button onClick={this.handleSave} primary inverted>
-                  <Icon name='save' /> Save
-                </Button>
+                  <Icon name='save' /> 
+                      {<FormattedMessage id="app.user.user.useravatar.save"  defaultMessage={'save'} />}                </Button>
               </Modal.Actions>
           </Modal>
         </Segment>
