@@ -7,6 +7,7 @@ import {
   Message,
   Placeholder,
   Confirm,
+  Dimmer,
   Icon
 } from 'semantic-ui-react';
 
@@ -164,73 +165,77 @@ class storyStages extends Component {
   render() {
 
     return (
-      <Segment.Group horizontal>
-        <Segment style={{width: '40vw' }} className="stagesMap">
-          {(this.state.location)
-            ? <StagesMap goToStage={this.goToStage} stages={this.state.stages} location={this.state.location} state={this.state}/>
-            : <Placeholder>
-              <Placeholder.Image rectangular />
-            </Placeholder>
-          }
-        </Segment>
-        <Segment  className="stages">
-          <Button.Group>
-            <Button primary onClick={this.handleCreate}><Icon name="google wallet" />Add Stage</Button>
-            <Button.Or />
-            <Button negative loading={this.state.importLoading} onClick={() => this.fileInputRef.current.click()}><Icon name="point" />GeoJSON import</Button>
-              <input
-                id='importfile'
-                name="files"
-                ref={this.fileInputRef}
-                type="file"
-                accept=".json,.geojson"
-                hidden
-                onChange={this.geojsonImport}
-             />
-           <Confirm
-               header='Are you sure ?'
-               content={this.ImportPreview}
-               cancelButton='Never mind'
-               confirmButton="Let's do it"
-               open={this.state.confirmOpen}
-               onCancel={this.close}
-               onConfirm={this.close}
-             />
-            <Button.Or />
-            <Button positive><Icon name="external square alternate" /> GeoJSON export</Button>
-          </Button.Group>
-          <ReactDragListView {...this.dragProps}>
-            <Table color='violet' inverted compact sortable  selectable>
-              <Table.Header className='slide-out'>
-                <Table.Row>
-                  <Table.HeaderCell   >
-                    <FormattedMessage id="app.stage.drag" defaultMessage={`Drag me`} />
-                  </Table.HeaderCell>
-                  <Table.HeaderCell >
-                    <FormattedMessage id="app.stage.name" defaultMessage={`Name`} />
-                  </Table.HeaderCell>
-                  <Table.HeaderCell   >
-                    <FormattedMessage id="app.stage.type" defaultMessage={`Type`} />
-                  </Table.HeaderCell>
-                  <Table.HeaderCell   >
-                    <FormattedMessage id="app.stage.order" defaultMessage={`Order`} />
-                  </Table.HeaderCell>
-                </Table.Row>
-              </Table.Header>
-              <Table.Body>
-                {_.map(this.state.stages, ({ id, name, type, description , stageOrder, updatedAt, rank }) => (
-                  <Table.Row className='slide-out' key={id} onClick={() => this.tableRowClickFunc({id})}>
-                    <Table.Cell>{<a className="drag-handle" href="void(0)"><Icon name='grab' size='tiny' /> Drage Me</a>}</Table.Cell>
-                    <Table.Cell>{name}</Table.Cell>
-                    <Table.Cell>{type}</Table.Cell>
-                    <Table.Cell>{stageOrder}</Table.Cell>
-                  </Table.Row>
-                ))}
-              </Table.Body>
-            </Table>
-          </ReactDragListView>
-        </Segment>
-      </Segment.Group>
+      <Dimmer.Dimmable as={Segment} blurring dimmed={this.state.loading}>
+          <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
+            <Segment.Group horizontal>
+              <Segment style={{width: '40vw' }} className="stagesMap">
+                {(this.state.location)
+                  ? <StagesMap goToStage={this.goToStage} stages={this.state.stages} location={this.state.location} state={this.state}/>
+                  : <Placeholder>
+                    <Placeholder.Image rectangular />
+                  </Placeholder>
+                }
+              </Segment>
+              <Segment  className="stages">
+                <Button.Group>
+                  <Button primary onClick={this.handleCreate}><Icon name="google wallet" />Add Stage</Button>
+                  <Button.Or />
+                  <Button negative loading={this.state.importLoading} onClick={() => this.fileInputRef.current.click()}><Icon name="point" />GeoJSON import</Button>
+                    <input
+                      id='importfile'
+                      name="files"
+                      ref={this.fileInputRef}
+                      type="file"
+                      accept=".json,.geojson"
+                      hidden
+                      onChange={this.geojsonImport}
+                   />
+                 <Confirm
+                     header='Are you sure ?'
+                     content={this.ImportPreview}
+                     cancelButton='Never mind'
+                     confirmButton="Let's do it"
+                     open={this.state.confirmOpen}
+                     onCancel={this.close}
+                     onConfirm={this.close}
+                   />
+                  <Button.Or />
+                  <Button positive><Icon name="external square alternate" /> GeoJSON export</Button>
+                </Button.Group>
+                <ReactDragListView {...this.dragProps}>
+                  <Table color='violet' inverted compact sortable  selectable>
+                    <Table.Header className='slide-out'>
+                      <Table.Row>
+                        <Table.HeaderCell   >
+                          <FormattedMessage id="app.stage.drag" defaultMessage={`Drag me`} />
+                        </Table.HeaderCell>
+                        <Table.HeaderCell >
+                          <FormattedMessage id="app.stage.name" defaultMessage={`Name`} />
+                        </Table.HeaderCell>
+                        <Table.HeaderCell   >
+                          <FormattedMessage id="app.stage.type" defaultMessage={`Type`} />
+                        </Table.HeaderCell>
+                        <Table.HeaderCell   >
+                          <FormattedMessage id="app.stage.order" defaultMessage={`Order`} />
+                        </Table.HeaderCell>
+                      </Table.Row>
+                    </Table.Header>
+                    <Table.Body>
+                      {_.map(this.state.stages, ({ id, name, type, description , stageOrder, updatedAt, rank }) => (
+                        <Table.Row className='slide-out' key={id} onClick={() => this.tableRowClickFunc({id})}>
+                          <Table.Cell>{<a className="drag-handle" href="void(0)"><Icon name='grab' size='tiny' /> Drage Me</a>}</Table.Cell>
+                          <Table.Cell>{name}</Table.Cell>
+                          <Table.Cell>{type}</Table.Cell>
+                          <Table.Cell>{stageOrder}</Table.Cell>
+                        </Table.Row>
+                      ))}
+                    </Table.Body>
+                  </Table>
+                </ReactDragListView>
+              </Segment>
+            </Segment.Group>
+        </Dimmer.Dimmable>
+
     );
   }
 }

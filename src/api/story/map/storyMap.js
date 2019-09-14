@@ -18,7 +18,7 @@ var bounds = [
 class storyMap extends Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       toggleAuthenticateStatus: this.props.toggleAuthenticateStatus,
       authenticated: this.props.authenticated,
@@ -57,27 +57,27 @@ class storyMap extends Component {
 
     const {viewport, mapStyle, loading} = this.state;
     return (
-      <Segment  className="view map" >
+      <Dimmer.Dimmable as={Segment} blurring dimmed={loading}>
+          <Dimmer active={loading} onClickOutside={this.handleHide} />
+          <Loader active={loading} >Get map info</Loader>
+            <Segment  className="view map" >
+              <MapGL
+                {...viewport}
+                width="100vw"
+                height="100vh"
+                mapStyle={mapStyle}
+                onViewportChange={this.onViewportChange}
+                mapboxApiAccessToken={MapboxAccessToken}
+              >
 
-      <Dimmer active={loading}>
-        <Loader active={loading} >Get map info</Loader>
-      </Dimmer>
+                <StylePanel
+                  containerComponent={this.props.containerComponent}
+                  onChange={this.onStyleChange}
+                />
+              </MapGL>
+          </Segment>
+        </Dimmer.Dimmable>
 
-      <MapGL
-        {...viewport}
-        width="100vw"
-        height="100vh"
-        mapStyle={mapStyle}
-        onViewportChange={this.onViewportChange}
-        mapboxApiAccessToken={MapboxAccessToken}
-      >
-
-        <StylePanel
-          containerComponent={this.props.containerComponent}
-          onChange={this.onStyleChange}
-        />
-      </MapGL>
-    </Segment>
     );
   }
 }

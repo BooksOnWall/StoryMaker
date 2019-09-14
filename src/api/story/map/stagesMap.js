@@ -178,27 +178,26 @@ class stagesMap extends Component {
 
     return (
       <Segment  className="stagesMap" >
+        <Dimmer.Dimmable as={Segment} blurring dimmed={loading}>
+          <Dimmer active={loading} onClickOutside={this.handleHide} />
+          <Loader active={loading} >Get map info</Loader>
+            <MapGL
+              {...viewport}
+              width="inherit"
+              height="70vh"
+              mapStyle={MAP_STYLE}
+              clickRadius={2}
+              onClick={this.onClick}
+              getCursor={this.getCursor}
+              interactiveLayerIds={interactiveLayerIds}
+              onViewportChange={this.onViewportChange}
+              mapboxApiAccessToken={MapboxAccessToken}
+            >
 
-      <Dimmer active={loading}>
-        <Loader active={loading} >Get map info</Loader>
-      </Dimmer>
-
-      <MapGL
-        {...viewport}
-        width="inherit"
-        height="70vh"
-        mapStyle={MAP_STYLE}
-        clickRadius={2}
-        onClick={this.onClick}
-        getCursor={this.getCursor}
-        interactiveLayerIds={interactiveLayerIds}
-        onViewportChange={this.onViewportChange}
-        mapboxApiAccessToken={MapboxAccessToken}
-      >
-
-      {this.Stages()}
-      {this.renderPopup()}
-      </MapGL>
+            {this.Stages()}
+            {this.renderPopup()}
+            </MapGL>
+      </Dimmer.Dimmable>
     </Segment>
     );
   }

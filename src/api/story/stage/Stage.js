@@ -1100,49 +1100,50 @@ class stage extends Component {
   render() {
       return (
         <Segment className="view" >
-          <Dimmer active={this.state.loading}>
+          <Dimmer.Dimmable as={Segment} blurring dimmed={this.state.loading}>
+            <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
             <Loader active={this.state.loading} >Get stage info</Loader>
-          </Dimmer>
-          <Segment>
-            <StorySteps sid={this.state.sid} step={this.state.step} history={this.props.history} setSteps={this.setSteps} state={this.state}/>
-            {(this.state.stages) ? <StageBoard
-                history={this.props.history}
-                tasks={this.state.tasks}
-                onDrop={this.onDrop}
-                onDragStart={this.onDragStart}
-                onDragOver={this.onDragOver}
-                state={this.state}
-                stage={(this.state.stage) ? this.state.stage :  null }
-                stages={this.state.stages}
-                editStage={this.editStage}
-                setStageLocation={this.setStageLocation}
-                setStageDescription={this.setStageDescription}
-                stageStep={this.state.stageStep}
-                setSteps={this.setSteps}
-                renderTasks={this.renderTasks}
-                getStage={this.getStage}
-                uploadObjects={this.uploadObjects}
-                setStageObjects={this.setStageObjects}
-                onChangeObjectsHandler={this.onChangeObjectsHandler}
-                toggleSideBar = {this.toggleSideBar}
-                stageImages={this.state.stageImages}
-                stagePictures={this.state.stagePictures}
-                stageVideos={this.state.stageVideos}
-                stageAudios={this.state.stageAudios}
+              <Segment>
+                <StorySteps sid={this.state.sid} step={this.state.step} history={this.props.history} setSteps={this.setSteps} state={this.state}/>
+                {(this.state.stages) ? <StageBoard
+                    history={this.props.history}
+                    tasks={this.state.tasks}
+                    onDrop={this.onDrop}
+                    onDragStart={this.onDragStart}
+                    onDragOver={this.onDragOver}
+                    state={this.state}
+                    stage={(this.state.stage) ? this.state.stage :  null }
+                    stages={this.state.stages}
+                    editStage={this.editStage}
+                    setStageLocation={this.setStageLocation}
+                    setStageDescription={this.setStageDescription}
+                    stageStep={this.state.stageStep}
+                    setSteps={this.setSteps}
+                    renderTasks={this.renderTasks}
+                    getStage={this.getStage}
+                    uploadObjects={this.uploadObjects}
+                    setStageObjects={this.setStageObjects}
+                    onChangeObjectsHandler={this.onChangeObjectsHandler}
+                    toggleSideBar = {this.toggleSideBar}
+                    stageImages={this.state.stageImages}
+                    stagePictures={this.state.stagePictures}
+                    stageVideos={this.state.stageVideos}
+                    stageAudios={this.state.stageAudios}
 
-                sidebarVisible={this.state.sidebarVisible}
-                topSidebarVisible={this.state.topSidebarVisible}
-                handleStageStep={this.handleStageStep}
-                handleShowClick={this.handleShowClick}
-                handleHideClick={this.handleHideClick}
-                handleSidebarHide={this.handleSidebarHide}
-                handleTopHideClick={this.handleTopHideClick}
-                handleTopShowClick={this.handleTopShowClick}
-                handleTopSidebarHide={this.handleTopSidebarHide}
-                />
-              : ''
-            }
-          </Segment>
+                    sidebarVisible={this.state.sidebarVisible}
+                    topSidebarVisible={this.state.topSidebarVisible}
+                    handleStageStep={this.handleStageStep}
+                    handleShowClick={this.handleShowClick}
+                    handleHideClick={this.handleHideClick}
+                    handleSidebarHide={this.handleSidebarHide}
+                    handleTopHideClick={this.handleTopHideClick}
+                    handleTopShowClick={this.handleTopShowClick}
+                    handleTopSidebarHide={this.handleTopSidebarHide}
+                    />
+                  : ''
+                }
+              </Segment>
+        </Dimmer.Dimmable>
         </Segment>
       );
   }

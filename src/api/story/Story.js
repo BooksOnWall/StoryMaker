@@ -418,7 +418,7 @@ class Story extends Component {
   EditForm = () => {
 
     return (
-    <Segment  className="view story">
+    <Segment  className="story">
       <Formik
         enableReinitialize={true}
         initialValues={this.state.initialSValues}
@@ -536,19 +536,24 @@ class Story extends Component {
   render() {
     return (
       <Container  className="view" fluid>
+        <Dimmer.Dimmable as={Segment} blurring dimmed={this.state.loading}>
+          <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
+          <Loader active={this.state.loading} >Get story info</Loader>
+            <Segment>
+              <StorySteps sid={this.state.sid} step={this.state.step} history={this.props.history} setSteps={this.setSteps} state={this.state} location={this.props.location} />
+              <Segment id='StepsContent'>
+                {(this.state.step === 'Story') ? this.EditForm() : '' }
+                {(this.state.step === 'Sinopsys') ? this.EditSino() : '' }
+                {(this.state.step === 'Credits') ? this.EditCred() : '' }
+                {(this.state.step === 'Map') ? <StoryMap sid={this.state.sid}  history={this.props.history} step={this.state.step} state={this.state} /> : '' }
+                {(this.state.step === 'Stages') ? <StoryStages sid={this.state.sid} history={this.props.history} step={this.state.step} state={this.state} />  : '' }
+              </Segment>
+            </Segment>
+        </Dimmer.Dimmable>
         <Dimmer active={this.state.loading}>
-          <Loader active={this.state.loading} >Get artist info</Loader>
+          <Loader active={this.state.loading} >Get story info</Loader>
         </Dimmer>
-        <Segment>
-          <StorySteps sid={this.state.sid} step={this.state.step} history={this.props.history} setSteps={this.setSteps} state={this.state} location={this.props.location} />
-          <Segment id='StepsContent'>
-            {(this.state.step === 'Story') ? this.EditForm() : '' }
-            {(this.state.step === 'Sinopsys') ? this.EditSino() : '' }
-            {(this.state.step === 'Credits') ? this.EditCred() : '' }
-            {(this.state.step === 'Map') ? <StoryMap sid={this.state.sid}  history={this.props.history} step={this.state.step} state={this.state} /> : '' }
-            {(this.state.step === 'Stages') ? <StoryStages sid={this.state.sid} history={this.props.history} step={this.state.step} state={this.state} />  : '' }
-          </Segment>
-        </Segment>
+
       </Container>
 
     );
