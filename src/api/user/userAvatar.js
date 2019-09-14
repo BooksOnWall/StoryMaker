@@ -107,7 +107,7 @@ class userAvatar extends Component {
       try {
         //transform image uri hash to file
         let image = this.dataURItoBlob(img);
-        let path = '/images/users/' + uid +'/avatar.png';
+        let path = '/assets/users/' + uid +'/avatar.png';
         //upload image to server and store the returned image path in avatar userPreference
         await this.uploadAvatar(image, 'avatar.png');
         await fetch(this.state.userPreferences , {
@@ -317,7 +317,7 @@ class userAvatar extends Component {
             onClick={this.handleNewImage}
           />
         <br />
-         {<FormattedMessage id="app.user.user.useravatar.zoom"  defaultMessage={'Zoom'} />}        
+         {<FormattedMessage id="app.user.user.useravatar.zoom"  defaultMessage={'Zoom'} />}
         <Input
           name="scale"
           type="range"
@@ -336,7 +336,7 @@ class userAvatar extends Component {
           checked={this.state.allowZoomOut}
         />
         <br />
-         {<FormattedMessage id="app.user.user.useravatar.scale"  defaultMessage={'Broders radius'} />}        
+         {<FormattedMessage id="app.user.user.useravatar.scale"  defaultMessage={'Broders radius'} />}
         <Input
           name="scale"
           type="range"
@@ -347,7 +347,7 @@ class userAvatar extends Component {
           defaultValue="0"
         />
         <br />
-         {<FormattedMessage id="app.user.user.useravatar.width"  defaultMessage={'Avatar width'} />}        
+         {<FormattedMessage id="app.user.user.useravatar.width"  defaultMessage={'Avatar width'} />}
         <Input
           name="width"
           type="number"
@@ -358,7 +358,7 @@ class userAvatar extends Component {
           value={this.state.width}
         />
         <br />
-         {<FormattedMessage id="app.user.user.useravatar.height"  defaultMessage={'Avatar height'} />}        
+         {<FormattedMessage id="app.user.user.useravatar.height"  defaultMessage={'Avatar height'} />}
         <Input
           name="height"
           type="number"
@@ -369,7 +369,7 @@ class userAvatar extends Component {
           value={this.state.height}
         />
         <br />
-         <FormattedMessage id="app.user.user.useravatar.scale.x"  defaultMessage={'Position X'} />      
+         <FormattedMessage id="app.user.user.useravatar.scale.x"  defaultMessage={'Position X'} />
         <Input
           name="scale"
           type="range"
@@ -380,7 +380,7 @@ class userAvatar extends Component {
           value={this.state.position.x}
         />
         <br />
-         <FormattedMessage id="app.user.user.useravatar.scale.y"  defaultMessage={'Position Y'} />        
+         <FormattedMessage id="app.user.user.useravatar.scale.y"  defaultMessage={'Position Y'} />
         <Input
           name="scale"
           type="range"
@@ -393,10 +393,10 @@ class userAvatar extends Component {
         <br />
          <FormattedMessage id="app.user.user.useravatar.rotate"  defaultMessage={'rotate'} />
         <Button onClick={this.rotateLeft}>
-         {<FormattedMessage id="app.user.user.useravatar.rotate.left"  defaultMessage={'Left'} />}        
+         {<FormattedMessage id="app.user.user.useravatar.rotate.left"  defaultMessage={'Left'} />}
             </Button>
         <Button onClick={this.rotateRight}>
-         {<FormattedMessage id="app.user.user.useravatar.rotate.right"  defaultMessage={'Right'} />}        
+         {<FormattedMessage id="app.user.user.useravatar.rotate.right"  defaultMessage={'Right'} />}
             </Button>
         <br />
           <Modal
@@ -443,11 +443,11 @@ class userAvatar extends Component {
               </Modal.Content>
               <Modal.Actions>
                 <Button  onClick={this.handleClose} color='red' >
-                  <Icon name='cancel' /> 
+                  <Icon name='cancel' />
                       {<FormattedMessage id="app.user.user.useravatar.cancel"  defaultMessage={'cancel'} />}
                  </Button>
                 <Button onClick={this.handleSave} primary inverted>
-                  <Icon name='save' /> 
+                  <Icon name='save' />
                       {<FormattedMessage id="app.user.user.useravatar.save"  defaultMessage={'save'} />}                </Button>
               </Modal.Actions>
           </Modal>

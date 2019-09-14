@@ -53,7 +53,7 @@ class User extends Component {
         initialAValues: { avatar: '' },
         initialUValues: { name: '', email: '', password: '', password2: '', active: 0, checked: false },
       },
-      avatar_path: server + 'images/users/' + uid + '/avatar.png',
+      avatar_path: server + 'assets/users/' + uid + '/avatar.png',
       open: false,
       toggleAuthenticateStatus: this.props.toggleAuthenticateStatus,
       authenticated: this.props.authenticated,

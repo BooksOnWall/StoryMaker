@@ -104,7 +104,7 @@ class Users extends Component {
                 <Breadcrumb.Divider icon='right arrow' />
                 <Breadcrumb.Section active>Personal Information</Breadcrumb.Section>
               </Breadcrumb>
-          <Link to="/users/0">        
+          <Link to="/users/0">
             <Button secondary animated='vertical'>
               <Button.Content hidden>
                   <FormattedMessage id="app.users.adduser" defaultMessage={`Add user`}/>
@@ -166,7 +166,7 @@ class Users extends Component {
             {_.map(data, ({ id, name, email, createdAt, updatedAt, active }) => (
               <Table.Row className='slide-out' key={id} onClick={() => this.tableRowClickFunc({id})}>
                 <Table.Cell>{id}</Table.Cell>
-                <Table.Cell> <Image src={this.state.server + 'images/users/' + id + '/avatar.png'} avatar />{name}</Table.Cell>
+                <Table.Cell> <Image src={this.state.server + 'assets/users/' + id + '/avatar.png'} avatar />{name}</Table.Cell>
                 <Table.Cell>{email}</Table.Cell>
                 <Table.Cell>{Moment(createdAt).format('LLL')}</Table.Cell>
                 <Table.Cell>{Moment(updatedAt).format('LLL')}</Table.Cell>
