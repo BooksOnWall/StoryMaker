@@ -648,25 +648,24 @@ render() {
 
     return (
 
-      <Container className="view" fluid >
-        <Dimmer active={this.state.loading}>
-          <Loader active={this.state.loading} >
-            <FormattedMessage id="app.user.loading" defaultMessage={`Get user info`}/>
-          </Loader>
-        </Dimmer>
-        <Header as='h6' icon floated='left'>
-            <Link to="/users">
-              <Icon name='list' />
-               List user
-            </Link>
-        </Header>
-        <UsersSteps uid={this.state.userEdit.uid} step={this.state.step} state={this.state}/>
-        <Segment>
-            {(this.state.step === 'User') ? this.editForm() : ''}
-            {(this.state.step === 'Password') ? this.editPasswd() : ''}
-            {(this.state.step === 'Preferences') ? this.editPrefs() : ''}
-            {(this.state.step === 'Avatar') ? this.editAvatar() : ''}
-        </Segment>
+      <Container  fluid >
+        <Dimmer.Dimmable as={Segment} blurring dimmed={this.state.loading}>
+          <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
+          <Loader active={this.state.loading} ><FormattedMessage id="app.user.loading" defaultMessage={`Get user info`}/></Loader>
+            <Header as='h6' icon floated='left'>
+                <Link to="/users">
+                  <Icon name='list' />
+                   List user
+                </Link>
+            </Header>
+            <UsersSteps uid={this.state.userEdit.uid} step={this.state.step} state={this.state}/>
+            <Segment>
+                {(this.state.step === 'User') ? this.editForm() : ''}
+                {(this.state.step === 'Password') ? this.editPasswd() : ''}
+                {(this.state.step === 'Preferences') ? this.editPrefs() : ''}
+                {(this.state.step === 'Avatar') ? this.editAvatar() : ''}
+            </Segment>
+        </Dimmer.Dimmable>
       </Container>
 
     );

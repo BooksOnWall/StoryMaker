@@ -736,23 +736,22 @@ class Artist extends Component {
   }
   render() {
     return (
-        <Segment className="view" >
-          <Dimmer active={this.state.loading}>
+      <Dimmer.Dimmable as={Segment} blurring dimmed={this.state.loading}>
+          <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
             <Loader active={this.state.loading} >Get artist info</Loader>
-          </Dimmer>
-          <Header as='h6' icon floated='left'>
-            <Link to="/artists">
-              <Icon name='list' />
-              List artists
-            </Link>
-          </Header>
-          <ArtistSteps  aid={this.state.aid} step={this.state.step} state={this.state}/>
-          {(this.state.step === 'Artist') ? this.editArtist() : ''}
-          {(this.state.step === 'Images') ? this.editImages() : ''}
-          {(this.state.step === 'Bio') ? this.editBio() : ''}
-        </Segment>
-
-
+              <Segment  >
+                <Header as='h6' icon floated='left'>
+                  <Link to="/artists">
+                    <Icon name='list' />
+                    List artists
+                  </Link>
+                </Header>
+                <ArtistSteps  aid={this.state.aid} step={this.state.step} state={this.state}/>
+                {(this.state.step === 'Artist') ? this.editArtist() : ''}
+                {(this.state.step === 'Images') ? this.editImages() : ''}
+                {(this.state.step === 'Bio') ? this.editBio() : ''}
+              </Segment>
+        </Dimmer.Dimmable>
     );
   }
 }

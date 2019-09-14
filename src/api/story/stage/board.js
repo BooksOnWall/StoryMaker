@@ -382,7 +382,7 @@ class DragDrop extends Component {
                   <Sidebar.Pusher>
                     <Segment >
                       <Ref innerRef={this.segmentRef}>
-                        <Segment className='slide-out' fluid="true">
+                        <Segment  fluid="true">
 
                           <Resizable
                             style={resizeStyle}
