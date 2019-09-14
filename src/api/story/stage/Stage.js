@@ -333,6 +333,9 @@ class stage extends Component {
   }
   onDragStart = (ev, id) => {
       ev.dataTransfer.setData("id", id);
+      let obj = ev.target;
+      let content = obj.children();
+      console.log(content);
       // dimmed.blur element
   }
 
@@ -390,48 +393,52 @@ class stage extends Component {
               className="draggable image"
               style={{height: 'auto', width: 'inherit'}}
               >
-              <ReactCardFlip style={{height: 'auto', width: 'inherit'}} isFlipped={t.isFlipped} flipDirection="horizontal">
-                <Card className="fluid" key="front">
-                  <Image
-                    wrapped={(t.category ==='Images') ? true : null}
-                    size={(t.category ==='Images') ? 'small': null}
-                    name={t.name}
-                    key={t.name}
-                    src={t.src}
-                    />
-                  <Label inverted="true" color="violet" >
-                    <Icon className="button" size="mini" floated="left"  name="edit" onClick={(e) => this.handleCardClick(e,t)} />
-                    <Icon className="button" size="mini" floated="right" name="delete"  onClick={(e) => this.handleObjectDeleteConfirm(e,t)} />
-                    <Confirm
-                      content='Are you sure you want to delete this ??? '
-                      open={t.confirm}
-                      cancelButton='Never mind'
-                      confirmButton="Yes ! let's destroy it !"
-                      onCancel={(e) => this.handleObjectDeleteCancel(e,t)}
-                      onConfirm={(e) => this.handleObjectDelete(e,t)}
-                      />
+              <Dimmer.Dimmable as={Segment} blurring dimmed={t.loading}>
+                <Dimmer active={t.loading} onClickOutside={this.handleHide} />
+                  <ReactCardFlip style={{height: 'auto', width: 'inherit'}} isFlipped={t.isFlipped} flipDirection="horizontal">
+                    <Card className="fluid" key="front">
+                      <Image
+                        wrapped={(t.category ==='Images') ? true : null}
+                        size={(t.category ==='Images') ? 'small': null}
+                        name={t.name}
+                        key={t.name}
+                        src={t.src}
+                        />
+                      <Label inverted="true" color="violet" >
+                        <Icon className="button" size="mini" floated="left"  name="edit" onClick={(e) => this.handleCardClick(e,t)} />
+                        <Icon className="button" size="mini" floated="right" name="delete"  onClick={(e) => this.handleObjectDeleteConfirm(e,t)} />
+                        <Confirm
+                          content='Are you sure you want to delete this ??? '
+                          open={t.confirm}
+                          cancelButton='Never mind'
+                          confirmButton="Yes ! let's destroy it !"
+                          onCancel={(e) => this.handleObjectDeleteCancel(e,t)}
+                          onConfirm={(e) => this.handleObjectDelete(e,t)}
+                          />
 
-                  </Label>
-                </Card>
-                <Card fluid key="back">
-                  <Form style={{textAlign: 'left'}}>
-                    <Label.Group color='blue' style={{padding: '2em'}}>
-                      <Label as='a'>
-                        Name:
-                        <Label.Detail>{t.name}</Label.Detail>
                       </Label>
-                      <Label as='a'>
-                        Size:
-                        <Label.Detail>{humanFileSize(t.size)}</Label.Detail>
-                      </Label>
-                      <Label as='a'>Url:
-                        <Label.Detail><Button href={t.src}>Source</Button></Label.Detail>
-                      </Label>
-                    </Label.Group>
-                  </Form>
-                  <Button primary onClick={(e) => this.handleCardClick(e,t)}><Icon name="arrow left" /> Back</Button>
-                </Card>
-              </ReactCardFlip>
+                    </Card>
+                    <Card fluid key="back">
+                      <Form style={{textAlign: 'left'}}>
+                        <Label.Group color='blue' style={{padding: '2em'}}>
+                          <Label as='a'>
+                            Name:
+                            <Label.Detail>{t.name}</Label.Detail>
+                          </Label>
+                          <Label as='a'>
+                            Size:
+                            <Label.Detail>{humanFileSize(t.size)}</Label.Detail>
+                          </Label>
+                          <Label as='a'>Url:
+                            <Label.Detail><Button href={t.src}>Source</Button></Label.Detail>
+                          </Label>
+                        </Label.Group>
+                      </Form>
+                      <Button primary onClick={(e) => this.handleCardClick(e,t)}><Icon name="arrow left" /> Back</Button>
+                    </Card>
+                  </ReactCardFlip>
+              </Dimmer.Dimmable>
+
             </Segment>
           );
           break;

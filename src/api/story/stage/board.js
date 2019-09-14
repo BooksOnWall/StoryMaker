@@ -172,6 +172,7 @@ class DragDrop extends Component {
       animation2: 'push',
       direction2: 'bottom',
       selectedIndex: null,
+      loading: null,
       col1DefaultSize: { width: '31%', height: 'inherit'},
       col2DefaultSize: { width: '12%', height: 'inherit'},
       col3DefaultSize: { width: '45%', height: 'inherit'},
@@ -209,7 +210,9 @@ class DragDrop extends Component {
       </Button.Group>
     )
   };
-
+  componentDidMount = async (props) => {
+    if(props && props.tasks) { this.setState({loading: true}) };
+  }
   handleNavClick = async (e,url) => {
     try {
       if (url) {
@@ -383,7 +386,6 @@ class DragDrop extends Component {
                     <Segment >
                       <Ref innerRef={this.segmentRef}>
                         <Segment  fluid="true">
-
                           <Resizable
                             style={resizeStyle}
                             defaultSize={this.state.col1DefaultSize}

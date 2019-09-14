@@ -342,7 +342,7 @@ class Artist extends Component {
             'name': file.name,
             'size': file.size,
             'type': file.type,
-            'path': 'images/artists/'+ this.state.aid + '/' + file.name
+            'path': 'assets/artists/'+ this.state.aid + '/' + file.name
           }
         });
        });
