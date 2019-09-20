@@ -194,9 +194,8 @@ class App extends Component {
                                 onHide={this.handleSidebarHide}
                                 direction={this.state.direction}
                                 visible={this.state.sidebarVisible}
-                                width='wide'
                               >
-                                <LeftSlideMenu  state={this.state} childProps={childProps}  toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()}/>
+                                <LeftSlideMenu  state={this.state} childProps={childProps} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()}/>
                               </Sidebar>
 
                               <Sidebar.Pusher onClick={this.state.handleSidebarHide} dimmed={this.state.dimmed && this.state.sidebarVisible}>
@@ -205,7 +204,7 @@ class App extends Component {
                                   <Route render={({ location }) => {
                                       return (
                                         <Switch  location={location}>
-                                          <PropsRoute exact path="/"  component={Home} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
+                                          <PropsRoute exact path="/" component={Home} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
                                           <PrivateRoute path="/dashboard"   component={Dashboard} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
                                           <PrivateRoute exact path="/users"  component={Users} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
                                           <PrivateRoute path="/users/:id"  state={this.state} component={User} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />

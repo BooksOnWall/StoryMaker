@@ -97,13 +97,6 @@ class Users extends Component {
       </Dimmer>
       <Segment style={{fontSize: '.9em'}}>
         <Header as='div'>
-            <Breadcrumb size='big'>
-                <Breadcrumb.Section link>Home</Breadcrumb.Section>
-                <Breadcrumb.Divider icon='right chevron' />
-                <Breadcrumb.Section link>Registration</Breadcrumb.Section>
-                <Breadcrumb.Divider icon='right arrow' />
-                <Breadcrumb.Section active>Personal Information</Breadcrumb.Section>
-              </Breadcrumb>
           <Link to="/users/0">
             <Button secondary animated='vertical'>
               <Button.Content hidden>

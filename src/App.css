@@ -30,8 +30,9 @@ video {
   color: #61dafb;
 }
 .ui.vertical.inverted.menu .menu .item {
-  padding: 1.2em;
+  padding: 1.6em;
 }
+.ui.labeled.icon.menu .item
 .container-drag {
   text-align: center;
   height: 'inherit';
@@ -164,24 +165,31 @@ div.DraftEditor-root {
 .menu {
   animation: nav 0.2s ease-in-out forwards;
   opacity: 0;
-
 }
 #root {
   /* background-color: '#6435c9'; */
 }
 .main {
-  padding-top: 6vw!important;
+  padding-top: 0!important;
+    padding-bottom: 0 !important;
 }
 .ui.visible.slide.along.sidebar.bwSidebar,.ui.slide.along.sidebar.bwSidebar {
   background: rgba(0,0,0,.87) none no-repeat;
-  height: '100vh';
+  height: 100vh;
 }
-.ui.menu.fluid, .ui.vertical.menu.fluid.bwSidebarMenu {
-  min-height: '100vh';
+.ui.menu.fluid {
+  min-height: 100vh;
 }
+    
+.ui.vertical.menu.fluid.bwSidebarMenu .menu{
+    height: 100vh !important;
+}
+
+.ui.vertical.menu.fluid .item.logout { display: block; position: fixed !importan; bottom: 0 !importan}
+
 .view, .main {
   min-width: 100%;
-  min-height: 90vh;
+  min-height: 100vh;
 }
 .view .view {
   min-height: inherit;
@@ -197,14 +205,13 @@ div.DraftEditor-root {
 .ui.vertical.icon.menu .item > i.icon {
   text-align: left;
   float: left!important;
-  margin-right: 1em;
+  margin: 0 3em;
 }
 .ui.vertical.icon.menu .item {
   text-align: left;
-  paddung: 1em;
 }
 .ui.vertical.icon.menu .item span {
-  margin-left: 1em;
+  margin-left: 1.8em;
 }
 @keyframes slide-out {
   0% {
@@ -256,7 +263,7 @@ div.DraftEditor-root {
 }
 .view {
   margin: 0;
-  padding: 0 2em!important;
+  padding: 8vh 2em 0!important;
 }
 @media screen and (max-width: 768px) {
   .menu {
@@ -267,10 +274,13 @@ div.DraftEditor-root {
 .menu a {
   color: white;
 }
-
+.menu a span {   text-transform: uppercase; font-size: 10px; font-weight: bold}
+.menu a.active{
+    background: #000 !important;
+}
 @media screen and (max-width: 768px) {
   .menu a {
-    margin: 0 1em;
+    margin: 0;
   }
 }
 
@@ -304,8 +314,11 @@ div.DraftEditor-root {
 .menu a.active:before {
   animation: navdot 0.25s ease-in-out forwards 0.25s;
 }
+.menu .ui.divider{margin: 0 !important}
 
 .push .ui.button:not(.icon) > .icon:not(.button):not(.dropdown){ margin: 0 !important}
+
+.ui.visible.left.sidebar ~ .fixed, .ui.visible.left.sidebar ~ .pusher{transform: translate3d(160px,0,0) !important;}
 
 .ui.icon.header{ text-align: right !important; }
 
