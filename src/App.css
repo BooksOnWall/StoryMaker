@@ -44,11 +44,10 @@ video {
   border-right: 1px dotted;
 }
 
-.header {
-  display: inline-block;
-  margin: 0;
+.ui.header {
+  margin: 0 !important;
   padding: 0;
-  background-color: #E0E0E0;
+  background-color: transparent;
   width:100%;
 }
 
@@ -177,9 +176,11 @@ div.DraftEditor-root {
   background: rgba(0,0,0,.87) none no-repeat;
   height: 100vh;
 }
-.ui.menu.fluid {
+.ui.menu {
   min-height: 100vh;
+  box-shadow: none !important; border: 0 !important; border-radius: 0 !important 
 }
+
     
 .ui.vertical.menu.fluid.bwSidebarMenu .menu{
     height: 100vh !important;
@@ -290,7 +291,7 @@ div.DraftEditor-root {
 }
 
 .menu a:before {
-  border-radius: 50%;
+  border-radius: 0 !important;
   content: '';
   background-color: #ff5252;
   left: 0;
@@ -320,7 +321,7 @@ div.DraftEditor-root {
 
 .ui.visible.left.sidebar ~ .fixed, .ui.visible.left.sidebar ~ .pusher{transform: translate3d(160px,0,0) !important;}
 
-.ui.icon.header{ text-align: right !important; }
+.ui.icon.header{ }
 
 .ui.segment.view.story, #StepsContent.ui.segment.view {padding: 2em !important; }
 .ui.segment.stagesMap{ padding: 0 !important}
@@ -338,3 +339,4 @@ input[type="color"] {
     padding: 0px !important;
     margin-top: 0px
 }
+/*.ui.segment{ box-shadow: none !important; border: 0 !important; border-radius: 0 !important } */

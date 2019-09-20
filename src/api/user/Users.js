@@ -89,16 +89,16 @@ class Users extends Component {
     if(data === null) return null;
     return (
 
-    <Container  className="view" fluid>
+    <Container  className="main" fluid>
       <Dimmer active={this.state.loading}>
         <Loader active={this.state.loading} >
           <FormattedMessage id="app.users.loading" defaultMessage={`Get users info`}/>
         </Loader>
       </Dimmer>
-      <Segment style={{fontSize: '.9em'}}>
+      <Segment className="view">
         <Header as='div'>
           <Link to="/users/0">
-            <Button secondary animated='vertical'>
+            <Button secondary animated='vertical' size='medium'>
               <Button.Content hidden>
                   <FormattedMessage id="app.users.adduser" defaultMessage={`Add user`}/>
               </Button.Content>
@@ -108,7 +108,7 @@ class Users extends Component {
             </Button>
           </Link>
         </Header>
-        <Table basic='very' striped sortable fixed selectable>
+        <Table basic='very' striped sortable selectable>
           <Table.Header className='slide-out'>
             <Table.Row>
               <Table.HeaderCell
@@ -163,7 +163,7 @@ class Users extends Component {
                 <Table.Cell>{email}</Table.Cell>
                 <Table.Cell>{Moment(createdAt).format('LLL')}</Table.Cell>
                 <Table.Cell>{Moment(updatedAt).format('LLL')}</Table.Cell>
-                <Table.Cell>{active ? ( <Icon  name='check' /> ) : ( <Icon  name='close' /> ) }</Table.Cell>
+                <Table.Cell>{active ? ( <Icon  name='close' /> ) : ( <Icon  name='check' /> ) }</Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>
