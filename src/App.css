@@ -256,7 +256,7 @@ div.DraftEditor-root {
 }
 .view {
   margin: 0;
-  padding: 0!important;
+  padding: 0 2em!important;
 }
 @media screen and (max-width: 768px) {
   .menu {
@@ -305,7 +305,23 @@ div.DraftEditor-root {
   animation: navdot 0.25s ease-in-out forwards 0.25s;
 }
 
-
 .push .ui.button:not(.icon) > .icon:not(.button):not(.dropdown){ margin: 0 !important}
 
 .ui.icon.header{ text-align: right !important; }
+
+.ui.segment.view.story, #StepsContent.ui.segment.view {padding: 2em !important; }
+.ui.segment.stagesMap{ padding: 0 !important}
+.ui.segment.stages { padding: 0 2em 1em }
+.ui.buttons{ padding: 0 0 1em}
+.ui.table:first-child{margin-top: 1em !important; }
+.ui.segment.view.map{padding: 0 !important}
+.sytylingMap{margin: 2em !important}
+.ui.label.labelLayer {}
+input[type="color"] {
+	opacity: 1;
+	width: 32px;
+	height: 32px;
+	border: none;
+    padding: 0px !important;
+    margin-top: 0px
+}
