@@ -92,11 +92,12 @@ class Artists extends Component {
         <Dimmer active={this.state.loading}>
           <Loader active={this.state.loading} >Get users info</Loader>
         </Dimmer>
-        <Header as='div'>
+        <Header as={Segment} vertical size='medium'>
+            {<FormattedMessage id="app.artists.title" defaultMessage={`Artists`}/>}          
           <Link to="/artists/0">
-            <Button secondary animated='vertical' size='medium'>
+            <Button secondary animated='vertical' size='large' floated='right' >
               <Button.Content hidden>
-                  <FormattedMessage id="app.story.stories.addstory"  defaultMessage={`Add Artist`}/>
+                  <FormattedMessage id="app.artists.add"  defaultMessage={`Add Artist`}/>
               </Button.Content>
               <Button.Content visible>
                 <Icon name='paint brush' />

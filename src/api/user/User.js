@@ -651,8 +651,7 @@ render() {
           <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
           <Loader active={this.state.loading} ><FormattedMessage id="app.user.loading" defaultMessage={`Get user info`}/></Loader>
             <Header as={Segment} vertical size='medium'>
-        {(this.state.userEdit.mode === 'create') ? <FormattedMessage id="app.user.create" defaultMessage={`Create user`}/> : <FormattedMessage id="app.user.edit" defaultMessage={`Edit user`}/> }          
-        
+                {(this.state.userEdit.mode === 'create') ? <FormattedMessage id="app.user.create" defaultMessage={`Create user`}/> : <FormattedMessage id="app.user.edit" defaultMessage={`Edit user`}/> }          
             </Header>
             <UsersSteps uid={this.state.userEdit.uid} step={this.state.step} state={this.state}/>
             <Segment>

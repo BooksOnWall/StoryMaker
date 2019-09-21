@@ -96,9 +96,11 @@ class Stories extends Component {
               <FormattedMessage id="app.story.stories.getuser"  defaultMessage={'Get users info'} />
               </Loader>
               </Dimmer>
-              <Header as='div'>
-                <Link to="/stories/0">
-                <Button secondary animated='vertical' size='medium'>
+
+          <Header as={Segment} vertical size='medium'>
+            {<FormattedMessage id="app.user.create" defaultMessage={`Stories`}/>}                  
+            <Link to="/stories/0">
+            <Button secondary animated='vertical' size='large' floated='right' >
                   <Button.Content hidden>
                       <FormattedMessage id="app.story.stories.addstory"  defaultMessage={`Add Story`}/>
                   </Button.Content>

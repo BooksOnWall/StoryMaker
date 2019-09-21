@@ -96,9 +96,10 @@ class Users extends Component {
         </Loader>
       </Dimmer>
       <Segment className="view">
-        <Header as='div'>
+        <Header as={Segment} vertical size='medium'>
+            {<FormattedMessage id="app.user.create" defaultMessage={`Users`}/>}          
           <Link to="/users/0">
-            <Button secondary animated='vertical' size='medium'>
+            <Button secondary animated='vertical' size='large' floated='right' >
               <Button.Content hidden>
                   <FormattedMessage id="app.users.adduser" defaultMessage={`Add user`}/>
               </Button.Content>

@@ -50,6 +50,7 @@ video {
   background-color: transparent;
   width:100%;
 }
+.header .ui.animated.button{margin-top: -9px;}
 
 .task-header {
   display: inline-block;
@@ -262,7 +263,7 @@ div.DraftEditor-root {
     transform: none;
   }
 }
-.view {
+.ui.segment.view {
   margin: 0;
   padding: 8vh 2em 0!important;
 }
