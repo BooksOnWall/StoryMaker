@@ -646,20 +646,14 @@ render() {
 
     return (
 
-<<<<<<< HEAD
-      <Container  fluid className="view" >
-        <Dimmer.Dimmable as={Segment} blurring dimmed={this.state.loading}>
-          <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
-          <Loader active={this.state.loading} ><FormattedMessage id="app.user.loading" defaultMessage={`Get user info`}/></Loader>
-=======
+
      <Container className="main" fluid>
         <Dimmer.Dimmable as={Segment} className="view" blurring dimmed={this.state.loading}>
           <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
           <Loader active={this.state.loading} ><FormattedMessage id="app.user.loading" defaultMessage={`Get user info`}/></Loader>
             <Header as={Segment} vertical size='medium'>
-                {(this.state.userEdit.mode === 'create') ? <FormattedMessage id="app.user.create" defaultMessage={`Create user`}/> : <FormattedMessage id="app.user.edit" defaultMessage={`Edit user`}/> }          
+                {(this.state.userEdit.mode === 'create') ? <FormattedMessage id="app.user.create" defaultMessage={`Create user`}/> : <FormattedMessage id="app.user.edit" defaultMessage={`Edit user`}/> }
             </Header>
->>>>>>> d15157787429adc3f44d8fe871790f8eb5615beb
             <UsersSteps uid={this.state.userEdit.uid} step={this.state.step} state={this.state}/>
             <Segment>
                 {(this.state.step === 'User') ? this.editForm() : ''}

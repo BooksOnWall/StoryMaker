@@ -337,9 +337,9 @@ div.DraftEditor-root {
 
 .push .ui.button:not(.icon) > .icon:not(.button):not(.dropdown){ margin: 0 !important}
 
-<<<<<<< HEAD
+
 .ui.icon.header{ text-align: right !important; }
-=======
+
 .ui.visible.left.sidebar ~ .fixed, .ui.visible.left.sidebar ~ .pusher{transform: translate3d(160px,0,0) !important;}
 
 .ui.icon.header{ }
@@ -361,4 +361,3 @@ input[type="color"] {
     margin-top: 0px
 }
 /*.ui.segment{ box-shadow: none !important; border: 0 !important; border-radius: 0 !important } */
->>>>>>> d15157787429adc3f44d8fe871790f8eb5615beb
