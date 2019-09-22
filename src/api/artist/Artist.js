@@ -739,7 +739,7 @@ class Artist extends Component {
       <Dimmer.Dimmable as={Segment} blurring dimmed={this.state.loading}>
           <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
             <Loader active={this.state.loading} >Get artist info</Loader>
-              <Segment  >
+              <Segment className="view" >
                 <Header as='h6' icon floated='left'>
                   <Link to="/artists">
                     <Icon name='list' />

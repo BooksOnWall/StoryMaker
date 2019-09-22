@@ -88,7 +88,8 @@ video {
 }
 .draggable {
   width: inherit;
-  height: 10vh;
+  height: auto;
+  min-height: 10vh;
   margin: 0;
   padding: 0;
   line-height: 5em;
@@ -169,9 +170,7 @@ div.DraftEditor-root {
 #root {
   /* background-color: '#6435c9'; */
 }
-.main {
-  padding-top: 6vw!important;
-}
+
 .ui.visible.slide.along.sidebar.bwSidebar,.ui.slide.along.sidebar.bwSidebar {
   background: rgba(0,0,0,.87) none no-repeat;
   height: '100vh';
@@ -179,14 +178,23 @@ div.DraftEditor-root {
 .ui.menu.fluid, .ui.vertical.menu.fluid.bwSidebarMenu {
   min-height: '100vh';
 }
+.ui.very.wide.right.sidebar {
+    width: 35vw;
+}
 .view, .main {
   min-width: 100%;
   min-height: 90vh;
 }
+.segment.main .segment.view,.container.view {
+  margin-top: 4vh;
+}
 .view .view {
   min-height: inherit;
 }
-.view, .slide-out {
+.view .segment.blurring {
+  padding: 0;
+}
+.slide-out {
   animation: slide-out 0.5s forwards;
   -webkit-animation: slide-out 0.5s forwards;
 }
