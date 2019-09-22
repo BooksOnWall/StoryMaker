@@ -31,7 +31,7 @@ class userSteps extends Component {
           name='User'
           onClick={this.handleSteps}
           title={<FormattedMessage id="app.user.usersteps.steps.user.title"  defaultMessage={'Edit User'} />}
-        //  description='Edit user things'
+        //  description='Edit user things'      
         />
         <Step
           active={this.props.state.step === 'Password'}

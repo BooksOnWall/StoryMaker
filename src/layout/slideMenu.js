@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { Divider,  Image, Icon,  Menu, Segment } from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
 import UserContext from '../context/UserContext';
+import Logo from '../logo.svg';
 
 class LeftSlideMenu extends Component {
   constructor(props) {
@@ -18,42 +19,41 @@ class LeftSlideMenu extends Component {
  handleItemClick = (e, { name }) => this.setState({ activeItem: name })
   render() {
     return (
-      <Segment  fluid='true' style={{padding: 0}} >
-        <Menu className='bwSidebarMenu' size='large' pointing primary='true' inverted color='black' vertical fluid  style={{padding: 0}}>
+      <Segment  fluid='true' style={{ padding: '0'}} >
+        <Menu className='bwSidebarMenu' size='huge' primary='true' inverted color='black' vertical fluid  style={{padding: 0}}>
           {this.props.childProps.authenticated ? (
             <UserContext.Consumer>{(user) => {
               return(
-                <Menu.Menu style={{padding: 0}}>
-                  <Image  avatar size='small'  src={this.state.server + this.props.childProps.user.avatar} />
-                    <span style={{display: 'block', paddingTop: '20px', fontSize: '2em', color: 'white'}} >Welcome {this.props.state.user.name}</span>
-                  <Divider horizontal>...</Divider>
+                <Menu.Menu style={{ padding: '0'}}>
                     <Menu.Item name='homepage' active={this.state.activeItem === 'homepage'} as={Link} to='/'  style={{textAlign: 'left'}}>
-                      <Icon name='home' /><span className='text'>Home</span>
+                    <Image className='App-logo'  fluid  src={Logo} style={{ height: '6vh', marginLeft: '-2.5em'}} />                  
                     </Menu.Item>
                     <Menu.Item name='dashboard' active={this.state.activeItem === 'dashboard'} onClick={this.handleItemClick} as={Link} to='/dashboard'  >
-                      <Icon name='dashboard' /><span className='text'>Dashboard</span>
+                      <Icon size='large' name='dashboard' /><span className='text'>Dashboard</span>
                     </Menu.Item>
-                      <Divider horizontal>...</Divider>
-                    <Menu.Item name='users' active={this.state.activeItem === 'users'} onClick={this.handleItemClick} as={Link} to='/users' className="sidemenu"  >
-                      <Icon name='user circle'  floated='left'/><span className='text'>Users</span>
-                    </Menu.Item>
+                      <Divider horizonta />
+
                     <Menu.Item name='artists' active={this.state.activeItem === 'artists'} onClick={this.handleItemClick} as={Link} to='/artists'  >
-                      <Icon name='paint brush' /><span className='text'>Artists</span>
+                      <Icon size='large' name='paint brush' /><span className='text'>Artists</span>
                     </Menu.Item>
                     <Menu.Item name='stories' active={this.state.activeItem === 'stories'} onClick={this.handleItemClick} as={Link} to='/stories'  >
-                      <Icon name='book' /><span className='text'>Stories</span>
+                      <Icon size='large' name='book' /><span className='text'>Stories</span>
                     </Menu.Item>
 
-                      <Divider horizontal>...</Divider>
-                    <Menu.Item name='logout' active={this.state.activeItem === 'logout'} onClick={this.handleItemClick} as={Link} to='/logout' >
+                      <Divider horizonta />
+                  
+                    <Menu.Item name='users' active={this.state.activeItem === 'users'} onClick={this.handleItemClick} as={Link} to='/users' className="sidemenu"  >
+                      <Image  avatar size='tinny' src={this.state.server + this.props.childProps.user.avatar} /><span className='text'>Users</span>
+                   </Menu.Item>
+                    <Menu.Item name='logout' className='logout' active={this.state.activeItem === 'logout'} onClick={this.handleItemClick} as={Link} to='/logout' >
                       <Icon name='log out' /><span className='text'>Logout</span>
-                    </Menu.Item>
+                    </Menu.Item>                  
                 </Menu.Menu>
             )}}
           </UserContext.Consumer>
           ) : (
             <Menu.Menu >
-              <Menu.Item name='homepage' active={this.state.activeItem === 'homepage'} as={Link} to='/'  style={{textAlign: 'left'}}>
+              <Menu.Item name='homepage' active={this.state.activeItem === 'homepage'} as={Link} to='/'  >
                 <Icon name='home' /><span className='text'>Home</span>
               </Menu.Item>
             <Menu.Item active={this.state.activeItem === 'login'} onClick={this.handleItemClick} to='/login'  as={Link}><Icon name='connectdevelop' /><span className='text'>Login</span></Menu.Item>

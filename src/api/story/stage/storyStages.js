@@ -228,14 +228,13 @@ class storyStages extends Component {
                           <Table.Cell>{type}</Table.Cell>
                           <Table.Cell>{stageOrder}</Table.Cell>
                         </Table.Row>
-                      ))}
+                        ))}
                     </Table.Body>
                   </Table>
                 </ReactDragListView>
               </Segment>
             </Segment.Group>
         </Dimmer.Dimmable>
-
     );
   }
 }

@@ -553,7 +553,6 @@ class Story extends Component {
         <Dimmer active={this.state.loading}>
           <Loader active={this.state.loading} >Get story info</Loader>
         </Dimmer>
-
       </Container>
 
     );

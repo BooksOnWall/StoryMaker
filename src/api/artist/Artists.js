@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Container, Dimmer, Loader, Segment, Header, Table, Icon } from 'semantic-ui-react';
+import { Container, Dimmer, Loader, Segment, Header, Table, Icon, Button } from 'semantic-ui-react';
 import Moment from 'moment';
 import { Link } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 
 
 import _ from 'lodash';
@@ -87,17 +88,24 @@ class Artists extends Component {
     if(data === null) return null;
     return (
     <Container className="main" fluid>
-      <Segment className="view" style={{fontSize: '.9em'}} >
+      <Segment className="view" >
         <Dimmer active={this.state.loading}>
           <Loader active={this.state.loading} >Get users info</Loader>
         </Dimmer>
-        <Header as='h6' icon floated='left'>
+        <Header as={Segment} vertical size='medium'>
+            {<FormattedMessage id="app.artists.title" defaultMessage={`Artists`}/>}          
           <Link to="/artists/0">
-            <Icon name='meh' />
-            Add Artist
+            <Button secondary animated='vertical' size='large' floated='right' >
+              <Button.Content hidden>
+                  <FormattedMessage id="app.artists.add"  defaultMessage={`Add Artist`}/>
+              </Button.Content>
+              <Button.Content visible>
+                <Icon name='paint brush' />
+              </Button.Content>
+            </Button>         
           </Link>
         </Header>
-        <Table sortable celled fixed selectable>
+        <Table basic='very' celled selectable>
           <Table.Header className='slide-out' >
             <Table.Row>
               <Table.HeaderCell
@@ -152,7 +160,7 @@ class Artists extends Component {
           </Table.Body>
 
         </Table>
-      </Segment>
+       </Segment>
       </Container>
 
     );

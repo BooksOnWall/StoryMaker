@@ -1,6 +1,7 @@
 import React, {Component } from 'react';
 
 import {
+    Container,
   Segment,
   Header,
   Divider,
@@ -517,10 +518,6 @@ class Artist extends Component {
   editArtist(values) {
       return (
         <div>
-        <Header as='h6' icon >
-          <Icon name='meh' />
-          Edit Artist
-        </Header>
         <Formik
           enableReinitialize={true}
           initialValues={this.state.initialAValues}
@@ -591,12 +588,12 @@ class Artist extends Component {
               {errors.email && touched.email && errors.email}
 
               <Divider horizontal>...</Divider>
-              <Button onClick={handleSubmit} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
+              <Button onClick={handleSubmit} secondary size='large' floated='right' type="submit" disabled={isSubmitting}>
                 {(this.state.mode === 'create') ? 'Create' : 'Update'}
               </Button>
               {(this.state.mode === 'update') ? (
                 <div>
-                  <Button onClick={this.show} color='red' fluid size='large' type="submit" disabled={isSubmitting}>
+                  <Button onClick={this.show} color='red' size='large' floated='right' type="submit" disabled={isSubmitting}>
                     <FormattedMessage id="app.artist.delete" defaultMessage={`Delete Artist`}/>
                   </Button>
                   <Confirm
@@ -656,7 +653,7 @@ class Artist extends Component {
               <Previews state={this.state} />
             </div>
             <Divider horizontal>...</Divider>
-            <Button onClick={this.handleSubmitI} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
+            <Button onClick={this.handleSubmitI} secondary size='large' floated='right' type="submit" disabled={isSubmitting}>
               {(this.state.mode === 'create') ? 'Create' : 'Update'}
             </Button>
           </Form>
@@ -720,8 +717,8 @@ class Artist extends Component {
               name="bio"
               placeholder='Biographie'
               />
-            <Divider horizontal>...</Divider>
-            <Button onClick={handleSubmitBio} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
+            <Divider/>
+            <Button onClick={handleSubmitBio} secondary size='large' floated='right' type="submit" disabled={isSubmitting}>
               {(this.state.mode === 'create') ? 'Create' : 'Update'}
             </Button>
           </Form>
@@ -736,21 +733,16 @@ class Artist extends Component {
   }
   render() {
     return (
-      <Dimmer.Dimmable as={Segment} blurring dimmed={this.state.loading}>
+      <Dimmer.Dimmable as={Segment} className='view' blurring dimmed={this.state.loading}>
           <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
             <Loader active={this.state.loading} >Get artist info</Loader>
-              <Segment className="view" >
-                <Header as='h6' icon floated='left'>
-                  <Link to="/artists">
-                    <Icon name='list' />
-                    List artists
-                  </Link>
+                <Header as={Segment} vertical size='medium'>
+                    {<FormattedMessage id="app.artists.title" defaultMessage={`Artists`}/>}
                 </Header>
                 <ArtistSteps  aid={this.state.aid} step={this.state.step} state={this.state}/>
                 {(this.state.step === 'Artist') ? this.editArtist() : ''}
                 {(this.state.step === 'Images') ? this.editImages() : ''}
                 {(this.state.step === 'Bio') ? this.editBio() : ''}
-              </Segment>
         </Dimmer.Dimmable>
     );
   }

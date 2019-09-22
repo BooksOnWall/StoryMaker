@@ -121,21 +121,17 @@ class stagesMap extends Component {
               <Card.Description>{ReactHtmlParser(popupInfo.description)}</Card.Description>
             </Card.Content>
             <Card.Content extra>
-              <Button.Group>
-                <Button primary as={Link} to={'/stories/'+popupInfo.sid+'/stages/'+popupInfo.id} >
+                <Button primary circul icon basic as={Link} to={'/stories/'+popupInfo.sid+'/stages/'+popupInfo.id} >
                   <Icon name='edit' />
-                  Edit
                 </Button>
-                <Button inverted color="pink" as='div' labelPosition='right'>
-                 <Button icon>
-                   <Icon name='heart' />
-                   Like
-                 </Button>
-                 <Label as='a' basic pointing='left'>
-                   2,048
-                 </Label>
-               </Button>
-              </Button.Group>
+                 <Button as='div' labelPosition='right'>
+                      <Button icon circular basic color='pink'>
+                        <Icon name='heart' />
+                      </Button>
+                      <Label as='a' basic color='grey' pointing='left'>
+                        2,048
+                      </Label>
+                    </Button>
             </Card.Content>
           </Card>
           </Popup>
@@ -184,7 +180,7 @@ class stagesMap extends Component {
             <MapGL
               {...viewport}
               width="inherit"
-              height="70vh"
+              height="72vh"
               mapStyle={MAP_STYLE}
               clickRadius={2}
               onClick={this.onClick}
@@ -193,7 +189,6 @@ class stagesMap extends Component {
               onViewportChange={this.onViewportChange}
               mapboxApiAccessToken={MapboxAccessToken}
             >
-
             {this.Stages()}
             {this.renderPopup()}
             </MapGL>

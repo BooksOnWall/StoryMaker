@@ -5,6 +5,9 @@ import {
   Input,
   Label,
   Segment,
+  Checkbox,
+    Icon,
+    Item,
 } from 'semantic-ui-react';
 const defaultMapStyle = fromJS(MAP_STYLE);
 
@@ -96,22 +99,22 @@ export default class StyleControls extends PureComponent {
 
   _renderLayerControl(name) {
     const {visibility, color} = this.state;
-
+      
     return (
       <div key={name} className="input">
-        <Label>{name}</Label>
-        <Input
-          type="checkbox"
-          checked={visibility[name]}
-          onChange={this._onVisibilityChange.bind(this, name)}
-        />
-      <input
-          type="color"
-          value={color[name]}
-          disabled={!visibility[name]}
-          onChange={this._onColorChange.bind(this, name)}
-        />
-      </div>
+            <input
+              type="color"
+              value={color[name]}
+              disabled={!visibility[name]}
+              onChange={this._onColorChange.bind(this, name)}
+            />
+            <Label className="labelLayer">{name}</Label> 
+            <input
+              type="Checkbox"
+              checked={visibility[name]}
+              onChange={this._onVisibilityChange.bind(this, name)}
+            /> 
+     </div>
     );
   }
 
@@ -119,7 +122,7 @@ export default class StyleControls extends PureComponent {
     //const Container = this.props.containerComponent || defaultContainer;
 
     return (
-      <Segment style={{ width: '25vw', height: '32vh', float: 'right'}} inverted color="violet">
+      <Segment className="sytylingMap" style={{ width: '20vw', height: '31vh', float: 'right'}} inverted color="primary">
         <h3>Map Styling</h3>
         <hr />
         {categories.map(name => this._renderLayerControl(name))}

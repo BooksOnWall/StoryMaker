@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Dimmer, Loader, Segment, Header, Table, Icon } from 'semantic-ui-react';
+import { Container, Dimmer, Loader, Segment, Header, Table, Icon, Button } from 'semantic-ui-react';
 import Moment from 'moment';
 import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
@@ -88,22 +88,29 @@ class Stories extends Component {
     if(data === null) return null;
     return (
 
-    <Container className="view" fluid>
-      <Dimmer.Dimmable as={Segment} blurring dimmed={this.state.loading}>
+    <Container className="main" fluid>
+      <Dimmer.Dimmable as={Segment} className="view" blurring dimmed={this.state.loading}>
           <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
-            <Segment style={{fontSize: '.9em'}}>
               <Dimmer active={this.state.loading}>
                 <Loader active={this.state.loading} >
               <FormattedMessage id="app.story.stories.getuser"  defaultMessage={'Get users info'} />
               </Loader>
               </Dimmer>
-              <Header as='h6' icon floated='left'>
-                <Link to="/stories/0">
-                  <Icon name='sun' />
-              <FormattedMessage id="app.story.stories.addstory"  defaultMessage={'Add Story'} />
-              </Link>
+
+          <Header as={Segment} vertical size='medium'>
+            {<FormattedMessage id="app.user.create" defaultMessage={`Stories`}/>}                  
+            <Link to="/stories/0">
+            <Button secondary animated='vertical' size='large' floated='right' >
+                  <Button.Content hidden>
+                      <FormattedMessage id="app.story.stories.addstory"  defaultMessage={`Add Story`}/>
+                  </Button.Content>
+                  <Button.Content visible>
+                    <Icon name='book' />
+                  </Button.Content>
+                </Button> 
+                </Link>
               </Header>
-              <Table sortable celled fixed selectable>
+              <Table basic='very' celled selectable sortable>
                 <Table.Header className='slide-out' >
                   <Table.Row>
                     <Table.HeaderCell
@@ -158,9 +165,7 @@ class Stories extends Component {
                   ))}
                 </Table.Body>
               </Table>
-            </Segment>
         </Dimmer.Dimmable>
-
       </Container>
 
     );

@@ -30,8 +30,9 @@ video {
   color: #61dafb;
 }
 .ui.vertical.inverted.menu .menu .item {
-  padding: 1.2em;
+  padding: 1.6em;
 }
+.ui.labeled.icon.menu .item
 .container-drag {
   text-align: center;
   height: 'inherit';
@@ -43,13 +44,13 @@ video {
   border-right: 1px dotted;
 }
 
-.header {
-  display: inline-block;
-  margin: 0;
+.ui.header {
+  margin: 0 !important;
   padding: 0;
-  background-color: #E0E0E0;
+  background-color: transparent;
   width:100%;
 }
+.header .ui.animated.button{margin-top: -9px;}
 
 .task-header {
   display: inline-block;
@@ -165,25 +166,43 @@ div.DraftEditor-root {
 .menu {
   animation: nav 0.2s ease-in-out forwards;
   opacity: 0;
-
 }
 #root {
   /* background-color: '#6435c9'; */
 }
+<<<<<<< HEAD
 
+=======
+.main {
+  padding-top: 0!important;
+    padding-bottom: 0 !important;
+}
+>>>>>>> d15157787429adc3f44d8fe871790f8eb5615beb
 .ui.visible.slide.along.sidebar.bwSidebar,.ui.slide.along.sidebar.bwSidebar {
   background: rgba(0,0,0,.87) none no-repeat;
-  height: '100vh';
+  height: 100vh;
 }
-.ui.menu.fluid, .ui.vertical.menu.fluid.bwSidebarMenu {
-  min-height: '100vh';
+.ui.menu {
+  min-height: 100vh;
+  box-shadow: none !important; border: 0 !important; border-radius: 0 !important
 }
+
+
+.ui.vertical.menu.fluid.bwSidebarMenu .menu{
+    height: 100vh !important;
+}
+
 .ui.very.wide.right.sidebar {
     width: 35vw;
 }
+
+
+.ui.vertical.menu.fluid .item.logout { display: block; position: fixed !importan; bottom: 0 !importan}
+
+
 .view, .main {
   min-width: 100%;
-  min-height: 90vh;
+  min-height: 100vh;
 }
 .segment.main .segment.view,.container.view {
   margin-top: 4vh;
@@ -205,14 +224,13 @@ div.DraftEditor-root {
 .ui.vertical.icon.menu .item > i.icon {
   text-align: left;
   float: left!important;
-  margin-right: 1em;
+  margin: 0 3em;
 }
 .ui.vertical.icon.menu .item {
   text-align: left;
-  paddung: 1em;
 }
 .ui.vertical.icon.menu .item span {
-  margin-left: 1em;
+  margin-left: 1.8em;
 }
 @keyframes slide-out {
   0% {
@@ -262,9 +280,9 @@ div.DraftEditor-root {
     transform: none;
   }
 }
-.view {
+.ui.segment.view {
   margin: 0;
-  padding: 0!important;
+  padding: 8vh 2em 0!important;
 }
 @media screen and (max-width: 768px) {
   .menu {
@@ -275,10 +293,13 @@ div.DraftEditor-root {
 .menu a {
   color: white;
 }
-
+.menu a span {   text-transform: uppercase; font-size: 10px; font-weight: bold}
+.menu a.active{
+    background: #000 !important;
+}
 @media screen and (max-width: 768px) {
   .menu a {
-    margin: 0 1em;
+    margin: 0;
   }
 }
 
@@ -288,7 +309,7 @@ div.DraftEditor-root {
 }
 
 .menu a:before {
-  border-radius: 50%;
+  border-radius: 0 !important;
   content: '';
   background-color: #ff5252;
   left: 0;
@@ -312,8 +333,32 @@ div.DraftEditor-root {
 .menu a.active:before {
   animation: navdot 0.25s ease-in-out forwards 0.25s;
 }
-
+.menu .ui.divider{margin: 0 !important}
 
 .push .ui.button:not(.icon) > .icon:not(.button):not(.dropdown){ margin: 0 !important}
 
+<<<<<<< HEAD
 .ui.icon.header{ text-align: right !important; }
+=======
+.ui.visible.left.sidebar ~ .fixed, .ui.visible.left.sidebar ~ .pusher{transform: translate3d(160px,0,0) !important;}
+
+.ui.icon.header{ }
+
+.ui.segment.view.story, #StepsContent.ui.segment.view {padding: 2em !important; }
+.ui.segment.stagesMap{ padding: 0 !important}
+.ui.segment.stages { padding: 0 2em 1em }
+.ui.buttons{ padding: 0 0 1em}
+.ui.table:first-child{margin-top: 1em !important; }
+.ui.segment.view.map{padding: 0 !important}
+.sytylingMap{margin: 2em !important}
+.ui.label.labelLayer {}
+input[type="color"] {
+	opacity: 1;
+	width: 32px;
+	height: 32px;
+	border: none;
+    padding: 0px !important;
+    margin-top: 0px
+}
+/*.ui.segment{ box-shadow: none !important; border: 0 !important; border-radius: 0 !important } */
+>>>>>>> d15157787429adc3f44d8fe871790f8eb5615beb

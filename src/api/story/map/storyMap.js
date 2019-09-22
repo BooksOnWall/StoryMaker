@@ -63,13 +63,12 @@ class storyMap extends Component {
             <Segment  className="view map" >
               <MapGL
                 {...viewport}
-                width="100vw"
-                height="100vh"
+                width="92vw"
+                height="72vh"
                 mapStyle={mapStyle}
                 onViewportChange={this.onViewportChange}
                 mapboxApiAccessToken={MapboxAccessToken}
               >
-
                 <StylePanel
                   containerComponent={this.props.containerComponent}
                   onChange={this.onStyleChange}
@@ -77,7 +76,6 @@ class storyMap extends Component {
               </MapGL>
           </Segment>
         </Dimmer.Dimmable>
-
     );
   }
 }
