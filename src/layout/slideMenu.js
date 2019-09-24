@@ -26,7 +26,7 @@ class LeftSlideMenu extends Component {
               return(
                 <Menu.Menu style={{ padding: '0'}}>
                     <Menu.Item name='homepage' active={this.state.activeItem === 'homepage'} as={Link} to='/'  style={{textAlign: 'left'}}>
-                    <Image className='App-logo'  fluid  src={Logo} style={{ height: '6vh', marginLeft: '-2.5em'}} />                  
+                    <Image className='App-logo'  fluid  src={Logo} style={{ height: '6vh', marginLeft: '-2.5em'}} />
                     </Menu.Item>
                     <Menu.Item name='dashboard' active={this.state.activeItem === 'dashboard'} onClick={this.handleItemClick} as={Link} to='/dashboard'  >
                       <Icon size='large' name='dashboard' /><span className='text'>Dashboard</span>
@@ -40,14 +40,14 @@ class LeftSlideMenu extends Component {
                       <Icon size='large' name='book' /><span className='text'>Stories</span>
                     </Menu.Item>
 
-                      <Divider horizonta />
-                  
+                      <Divider horizontal />
+
                     <Menu.Item name='users' active={this.state.activeItem === 'users'} onClick={this.handleItemClick} as={Link} to='/users' className="sidemenu"  >
                       <Image  avatar size='tinny' src={this.state.server + this.props.childProps.user.avatar} /><span className='text'>Users</span>
                    </Menu.Item>
                     <Menu.Item name='logout' className='logout' active={this.state.activeItem === 'logout'} onClick={this.handleItemClick} as={Link} to='/logout' >
                       <Icon name='log out' /><span className='text'>Logout</span>
-                    </Menu.Item>                  
+                    </Menu.Item>
                 </Menu.Menu>
             )}}
           </UserContext.Consumer>

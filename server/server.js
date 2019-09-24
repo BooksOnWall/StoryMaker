@@ -504,6 +504,7 @@ const changePropFromObject = async ( sid, ssid, obj, field, prop, propValue) => 
           item[field][prop] = (item[field].name === obj.name) ? propValue : item[field][prop];
           return item[field] ? item : null;
         }
+        return list;
       });
 
       //console.log('list: ', list);
