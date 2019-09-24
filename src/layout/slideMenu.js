@@ -43,7 +43,7 @@ class LeftSlideMenu extends Component {
                       <Divider horizontal />
 
                     <Menu.Item name='users' active={this.state.activeItem === 'users'} onClick={this.handleItemClick} as={Link} to='/users' className="sidemenu"  >
-                      <Image  avatar size='tiny' src={this.state.server + this.props.childProps.user.avatar} /><span className='text'>Users</span>
+                      <Image  avatar  src={this.state.server + this.props.childProps.user.avatar} /><span className='text'>Users</span>
                    </Menu.Item>
                     <Menu.Item name='logout' className='logout' active={this.state.activeItem === 'logout'} onClick={this.handleItemClick} as={Link} to='/logout' >
                       <Icon name='log out' /><span className='text'>Logout</span>
