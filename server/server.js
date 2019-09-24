@@ -530,7 +530,7 @@ var staticoptions = {
     res.set('x-timestamp', Date.now());
   }
 }
-<<<<<<< Updated upstream
+
 app.use('/assets', express.static(__dirname + 'public', staticoptions));
 app.get('/assets/users/:userId/:name', function (req, res, next) {
   var uid = req.params.userId;
@@ -552,11 +552,10 @@ app.get('/assets/users/:userId/:name', function (req, res, next) {
     }
   })
 });
-app.get('/assets/artists/:artistId/:name', function (req, res, next) {
-=======
+
 app.use('/images', express.static(__dirname + 'public', staticoptions));
 app.get('/images/artists/:artistId/:name', function (req, res, next) {
->>>>>>> Stashed changes
+
   var aid = req.params.artistId;
   var fileName = req.params.name;
   var path = 'public/artists/'+aid+'/';
@@ -577,7 +576,7 @@ app.get('/images/artists/:artistId/:name', function (req, res, next) {
     }
   })
 });
-<<<<<<< Updated upstream
+
 app.get('/assets/stories/:storyId/stages/:stageId/images/:name', function (req, res, next) {
   var sid = req.params.storyId;
   var ssid= req.params.stageId;
@@ -641,8 +640,7 @@ app.get('/assets/stories/:storyId/stages/:stageId/:category/:name', function (re
     console.log('File not found :', fileName)
   }
 });
-=======
->>>>>>> Stashed changes
+
 // set some basic routes
 app.get('/', function(req, res) {
   res.json({ message: 'Express is up!' });

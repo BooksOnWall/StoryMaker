@@ -643,10 +643,7 @@ class User extends Component {
     );
   }
 render() {
-
     return (
-
-
      <Container className="main" fluid>
         <Dimmer.Dimmable as={Segment} className="view" blurring dimmed={this.state.loading}>
           <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
