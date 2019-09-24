@@ -107,6 +107,7 @@ class stage extends Component {
         next: null,
         objDelUrl: server + 'Stories/'+ this.props.match.params.id + '/stages/' + this.props.match.params.sid + '/objDelete',
         objMvUrl: server + 'Stories/'+ this.props.match.params.id + '/stages/' + this.props.match.params.sid + '/objMv',
+        objChangePropUrl: server + 'Stories/'+ this.props.match.params.id + '/stages/' + this.props.match.params.sid + '/objChangeProp',
         imagesLoading: false,
         picturesLoading: false,
         videosLoading: false,
@@ -168,11 +169,7 @@ class stage extends Component {
   }
   handleStageNav = (stages , stage) => {
     // get only first render with stages datas
-    console.log(stages);
-    console.log(stage);
-
     let index = (stages && stage ) ? stages.map(function(e) { return parseInt(e.id); }).indexOf(parseInt(stage.sid)) : null ;
-    console.log(index);
     if (stages && stage && index && index > -1  ) {
       const prevIndex = index -1;
       const nextIndex = index + 1;
@@ -286,7 +283,7 @@ class stage extends Component {
       });
       newObj.category=cat;
 
-      // send request to server to mobve file from directory
+      // send request to server to move file from directory
       if(old !== newObj.category) {
         // uri objMvUrl
         await fetch(this.state.objMvUrl, {
@@ -307,7 +304,6 @@ class stage extends Component {
         .then(data => {
           if(data) {
             //return new object with new src path
-            console.log(data);
             tasks = this.state.tasks.filter((task) => {
               if(task.name === id) {
                 task.src = data.obj.src;
@@ -334,14 +330,61 @@ class stage extends Component {
   onDragStart = (ev, id) => {
       ev.dataTransfer.setData("id", id);
       let obj = ev.target;
-      let content = obj.children();
-      console.log(content);
+      //let content = obj.children();
+      console.log(obj);
       // dimmed.blur element
   }
 
   onDragOver = (ev) => {
       ev.preventDefault();
 
+  }
+  changePropFromObject = async (obj, prop, value) => {
+    try {
+      await fetch(this.state.objChangePropUrl, {
+        method: 'PATCH',
+        headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'},
+        body:JSON.stringify({
+          id: this.state.ssid,
+          sid: this.state.sid,
+          obj: obj,
+          prop : prop,
+          value: value
+        })
+      })
+      .then(response => {
+        if (response && !response.ok) { throw new Error(response.statusText);}
+        return response.json();
+      })
+      .then(data => {
+        if(data) {
+
+        }
+      })
+      .catch((error) => {
+        // Your error is here!
+        console.log(error)
+      });
+    } catch(e) {
+      console.log(e.message);
+    }
+  }
+  handleLoopChange = async (e, b) => {
+    try {
+      let ntasks = [];
+      let obj ;
+      this.state.tasks.forEach(function(task) {
+        obj =  (task.name === b.name) ? task : null;
+        task.loop = (task.name !== b.name) ? task.loop : b.checked;
+        ntasks.push(task);
+      });
+      // update server db
+      await this.changePropFromObject(obj, 'loop', b.checked);
+      // update tasks
+      await this.setState({tasks: ntasks});
+    } catch(e) {
+      console.log(e.message);
+    }
   }
   handleSeekChange = e => {
     this.setState({ played: parseFloat(e.target.value) })
@@ -420,6 +463,7 @@ class stage extends Component {
                     </Card>
                     <Card fluid key="back">
                       <Form style={{textAlign: 'left'}}>
+                        <Button fluid primary onClick={(e) => this.handleCardClick(e,t)}><Icon name="arrow left" /> Back</Button>
                         <Label.Group color='blue' style={{padding: '2em'}}>
                           <Label as='a'>
                             Name:
@@ -434,11 +478,10 @@ class stage extends Component {
                           </Label>
                         </Label.Group>
                       </Form>
-                      <Button primary onClick={(e) => this.handleCardClick(e,t)}><Icon name="arrow left" /> Back</Button>
+
                     </Card>
                   </ReactCardFlip>
               </Dimmer.Dimmable>
-
             </Segment>
           );
           break;
@@ -454,6 +497,8 @@ class stage extends Component {
               draggable
               className="draggable picture"
               >
+              <Dimmer.Dimmable as={Segment} blurring dimmed={t.loading}>
+                <Dimmer active={t.loading} onClickOutside={this.handleHide} />
               <ReactCardFlip style={{height: 'auto', width: 'inherit'}} isFlipped={t.isFlipped} flipDirection="horizontal">
                 <Card className="fluid" key="front">
                   <Image
@@ -478,6 +523,7 @@ class stage extends Component {
                 </Card>
                 <Card fluid key="back">
                   <Form style={{textAlign: 'left'}}>
+                      <Button primary onClick={(e) => this.handleCardClick(e,t)}><Icon name="arrow left" /> Back</Button>
                     <Label.Group color='blue' style={{padding: '2em'}}>
                       <Label as='a'>
                         Name:
@@ -492,10 +538,76 @@ class stage extends Component {
                       </Label>
                     </Label.Group>
                   </Form>
-                  <Button primary onClick={(e) => this.handleCardClick(e,t)}><Icon name="arrow left" /> Back</Button>
+
                 </Card>
               </ReactCardFlip>
+              </Dimmer.Dimmable>
           </Segment>
+          );
+          break;
+          case 'audio':
+          tasks[t.category].push(
+            <Segment
+              inverted
+              name={t.name}
+              color="purple"
+              key={index}
+              onDragStart = {(e) => this.onDragStart(e, t.name)}
+              draggable
+              className="audio draggable"
+              >
+              <Dimmer.Dimmable as={Segment} blurring dimmed={t.loading}>
+                <Dimmer active={t.loading} onClickOutside={this.handleHide} />
+              <ReactCardFlip style={{height: 'auto', backgroundColor: 'transparent' , width: 'inherit'}} isFlipped={t.isFlipped} flipDirection="vertical">
+                <Card  color='blue' className="fluid" key="front" style={{ backgroundColor: 'transparent' }}>
+                  <Label inverted="true" color="violet">
+                    <Icon className="button" size="mini" floated="left"  name="edit" onClick={(e) => this.handleCardClick(e,t)} />
+                    <Icon className="button" size="mini" floated="right" name="delete"  onClick={(e) => this.handleObjectDeleteConfirm(e,t)} />
+                      <Confirm
+                        content='Are you sure you want to delete this ??? '
+                        open={t.confirm}
+                        cancelButton='Never mind'
+                        confirmButton="Yes ! let's destroy it !"
+                        onCancel={(e) => this.handleObjectDeleteCancel(e,t)}
+                        onConfirm={(e) => this.handleObjectDelete(e, t)}
+                      />
+                    {t.name}: {humanFileSize(t.size)}
+                  </Label>
+                  <ReactAudioPlayer
+                    src={t.src}
+                    autoPlay={t.autoplay}
+                    loop={t.loop}
+                    controls
+                    />
+                </Card>
+                <Card color='blue' fluid key="back">
+                  <Form style={{textAlign: 'left'}}>
+                    <Button fluid primary onClick={(e) => this.handleCardClick(e,t)}><Icon name="arrow left" /> Back</Button>
+                    <Label.Group color='blue' style={{padding: '2em'}}>
+                      <Label >
+                        Name:
+                        <Label.Detail>{t.name}</Label.Detail>
+                      </Label>
+                      <Label >
+                        Size:
+                        <Label.Detail>{humanFileSize(t.size)}</Label.Detail>
+                      </Label>
+                      <Label >Url:
+                        <Label.Detail><Button href={t.src}>Source</Button></Label.Detail>
+                      </Label>
+                      <Checkbox
+                        label="Use as a loop"
+                        name={t.name}
+                        checked={t.loop}
+                        defaultValue={t.loop}
+                        toggle
+                        onChange={this.handleLoopChange}/>
+                    </Label.Group>
+                  </Form>
+                </Card>
+              </ReactCardFlip>
+            </Dimmer.Dimmable>
+            </Segment>
           );
           break;
           case 'video':
@@ -510,6 +622,8 @@ class stage extends Component {
               draggable
               className="draggable video"
               >
+              <Dimmer.Dimmable as={Segment} blurring dimmed={t.loading}>
+                <Dimmer active={t.loading} onClickOutside={this.handleHide} />
               <ReactCardFlip style={{height: 'auto', backgroundColor: 'transparent' , width: 'inherit'}} isFlipped={t.isFlipped} flipDirection="vertical">
                 <Card className="fluid" style={{ backgroundColor: 'transparent' }} key="front">
                   <ReactPlayer
@@ -556,91 +670,30 @@ class stage extends Component {
                 </Card>
                 <Card fluid key="back" >
                   <Form style={{textAlign: 'left'}}>
+                    <Button fluid primary onClick={(e) => this.handleCardClick(e,t)}><Icon name="arrow left" /> Back</Button>
                     <Label.Group color='blue' style={{padding: '2em'}}>
-                     <Label as='a'>
+                     <Label >
                        Name:
                         <Label.Detail>{t.name}</Label.Detail>
                      </Label>
-                     <Label as='a'>
+                     <Label >
                        Size:
                        <Label.Detail>{humanFileSize(t.size)}</Label.Detail>
                      </Label>
-                     <Label as='a'>Url:
+                     <Label >Url:
                        <Label.Detail><Button href={t.src}>Source</Button></Label.Detail>
                      </Label>
                       <Checkbox label="Use as a loop" name="loop" defaultValue={t.loop} toggle onChange={this.handleLoopChange}/>
                    </Label.Group>
                   </Form>
-                  <Button primary onClick={(e) => this.handleCardClick(e,t)}><Icon name="arrow left" /> Back</Button>
                 </Card>
               </ReactCardFlip>
-
+              </Dimmer.Dimmable>
             </Segment>
 
           );
           break;
-          case 'audio':
-          tasks[t.category].push(
-            <Segment
-              inverted
-              name={t.name}
-              color="purple"
-              key={index}
-              onDragStart = {(e) => this.onDragStart(e, t.name)}
-              draggable
-              className="audio draggable"
-              >
-              <ReactCardFlip style={{height: 'auto', backgroundColor: 'transparent' , width: 'inherit'}} isFlipped={t.isFlipped} flipDirection="vertical">
-                <Card  color='blue' className="fluid" key="front" style={{ backgroundColor: 'transparent' }}>
-                  <Label inverted="true" color="violet">
-                    <Icon className="button" size="mini" floated="left"  name="edit" onClick={(e) => this.handleCardClick(e,t)} />
-                    <Icon className="button" size="mini" floated="right" name="delete"  onClick={(e) => this.handleObjectDeleteConfirm(e,t)} />
-                      <Confirm
-                        content='Are you sure you want to delete this ??? '
-                        open={t.confirm}
-                        cancelButton='Never mind'
-                        confirmButton="Yes ! let's destroy it !"
-                        onCancel={(e) => this.handleObjectDeleteCancel(e,t)}
-                        onConfirm={(e) => this.handleObjectDelete(e, t)}
-                      />
-                    {t.name}: {humanFileSize(t.size)}
-                  </Label>
-                  <ReactAudioPlayer
-                    src={t.src}
-                    autoPlay={t.autoplay}
-                    loop={t.loop}
-                    controls
-                    />
-                </Card>
-                <Card color='blue' fluid key="back">
-                  <Form style={{textAlign: 'left'}}>
-                    <Label.Group color='blue' style={{padding: '2em'}}>
-                      <Label as='a'>
-                        Name:
-                        <Label.Detail>{t.name}</Label.Detail>
-                      </Label>
-                      <Label as='a'>
-                        Size:
-                        <Label.Detail>{humanFileSize(t.size)}</Label.Detail>
-                      </Label>
-                      <Label as='a'>Url:
-                        <Label.Detail><Button href={t.src}>Source</Button></Label.Detail>
-                      </Label>
-                      <Checkbox
-                        label="Use as a loop"
-                        name={t.name}
-                        defaultValue={t.loop}
-                        toggle
-                        onChange={this.handleLoopChange}/>
-                    </Label.Group>
-                    <Button primary onClick={(e) => this.handleCardClick(e,t)}><Icon name="arrow left" /> Back</Button>
-                  </Form>
-                </Card>
-              </ReactCardFlip>
 
-            </Segment>
-          );
-          break;
           default:
           break;
         }}
@@ -648,17 +701,7 @@ class stage extends Component {
     }
     return tasks;
   }
-  handleLoopChange = (e, b) => {
-    let ntasks = [];
-    this.state.tasks.forEach(function(task) {
-      task.loop = (task.name !== b.name) ? task.loop : b.checked;
-      ntasks.push(task);
-    });
-    // update server db
 
-    // update tasks
-    this.setState({tasks: ntasks});
-  }
   mergeTasks = (cat, list) => {
 
     if(list) {
@@ -925,19 +968,14 @@ class stage extends Component {
   }
 
   uploadObjects = async (e, objType) => {
-    console.log(objType);
-    console.log(e);
-    console.log('clicked');
-
       //objType === [images, videos, pictures, audios]
       let loadingState = objType.toLowerCase() + 'Loading';
       let stageObject = 'stage'+[objType];
       let objectName = objType.toLowerCase();
-      let object = objType.toLowerCase().substring(0, -1);
-      console.log(object);
+
       this.setState({ [loadingState] : true});
       let objects = this.state[stageObject];
-      console.log(objects);
+
       let url=null;
       switch(objType) {
         case 'Images':
@@ -1039,6 +1077,7 @@ class stage extends Component {
       })
       .then(data => {
           if(data) {
+            console.log(data);
             this.setState({
               stage: {
                 id: data.id,
@@ -1110,46 +1149,43 @@ class stage extends Component {
           <Dimmer.Dimmable as={Segment} blurring dimmed={this.state.loading}>
             <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
             <Loader active={this.state.loading} >Get stage info</Loader>
-              <Segment>
-                <StorySteps sid={this.state.sid} step={this.state.step} history={this.props.history} setSteps={this.setSteps} state={this.state}/>
-                {(this.state.stages) ? <StageBoard
-                    history={this.props.history}
-                    tasks={this.state.tasks}
-                    onDrop={this.onDrop}
-                    onDragStart={this.onDragStart}
-                    onDragOver={this.onDragOver}
-                    state={this.state}
-                    stage={(this.state.stage) ? this.state.stage :  null }
-                    stages={this.state.stages}
-                    editStage={this.editStage}
-                    setStageLocation={this.setStageLocation}
-                    setStageDescription={this.setStageDescription}
-                    stageStep={this.state.stageStep}
-                    setSteps={this.setSteps}
-                    renderTasks={this.renderTasks}
-                    getStage={this.getStage}
-                    uploadObjects={this.uploadObjects}
-                    setStageObjects={this.setStageObjects}
-                    onChangeObjectsHandler={this.onChangeObjectsHandler}
-                    toggleSideBar = {this.toggleSideBar}
-                    stageImages={this.state.stageImages}
-                    stagePictures={this.state.stagePictures}
-                    stageVideos={this.state.stageVideos}
-                    stageAudios={this.state.stageAudios}
-
-                    sidebarVisible={this.state.sidebarVisible}
-                    topSidebarVisible={this.state.topSidebarVisible}
-                    handleStageStep={this.handleStageStep}
-                    handleShowClick={this.handleShowClick}
-                    handleHideClick={this.handleHideClick}
-                    handleSidebarHide={this.handleSidebarHide}
-                    handleTopHideClick={this.handleTopHideClick}
-                    handleTopShowClick={this.handleTopShowClick}
-                    handleTopSidebarHide={this.handleTopSidebarHide}
-                    />
-                  : ''
+            <StorySteps sid={this.state.sid} step={this.state.step} history={this.props.history} setSteps={this.setSteps} state={this.state}/>
+            {(this.state.stages) ? <StageBoard
+              history={this.props.history}
+              tasks={this.state.tasks}
+              onDrop={this.onDrop}
+              onDragStart={this.onDragStart}
+              onDragOver={this.onDragOver}
+              state={this.state}
+              stage={(this.state.stage) ? this.state.stage :  null }
+              stages={this.state.stages}
+              editStage={this.editStage}
+              setStageLocation={this.setStageLocation}
+              setStageDescription={this.setStageDescription}
+              stageStep={this.state.stageStep}
+              setSteps={this.setSteps}
+              renderTasks={this.renderTasks}
+              getStage={this.getStage}
+              uploadObjects={this.uploadObjects}
+              setStageObjects={this.setStageObjects}
+              onChangeObjectsHandler={this.onChangeObjectsHandler}
+              toggleSideBar = {this.toggleSideBar}
+              stageImages={this.state.stageImages}
+              stagePictures={this.state.stagePictures}
+              stageVideos={this.state.stageVideos}
+              stageAudios={this.state.stageAudios}
+              sidebarVisible={this.state.sidebarVisible}
+              topSidebarVisible={this.state.topSidebarVisible}
+              handleStageStep={this.handleStageStep}
+              handleShowClick={this.handleShowClick}
+              handleHideClick={this.handleHideClick}
+              handleSidebarHide={this.handleSidebarHide}
+              handleTopHideClick={this.handleTopHideClick}
+              handleTopShowClick={this.handleTopShowClick}
+              handleTopSidebarHide={this.handleTopSidebarHide}
+              />
+            : ''
                 }
-              </Segment>
         </Dimmer.Dimmable>
         </Segment>
       );

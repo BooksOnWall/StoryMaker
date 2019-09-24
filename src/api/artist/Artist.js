@@ -736,9 +736,7 @@ class Artist extends Component {
       <Dimmer.Dimmable as={Segment} className='view' blurring dimmed={this.state.loading}>
           <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
             <Loader active={this.state.loading} >Get artist info</Loader>
-                <Header as={Segment} vertical size='medium'>
-                    {<FormattedMessage id="app.artists.title" defaultMessage={`Artists`}/>}
-                </Header>
+                <Header as={Segment} vertical size='medium'>{<FormattedMessage id="app.artists.title" defaultMessage={`Artists`}/>}</Header>
                 <ArtistSteps  aid={this.state.aid} step={this.state.step} state={this.state}/>
                 {(this.state.step === 'Artist') ? this.editArtist() : ''}
                 {(this.state.step === 'Images') ? this.editImages() : ''}

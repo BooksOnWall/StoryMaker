@@ -437,19 +437,29 @@ const moveObjectFromField = async ({ssid, sid, oldDir, newDir, newObj}) => {
     let objName = newObj.name;
     let objType = newObj.type;
     let newList = [];
-    let list = await Stages.findAll({ where: {id : ssid, sid: sid }}).then(function(result){
+    let list = [];
+    list = await Stages.findOne({
+      attributes: [oldDir, newDir],
+      where: {id : ssid, sid: sid }
+    }).then(stage => {
+      console.log(stage.get({ plain: true }));
       //extract objects array list for this category
-      result = result[0].dataValues[oldDir];
-        // remove object by name from array
-      result = (result) ? result.filter(function (lobj) {
-        lobj =  lobj[objType];
-        return lobj.name !== objName;
+      //console.log('From ' + oldDir + ' : ', stage.get(oldDir));
+      //console.log('To ' + newDir + ' : ', stage.get(newDir));
+
+      newList = (stage.get(newDir)) ? stage.get(newDir) : [] ;
+      list = (stage.get(oldDir)) ? stage.get(oldDir) : null ;
+      // // remove object by name from current array
+      list = (list) ? list.filter(function (lobj) {
+      //   console.log(lobj);
+      //   lobj =  (lobj.name) ? lobj : lobj[objType];
+         return lobj.name !== objName;
       }) : null ;
-      newList = (result[0] && result[0].dataValues[newDir]) ? result[0].dataValues[newDir] : null ;
-      return result;
+      newList.push(newObj);
+      return list;
     });
-    console.log('list');
-    console.log(list);
+    console.log(oldDir + ': old list :', list);
+    console.log(newDir + 'new list: ', newList);
     // update removed array with database
     list = (list && list.length > 0 ) ? list : null;
     let field = oldDir;
@@ -457,11 +467,7 @@ const moveObjectFromField = async ({ssid, sid, oldDir, newDir, newObj}) => {
     //update category in db
     await updateFieldFromStage({ssid, sid, field, fieldValue }).then(function(result){
       if(result) {
-        newList = (newList && newList.length > 0 ) ? newList : null;
         field = newDir;
-        newList = (!newList) ? []  : newList;
-        console.log('new list');
-        (newList.length === 0) ? newList[0]= newObj : newList.push(newObj);
         fieldValue = newList;
         //update destination folder in db
         updateFieldFromStage({ssid, sid, field, fieldValue }).then(function(res){
@@ -469,8 +475,43 @@ const moveObjectFromField = async ({ssid, sid, oldDir, newDir, newObj}) => {
         });
       }
     });
-    //update new category in db
+  } catch(e) {
+    console.log(e.message);
+  }
+};
+const changePropFromObject = async ( sid, ssid, obj, field, prop, propValue) => {
 
+  try {
+    Stages.findOne({
+      where: {id: ssid, sid: sid},
+      attributes: ['id', obj.category],
+    }).then(function (result) {
+      // extract category field and parse objects to find the one
+
+      let list;
+      list = Object.values(result).filter(function(item) {
+        if (item[field]) {
+
+          let objs = item[field].map(obj => {
+              console.log(obj.name);
+
+              return obj
+          });
+          console.log(objs);
+          // parse array of objects
+          item[field][prop] = (item[field].name === obj.name) ? propValue : item[field][prop];
+          return item[field] ? item : null;
+        }
+      });
+
+      //console.log('list: ', list);
+
+      // save field to db
+      // Stages.update({[field]: list}, {where: {id: ssid, sid: sid}})
+      //  .then(function(err, res) {
+      //    return res;
+      //  });
+     });
   } catch(e) {
     console.log(e.message);
   }
@@ -1072,11 +1113,8 @@ app.patch('/stories/:storyId/stages/:stageId/objMv', function(req, res, next) {
   let oldDir = req.body.old;
   let newDir = newObj.category;
   let objName = obj.name;
-
   let path = './public/stories/'+ sid + '/stages/' + ssid +'/'+ oldDir + '/';
   let newPath = './public/stories/'+ sid + '/stages/' + ssid +'/'+ newDir + '/';
-  console.log(oldDir);
-  console.log(newDir);
   if (oldDir !== newDir) {
     // move file from directory
     // check if file exist
@@ -1094,6 +1132,18 @@ app.patch('/stories/:storyId/stages/:stageId/objMv', function(req, res, next) {
       });
     }
   }
+});
+app.patch('/stories/:storyId/stages/:stageId/objChangeProp', function(req, res, next) {
+  let sid = parseInt(req.params.storyId);
+  let ssid = parseInt(req.params.stageId);
+  let obj = req.body.obj;
+  let field = obj.category;
+  let prop = req.body.prop;
+  let propValue = req.body.value;
+  console.log(prop);
+  changePropFromObject(sid, ssid, obj, field, prop, propValue).then(function(result){
+    res.json({obj: obj, msg: obj.name + ': '+ prop + ' changed successfully'})
+  });
 });
 // protected route
 app.get('/protected', passport.authenticate('jwt', { session: false }), function(req, res) {
