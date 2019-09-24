@@ -183,7 +183,7 @@ div.DraftEditor-root {
   height: 100vh;
 }
 .ui.menu {
-  min-height: 100vh;
+  /* min-height: 100vh; */
   box-shadow: none !important; border: 0 !important; border-radius: 0 !important
 }
 
