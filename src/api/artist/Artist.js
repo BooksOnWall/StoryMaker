@@ -1,7 +1,7 @@
 import React, {Component } from 'react';
-
+import { Link } from 'react-router-dom';
 import {
-    Container,
+  Container,
   Segment,
   Header,
   Divider,
@@ -16,17 +16,16 @@ import {
   Dimmer,
   Loader,
 } from 'semantic-ui-react';
+
 import { FormattedMessage } from 'react-intl';
 import { Formik } from 'formik';
 import Previews from './preview';
 import ArtistSteps from './artistSteps';
-import { Link } from 'react-router-dom';
 
 //wysiwyg editor for textarea form fields
 import { EditorState, convertToRaw , convertFromRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-
 
 const thumbsContainer = {
   display: 'flex',
@@ -34,9 +33,23 @@ const thumbsContainer = {
   flexWrap: 'wrap',
   marginTop: 16
 };
-
-
-let options = {
+const thumb = {
+  display: 'inline-flex',
+  borderRadius: 2,
+  border: '1px solid #eaeaea',
+  marginBottom: 8,
+  marginRight: 8,
+  width: 100,
+  height: 100,
+  padding: 4,
+  boxSizing: 'border-box'
+};
+const thumbInner = {
+  display: 'flex',
+  minWidth: 0,
+  overflow: 'hidden'
+};
+const options = {
     inline: { inDropdown: true },
     list: { inDropdown: true },
     textAlign: { inDropdown: true },
@@ -59,8 +72,7 @@ function humanFileSize(bytes, si) {
     } while(Math.abs(bytes) >= thresh && u < units.length - 1);
     return bytes.toFixed(1)+' '+units[u];
 }
-
-function Listimages(props) {
+ function Listimages(props) {
   if (!props.images || props.images.length === 0 ) return null;
   let images = (typeof(props.images) === 'string') ? JSON.parse(props.images) : props.images;
   //images = (typeof(images) === 'string') ? JSON.parse(images) : images;
@@ -85,7 +97,7 @@ function Listimages(props) {
           <Card.Header>{image.image.name}</Card.Header>
           <Card.Meta>{image.image.type}</Card.Meta>
           <Card.Description>
-            {humanFileSize(image.image.size, true)}
+            { humanFileSize(image.image.size, true)}
           </Card.Description>
         </Card.Content>
       </Card>
@@ -93,6 +105,7 @@ function Listimages(props) {
   });
   return build;
 }
+
 class Artist extends Component {
   constructor(props) {
     super(props);
@@ -123,7 +136,7 @@ class Artist extends Component {
       open: false,
       modalImgDelete: false,
       bio: {},
-      bioState: EditorState.createEmpty(),
+      bioState: EditorState.createEmpty()
     };
     this.handleImageDelete = this.handleImageDelete.bind(this);
     this.setSteps = this.setSteps.bind(this);
@@ -133,16 +146,11 @@ class Artist extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleSubmitI = this.handleSubmitI.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
-
   }
-
   show = () => this.setState({ open: true })
   handleConfirm = () => this.setState({ open: false })
   handleCancel = () => this.setState({ open: false })
-  setSteps = (obj) => {
-    if(obj) this.setState(obj);
-
-  }
+  setSteps = (obj) => { if(obj) this.setState(obj);}
   handleImageDelete(e) {
     const imgName = e.target.name;
     let images = (typeof(this.state.images) === 'string') ? JSON.parse(this.state.images) : this.state.images ;
@@ -178,14 +186,8 @@ class Artist extends Component {
             // redirect
             //this.props.history.push('/artists');
           }
-      })
-      .catch((error) => {
-        // Your error is here!
-        console.log(error)
-      });
-    } catch(e) {
-      console.log(e.message);
-    }
+      }).catch(error => console.log(error));
+    } catch(e) { console.log(e.message); }
   }
   handleChangeSteps= (e) =>{
     return this.setSteps(e);
@@ -427,16 +429,6 @@ class Artist extends Component {
       })
       .then(data => {
           if(data) {
-            /*
-            if (data.bio) {
-              //check if the json format is string or object
-              let bio = (typeof(data.bio) === 'string') ? JSON.parse(data.bio) : data.bio;
-              const bioContentState = convertFromRaw(bio);
-              const bioState = EditorState.createWithContent(bioContentState);
-              this.setState({bio: bio});
-              this.setState({bioState: bioState});
-            }
-            */
             //parse json returned
             data.images = (data.images && data.images.length > 0) ? data.images : null;
             data.images = (typeof(data.images) === 'string') ? JSON.parse(data.images) : data.images;
@@ -503,21 +495,15 @@ class Artist extends Component {
       bio: convertToRaw(bioState.getCurrentContent())
     });
   }
-  setEditor = (editor) => {
-      this.editor = editor;
-  }
+  setEditor = (editor) => this.editor = editor;
   focusEditor = () => {
       if (this.editor) {
         this.editor.focus();
       }
   }
-  setImages = (files) => {
-    // prep store artist images
-    this.setState({images: {files} });
-  }
+  setImages = (files) => this.setState({images: {files} })
   editArtist(values) {
       return (
-        <div>
         <Formik
           enableReinitialize={true}
           initialValues={this.state.initialAValues}
@@ -588,14 +574,10 @@ class Artist extends Component {
               {errors.email && touched.email && errors.email}
 
               <Divider horizontal>...</Divider>
-              <Button onClick={handleSubmit} secondary size='large' floated='right' type="submit" disabled={isSubmitting}>
-                {(this.state.mode === 'create') ? 'Create' : 'Update'}
-              </Button>
+              <Button onClick={handleSubmit} secondary size='large' floated='right' type="submit" disabled={isSubmitting}> {(this.state.mode === 'create') ? 'Create' : 'Update' } </Button>
               {(this.state.mode === 'update') ? (
                 <div>
-                  <Button onClick={this.show} color='red' size='large' floated='right' type="submit" disabled={isSubmitting}>
-                    <FormattedMessage id="app.artist.delete" defaultMessage={`Delete Artist`}/>
-                  </Button>
+                  <Button onClick={this.show} color='red' size='large' floated='right' type="submit" disabled={isSubmitting}><FormattedMessage id="app.artist.delete" defaultMessage={`Delete Artist`}/></Button>
                   <Confirm
                     open={this.state.open}
                     cancelButton='Never mind'
@@ -608,7 +590,6 @@ class Artist extends Component {
             </Form>
           )}
         </Formik>
-      </div>
     );
   }
   editImages(values) {
@@ -659,7 +640,6 @@ class Artist extends Component {
           </Form>
         )}
       </Formik>
-
     );
   }
   editBio(values) {
@@ -726,22 +706,18 @@ class Artist extends Component {
       </Formik>
     );
   }
-  onChangeHandler = event => {
-    this.setState({
-     selectedFile: event.target.files,
-   });
-  }
+  onChangeHandler = event => this.setState({ selectedFile: event.target.files })
   render() {
     return (
       <Dimmer.Dimmable as={Segment} className='view' blurring dimmed={this.state.loading}>
-          <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
-            <Loader active={this.state.loading} >Get artist info</Loader>
-                <Header as={Segment} vertical size='medium'>{<FormattedMessage id="app.artists.title" defaultMessage={`Artists`}/>}</Header>
-                <ArtistSteps  aid={this.state.aid} step={this.state.step} state={this.state}/>
-                {(this.state.step === 'Artist') ? this.editArtist() : ''}
-                {(this.state.step === 'Images') ? this.editImages() : ''}
-                {(this.state.step === 'Bio') ? this.editBio() : ''}
-        </Dimmer.Dimmable>
+        <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
+        <Loader active={this.state.loading} >Get artist info</Loader>
+        <Header as={Segment} vertical size='medium'><FormattedMessage id="app.artists.title" defaultMessage={`Artists`}/></Header>
+        <ArtistSteps  aid={this.state.aid} step={this.state.step} state={this.state}/>
+        {(this.state.step === 'Artist') ? this.editArtist() : ''}
+        {(this.state.step === 'Images') ? this.editImages() : ''}
+        {(this.state.step === 'Bio') ? this.editBio() : ''}
+      </Dimmer.Dimmable>
     );
   }
 }
