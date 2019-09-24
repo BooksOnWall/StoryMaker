@@ -586,7 +586,7 @@ class stage extends Component {
                     controls
                     />
                 </Card>
-                <Card color='blue' fluid key="back">
+                <Card color='blue' fluid key="back" visible={t.isFlipped}>
                   <Form style={{textAlign: 'left'}}>
                     <Button fluid primary onClick={(e) => this.handleCardClick(e,t)}><Icon name="arrow left" /> Back</Button>
                     <Label.Group color='blue' style={{padding: '2em'}}>
@@ -630,23 +630,23 @@ class stage extends Component {
               >
               <Dimmer.Dimmable as={Segment} blurring dimmed={t.loading}>
                 <Dimmer active={t.loading} onClickOutside={this.handleHide} />
-              <ReactCardFlip style={{height: 'auto', backgroundColor: 'transparent' , width: 'inherit'}} isFlipped={t.isFlipped} flipDirection="vertical">
-                <Card className="fluid" style={{ backgroundColor: 'transparent' }} key="front">
-                  <ReactPlayer
-                    playsinline={true}
-                    playing={t.autoplay}
-                    preload="true"
-                    light={false}
-                    name={t.name}
-                    muted={false}
-                    ref={this.ref}
-                    controls={true}
-                    loop={t.loop}
-                    width='100%'
-                    height='auto'
-                    pip={true}
-                    seeking="true"
-                    config={{file: {
+                <ReactCardFlip style={{height: 'auto', backgroundColor: 'transparent' , width: 'inherit'}} isFlipped={t.isFlipped} flipDirection="vertical">
+                  <Card className="fluid" style={{ backgroundColor: 'transparent' }} key="front">
+                    <ReactPlayer
+                      playsinline={true}
+                      playing={t.autoplay}
+                      preload="true"
+                      light={false}
+                      name={t.name}
+                      muted={false}
+                      ref={this.ref}
+                      controls={true}
+                      loop={t.loop}
+                      width='100%'
+                      height='auto'
+                      pip={true}
+                      seeking="true"
+                      config={{file: {
                         attributes:  {
                           crossOrigin: 'anonymous',
                           width: '100%',
@@ -661,9 +661,9 @@ class stage extends Component {
                     url={t.src}
                     />
 
-                <Label inverted="true" color="violet" >
-                  <Icon className="button" size="mini" floated="left"  name="edit" onClick={(e) => this.handleCardClick(e,t)} />
-                  <Icon className="button" size="mini" floated="right" name="delete"  onClick={(e) => this.handleObjectDeleteConfirm(e,t)} />
+                  <Label inverted="true" color="violet" >
+                    <Icon className="button" size="mini" floated="left"  name="edit" onClick={(e) => this.handleCardClick(e,t)} />
+                    <Icon className="button" size="mini" floated="right" name="delete"  onClick={(e) => this.handleObjectDeleteConfirm(e,t)} />
                     <Confirm
                       content='Are you sure you want to delete this ??? '
                       open={t.confirm}
@@ -671,36 +671,36 @@ class stage extends Component {
                       confirmButton="Yes ! let's destroy it !"
                       onCancel={(e) => this.handleObjectDeleteCancel(e,t)}
                       onConfirm={(e) => this.handleObjectDelete(e,t)}
-                    />
-                </Label>
+                      />
+                  </Label>
                 </Card>
                 <Card fluid key="back" >
                   <Form style={{textAlign: 'left'}}>
                     <Button fluid primary onClick={(e) => this.handleCardClick(e,t)}><Icon name="arrow left" /> Back</Button>
                     <Label.Group color='blue' style={{padding: '2em'}}>
-                     <Label >
-                       Name:
+                      <Label >
+                        Name:
                         <Label.Detail>{t.name}</Label.Detail>
-                     </Label>
-                     <Label >
-                       Size:
-                       <Label.Detail>{humanFileSize(t.size)}</Label.Detail>
-                     </Label>
-                     <Label >Url:
-                       <Label.Detail><Button href={t.src}>Source</Button></Label.Detail>
-                     </Label>
+                      </Label>
+                      <Label >
+                        Size:
+                        <Label.Detail>{humanFileSize(t.size)}</Label.Detail>
+                      </Label>
+                      <Label >Url:
+                        <Label.Detail><Button href={t.src}>Source</Button></Label.Detail>
+                      </Label>
                       <Checkbox label="Use as a loop"
-                      name={t.name}
-                      checked={t.loop}
-                      defaultValue={t.loop}
-                      toggle
-                      onChange={this.handleLoopChange}/>
-                   </Label.Group>
+                        name={t.name}
+                        checked={t.loop}
+                        defaultValue={t.loop}
+                        toggle
+                        onChange={this.handleLoopChange}/>
+                    </Label.Group>
                   </Form>
                 </Card>
               </ReactCardFlip>
-              </Dimmer.Dimmable>
-            </Segment>
+            </Dimmer.Dimmable>
+          </Segment>
 
           );
           break;

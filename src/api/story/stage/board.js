@@ -196,7 +196,18 @@ class DragDrop extends Component {
           : ''
         }
 
-        <Button color="grey"><header as='h1'>{this.props.stage.name}</header></Button>
+
+            <Button color="grey"><header as='h1'>{this.props.stage.name}</header></Button>
+            <Button.Or />
+            <Button color="green">Import</Button>
+            <Button.Or />
+            <Button color="gray">Reset</Button>
+            <Button.Or />
+            <Button color="red">Destroy</Button>
+            <Button.Or />
+            <Button color="yellow">Export</Button>
+
+
         {(this.props.state.next)
           ? <Button as={Link} to={this.props.state.next}  animated primary floated="right">
             <Button.Content  >Next</Button.Content>
