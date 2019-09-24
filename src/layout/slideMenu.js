@@ -31,8 +31,8 @@ class LeftSlideMenu extends Component {
                     <Menu.Item name='dashboard' active={this.state.activeItem === 'dashboard'} onClick={this.handleItemClick} as={Link} to='/dashboard'  >
                       <Icon size='large' name='dashboard' /><span className='text'>Dashboard</span>
                     </Menu.Item>
-                      <Divider horizonta />
 
+                    <Divider horizontal />
                     <Menu.Item name='artists' active={this.state.activeItem === 'artists'} onClick={this.handleItemClick} as={Link} to='/artists'  >
                       <Icon size='large' name='paint brush' /><span className='text'>Artists</span>
                     </Menu.Item>
@@ -43,7 +43,7 @@ class LeftSlideMenu extends Component {
                       <Divider horizontal />
 
                     <Menu.Item name='users' active={this.state.activeItem === 'users'} onClick={this.handleItemClick} as={Link} to='/users' className="sidemenu"  >
-                      <Image  avatar size='tinny' src={this.state.server + this.props.childProps.user.avatar} /><span className='text'>Users</span>
+                      <Image  avatar size='tiny' src={this.state.server + this.props.childProps.user.avatar} /><span className='text'>Users</span>
                    </Menu.Item>
                     <Menu.Item name='logout' className='logout' active={this.state.activeItem === 'logout'} onClick={this.handleItemClick} as={Link} to='/logout' >
                       <Icon name='log out' /><span className='text'>Logout</span>

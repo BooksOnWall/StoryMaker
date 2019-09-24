@@ -6,22 +6,20 @@ import {
   Divider,
   Container,
   Form,
-  Icon,
   Input,
   Button,
   Image,
   Checkbox,
   Confirm,
   Dimmer,
-  Loader,
-    Label,
+  Loader
 } from 'semantic-ui-react';
 
 import { Formik } from 'formik';
 import UsersSteps from './usersSteps';
 import UserPref from './userPreferences';
 import UserAvatar from './userAvatar';
-import { Link } from 'react-router-dom';
+
 
 import {
   injectIntl,

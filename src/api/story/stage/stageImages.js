@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback } from 'react';
+import React, {useEffect, useState } from 'react';
 import {useDropzone} from 'react-dropzone';
 import { FormattedMessage } from 'react-intl';
 

@@ -85,9 +85,9 @@ class storySteps extends Component {
             as={Link}
             to={step.to}
             title= {step.title}
-        
+
             // {defineMessages({stepstitle: { id: 'app.story.storySteps.steps.title', defaultMessage: [step.title] }})}
-        
+
            // description={<FormattedMessage id="app.story.storySteps.edit"  defaultMessage={step.desc} />}
           />
         ))}

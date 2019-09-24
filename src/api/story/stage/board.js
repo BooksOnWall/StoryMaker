@@ -1,4 +1,4 @@
-import React, { Component,  createRef, useState } from 'react';
+import React, { Component,  createRef  } from 'react';
 import {
   Segment,
   Image,
@@ -11,7 +11,7 @@ import {
   Card,
   Button,
 } from 'semantic-ui-react';
-//import '../../../../node_modules/react-player/dist/react-player.css';
+
 import { Link , withRouter} from 'react-router-dom';
 import StageMap from '../map/stageMap';
 import StagePictures from './stagePictures';
@@ -242,7 +242,7 @@ class DragDrop extends Component {
                   width='very wide'
                   style={{maxHeight: '30vh'}}
                   >
-                  <Segment.Group style={{width: 'inherit'}}>
+                  <Segment.Group  style={{height: 'auto', width: 'inherit'}}>
                     <Segment >
                       <Button.Group >
                         <Button name="Stage" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Stage') ? true : false } >Stage</Button>
@@ -383,9 +383,9 @@ class DragDrop extends Component {
                   </Sidebar>
 
                   <Sidebar.Pusher>
-                    <Segment >
+                    <Segment className="main-board">
                       <Ref innerRef={this.segmentRef}>
-                        <Segment  fluid="true">
+                        <Segment  className="board" style={{minHeight: '90vh'}} fluid="true">
                           <Resizable
                             style={resizeStyle}
                             defaultSize={this.state.col1DefaultSize}

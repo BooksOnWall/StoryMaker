@@ -1,7 +1,5 @@
 import React, {Component } from 'react';
-import { Link } from 'react-router-dom';
 import {
-  Container,
   Segment,
   Header,
   Divider,
@@ -23,7 +21,7 @@ import Previews from './preview';
 import ArtistSteps from './artistSteps';
 
 //wysiwyg editor for textarea form fields
-import { EditorState, convertToRaw , convertFromRaw } from 'draft-js';
+import { EditorState, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
@@ -33,22 +31,7 @@ const thumbsContainer = {
   flexWrap: 'wrap',
   marginTop: 16
 };
-const thumb = {
-  display: 'inline-flex',
-  borderRadius: 2,
-  border: '1px solid #eaeaea',
-  marginBottom: 8,
-  marginRight: 8,
-  width: 100,
-  height: 100,
-  padding: 4,
-  boxSizing: 'border-box'
-};
-const thumbInner = {
-  display: 'flex',
-  minWidth: 0,
-  overflow: 'hidden'
-};
+
 const options = {
     inline: { inDropdown: true },
     list: { inDropdown: true },

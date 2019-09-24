@@ -2,12 +2,8 @@ import React, {PureComponent} from 'react';
 import {fromJS} from 'immutable';
 import MAP_STYLE from './map-style-basic-v8.json';
 import {
-  Input,
   Label,
-  Segment,
-  Checkbox,
-    Icon,
-    Item,
+  Segment
 } from 'semantic-ui-react';
 const defaultMapStyle = fromJS(MAP_STYLE);
 
@@ -99,7 +95,7 @@ export default class StyleControls extends PureComponent {
 
   _renderLayerControl(name) {
     const {visibility, color} = this.state;
-      
+
     return (
       <div key={name} className="input">
             <input
@@ -108,12 +104,12 @@ export default class StyleControls extends PureComponent {
               disabled={!visibility[name]}
               onChange={this._onColorChange.bind(this, name)}
             />
-            <Label className="labelLayer">{name}</Label> 
+            <Label className="labelLayer">{name}</Label>
             <input
               type="Checkbox"
               checked={visibility[name]}
               onChange={this._onVisibilityChange.bind(this, name)}
-            /> 
+            />
      </div>
     );
   }

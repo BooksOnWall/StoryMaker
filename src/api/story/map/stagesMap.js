@@ -9,9 +9,9 @@ import {
   Button,
   Icon,
 } from 'semantic-ui-react';
-import { Link , withRouter} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-import MapGL, { Marker, Popup, LinearInterpolator, FlyToInterpolator } from 'react-map-gl';
+import MapGL, { Marker, Popup, FlyToInterpolator } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MAP_STYLE from './map-style-basic-v8.json';
 import StagePin from './stagePin';
@@ -170,7 +170,7 @@ class stagesMap extends Component {
   }
   render() {
 
-    const {viewport, interactiveLayerIds, mapStyle, loading} = this.state;
+    const {viewport, interactiveLayerIds, loading} = this.state;
 
     return (
       <Segment  className="stagesMap" >

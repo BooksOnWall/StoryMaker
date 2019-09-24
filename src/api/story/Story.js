@@ -7,8 +7,6 @@ import {
   Checkbox,
   Form,
   Input,
-  Label,
-  Icon,
   Button,
   Confirm,
   Dimmer,
@@ -17,7 +15,6 @@ import {
 import {  FormattedMessage } from 'react-intl';
 import { Formik } from 'formik';
 import StorySteps from './storySteps';
-import { Link } from 'react-router-dom';
 //wysiwyg editor for textarea form fields
 import { EditorState,  ContentState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';

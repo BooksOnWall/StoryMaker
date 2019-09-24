@@ -5,7 +5,7 @@ import {
   Loader,
 } from 'semantic-ui-react';
 
-import MapGL, {Marker, Popup, LinearInterpolator, FlyToInterpolator, NavigationControl, FullscreenControl} from 'react-map-gl';
+import MapGL, {Marker, Popup, FlyToInterpolator} from 'react-map-gl';
 import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import DeckGL, { GeoJsonLayer } from "deck.gl";
 import Geocoder from "react-map-gl-geocoder";
@@ -14,13 +14,9 @@ import * as d3 from 'd3-ease';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MAP_STYLE from './map-style-basic-v8.json';
 import StagePin from './stagePin';
-import HtmlParser from 'react-html-parser';
+
 let MapboxAccessToken = process.env.REACT_APP_MAT;
-// Set bounds toMontevideo
-var bounds = [
-  [-34.9036749, -56.2189153], // Southwest coordinates
-  [-34.9068829, -56.211639]  // Northeast coordinates
-];
+
 
 class stageMap extends Component {
   constructor(props) {
@@ -154,7 +150,7 @@ handleOnResult = event => {
         this.setState({viewport});
     };
   render() {
-    const {viewport, searchResultLayer, interactiveLayerIds, mapStyle, loading} = this.state;
+    const {viewport, searchResultLayer, interactiveLayerIds,  loading} = this.state;
     return (
       <Segment  className="stageMap" >
       <Dimmer active={loading}>

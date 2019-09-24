@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, Container, Dimmer, Loader, Segment, Header, Table, Icon, Button, Breadcrumb } from 'semantic-ui-react';
+import { Image, Container, Dimmer, Loader, Segment, Header, Table, Icon, Button } from 'semantic-ui-react';
 import Moment from 'moment';
 import { Link } from 'react-router-dom';
 import { injectIntl, FormattedMessage } from 'react-intl';
@@ -97,7 +97,7 @@ class Users extends Component {
       </Dimmer>
       <Segment className="view">
         <Header as={Segment} vertical size='medium'>
-            {<FormattedMessage id="app.user.create" defaultMessage={`Users`}/>}          
+            {<FormattedMessage id="app.user.create" defaultMessage={`Users`}/>}
           <Link to="/users/0">
             <Button secondary animated='vertical' size='large' floated='right' >
               <Button.Content hidden>
