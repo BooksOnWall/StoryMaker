@@ -481,40 +481,26 @@ const moveObjectFromField = async ({ssid, sid, oldDir, newDir, newObj}) => {
     console.log(e.message);
   }
 };
-const changePropFromObject = async ( sid, ssid, obj, field, prop, propValue) => {
+const changePropFromObject = async ( sid, ssid, name, field, prop, propValue) => {
 
   try {
-    Stages.findOne({
+    let list = await Stages.findOne({
       where: {id: ssid, sid: sid},
-      attributes: ['id', obj.category],
+      attributes: ['id', field],
     }).then(function (result) {
       // extract category field and parse objects to find the one
-
-      let list;
-      list = Object.values(result).filter(function(item) {
-        if (item[field]) {
-
-          let objs = item[field].map(obj => {
-              console.log(obj.name);
-
-              return obj
-          });
-          console.log(objs);
-          // parse array of objects
-          item[field][prop] = (item[field].name === obj.name) ? propValue : item[field][prop];
-          return item[field] ? item : null;
-        }
-        return list;
+      return result.get(field);
+    });
+    list.map(function(item) {
+      item[prop] = (item.name === name) ? propValue : item[prop];
+      return item;
+    });
+      // save field to db
+    Stages.update({[field]: list}, {where: {id: ssid, sid: sid}})
+      .then(function(err, res) {
+          return res;
       });
 
-      //console.log('list: ', list);
-
-      // save field to db
-      // Stages.update({[field]: list}, {where: {id: ssid, sid: sid}})
-      //  .then(function(err, res) {
-      //    return res;
-      //  });
-     });
   } catch(e) {
     console.log(e.message);
   }
@@ -1143,16 +1129,22 @@ app.patch('/stories/:storyId/stages/:stageId/objMv', function(req, res, next) {
   }
 });
 app.patch('/stories/:storyId/stages/:stageId/objChangeProp', function(req, res, next) {
-  let sid = parseInt(req.params.storyId);
-  let ssid = parseInt(req.params.stageId);
-  let obj = req.body.obj;
-  let field = obj.category;
-  let prop = req.body.prop;
-  let propValue = req.body.value;
-  console.log(prop);
-  changePropFromObject(sid, ssid, obj, field, prop, propValue).then(function(result){
-    res.json({obj: obj, msg: obj.name + ': '+ prop + ' changed successfully'})
-  });
+  if(req.body.obj && req.body.obj.name) {
+    let sid = parseInt(req.params.storyId);
+    let ssid = parseInt(req.params.stageId);
+    console.log(req.body.obj);
+    let name = req.body.obj.name;
+    let field = req.body.obj.category;
+    let prop = req.body.prop;
+    let propValue = req.body.propValue;
+    changePropFromObject(sid, ssid, name, field, prop, propValue).then(function(result){
+      res.json({obj: req.body.obj, msg: name + ': '+ prop + ' changed successfully to' + propValue})
+    });
+  } else {
+    res.json({message: 'error no obj sent', error: req.body });
+    console.log('error no obj sent ', req.body);
+  }
+
 });
 // protected route
 app.get('/protected', passport.authenticate('jwt', { session: false }), function(req, res) {

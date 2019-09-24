@@ -339,32 +339,37 @@ class stage extends Component {
       ev.preventDefault();
 
   }
-  changePropFromObject = async (obj, prop, value) => {
+  changePropFromObject = async (obj, prop, propValue) => {
     try {
-      await fetch(this.state.objChangePropUrl, {
-        method: 'PATCH',
-        headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'},
-        body:JSON.stringify({
-          id: this.state.ssid,
-          sid: this.state.sid,
-          obj: obj,
-          prop : prop,
-          value: value
+      console.log(obj);
+      if(obj && obj.name) {
+        await fetch(this.state.objChangePropUrl, {
+          method: 'PATCH',
+          headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'},
+          body:JSON.stringify({
+            id: this.state.ssid,
+            sid: this.state.sid,
+            obj: obj,
+            prop : prop,
+            propValue: propValue
+          })
         })
-      })
-      .then(response => {
-        if (response && !response.ok) { throw new Error(response.statusText);}
-        return response.json();
-      })
-      .then(data => {
-        if(data) {
+        .then(response => {
+          if (response && !response.ok) { throw new Error(response.statusText);}
+          return response.json();
+        })
+        .then(data => {
+          if(data) {
+            console.log(data);
+            return data.obj;
+          }
+        })
+        .catch((error) => {
+          // Your error is here!
+          console.log(error)
+        });
+      }
 
-        }
-      })
-      .catch((error) => {
-        // Your error is here!
-        console.log(error)
-      });
     } catch(e) {
       console.log(e.message);
     }
@@ -374,7 +379,7 @@ class stage extends Component {
       let ntasks = [];
       let obj ;
       this.state.tasks.forEach(function(task) {
-        obj =  (task.name === b.name) ? task : null;
+        if (task.name === b.name) obj = task ;
         task.loop = (task.name !== b.name) ? task.loop : b.checked;
         ntasks.push(task);
       });
@@ -387,6 +392,7 @@ class stage extends Component {
     }
   }
   handleSeekChange = e => {
+    // wrong need to refer to attribute played of the object
     this.setState({ played: parseFloat(e.target.value) })
   }
   renderTasks = () => {
@@ -683,7 +689,12 @@ class stage extends Component {
                      <Label >Url:
                        <Label.Detail><Button href={t.src}>Source</Button></Label.Detail>
                      </Label>
-                      <Checkbox label="Use as a loop" name="loop" defaultValue={t.loop} toggle onChange={this.handleLoopChange}/>
+                      <Checkbox label="Use as a loop"
+                      name={t.name}
+                      checked={t.loop}
+                      defaultValue={t.loop}
+                      toggle
+                      onChange={this.handleLoopChange}/>
                    </Label.Group>
                   </Form>
                 </Card>
