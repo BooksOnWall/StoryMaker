@@ -170,14 +170,12 @@ div.DraftEditor-root {
 #root {
   /* background-color: '#6435c9'; */
 }
-<<<<<<< HEAD
 
-=======
 .main {
   padding-top: 0!important;
-    padding-bottom: 0 !important;
+  padding-bottom: 0 !important;
 }
->>>>>>> d15157787429adc3f44d8fe871790f8eb5615beb
+
 .ui.visible.slide.along.sidebar.bwSidebar,.ui.slide.along.sidebar.bwSidebar {
   background: rgba(0,0,0,.87) none no-repeat;
   height: 100vh;
