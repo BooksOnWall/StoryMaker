@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
   Menu,
-  Container,
+  Segment,
   Image,
   Icon,
   Button
@@ -28,15 +28,14 @@ class AppMenu extends Component {
   render() {
     return (
       <Menu fixed='top'  inverted color='black' pointing style={{padding: 0}}>
-        <Container fluid >
+
           <Button secondary
             onClick={this.props.state.handleSideBar}
             ><Icon circular name='bars' size='big'/></Button>
           <Menu.Item as={Link} header to='/'  style={{padding: 0}}>
             <Image className='App-logo'  fluid  src={Logo} style={{ height: '4vw', width: '12vw',  marginRight: '1.5em', marginLeft: '.5em' }} />
           </Menu.Item>
-          
-        </Container>
+
       </Menu>
     );
   }
