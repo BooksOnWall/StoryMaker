@@ -35,6 +35,7 @@ const resizeStyle = {
 };
 
 const ObjectsPreview = (props) => {
+  console.log(props);
   let objType=props.objType;
   if(objType) {
     let items = [];
@@ -323,6 +324,7 @@ class DragDrop extends Component {
                             objType="Images"
                             imagesLoading={this.props.imagesLoading}
                             uploadObjects={this.props.uploadObjects}
+                            state={this.props.state}
                             name="stageImages"
                             objValues={this.props.stageImages}
                             />
@@ -376,6 +378,7 @@ class DragDrop extends Component {
                             objType="Pictures"
                             picturesLoading={this.props.picturesLoading}
                             uploadObjects={this.props.uploadObjects}
+                            state={this.props.state}
                             name="stagePictures"
                             objValues={this.props.stagePictures}
                             />
@@ -402,6 +405,7 @@ class DragDrop extends Component {
                             objType="Videos"
                             videosLoading={this.props.videosLoading}
                             uploadObjects={this.props.uploadObjects}
+                            state={this.props.state}
                             name="stageVideos"
                             objValues={this.props.stageVideos}
                             />
@@ -419,6 +423,7 @@ class DragDrop extends Component {
                             objType="Audios"
                             audiosLoading={this.props.audiosLoading}
                             uploadObjects={this.props.uploadObjects}
+                            state={this.props.state}
                             name="stageAudios"
                             objValues={this.props.stageAudios}
                             />
