@@ -24,7 +24,7 @@ import ReactHtmlParser from 'react-html-parser';
 import ReactPlayer  from 'react-player';
 import ReactAudioPlayer from 'react-audio-player';
 import ReactCardFlip from 'react-card-flip';
-
+import StageMap from '../map/stageMap';
 
 const stageOptions = [
   { key: 'Point', value: 'Point', text: 'Geo Point' },
@@ -71,13 +71,13 @@ class stage extends Component {
         stageVideosUploadUrl: server + 'stories/' + this.props.match.params.id + '/stages/' + parseInt(this.props.match.params.sid) + '/uploadVideos',
         stageAudiosUploadUrl: server + 'stories/' + this.props.match.params.id + '/stages/' + parseInt(this.props.match.params.sid) + '/uploadAudios',
         map:  '/stories/'+ this.props.match.params.id  + '/map',
-        loading: null,
+        loading: false,
         step: 'Stages',
         isFlipped: false,
         animation: 'slide along',
         direction: 'right',
         dimmed: null,
-        descLock: 'lock',
+        descLock: false,
         stageStep: 'Stage',
         confirm: false,
         tasks: [],
@@ -85,8 +85,8 @@ class stage extends Component {
         topSidebarVisible: false,
         stage: {
           id: null,
-          sid: this.props.match.params.id,
-          ssid: parseInt(this.props.match.params.id),
+          sid: parseInt(this.props.match.params.id),
+          ssid: parseInt(this.props.match.params.sid),
           name: '',
           adress: '',
           photo: null,
@@ -259,9 +259,9 @@ class stage extends Component {
   handleTopHideClick = () => this.setState({ topSidebarVisible: false })
   handleTopShowClick = () => this.setState({ topSidebarVisible: true })
   handleTopSidebarHide = () => this.setState({ topSidebarVisible: false })
-  lock = () => this.setState({descLock: 'lock'})
-  unlock = () => this.setState({descLock: 'unlock'})
-  toggleLock = () => (this.state.descLock === 'lock') ? this.unlock() : this.lock()
+  lock = () => this.setState({descLock: true})
+  unlock = () => this.setState({descLock: false})
+  toggleLock = () => (this.state.descLock === true) ? this.unlock() : this.lock()
   setSteps = (e) => this.setState(e)
   onDrop = async (ev, cat) => {
     // move object from category
@@ -870,7 +870,14 @@ class stage extends Component {
 
   componentDidMount = async () => {
     try {
-      await this.getStage();
+      if(parseInt(this.props.match.params.sid) === 0) {
+        // create stage
+
+      } else {
+        // update stage
+        await this.getStage();
+      }
+
     } catch(e) {
       console.log(e.message);
     }
@@ -1149,24 +1156,25 @@ class stage extends Component {
     }
   }
 
-  setStageDescription = () => {
+  setStageDescription = () => (
+    <ReactCardFlip style={{height: 'auto', width: 'inherit'}}  isFlipped={this.state.descLock} flipDirection="vertical">
+          <Card color='violet' className="fluid" key="front">
+            <Button onClick={this.toggleLock}><Icon name='edit' /></Button>
 
-    return (
-      <Button onClick={this.toggleLock}><Icon name={this.state.descLock} /><Icon name="edit" /></Button>,
-      (this.state.descLock === 'lock')
-        ? <Card
-          color='violet'
-          header={this.state.stage.name}
-          description={ReactHtmlParser(this.state.stage.description)}
-        />
-      : <Form color='violet'><TextArea
-        className="desc-edit"
-        name="description"
-        placeholder='Description'
-        value={this.state.stage.description}
-        /></Form>
-    )
-  }
+            {ReactHtmlParser(this.state.stage.description)}
+          </Card>
+          <Card color='violet' fluid key="back">
+
+            <Form color='violet'><TextArea
+              className="desc-edit"
+              name="description"
+              placeholder='Description'
+              value={(this.state.stage.description) ? this.state.stage.description : '' }
+              />
+            <Button onClick={this.toggleLock}><Icon name='save' /></Button>
+          </Form>
+          </Card>
+        </ReactCardFlip>)
   handleStageStep = (e) => this.setState({stageStep: e.target.name})
   render() {
       return (
@@ -1175,6 +1183,9 @@ class stage extends Component {
             <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
             <Loader active={this.state.loading} >Get stage info</Loader>
             <StorySteps sid={this.state.sid} step={this.state.step} history={this.props.history} setSteps={this.setSteps} state={this.state}/>
+            {(this.state.ssid === 0) ? this.editStage() : ''}
+            {(!this.state.stageLocation && this.state.ssid === 0 ) ? <StageMap setStageLocation={this.setStageLocation} stageLocation={[ -56.1670182, -34.9022229 ]}
+            /> : ''}
             {(this.state.stages) ? <StageBoard
               history={this.props.history}
               tasks={this.state.tasks}

@@ -74,13 +74,18 @@ video {
 }
 .droppable {
   width: inherit;
-  height: 65vh;
   right: 0;
   top: 0;
-  overflow-y: auto;
+  overflow-y: none;
   overflow-x: none;
   background-color: #9E9E9E;
   border-left: 1px dotted;
+}
+.stageCol .droppable {
+  height: 65vh;
+}
+.stageCol .droppable.image {
+  height: auto;
 }
 .ui.card .droppable.single {
   width: 'inherit';

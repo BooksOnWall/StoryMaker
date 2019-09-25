@@ -24,6 +24,7 @@ import HtmlParser from 'react-html-parser';
 import { Resizable } from "re-resizable";
 import  ReactPlayer  from 'react-player';
 import ReactAudioPlayer from 'react-audio-player';
+import ReactCardFlip from 'react-card-flip';
 
 const resizeStyle = {
   display: "flex",
@@ -465,7 +466,7 @@ class DragDrop extends Component {
                                   <Card.Content>
                                     <Card.Description className="single">
                                       <Button  color="violet" onClick={(e) => this.props.toggleSideBar(e, 'Description', 'bottom')}  className="task-header">Description</Button>
-                                      {HtmlParser(this.props.stage.description)}
+                                      {this.props.setStageDescription()}
                                     </Card.Description>
                                   </Card.Content>
                                 </Card>
