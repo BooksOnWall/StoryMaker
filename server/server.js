@@ -433,6 +433,8 @@ const removeObjectFromField = async ({ssid, sid, category, obj}) => {
 const moveObjectFromField = async ({ssid, sid, oldDir, newDir, newObj}) => {
   try {
     let objName = newObj.name;
+    // be sure ça object is not dimmed and won't be saved as dimmed 
+    newObj.loading = false;
     let newList = [];
     let list = [];
     list = await Stages.findOne({
