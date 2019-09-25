@@ -433,7 +433,7 @@ const removeObjectFromField = async ({ssid, sid, category, obj}) => {
 const moveObjectFromField = async ({ssid, sid, oldDir, newDir, newObj}) => {
   try {
     let objName = newObj.name;
-    // be sure ça object is not dimmed and won't be saved as dimmed 
+    // be sure ça object is not dimmed and won't be saved as dimmed
     newObj.loading = false;
     let newList = [];
     let list = [];
@@ -445,7 +445,6 @@ const moveObjectFromField = async ({ssid, sid, oldDir, newDir, newObj}) => {
       list = (stage.get(oldDir)) ? stage.get(oldDir) : null ;
       // remove object by name from current array
       list = (list) ? list.filter(function (lobj) {
-      //   lobj =  (lobj.name) ? lobj : lobj[objType];
          return lobj.name !== objName;
       }) : null ;
       newList.push(newObj);
