@@ -306,6 +306,9 @@ class stage extends Component {
             //return new object with new src path
             tasks = this.state.tasks.filter((task) => {
               if(task.name === id) {
+                // dimmed.blur element stop
+                task.loading = !task.loading;
+                //return new path 
                 task.src = data.obj.src;
               }
               return task;
@@ -329,12 +332,20 @@ class stage extends Component {
   }
   onDragStart = (ev, id) => {
       ev.dataTransfer.setData("id", id);
-      let obj = ev.target;
-      //let content = obj.children();
-      console.log(obj);
       // dimmed.blur element
+      this.toggleObjectDimmed(ev, id);
   }
+  toggleObjectDimmed = (ev, id) => {
+    console.log(id);
+    let ntasks = [];
+    ntasks = this.state.tasks.filter((task) => {
+      task.loading = (task.name === id) ? !task.loading : task.loading;
 
+      return task;
+    });
+    console.log(ntasks);
+    this.setState({tasks: ntasks})
+  }
   onDragOver = (ev) => {
       ev.preventDefault();
 
@@ -728,6 +739,7 @@ class stage extends Component {
             isFlipped: false,
             category:"images",
             confirm: false,
+            loading: false,
             src: server + img.src
           };
           imageArray.push(json);
@@ -744,6 +756,7 @@ class stage extends Component {
             category:"pictures",
             size: img.size,
             confirm: false,
+            loading: false,
             isFlipped: false,
             src: server + img.src
           };
@@ -762,6 +775,7 @@ class stage extends Component {
             isFlipped: false,
             autoplay: false,
             confirm: false,
+            loading: false,
             loop: false,
             size: vid.size,
             src: server + vid.src
@@ -779,6 +793,7 @@ class stage extends Component {
             type: "audio",
             category:"audios",
             confirm: false,
+            loading: false,
             loop: false,
             autoplay: false,
             isFlipped: false,

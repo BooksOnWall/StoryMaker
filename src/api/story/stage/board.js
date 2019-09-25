@@ -202,7 +202,7 @@ class DragDrop extends Component {
         }
 
         <Button color="grey"><header as='h1'>{this.props.stage.name}</header></Button>
-        <Button color="olive"  onClick={e => this.show('import')} >Import</Button>
+        <Button color="olive"  onClick={e => this.show('import')} ><Icon name="cloud upload" /> Import</Button>
           <Confirm
             open={this.state.import}
             cancelButton='Never mind'
@@ -213,7 +213,7 @@ class DragDrop extends Component {
             onConfirm={e => this.handleConfirm('import')}
           />
         <Button.Or />
-        <Button color="brown"  onClick={e => this.show('reset')} >Reset</Button>
+        <Button color="brown"  onClick={e => this.show('reset')} ><Icon name="erase" />Reset</Button>
           <Confirm
             open={this.state.reset}
             cancelButton='Never mind'
@@ -224,7 +224,7 @@ class DragDrop extends Component {
             onConfirm={e => this.handleConfirm('reset')}
           />
         <Button.Or />
-        <Button color="red"  onClick={e => this.show('destroy')} >Destroy</Button>
+        <Button color="red"  onClick={e => this.show('destroy')} ><Icon name="bomb" /> Destroy</Button>
           <Confirm
             open={this.state.destroy}
             cancelButton='Never mind'
@@ -235,7 +235,7 @@ class DragDrop extends Component {
             onConfirm={e => this.handleConfirm('destroy')}
           />
         <Button.Or />
-        <Button color="teal" onClick={e => this.show('export')}>Export</Button>
+        <Button color="teal" onClick={e => this.show('export')}><Icon name="cloud download" /> Export</Button>
           <Confirm
             open={this.state.export}
             cancelButton='Never mind'
