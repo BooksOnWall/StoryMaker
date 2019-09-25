@@ -56,7 +56,7 @@ const ObjectsPreview = (props) => {
           items.push(<Button
             primary
             key='btn'
-            loading={props.imagesLoading}
+            loading={props.imageLoading}
             onClick={(e) => props.uploadObjects(e, objType)}
           >Upload</Button>);
         }
@@ -76,7 +76,7 @@ const ObjectsPreview = (props) => {
           items.push(<Button
             primary
             key='btn'
-            loading={props.imagesLoading}
+            loading={props.pictureLoading}
             onClick={(e) => props.uploadObjects(e, objType)}
           >Upload</Button>);
         }
@@ -124,7 +124,7 @@ const ObjectsPreview = (props) => {
         if(objects.length >0) {
             items.push(<Button
               primary
-              loading={props.videosLoading}
+              loading={props.videoLoading}
               onClick={(e) => props.uploadObjects(e, objType)}
             >Upload</Button>);
         }
@@ -151,7 +151,7 @@ const ObjectsPreview = (props) => {
         if(objects.length >0) {
           items.push(<Button
             primary
-            loading={props.audiosLoading}
+            loading={props.audioLoading}
             onClick={(e) => props.uploadObjects(e, objType)}
           >Upload</Button>);
         }

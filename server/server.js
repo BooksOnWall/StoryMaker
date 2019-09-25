@@ -197,7 +197,7 @@ const createUser = async ({ name, email, hash, active }) => {
   let password = hash;
   try{
     const res =  await Users.create({ name, email, password, active });
-    const uid = await res.dataValues.id;
+    const uid = await res.get('id');
     var dir = __dirname + '/public/users/'+uid;
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, 0o744);
@@ -241,7 +241,7 @@ const getAllArtists = async () => {
 }
 const createArtist = async ({ name, email, images, description }) => {
   let response =  await Artists.create({ name, email, images,  description });
-  const aid = response.dataValues.id;
+  const aid = response.get('id');
   var dir = __dirname + '/public/artists/'+aid;
   if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, 0o744);
@@ -279,7 +279,7 @@ const getAllStories = async () => {
 const createStory = async ({ title, state, city, sinopsys, credits, artist, active }) => {
   try {
     let res = await Stories.create({ title, state, city, sinopsys, credits, artist, active });
-    const sid = res.dataValues.id;
+    const sid = res.get('id');
     var dir = __dirname + '/public/stories/'+sid;
     if (!fs.existsSync(dir)) { fs.mkdirSync(dir, 0o744); }
     var sdir = __dirname + '/public/stories/' + sid + '/stages';
@@ -330,7 +330,7 @@ const getAllStages = async (sid) => {
 const createStage = async ({ sid, name, photo, adress, description, images, picture, videos, audios, type, stageOrder, tessellate, geometry }) => {
   try {
     let res = await Stages.create({ sid, name, photo, adress, description, images, picture, videos, audios, type, stageOrder, tessellate, geometry });
-    const ssid = res.dataValues.id;
+    const ssid = res.get('id');
     // create story stages directory
     var dir = __dirname + '/public/stories/'+ sid + '/stages/'+ssid;
     if (!fs.existsSync(dir)) { fs.mkdirSync(dir, 0o744); }
@@ -401,10 +401,6 @@ const getStage = async obj => {
   });
 };
 const updateFieldFromStage = async ({ ssid, sid, field, fieldValue }) => {
-  console.log(ssid);
-  console.log(sid);
-  console.log(field);
-  console.log(fieldValue);
   return await Stages.update(
     { [field]: fieldValue},
     { where: {id : ssid, sid: sid }}
@@ -417,7 +413,7 @@ const removeObjectFromField = async ({ssid, sid, category, obj}) => {
     let objName = obj.name;
     let list = await Stages.findAll({ where: {id : ssid, sid: sid }}).then(function(result){
       //extract objects array list for this category
-      result = result[0].dataValues[category].filter(function( lobj ) {
+      result = result[0].get(category).filter(function( lobj ) {
         // remove object by name from array
         lobj = (lobj.name) ? lobj : lobj[obj.type];
 
@@ -437,36 +433,27 @@ const removeObjectFromField = async ({ssid, sid, category, obj}) => {
 const moveObjectFromField = async ({ssid, sid, oldDir, newDir, newObj}) => {
   try {
     let objName = newObj.name;
-    let objType = newObj.type;
     let newList = [];
     let list = [];
     list = await Stages.findOne({
       attributes: [oldDir, newDir],
       where: {id : ssid, sid: sid }
     }).then(stage => {
-      console.log(stage.get({ plain: true }));
-      //extract objects array list for this category
-      //console.log('From ' + oldDir + ' : ', stage.get(oldDir));
-      //console.log('To ' + newDir + ' : ', stage.get(newDir));
-
       newList = (stage.get(newDir)) ? stage.get(newDir) : [] ;
       list = (stage.get(oldDir)) ? stage.get(oldDir) : null ;
-      // // remove object by name from current array
+      // remove object by name from current array
       list = (list) ? list.filter(function (lobj) {
-      //   console.log(lobj);
       //   lobj =  (lobj.name) ? lobj : lobj[objType];
          return lobj.name !== objName;
       }) : null ;
       newList.push(newObj);
       return list;
     });
-    console.log(oldDir + ': old list :', list);
-    console.log(newDir + 'new list: ', newList);
     // update removed array with database
     list = (list && list.length > 0 ) ? list : null;
     let field = oldDir;
     let fieldValue = list;
-    //update category in db
+    //update db with the object removed from category
     await updateFieldFromStage({ssid, sid, field, fieldValue }).then(function(result){
       if(result) {
         field = newDir;

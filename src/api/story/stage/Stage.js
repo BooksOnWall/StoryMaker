@@ -108,10 +108,10 @@ class stage extends Component {
         objDelUrl: server + 'Stories/'+ this.props.match.params.id + '/stages/' + this.props.match.params.sid + '/objDelete',
         objMvUrl: server + 'Stories/'+ this.props.match.params.id + '/stages/' + this.props.match.params.sid + '/objMv',
         objChangePropUrl: server + 'Stories/'+ this.props.match.params.id + '/stages/' + this.props.match.params.sid + '/objChangeProp',
-        imagesLoading: false,
-        picturesLoading: false,
-        videosLoading: false,
-        audiosLoading: false,
+        imageLoading: false,
+        pictureLoading: false,
+        videoLoading: false,
+        audioLoading: false,
         stagePictures: [],
         stageImages: [],
         stageVideos: [],
@@ -308,7 +308,7 @@ class stage extends Component {
               if(task.name === id) {
                 // dimmed.blur element stop
                 task.loading = !task.loading;
-                //return new path 
+                //return new path
                 task.src = data.obj.src;
               }
               return task;
@@ -480,15 +480,15 @@ class stage extends Component {
                       <Form style={{textAlign: 'left'}}>
                         <Button fluid primary onClick={(e) => this.handleCardClick(e,t)}><Icon name="arrow left" /> Back</Button>
                         <Label.Group color='blue' style={{padding: '2em'}}>
-                          <Label as='a'>
+                          <Label >
                             Name:
                             <Label.Detail>{t.name}</Label.Detail>
                           </Label>
-                          <Label as='a'>
+                          <Label >
                             Size:
                             <Label.Detail>{humanFileSize(t.size)}</Label.Detail>
                           </Label>
-                          <Label as='a'>Url:
+                          <Label >Url:
                             <Label.Detail><Button href={t.src}>Source</Button></Label.Detail>
                           </Label>
                         </Label.Group>
@@ -994,6 +994,7 @@ class stage extends Component {
   uploadObjects = async (e, objType) => {
       //objType === [images, videos, pictures, audios]
       let loadingState = objType.toLowerCase() + 'Loading';
+      console.log(loadingState);
       let stageObject = 'stage'+[objType];
       let objectName = objType.toLowerCase();
 
