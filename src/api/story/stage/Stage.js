@@ -341,7 +341,6 @@ class stage extends Component {
   }
   changePropFromObject = async (obj, prop, propValue) => {
     try {
-      console.log(obj);
       if(obj && obj.name) {
         await fetch(this.state.objChangePropUrl, {
           method: 'PATCH',
@@ -360,7 +359,6 @@ class stage extends Component {
         })
         .then(data => {
           if(data) {
-            console.log(data);
             return data.obj;
           }
         })
@@ -586,7 +584,7 @@ class stage extends Component {
                     controls
                     />
                 </Card>
-                <Card color='blue' fluid key="back" visible={t.isFlipped}>
+                <Card color='blue' fluid key="back" >
                   <Form style={{textAlign: 'left'}}>
                     <Button fluid primary onClick={(e) => this.handleCardClick(e,t)}><Icon name="arrow left" /> Back</Button>
                     <Label.Group color='blue' style={{padding: '2em'}}>

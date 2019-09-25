@@ -9,6 +9,7 @@ import {
   Label,
   Dimmer,
   Card,
+  Confirm,
   Button,
 } from 'semantic-ui-react';
 
@@ -177,7 +178,11 @@ class DragDrop extends Component {
       col2DefaultSize: { width: '12%', height: 'inherit'},
       col3DefaultSize: { width: '45%', height: 'inherit'},
       col4DefaultSize: { width: '12%', height: 'inherit'},
-      dimmed: null
+      dimmed: null,
+      import: false,
+      reset: false,
+      destroy: false,
+      export: false,
     };
 
   }
@@ -196,17 +201,46 @@ class DragDrop extends Component {
           : ''
         }
 
-
-            <Button color="grey"><header as='h1'>{this.props.stage.name}</header></Button>
-            <Button.Or />
-            <Button color="green">Import</Button>
-            <Button.Or />
-            <Button color="gray">Reset</Button>
-            <Button.Or />
-            <Button color="red">Destroy</Button>
-            <Button.Or />
-            <Button color="yellow">Export</Button>
-
+        <Button color="grey"><header as='h1'>{this.props.stage.name}</header></Button>
+        <Button color="olive"  onClick={e => this.show('import')} >Import</Button>
+          <Confirm
+            open={this.state.import}
+            cancelButton='Never mind'
+            confirmButton="Let's do it"
+            header="Import a stage archive"
+            onCancel={e => this.handleCancel('import')}
+            onConfirm={e => this.handleConfirm('import')}
+          />
+        <Button.Or />
+        <Button color="brown"  onClick={e => this.show('reset')} >Reset</Button>
+          <Confirm
+            open={this.state.reset}
+            cancelButton='Never mind'
+            confirmButton="Let's do it"
+            header="Reset this stage"
+            onCancel={e => this.handleCancel('reset')}
+            onConfirm={e => this.handleConfirm('reset')}
+          />
+        <Button.Or />
+        <Button color="red"  onClick={e => this.show('destroy')} >Destroy</Button>
+          <Confirm
+            open={this.state.destroy}
+            cancelButton='Never mind'
+            confirmButton="Let's do it"
+            header="Destroy this stage"
+            onCancel={e => this.handleCancel('destroy')}
+            onConfirm={e => this.handleConfirm('destroy')}
+          />
+        <Button.Or />
+        <Button color="teal" onClick={e => this.show('export')}>Export</Button>
+          <Confirm
+            open={this.state.export}
+            cancelButton='Never mind'
+            confirmButton="Let's do it"
+            header="Export this stage"
+            onCancel={e => this.handleCancel('export')}
+            onConfirm={e => this.handleConfirm('export')}
+          />
 
         {(this.props.state.next)
           ? <Button as={Link} to={this.props.state.next}  animated primary floated="right">
@@ -234,6 +268,9 @@ class DragDrop extends Component {
     }
 
   }
+  show = (key) => this.setState({ [key]: true })
+  handleConfirm = (key) => this.setState({ [key]: false })
+  handleCancel = (key) => this.setState({ [key]: false })
   render() {
     let tasks = this.props.renderTasks();
      return (
