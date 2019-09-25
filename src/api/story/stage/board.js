@@ -208,6 +208,7 @@ class DragDrop extends Component {
             cancelButton='Never mind'
             confirmButton="Let's do it"
             header="Import a stage archive"
+            content="When downloaded the archive , if everything looks fine, this will erase all files and boards stage database fields only remains the location and the name of the stage before the import start to recreate all that was saved"
             onCancel={e => this.handleCancel('import')}
             onConfirm={e => this.handleConfirm('import')}
           />
@@ -218,6 +219,7 @@ class DragDrop extends Component {
             cancelButton='Never mind'
             confirmButton="Let's do it"
             header="Reset this stage"
+            content="will be erased all files in OnZoneEnter, onPictureMatch, onZoneLeave. Same thing for the database fields OnZoneEnter, onPictureMatch, onZoneLeave"
             onCancel={e => this.handleCancel('reset')}
             onConfirm={e => this.handleConfirm('reset')}
           />
@@ -228,6 +230,7 @@ class DragDrop extends Component {
             cancelButton='Never mind'
             confirmButton="Let's do it"
             header="Destroy this stage"
+            content="If you destroy that means that the stage and all data affiliated with it will be erased and lost forever, better think to make an export backup first"
             onCancel={e => this.handleCancel('destroy')}
             onConfirm={e => this.handleConfirm('destroy')}
           />
@@ -238,6 +241,7 @@ class DragDrop extends Component {
             cancelButton='Never mind'
             confirmButton="Let's do it"
             header="Export this stage"
+            content="Export will create an archive file with all files and geoJSON data, the kind of archive that you can easily import when you need it !"
             onCancel={e => this.handleCancel('export')}
             onConfirm={e => this.handleConfirm('export')}
           />
