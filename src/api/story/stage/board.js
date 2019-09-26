@@ -20,11 +20,11 @@ import StageVideos from './stageVideos';
 import StageAudios from './stageAudios';
 import StageImages from './stageImages';
 
-import HtmlParser from 'react-html-parser';
+
 import { Resizable } from "re-resizable";
 import  ReactPlayer  from 'react-player';
 import ReactAudioPlayer from 'react-audio-player';
-import ReactCardFlip from 'react-card-flip';
+
 
 const resizeStyle = {
   display: "flex",
