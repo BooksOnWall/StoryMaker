@@ -1211,7 +1211,7 @@ app.patch('/stories/:storyId/stages/:stageId/objChangeProp', function(req, res, 
 // protected route
 app.post('/git/push', function(req, res) {
   console.log(req);
-  bot.telegram.sendMessage(chat_id,"New Git Push . req);
+  bot.telegram.sendMessage(chat_id,"New Git Push " + req);
   res.json('Success! You can now see this without a token.', req);
 });
 app.get('/protected', passport.authenticate('jwt', { session: false }), function(req, res) {
