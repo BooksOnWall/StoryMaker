@@ -65,7 +65,7 @@ const bot = new Telegraf(process.env.BOT_TOKEN);
 bot.telegram.getMe().then((bot_informations) => {
     bot.options.username = bot_informations.username;
     console.log("Server has initialized bot nickname. Nick: "+bot_informations.username);
-    bot.telegram.sendMessage(chat_id,"Server has initialized bot nickname. Nick: "+bot_informations.username);
+  //  bot.telegram.sendMessage(chat_id,"Server has initialized bot nickname. Nick: "+bot_informations.username);
 });
 // // Register session middleware
 bot.use(session());
@@ -1021,6 +1021,7 @@ app.post('/stories/:storyId/stages/:stageId/uploadImages', function (req, res, n
       } else {
         let images=[];
          req.files.forEach( function(file) {
+           bot.telegram.sendPhoto(chat_id, file);
            images.push({
              'image': {
                'name': file.originalname,
@@ -1030,9 +1031,11 @@ app.post('/stories/:storyId/stages/:stageId/uploadImages', function (req, res, n
              }
            });
           });
-        updateFieldFromStage({ssid: ssid, sid: sid, field: 'images', fieldValue: images}).then(stage =>
-            res.json({ stage, images: images, msg: 'Stage updated successfully' })
-          );
+        updateFieldFromStage({ssid: ssid, sid: sid, field: 'images', fieldValue: images}).then((stage) => {
+          //bot.telegram.sendMessage(chat_id,sid + " " + ssid + "Stage updated successfully");
+
+          return res.json({ stage, images: images, msg: 'Stage updated successfully' })
+        });
       }
     });
 });
@@ -1054,7 +1057,10 @@ app.post('/stories/:storyId/stages/:stageId/uploadPictures', function (req, res,
         return res.end("Error uploading file." + err);
       } else {
         let images=[];
+        console.log(req.files[0].path);
+        //bot.telegram.sendPhoto(chat_id, "http://localhost:3010"+req.files[0].path).then(res => res);
          req.files.forEach( function(file) {
+
            images.push({
              'image': {
                'name': file.originalname,
@@ -1211,7 +1217,7 @@ app.patch('/stories/:storyId/stages/:stageId/objChangeProp', function(req, res, 
 // protected route
 app.post('/git/push', function(req, res) {
   console.log(req);
-  bot.telegram.sendMessage(chat_id,"New Git Push " + req);
+  bot.telegram.sendMessage(chat_id,"New Git Push " + JSON.stringify(req));
   res.json('Success! You can now see this without a token.', req);
 });
 app.get('/protected', passport.authenticate('jwt', { session: false }), function(req, res) {
