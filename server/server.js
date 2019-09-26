@@ -59,13 +59,13 @@ passport.use(strategy);
 //
 
 const sayYoMiddleware = ({ reply }, next) => reply('yo').then(() => next());
-const chat_id = 'g389718132';
+const chat_id = '-389718132';
 const bot = new Telegraf(process.env.BOT_TOKEN);
 // We can get bot nickname from bot informations. This is particularly useful for groups.
 bot.telegram.getMe().then((bot_informations) => {
     bot.options.username = bot_informations.username;
     console.log("Server has initialized bot nickname. Nick: "+bot_informations.username);
-    //bot.telegram.sendMessage(chat_id,"Server has initialized bot nickname. Nick: "+bot_informations.username);
+    bot.telegram.sendMessage(chat_id,"Server has initialized bot nickname. Nick: "+bot_informations.username);
 });
 // // Register session middleware
 bot.use(session());
@@ -1209,8 +1209,9 @@ app.patch('/stories/:storyId/stages/:stageId/objChangeProp', function(req, res, 
 
 });
 // protected route
-app.get('/git/push', function(req, res) {
+app.post('/git/push', function(req, res) {
   console.log(req);
+  bot.telegram.sendMessage(chat_id,"New Git Push . req);
   res.json('Success! You can now see this without a token.', req);
 });
 app.get('/protected', passport.authenticate('jwt', { session: false }), function(req, res) {
