@@ -15,7 +15,7 @@ const layerSelector = {
   water: /water/,
   parks: /park/,
   buildings: /building/,
-  roads: /bridge|road|tunnel/,
+  roads: /bridge|trunk|street|tunnel/,
   labels: /label|place|poi/
 };
 
@@ -118,7 +118,7 @@ export default class StyleControls extends PureComponent {
     //const Container = this.props.containerComponent || defaultContainer;
 
     return (
-      <Segment className="sytylingMap" style={{ width: '20vw', height: '31vh', float: 'right'}} inverted color="primary">
+      <Segment className="stylingMap" style={{ width: '20vw', height: '31vh', float: 'right'}} inverted color="black">
         <h3>Map Styling</h3>
         <hr />
         {categories.map(name => this._renderLayerControl(name))}

@@ -755,7 +755,7 @@
                 "text-halo-color": "rgba(255,255,255,0.75)",
                 "text-halo-width": 2
             },
-            "source-layer": "road_label"
+            "source-layer": "road"
         },
         {
             "interactive": true,
@@ -886,14 +886,14 @@
             ],
             "type": "symbol",
             "source": "mapbox",
-            "id": "country_label",
+            "id": "place_label",
             "paint": {
                 "text-color": "#666",
                 "text-halo-color": "rgba(255,255,255,0.75)",
                 "text-halo-width": 1,
                 "text-halo-blur": 1
             },
-            "source-layer": "country_label"
+            "source-layer": "place_label"
         }
     ]
 }
