@@ -1,9 +1,14 @@
+
+const Telegraf = require('telegraf');
 const express = require('express');
 var fs = require('fs');
 var http = require('http');
 var https = require('https');
 var multer = require('multer');
 var rimraf = require("rimraf");
+const Extra = require('telegraf/extra')
+const session = require('telegraf/session')
+const { reply } = Telegraf
 
 var timeout = require('connect-timeout');
 
@@ -50,6 +55,71 @@ let strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
 });
 // use the strategy
 passport.use(strategy);
+// set telegram bot y tetunnel before starting express
+//
+
+const sayYoMiddleware = ({ reply }, next) => reply('yo').then(() => next());
+const chat_id = 'g389718132';
+const bot = new Telegraf(process.env.BOT_TOKEN);
+// We can get bot nickname from bot informations. This is particularly useful for groups.
+bot.telegram.getMe().then((bot_informations) => {
+    bot.options.username = bot_informations.username;
+    console.log("Server has initialized bot nickname. Nick: "+bot_informations.username);
+    //bot.telegram.sendMessage(chat_id,"Server has initialized bot nickname. Nick: "+bot_informations.username);
+});
+// // Register session middleware
+bot.use(session());
+
+// Register logger middleware
+bot.use((ctx, next) => {
+  const start = new Date()
+  return next().then(() => {
+    const ms = new Date() - start
+    console.log('response time %sms', ms)
+  });
+});
+bot.start((ctx) => ctx.reply('Welcome'));
+const commands = "You can control me by sending these commands: /help - list all commands /logs [start|stop] - start or stop reading server logs /errors [start|stop] ";
+bot.help((ctx) => ctx.replyWithMarkdown(commands));
+
+bot.on('sticker', (ctx) => ctx.reply('👍'));
+bot.hears('hi', (ctx) => ctx.reply('Hey there'));
+// Login widget events
+bot.on(true, ({ reply }) => reply('BooksOnWall Server connected'));
+
+// Telegram passport events
+bot.on('passport_data', ({ reply }) => reply('Telegram password connected'));
+
+//bot.sendMessage('@BooksOnWall_DEV', 'mouhaaaahaaa !! estoy vivo !!!' , 'html');
+// Random location on some text messages
+bot.on('text', ({ replyWithLocation }, next) => {
+  if (Math.random() > 0.2) {
+    return next();
+  }
+  return Promise.all([
+    replyWithLocation((Math.random() * 180) - 90, (Math.random() * 180) - 90),
+    next()
+  ]);
+});
+
+// Text messages handling
+bot.hears('Hey', sayYoMiddleware, (ctx) => {
+  ctx.session.heyCounter = ctx.session.heyCounter || 0;
+  ctx.session.heyCounter++;
+  return ctx.replyWithMarkdown(`_Hey counter:_ ${ctx.session.heyCounter}`);
+});
+bot.hears('hi', (ctx) => ctx.reply('Hey there'));
+// Command handling
+bot.command('answer', sayYoMiddleware, (ctx) => {
+  console.log(ctx.message);
+  return ctx.reply('*42*', Extra.markdown());
+});
+
+// Launch bot
+bot.launch();
+
+//
+// End telegram conf
 
 const app = express();
 
@@ -74,7 +144,11 @@ app.use(cors({
     return callback(null, true);
   }
 }));
-
+app.on('message', function (ctx, next) {
+    ctx.telegram.sendMessage(ctx.message.chat.id,
+      "File content at: " + new Date() + " is: \n"
+    )
+});
 // parse application/json
 // Tell the bodyparser middleware to accept more data
 app.use(bodyParser.json({limit: '50mb'}));
@@ -1135,10 +1209,16 @@ app.patch('/stories/:storyId/stages/:stageId/objChangeProp', function(req, res, 
 
 });
 // protected route
+app.get('/git/push', function(req, res) {
+  console.log(req);
+  res.json('Success! You can now see this without a token.', req);
+});
 app.get('/protected', passport.authenticate('jwt', { session: false }), function(req, res) {
   res.json('Success! You can now see this without a token.');
 });
-
+//bot.telegram.getUpdates();
+//console.log(toto);
+//bot.telegram.sendMessage('@Tom Bouillut', 'test');
 // start app
 if (protocol === 'https') {
   var key = fs.readFileSync('./server.key');

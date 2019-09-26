@@ -12,6 +12,7 @@ import {
   Confirm,
   Image,
   Segment,
+  Header,
   TextArea,
   Dimmer,
   Loader,
@@ -28,8 +29,7 @@ import StageMap from '../map/stageMap';
 
 const stageOptions = [
   { key: 'Point', value: 'Point', text: 'Geo Point' },
-  { key: 'linestring', value: 'linestring', text: 'Line String' },
-  { key: 'audio', value: 'audio', text: 'Audio' }
+  { key: 'Linestring', value: 'Linestring', text: 'Line String' }
 ];
 
 
@@ -61,7 +61,7 @@ class stage extends Component {
         artists: server + 'artists',
         sid: (!this.props.match.params.id) ? (0) : (parseInt(this.props.match.params.id)),
         ssid: (!this.props.match.params.sid) ? (0) : (parseInt(this.props.match.params.sid)),
-        mode: (parseInt(this.props.match.params.id) === 0) ? ('create') : ('update'),
+        mode: (parseInt(this.props.match.params.sid) === 0) ? ('create') : ('update'),
         name: null,
         stages: null,
         stagesURI: server + 'stories/' + parseInt(this.props.match.params.id) +'/stages',
@@ -99,9 +99,13 @@ class stage extends Component {
           onZoneLeave: null,
           type: null,
           description: '',
-          geometry: null,
-          stageLocation: null
+          geometry: {
+            "type": "Point",
+            "coordinates": [-56.1670182, -34.9022229  ]
+          },
+          stageLocation: [-56.1670182, -34.9022229  ],
         },
+
         index: null,
         prev: null,
         next: null,
@@ -334,6 +338,30 @@ class stage extends Component {
       ev.dataTransfer.setData("id", id);
       // dimmed.blur element
       this.toggleObjectDimmed(ev, id);
+  }
+  setStageLocation = (lngLat) => {
+    this.setState({stage: {
+      id: this.state.stage.id,
+      sid: this.state.stage.sid,
+      ssid: this.state.stage.ssid,
+      name: this.state.stage.name,
+      adress: this.state.stage.adress,
+      photo: this.state.stage.photo,
+      images: this.state.stage.images,
+      pictures: this.state.stage.pictures,
+      videos: this.state.stage.videos,
+      audios: this.state.stage.audios,
+      onZoneEnter: this.state.stage.onZoneEnter,
+      onPictureMatch: this.state.stage.onPictureMatch,
+      onZoneLeave: this.state.stage.onZoneLeave,
+      type: this.state.stage.type,
+      description: this.state.stage.description,
+      geometry: {
+        "type": "Point",
+        "coordinates": lngLat
+      },
+      stageLocation: lngLat
+    }});
   }
   toggleObjectDimmed = (ev, id) => {
     console.log(id);
@@ -888,11 +916,9 @@ class stage extends Component {
   handleDirectionChange = (direction) => () => this.setState({ direction, visible: false })
   editStage = () => {
     return (
-      <Segment>
-        <Segment>
           <Formik
             enableReinitialize={true}
-            initialValues={this.state.initialSValues}
+            initialValues={this.state.stage}
             validate={values => {
               let errors = {};
               return errors;
@@ -957,7 +983,7 @@ class stage extends Component {
                   name="stagelocation"
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  defaultValue={JSON.stringify(this.state.stage.stageLocation)}
+                  defaultValue={JSON.stringify(values.stageLocation)}
                   />
                 {errors.stagelocation && touched.stagelocation && errors.stagelocation}
 
@@ -969,7 +995,7 @@ class stage extends Component {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   options={stageOptions}
-                  defaultValue={values.stagetype}
+                  defaultValue={values.type}
                   />
                 {errors.stagetype && touched.stagetype && errors.stagetype}
 
@@ -993,8 +1019,6 @@ class stage extends Component {
               </Form>
             )}
           </Formik>
-        </Segment>
-      </Segment>
     );
   }
 
@@ -1159,8 +1183,7 @@ class stage extends Component {
   setStageDescription = () => (
     <ReactCardFlip style={{height: 'auto', width: 'inherit'}}  isFlipped={this.state.descLock} flipDirection="vertical">
           <Card color='violet' className="fluid" key="front">
-            <Button onClick={this.toggleLock}><Icon name='edit' /></Button>
-
+            <Button primary onClick={this.toggleLock}><Icon name='edit' />Edit</Button>
             {ReactHtmlParser(this.state.stage.description)}
           </Card>
           <Card color='violet' fluid key="back">
@@ -1171,7 +1194,7 @@ class stage extends Component {
               placeholder='Description'
               value={(this.state.stage.description) ? this.state.stage.description : '' }
               />
-            <Button onClick={this.toggleLock}><Icon name='save' /></Button>
+            <Button primary onClick={this.toggleLock}><Icon name='save' />Save</Button>
           </Form>
           </Card>
         </ReactCardFlip>)
@@ -1183,9 +1206,16 @@ class stage extends Component {
             <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
             <Loader active={this.state.loading} >Get stage info</Loader>
             <StorySteps sid={this.state.sid} step={this.state.step} history={this.props.history} setSteps={this.setSteps} state={this.state}/>
-            {(this.state.ssid === 0) ? this.editStage() : ''}
-            {(!this.state.stageLocation && this.state.ssid === 0 ) ? <StageMap setStageLocation={this.setStageLocation} stageLocation={[ -56.1670182, -34.9022229 ]}
-            /> : ''}
+            {/* Create stage and set location case */}
+            {(this.state.ssid === 0) ?
+              <Segment.Group horizontal>
+                <Segment style={{width: '150px'}}>{this.editStage()}</Segment>
+                <Segment>{(this.state.ssid === 0 ) ? <StageMap mode={this.state.mode} setStageLocation={this.setStageLocation} stageLocation={this.state.stage.stageLocation}
+                /> : ''}</Segment>
+              </Segment.Group>
+            : ''}
+
+            {/* Update stage and reality augmented control board */}
             {(this.state.stages) ? <StageBoard
               history={this.props.history}
               tasks={this.state.tasks}

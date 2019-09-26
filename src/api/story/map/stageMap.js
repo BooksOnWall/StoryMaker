@@ -23,13 +23,14 @@ class stageMap extends Component {
     super(props);
     let location = (this.props.stageLocation)
       ? this.props.stageLocation
-      : [-34.9022229, -56.1670182 ];
+      : [-56.1670182, -34.9022229  ];
 
     this.state = {
       toggleAuthenticateStatus: this.props.toggleAuthenticateStatus,
       authenticated: this.props.authenticated,
       sid: (!this.props.sid) ? (0) : (parseInt(this.props.sid)),
-      loading: null,
+      mode: (!this.props.mode) ? (0) : this.props.mode,
+      loading: false,
       mapStyle: '',
       active: 'Map',
       stagePosition: null,
@@ -48,13 +49,13 @@ class stageMap extends Component {
   }
   componentDidMount = async () => {
     try {
-
+      this.setState({loading: false});
     } catch(e) {
       console.log(e.message);
     }
   }
   toggleLoading(val) {
-    this.setState({loading: false});
+    this.setState({loading: val});
   }
   onClickMap = (map, evt) => {
     this.setState({stagePosition: map.lngLat});
@@ -153,40 +154,41 @@ handleOnResult = event => {
     const {viewport, searchResultLayer, interactiveLayerIds,  loading} = this.state;
     return (
       <Segment  className="stageMap" >
-      <Dimmer active={loading}>
-        <Loader active={loading} >Get map info</Loader>
-      </Dimmer>
-      <button onClick={this.goToStage}>Go to stage {this.state.location}</button>
-      <MapGL
-        {...viewport}
-        width="inherit"
-        ref={this.mapRef}
-        height="40vh"
-        mapStyle={MAP_STYLE}
-        clickRadius={2}
-        onClick={this.onClickMap}
-        getCursor={this.getCursor}
-        interactiveLayerIds={interactiveLayerIds}
-        onViewportChange={this.onViewportChange}
-        mapboxApiAccessToken={MapboxAccessToken}
-      >
-        <Geocoder
-          mapRef={this.mapRef}
-          onResult={this.handleOnResult}
-          onViewportChange={this.handleGeocoderViewportChange}
-          mapboxApiAccessToken={MapboxAccessToken}
-          position="top-left"
-        />
-        <DeckGL {...viewport} layers={[searchResultLayer]} />
+        <Dimmer.Dimmable as={Segment} blurring dimmed={this.state.loading}>
+          <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
+            <Loader active={loading} >Get map info</Loader>
+            
+            <MapGL
+              {...viewport}
+              width="inherit"
+              ref={this.mapRef}
+              height="40vh"
+              mapStyle={MAP_STYLE}
+              clickRadius={2}
+              onClick={this.onClickMap}
+              getCursor={this.getCursor}
+              interactiveLayerIds={interactiveLayerIds}
+              onViewportChange={this.onViewportChange}
+              mapboxApiAccessToken={MapboxAccessToken}
+            >
+              <Geocoder
+                mapRef={this.mapRef}
+                onResult={this.handleOnResult}
+                onViewportChange={this.handleGeocoderViewportChange}
+                mapboxApiAccessToken={MapboxAccessToken}
+                position="top-left"
+              />
+              <DeckGL {...viewport} layers={[searchResultLayer]} />
 
-        {(this.props.stageLocation) ?
-          <Marker key='stage' longitude={parseFloat(this.props.stageLocation[0])} latitude={parseFloat(this.props.stageLocation[1])}>
-            <StagePin size={20} onClick={() => this.setState({popupInfo: 'toto'})} />
-            Stage location
-          </Marker>
-         :''}
-      </MapGL>
+              {(this.props.stageLocation) ?
+                <Marker key='stage' longitude={parseFloat(this.props.stageLocation[0])} latitude={parseFloat(this.props.stageLocation[1])}>
+                  <StagePin size={20} onClick={() => this.setState({popupInfo: 'toto'})} />
+                  Stage location
+                </Marker>
+               :''}
+            </MapGL>
 
+        </Dimmer.Dimmable>
     </Segment>
     );
   }
