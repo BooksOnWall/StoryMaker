@@ -81,10 +81,16 @@ bot.use((ctx, next) => {
   });
 });
 bot.start((ctx) => ctx.reply('Welcome'));
-const commands = "You can control me by sending these commands: /help - list all commands /logs [start|stop] - start or stop reading server logs /errors [start|stop] ";
+
+const commands = `You can control me by sending these commands:
+/help - *list all commands*
+/answer - *the answer for everything*
+/album - *list of medias*
+/logs [start|stop] - *start or stop reading server logs*
+/errors [start|stop] - *idem but just with errors* `;
+
 bot.help((ctx) => ctx.replyWithMarkdown(commands));
-bot.on('update', function(message)
-{
+bot.on('update', function(message) {
     // Generic update object
     // Subscribe on it in case if you want to handle all possible
     // event types in one callback
@@ -108,15 +114,10 @@ bot.command('album', (ctx) => {
     },
     {
       media: { url: 'https://picsum.photos/200/300/?random' },
-      caption: 'Piped from URL',
-      type: 'photo'
-    },
-    {
-      media: { source: './public/artists/1/_m_._e__h__149.jpg' },
-      caption: 'From file',
+      caption: 'From URL',
       type: 'photo'
     }
-  ])
+  ]);
 });
 // Text messages handling
 bot.hears('Hey', sayYoMiddleware, (ctx) => {
