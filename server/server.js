@@ -929,10 +929,10 @@ app.get('/stories', function(req, res) {
 });
 app.post('/stories/0', function(req, res, next) {
   const { title, state, city, sinopsys, credits, artist, active } = req.body;
-  console.log(req.body);
-  createStory({ title, state, city, sinopsys, credits, artist, active }).then(story =>
-    res.json({ story, 'data': story, msg: 'story created successfully' })
-  );
+  createStory({ title, state, city, sinopsys, credits, artist, active }).then((story) => {
+    bot.telegram.sendMessage(chat_id,"New Story created: " + title);
+    return res.json({ story, 'data': story, msg: 'story created successfully' })
+  });
 });
 app.get('/stories/:storyId', (req, res) => {
   let sid = req.params.storyId;
@@ -993,9 +993,10 @@ app.get('/stories/:storyId/stages', function(req, res) {
 app.post('/stories/:storyId/0', function(req, res, next) {
   const { name, adress, picture, type, geometry } = req.body;
   console.log(req.body);
-  createStage({ name, adress, picture, type, geometry  }).then(story =>
-    res.json({ story, 'data': story, msg: 'story created successfully' })
-  );
+  createStage({ name, adress, picture, type, geometry  }).then((story) => {
+    bot.telegram.sendMessage(chat_id,"New stage created: " + name + ','+ adress);
+    return res.json({ story, 'data': story, msg: 'story created successfully' })
+  });
 });
 app.get('/stories/:storyId/stages/:stageId', (req, res) => {
   let ssid = req.params.stageId;
@@ -1216,6 +1217,7 @@ app.patch('/stories/:storyId/stages/:stageId/objChangeProp', function(req, res, 
 });
 // protected route
 app.post('/git/push', function(req, res) {
+  console.log('git push');
   console.log(req);
   bot.telegram.sendMessage(chat_id,"New Git Push " + JSON.stringify(req));
   res.json('Success! You can now see this without a token.', req);
