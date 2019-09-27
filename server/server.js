@@ -28,7 +28,7 @@ const port = process.env.SERVER_PORT;
 let config = require('./conf/mysql');
 
 //bcrypt
-const bcrypt = require('bcrypt-nodejs');
+const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 
 //jwt_payload & passport
@@ -746,12 +746,9 @@ app.patch('/users/:userId', function(req, res, next) {
   } else {
     //update user password
     bcrypt
-    .genSalt(saltRounds)
+    .genSaltSync(saltRounds)
     .then(salt => {
-      return bcrypt.hash(password, salt, null, function(err, hash) {
-        if (err) { return callback(err); }
-        return callback(null, options);
-      });
+      return bcrypt.hashSync(password, salt);
     })
     .then(hash => {
       // Store hash in your password DB.
@@ -774,12 +771,9 @@ app.delete('/users/:userId', function(req, res, next) {
 app.post('/register', function(req, res, next) {
   const { name, email, password } = req.body;
   bcrypt
-  .genSalt(saltRounds)
+  .genSaltSync(saltRounds)
   .then(salt => {
-    return bcrypt.hash(password, salt, null, function(err, hash) {
-      if (err) { return callback(err); }
-      return callback(null, options);
-    });
+    return bcrypt.hashSync(password, salt);
   })
   .then(hash => {
     createUser({ name, email, hash }).then(user =>
@@ -793,12 +787,9 @@ app.post('/register', function(req, res, next) {
 app.post('/users/0', function(req, res, next) {
   const { name, email, password, active } = req.body;
   bcrypt
-  .genSalt(saltRounds)
+  .genSaltSync(saltRounds)
   .then(salt => {
-    return bcrypt.hash(password, salt, null, function(err, hash) {
-      if (err) { return callback(err); }
-      return callback(null, options);
-    });
+    return bcrypt.hashSync(password, salt);
   })
   .then(hash => {
     createUser({ name, email, hash, active }).then(user =>
