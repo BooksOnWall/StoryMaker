@@ -1237,7 +1237,7 @@ app.post('/git/push', function(req, res) {
   console.log('git push');
   console.log(req);
   bot.telegram.sendMessage(chat_id,"New Git Push " + JSON.stringify(req));
-  res.json('Success! You can now see this without a token.', req);
+  return res.json('Success! You can now see this without a token.', req);
 });
 app.get('/protected', passport.authenticate('jwt', { session: false }), function(req, res) {
   res.json('Success! You can now see this without a token.');
