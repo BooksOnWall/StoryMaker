@@ -103,18 +103,8 @@ bot.command('album', (ctx) => {
       type: 'photo'
     },
     {
-      media: { source: '/cats/cat1.jpeg' },
+      media: { source: './public/artists/1/_m_._e__h__149.jpg' },
       caption: 'From file',
-      type: 'photo'
-    },
-    {
-      media: { source: fs.createReadStream('/cats/cat2.jpeg') },
-      caption: 'From stream',
-      type: 'photo'
-    },
-    {
-      media: { source: fs.readFileSync('/cats/cat3.jpeg') },
-      caption: 'From buffer',
       type: 'photo'
     }
   ])
