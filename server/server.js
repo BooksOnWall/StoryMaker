@@ -28,7 +28,7 @@ const port = process.env.SERVER_PORT;
 let config = require('./conf/mysql');
 
 //bcrypt
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt-nodejs');
 const saltRounds = 10;
 
 //jwt_payload & passport
