@@ -83,8 +83,15 @@ bot.use((ctx, next) => {
 bot.start((ctx) => ctx.reply('Welcome'));
 const commands = "You can control me by sending these commands: /help - list all commands /logs [start|stop] - start or stop reading server logs /errors [start|stop] ";
 bot.help((ctx) => ctx.replyWithMarkdown(commands));
-
+bot.on('update', function(message)
+{
+    // Generic update object
+    // Subscribe on it in case if you want to handle all possible
+    // event types in one callback
+    console.log(message);
+});
 bot.on('sticker', (ctx) => ctx.reply('👍'));
+
 bot.hears('hi', (ctx) => ctx.reply('Hey there'));
 
 bot.command('album', (ctx) => {
