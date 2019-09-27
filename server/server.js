@@ -66,6 +66,8 @@ bot.telegram.getMe().then((bot_informations) => {
     bot.options.username = bot_informations.username;
     console.log("Server has initialized bot nickname. Nick: "+bot_informations.username);
   //  bot.telegram.sendMessage(chat_id,"Server has initialized bot nickname. Nick: "+bot_informations.username);
+}).catch(function(err){
+    console.log(err);
 });
 // // Register session middleware
 bot.use(session());
@@ -1029,7 +1031,7 @@ app.post('/stories/:storyId/stages/:stageId/uploadImages', function (req, res, n
       } else {
         let images=[];
          req.files.forEach( function(file) {
-           bot.telegram.sendPhoto(chat_id, file);
+
            images.push({
              'image': {
                'name': file.originalname,
