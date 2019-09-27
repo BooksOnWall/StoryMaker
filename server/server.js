@@ -748,7 +748,10 @@ app.patch('/users/:userId', function(req, res, next) {
     bcrypt
     .genSalt(saltRounds)
     .then(salt => {
-      return bcrypt.hash(password, salt);
+      return bcrypt.hash(password, salt, null, function(err, hash) {
+        if (err) { return callback(err); }
+        return callback(null, options);
+      });
     })
     .then(hash => {
       // Store hash in your password DB.
@@ -773,7 +776,10 @@ app.post('/register', function(req, res, next) {
   bcrypt
   .genSalt(saltRounds)
   .then(salt => {
-    return bcrypt.hash(password, salt);
+    return bcrypt.hash(password, salt, null, function(err, hash) {
+      if (err) { return callback(err); }
+      return callback(null, options);
+    });
   })
   .then(hash => {
     createUser({ name, email, hash }).then(user =>
@@ -789,7 +795,10 @@ app.post('/users/0', function(req, res, next) {
   bcrypt
   .genSalt(saltRounds)
   .then(salt => {
-    return bcrypt.hash(password, salt);
+    return bcrypt.hash(password, salt, null, function(err, hash) {
+      if (err) { return callback(err); }
+      return callback(null, options);
+    });
   })
   .then(hash => {
     createUser({ name, email, hash, active }).then(user =>
