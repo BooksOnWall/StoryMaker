@@ -84,24 +84,41 @@ bot.help((ctx) => ctx.replyWithMarkdown(commands));
 
 bot.on('sticker', (ctx) => ctx.reply('👍'));
 bot.hears('hi', (ctx) => ctx.reply('Hey there'));
-// Login widget events
-bot.on(true, ({ reply }) => reply('BooksOnWall Server connected'));
 
-// Telegram passport events
-bot.on('passport_data', ({ reply }) => reply('Telegram password connected'));
-
-//bot.sendMessage('@BooksOnWall_DEV', 'mouhaaaahaaa !! estoy vivo !!!' , 'html');
-// Random location on some text messages
-bot.on('text', ({ replyWithLocation }, next) => {
-  if (Math.random() > 0.2) {
-    return next();
-  }
-  return Promise.all([
-    replyWithLocation((Math.random() * 180) - 90, (Math.random() * 180) - 90),
-    next()
-  ]);
+bot.command('album', (ctx) => {
+  ctx.replyWithMediaGroup([
+    {
+      media: 'AgADBAADXME4GxQXZAc6zcjjVhXkE9FAuxkABAIQ3xv265UJKGYEAAEC',
+      caption: 'From file_id',
+      type: 'photo'
+    },
+    {
+      media: 'https://picsum.photos/200/500/',
+      caption: 'From URL',
+      type: 'photo'
+    },
+    {
+      media: { url: 'https://picsum.photos/200/300/?random' },
+      caption: 'Piped from URL',
+      type: 'photo'
+    },
+    {
+      media: { source: '/cats/cat1.jpeg' },
+      caption: 'From file',
+      type: 'photo'
+    },
+    {
+      media: { source: fs.createReadStream('/cats/cat2.jpeg') },
+      caption: 'From stream',
+      type: 'photo'
+    },
+    {
+      media: { source: fs.readFileSync('/cats/cat3.jpeg') },
+      caption: 'From buffer',
+      type: 'photo'
+    }
+  ])
 });
-
 // Text messages handling
 bot.hears('Hey', sayYoMiddleware, (ctx) => {
   ctx.session.heyCounter = ctx.session.heyCounter || 0;
