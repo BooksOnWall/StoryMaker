@@ -642,7 +642,7 @@ class User extends Component {
   }
 render() {
     return (
-     <Container className="main" fluid>
+     <Container className="main" columns='equal'>
         <Dimmer.Dimmable as={Segment} className="view" blurring dimmed={this.state.loading}>
           <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
           <Loader active={this.state.loading} ><FormattedMessage id="app.user.loading" defaultMessage={`Get user info`}/></Loader>

@@ -199,7 +199,7 @@ class App extends Component {
                               </Sidebar>
 
                               <Sidebar.Pusher onClick={this.state.handleSidebarHide} dimmed={this.state.dimmed && this.state.sidebarVisible}>
-                                <Segment className="main"  vertical fluid='true'  style={{fontSize: '1.8em'}}>
+                                <Segment className="main"  vertical fluid='true' style={{fontSize: '1.8em'}}>
                                   <AppMenu childProps={childProps} state={this.state} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
                                   <Route render={({ location }) => {
                                       return (

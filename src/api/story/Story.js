@@ -405,7 +405,7 @@ class Story extends Component {
            editorClassName="demo-editor"
            onEditorStateChange={this.onSinoStateChange}
          />
-        <Button onClick={this.handleSubmitSino} floated='right'color='violet'  size='large' type="submit" >
+        <Button onClick={this.handleSubmitSino} floated='right' secondary size='large' type="submit" >
           {(this.state.mode === 'create') ? 'Create' : 'Update'}
         </Button>
 
@@ -483,6 +483,7 @@ class Story extends Component {
               placeholder='City'
               type="text"
               name="city"
+              color="teal"
               onChange={handleChange}
               onBlur={handleBlur}
               defaultValue={values.city}
@@ -500,13 +501,13 @@ class Story extends Component {
               toggle
               />
             {errors.active && touched.active && errors.active}
-            <Divider horizontal>...</Divider>
-            <Button onClick={handleSubmit} floated='right'color='violet'  size='large' type="submit" disabled={isSubmitting}>
+            <Divider  />
+            <Button onClick={handleSubmit} floated='right' secondary size='large' type="submit" disabled={isSubmitting}>
               {(this.state.mode === 'create') ? 'Create' : 'Update'}
             </Button>
             {(this.state.mode === 'update') ? (
               <div>
-                <Button onClick={this.show} color='red'  size='large' type="submit" disabled={isSubmitting}>
+                <Button onClick={this.show} color='red' floated='right' size='large' type="submit" disabled={isSubmitting}>
                   <FormattedMessage id="app.story.delete" defaultMessage={`Delete Story`}/>
                 </Button>
                 <Confirm
@@ -532,11 +533,10 @@ class Story extends Component {
   }
   render() {
     return (
-      <Container  className="view" fluid>
-        <Dimmer.Dimmable as={Segment} blurring dimmed={this.state.loading}>
+      <Container fluid className="main">
+        <Dimmer.Dimmable as={Segment} className="view" blurring dimmed={this.state.loading}>
           <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
           <Loader active={this.state.loading} >Get story info</Loader>
-            <Segment>
               <StorySteps sid={this.state.sid} step={this.state.step} history={this.props.history} setSteps={this.setSteps} state={this.state} location={this.props.location} />
               <Segment id='StepsContent'>
                 {(this.state.step === 'Story') ? this.EditForm() : '' }
@@ -545,7 +545,6 @@ class Story extends Component {
                 {(this.state.step === 'Map') ? <StoryMap sid={this.state.sid}  history={this.props.history} step={this.state.step} state={this.state} /> : '' }
                 {(this.state.step === 'Stages') ? <StoryStages sid={this.state.sid} history={this.props.history} step={this.state.step} state={this.state} />  : '' }
               </Segment>
-            </Segment>
         </Dimmer.Dimmable>
         <Dimmer active={this.state.loading}>
           <Loader active={this.state.loading} >Get story info</Loader>

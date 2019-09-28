@@ -20,31 +20,30 @@ class LeftSlideMenu extends Component {
   render() {
     return (
       <Segment  fluid='true' style={{ padding: '0'}} >
-        <Menu className='bwSidebarMenu' size='huge' primary='true' inverted color='black' vertical fluid  style={{padding: 0}}>
+        <Menu className='bwSidebarMenu' size='huge' primary='true' inverted vertical fluid style={{padding: 0}}>
           {this.props.childProps.authenticated ? (
             <UserContext.Consumer>{(user) => {
               return(
                 <Menu.Menu style={{ padding: '0'}}>
-                    <Menu.Item name='homepage' active={this.state.activeItem === 'homepage'} as={Link} to='/'  style={{textAlign: 'left'}}>
-                    <Image className='App-logo'  fluid  src={Logo} style={{ height: '6vh', marginLeft: '-2.5em'}} />
-                    </Menu.Item>
                     <Menu.Item name='dashboard' active={this.state.activeItem === 'dashboard'} onClick={this.handleItemClick} as={Link} to='/dashboard'  >
                       <Icon size='large' name='dashboard' /><span className='text'>Dashboard</span>
                     </Menu.Item>
 
-                    <Divider horizontal />
+                    <Divider inverted />
                     <Menu.Item name='artists' active={this.state.activeItem === 'artists'} onClick={this.handleItemClick} as={Link} to='/artists'  >
                       <Icon size='large' name='paint brush' /><span className='text'>Artists</span>
                     </Menu.Item>
+                  <Divider inverted />
                     <Menu.Item name='stories' active={this.state.activeItem === 'stories'} onClick={this.handleItemClick} as={Link} to='/stories'  >
                       <Icon size='large' name='book' /><span className='text'>Stories</span>
                     </Menu.Item>
 
-                      <Divider horizontal />
-
-                    <Menu.Item name='users' active={this.state.activeItem === 'users'} onClick={this.handleItemClick} as={Link} to='/users' className="sidemenu"  >
+                <Divider inverted />
+                  <Divider as={Menu.Item} inverted className='push-donw'  />
+                    <Menu.Item name='users' active={this.state.activeItem === 'users'} onClick={this.handleItemClick} as={Link} to='/users' className="sidemenu users"  >
                       <Image  avatar  src={this.state.server + this.props.childProps.user.avatar} /><span className='text'>Users</span>
                    </Menu.Item>
+                  <Divider inverted />
                     <Menu.Item name='logout' className='logout' active={this.state.activeItem === 'logout'} onClick={this.handleItemClick} as={Link} to='/logout' >
                       <Icon name='log out' /><span className='text'>Logout</span>
                     </Menu.Item>

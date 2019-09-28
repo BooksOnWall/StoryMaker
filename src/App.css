@@ -2,15 +2,22 @@
   text-align: center;
 }
 
-.App-logo {
-  animation: none;
-  height: 40vmin;
-  pointer-events: none;
+body{   
+    background: rgb(200,49,21);
+    background: linear-gradient(172deg, rgba(200,49,21,1) 0%, rgba(253,29,29,1) 26%, rgba(255,164,0,1) 94%) !important;   
+    padding: 0 !important;
+    margin: 0 !important;
 }
-
+.top.ui.menu .item { padding: 5px !important;}
+ .App-logo {
+  animation: none;
+  pointer-events: none;
+  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(346deg) brightness(200%) contrast(100%);
+  padding: 0 !important;
+}
 .App-header {
-  background-color: #f1f1f1;
-  min-height: 100vh;
+  background-color: transparent;
+  min-height: 100vh !important;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -18,6 +25,7 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
 video {
   width: 100%    !important;
   height: auto   !important;
@@ -46,9 +54,10 @@ video {
 
 .ui.header {
   margin: 0 !important;
-  padding: 0;
-  background-color: transparent;
+  padding: 40px !important;
+  background: transparent;
   width:100%;
+    text-transform: uppercase !important;
 }
 .header .ui.animated.button{margin-top: -9px;}
 
@@ -59,6 +68,8 @@ video {
 .ui.segment.stageCol {
   width: -webkit-fill-available;
   height: -webkit-fill-available;
+    min-height: 100%;
+    min-width: 100%;
 }
 .ui.segment.audio {
   padding: 0;
@@ -167,18 +178,30 @@ div.DraftEditor-root {
   from { opacity: 0; transform: translate3d(0, -25px, 0) }
   to { opacity: 1; transform: translate3d(0, 0, 0) }
 }
-
 .menu {
   animation: nav 0.2s ease-in-out forwards;
   opacity: 0;
+ background: rgb(4,22,42);
+background: linear-gradient(180deg, rgba(4,22,42,1) 0%, rgba(19,32,46,1) 72%, rgba(4,22,42,1) 100%); }
+.top.ui.menu{  
+    background: transparent !important; 
+    display: inline; 
+    height: 100vh;
+    width: 4vh;
+    min-width: 80px;
+    position: fixed;
+    width: auto !important;
 }
+.menu button.hamburger{ margin: 15px auto !important; border: 0 !important;}
 #root {
   /* background-color: '#6435c9'; */
 }
-
-.main {
-  padding-top: 0!important;
-  padding-bottom: 0 !important;
+.ui.segment.main{ padding: 0 !important; }
+.ui.segment.pushable, .ui.segment.main{ background: transparent !important}
+.ui.main.container {
+  padding: 0 !important;
+  max-width: 96vw !important;
+  margin: 0 0 0 80px !important;      
 }
 
 .ui.visible.slide.along.sidebar.bwSidebar,.ui.slide.along.sidebar.bwSidebar {
@@ -187,9 +210,11 @@ div.DraftEditor-root {
 }
 .ui.menu {
   /* min-height: 100vh; */
-  box-shadow: none !important; border: 0 !important; border-radius: 0 !important
+  box-shadow: none !important; border: 0 !important; border-radius: 0 !important;
 }
+.ui.menu:first-child{margin: 0px;}
 
+.ui.circular.button{ border-radius: 1em !important}
 
 .ui.vertical.menu.fluid.bwSidebarMenu .menu{
     height: 100vh !important;
@@ -199,17 +224,15 @@ div.DraftEditor-root {
     width: 35vw;
 }
 
-
-.ui.vertical.menu.fluid .item.logout { display: block; position: fixed !importan; bottom: 0 !importan}
-
-
-.view, .main {
+.ui.vertical.menu.fluid .item.users  { display: block; position: fixed !importan; bottom: 0 !importan;}
+.ui.vertical.menu.fluid .push-donw{ display: block; position: fixed !importan; bottom: 0 !importan; margin-top: 65vh !important;}
+.view {
   min-width: 100%;
   min-height: 100vh;
 }
 .segment.main .segment.view,.container.view {
-  margin-top: 4vh;
 }
+.segment.main{}
 .view .view {
   min-height: inherit;
 }
@@ -285,7 +308,9 @@ div.DraftEditor-root {
 }
 .ui.segment.view {
   margin: 0;
-  padding: 8vh 2em 0!important;
+  padding: 2vh 2vw 0!important;
+  box-shadow: 0 !important;
+  border: 0 !important;
 }
 @media screen and (max-width: 768px) {
   .menu {
@@ -336,7 +361,7 @@ div.DraftEditor-root {
 .menu a.active:before {
   animation: navdot 0.25s ease-in-out forwards 0.25s;
 }
-.menu .ui.divider{margin: 0 !important}
+.menu .ui.divider{margin: 0 !important; }
 
 .push .ui.button:not(.icon) > .icon:not(.button):not(.dropdown){ margin: 0 !important}
 
@@ -363,4 +388,5 @@ input[type="color"] {
     padding: 0px !important;
     margin-top: 0px
 }
-/*.ui.segment{ box-shadow: none !important; border: 0 !important; border-radius: 0 !important } */
+.ui.segment{ box-shadow: none !important; border: 0 !important; border-radius: 0 !important; background: #e2e2e2 !important }
+.ui.segment.view{ background: #fff !important;}

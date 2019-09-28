@@ -3,11 +3,12 @@ import {
   Menu,
   Image,
   Icon,
-  Button
+  Button,
+    Grid
 } from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
 
-import Logo from '../logo2.svg';
+import Logo from '../logo.svg';
 
 class AppMenu extends Component {
   constructor(props) {
@@ -26,13 +27,15 @@ class AppMenu extends Component {
 
   render() {
     return (
-      <Menu fixed='top'  inverted color='black' pointing style={{padding: 0}}>
-          <Button secondary
+      <Menu fixed className="top" pointing style={{padding: 0}}>
+        <Menu.Item name='homepage' active={this.state.activeItem === 'homepage'} as={Link} to='/'  style={{textAlign: 'left'}}>
+        <Image className='App-logo'  fluid  src={Logo} style={{ heigt:'100%'  }} />
+        </Menu.Item>        <Menu.Item  >
+        <Button className='hamburger' inverted icon circular
             onClick={this.props.state.handleSideBar}
-            ><Icon circular name='bars' size='big'/></Button>
-          <Menu.Item as={Link} header to='/'  style={{padding: 0}}>
-            <Image className='App-logo'  fluid  src={Logo} style={{ height: '4vw', width: '12vw',  marginRight: '1.5em', marginLeft: '.5em' }} />
-          </Menu.Item>
+            ><Icon name='bars'  size='big'/></Button>
+        </Menu.Item>
+
       </Menu>
     );
   }
