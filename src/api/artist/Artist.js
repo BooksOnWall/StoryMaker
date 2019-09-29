@@ -13,6 +13,7 @@ import {
   Confirm,
   Dimmer,
   Loader,
+  Container,
 } from 'semantic-ui-react';
 
 import { FormattedMessage } from 'react-intl';
@@ -557,10 +558,10 @@ class Artist extends Component {
               {errors.email && touched.email && errors.email}
 
               <Divider horizontal>...</Divider>
-              <Button onClick={handleSubmit} secondary size='large' floated='right' type="submit" disabled={isSubmitting}> {(this.state.mode === 'create') ? 'Create' : 'Update' } </Button>
+              <Button onClick={handleSubmit} color='grey' size='large' type="submit" disabled={isSubmitting}> {(this.state.mode === 'create') ? 'Create' : 'Update' } </Button>
               {(this.state.mode === 'update') ? (
                 <div>
-                  <Button onClick={this.show} color='red' size='large' floated='right' type="submit" disabled={isSubmitting}><FormattedMessage id="app.artist.delete" defaultMessage={`Delete Artist`}/></Button>
+                  <Button onClick={this.show} color='red' size='large'  type="submit" disabled={isSubmitting}><FormattedMessage id="app.artist.delete" defaultMessage={`Delete Artist`}/></Button>
                   <Confirm
                     open={this.state.open}
                     cancelButton='Never mind'
@@ -613,11 +614,9 @@ class Artist extends Component {
                 {(this.state.images && this.state.images.length > 0) ? <Listimages mode={this.state.mode} handleImageDelete={this.handleImageDelete} handleImgDeleteOpen={this.handleImgDeleteOpen} handleModalImgDeleteClose={this.handleModalImgDeleteClose}  state={this.state} images={this.state.images} server={this.state.server}/> : ''}
                  </Card.Group>
               </aside>
-              <Divider horizontal>...</Divider>
               <Previews state={this.state} />
             </div>
-            <Divider horizontal>...</Divider>
-            <Button onClick={this.handleSubmitI} secondary size='large' floated='right' type="submit" disabled={isSubmitting}>
+            <Button onClick={this.handleSubmitI} color='grey' size='large' type="submit" disabled={isSubmitting}>
               {(this.state.mode === 'create') ? 'Create' : 'Update'}
             </Button>
           </Form>
@@ -681,7 +680,7 @@ class Artist extends Component {
               placeholder='Biographie'
               />
             <Divider/>
-            <Button onClick={handleSubmitBio} secondary size='large' floated='right' type="submit" disabled={isSubmitting}>
+            <Button onClick={handleSubmitBio} color='grey' size='large'  type="submit" disabled={isSubmitting}>
               {(this.state.mode === 'create') ? 'Create' : 'Update'}
             </Button>
           </Form>
@@ -692,15 +691,19 @@ class Artist extends Component {
   onChangeHandler = event => this.setState({ selectedFile: event.target.files })
   render() {
     return (
-      <Dimmer.Dimmable as={Segment} className='view' blurring dimmed={this.state.loading}>
+    <Container className="main" fluid>
+      <Dimmer.Dimmable as={Segment} inverted className='view' blurring dimmed={this.state.loading}>
         <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
         <Loader active={this.state.loading} >Get artist info</Loader>
         <Header as={Segment} vertical size='medium'><FormattedMessage id="app.artists.title" defaultMessage={`Artists`}/></Header>
-        <ArtistSteps  aid={this.state.aid} step={this.state.step} state={this.state}/>
+        <ArtistSteps inverted aid={this.state.aid} step={this.state.step} state={this.state}/>
+        <Segment inverted>
         {(this.state.step === 'Artist') ? this.editArtist() : ''}
         {(this.state.step === 'Images') ? this.editImages() : ''}
         {(this.state.step === 'Bio') ? this.editBio() : ''}
+        </Segment>
       </Dimmer.Dimmable>
+    </Container>
     );
   }
 }

@@ -89,7 +89,7 @@ class Stories extends Component {
     return (
 
     <Container className="main" fluid>
-      <Dimmer.Dimmable as={Segment} className="view" blurring dimmed={this.state.loading}>
+      <Dimmer.Dimmable as={Segment} inverted className="view" blurring dimmed={this.state.loading}>
           <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
               <Dimmer active={this.state.loading}>
                 <Loader active={this.state.loading} >
@@ -100,7 +100,7 @@ class Stories extends Component {
           <Header as={Segment} vertical size='medium'>
             {<FormattedMessage id="app.user.create" defaultMessage={`Stories`}/>}                  
             <Link to="/stories/0">
-            <Button secondary animated='vertical' size='large' floated='right' >
+            <Button color='grey' animated='vertical' size='large' floated='right' >
                   <Button.Content hidden>
                       <FormattedMessage id="app.story.stories.addstory"  defaultMessage={`Add Story`}/>
                   </Button.Content>
@@ -110,7 +110,7 @@ class Stories extends Component {
                 </Button> 
                 </Link>
               </Header>
-              <Table basic='very' celled selectable sortable>
+              <Table inverted stripped selectable sortable>
                 <Table.Header className='slide-out' >
                   <Table.Row>
                     <Table.HeaderCell

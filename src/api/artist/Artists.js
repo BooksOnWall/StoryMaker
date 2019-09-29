@@ -88,14 +88,14 @@ class Artists extends Component {
     if(data === null) return null;
     return (
     <Container className="main" fluid>
-      <Segment className="view" >
+      <Segment inverted className="view" >
         <Dimmer active={this.state.loading}>
           <Loader active={this.state.loading} >Get users info</Loader>
         </Dimmer>
-        <Header as={Segment} vertical size='medium'>
+        <Header as={Segment} vertical size='large'>
             {<FormattedMessage id="app.artists.title" defaultMessage={`Artists`}/>}          
           <Link to="/artists/0">
-            <Button secondary animated='vertical' size='large' floated='right' >
+            <Button color='grey' animated='vertical' size='large' floated='right' >
               <Button.Content hidden>
                   <FormattedMessage id="app.artists.add"  defaultMessage={`Add Artist`}/>
               </Button.Content>
@@ -105,7 +105,7 @@ class Artists extends Component {
             </Button>         
           </Link>
         </Header>
-        <Table basic='very' celled selectable>
+          <Table inverted striped selectable sortable>
           <Table.Header className='slide-out' >
             <Table.Row>
               <Table.HeaderCell

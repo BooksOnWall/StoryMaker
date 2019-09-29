@@ -109,7 +109,7 @@ class Users extends Component {
             </Button>
           </Link>
         </Header>
-        <Table basic='very' striped sortable selectable>
+        <Table striped sortable selectable>
           <Table.Header className='slide-out'>
             <Table.Row>
               <Table.HeaderCell

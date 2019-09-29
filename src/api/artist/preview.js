@@ -3,6 +3,7 @@ import {useDropzone} from 'react-dropzone';
 import {
   Segment,
   Image,
+Divider,
 } from 'semantic-ui-react';
 
 const thumbsContainer = {
@@ -74,10 +75,11 @@ function Previews(props) {
 
 
   return (
-    <Segment className="container">
+    <Segment inverted>
+     <Divider />
       <div {...getRootProps({className: 'dropzone'})}>
         <input  id='artistFiles' name='files' onChange={props.state.onChangeHandler} ref={ref => this.fileInput = ref} {...getInputProps()} />
-        <p>Drag 'n' drop some files here, or click to select files</p>
+        <h4>Drag 'n' drop some files here, or click to select files</h4>
         {!isDragActive && 'Click here or drop a file to upload!'}
         {isDragActive && !isDragReject && "Drop it like it's hot!"}
         {isDragReject && "File type not accepted, sorry!"}
@@ -85,6 +87,7 @@ function Previews(props) {
       <aside style={thumbsContainer}>
         {thumbs}
       </aside>
+    <Divider />
     </Segment>
   );
 }
