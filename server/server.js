@@ -137,10 +137,13 @@ let startLog = false;
 
 bot.command('logs',(ctx) => {
   let str =  ctx.message.text;
+  if(!str.split(' ')[1]) return ctx.reply('/logs required an argument to complete , use /logs start or /logs stop instead', Extra.markdown());
   console.log(str.split(' '));
   startLog = (str.split(' ')[1] === 'start') ? true : false;
   (str.split(' ')[1] === 'start') ? ctx.reply('Start logs ... ', Extra.markdown()) : ctx.reply('Stop logs ... ', Extra.markdown()) ;
+
 });
+
 // Launch bot
 bot.launch();
 
@@ -149,18 +152,9 @@ bot.launch();
 tail.on('line', (line) => {
   // if bot logs start === true
   if (startLog) bot.telegram.sendMessage(chat_id,"Server log: "+line);
-  process.stdout.write(line);
+  //process.stdout.write(line);
 });
 
-tail.on('close', () => {
-  //console.log('watching stopped');
-});
-
-tail.watch();
-
-setTimeout(() => {
-  tail.close();
-}, 3000);
 const app = express();
 
 // initialize passport with express
