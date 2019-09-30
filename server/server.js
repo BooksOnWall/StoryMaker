@@ -6,11 +6,12 @@ var http = require('http');
 var https = require('https');
 var multer = require('multer');
 var rimraf = require("rimraf");
-const Extra = require('telegraf/extra')
-const session = require('telegraf/session')
-const { reply } = Telegraf
-
-var timeout = require('connect-timeout');
+const Extra = require('telegraf/extra');
+const session = require('telegraf/session');
+const { reply } = Telegraf;
+const Tail = require('nodejs-tail');
+const filename = './logs/server.log';
+const tail = new Tail(filename);
 
 const bodyParser = require('body-parser');
 //CORS
@@ -131,13 +132,32 @@ bot.command('answer', sayYoMiddleware, (ctx) => {
   console.log(ctx.message);
   return ctx.reply('*42*', Extra.markdown());
 });
-
+let startLog = false;
+bot.command('logs', startLog, (ctx) => {
+  console.log(ctx.message);
+  console.log('toto');
+  return ctx.reply('toto', Extra.markdown());
+});
 // Launch bot
 bot.launch();
 
 //
 // End telegram conf
+tail.on('line', (line) => {
+  // if bot logs start === true
+  //bot.telegram.sendMessage(chat_id,"Server log: "+line);
+  process.stdout.write(line);
+});
 
+tail.on('close', () => {
+  console.log('watching stopped');
+});
+
+tail.watch();
+
+setTimeout(() => {
+  tail.close();
+}, 3000);
 const app = express();
 
 // initialize passport with express
