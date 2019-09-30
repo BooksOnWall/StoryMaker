@@ -1,0 +1,159 @@
+BooksOnWall RESTFULL Server listening on port 3010! Go to https://localhost:3000/
+warning: please use IANA standard timezone format ('Etc/GMT0')
+warning: please use IANA standard timezone format ('Etc/GMT0')
+warning: please use IANA standard timezone format ('Etc/GMT0')
+warning: please use IANA standard timezone format ('Etc/GMT0')
+warning: please use IANA standard timezone format ('Etc/GMT0')
+warning: please use IANA standard timezone format ('Etc/GMT0')
+Executing (default): SELECT 1+1 AS result
+Executing (default): CREATE TABLE IF NOT EXISTS `users` (`id` INTEGER NOT NULL auto_increment , `name` VARCHAR(255) NOT NULL UNIQUE, `email` VARCHAR(255) NOT NULL UNIQUE, `password` VARCHAR(255) NOT NULL, `active` TINYINT(1) NOT NULL DEFAULT false, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;
+Executing (default): CREATE TABLE IF NOT EXISTS `userPrefs` (`id` INTEGER NOT NULL auto_increment , `pname` VARCHAR(255) NOT NULL, `pvalue` VARCHAR(255) NOT NULL, `uid` INTEGER NOT NULL, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, UNIQUE `compositeIndex` (`pname`, `uid`), PRIMARY KEY (`id`)) ENGINE=InnoDB;
+Executing (default): CREATE TABLE IF NOT EXISTS `artists` (`id` INTEGER NOT NULL auto_increment , `name` VARCHAR(255) NOT NULL UNIQUE, `email` VARCHAR(255) NOT NULL UNIQUE, `images` JSON, `bio` JSON, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;
+Connection has been established successfully.
+Executing (default): CREATE TABLE IF NOT EXISTS `stories` (`id` INTEGER NOT NULL auto_increment , `title` VARCHAR(255) NOT NULL UNIQUE, `state` VARCHAR(256) DEFAULT '', `city` VARCHAR(256) DEFAULT '', `sinopsys` TEXT, `credits` TEXT, `artist` INTEGER NOT NULL, `active` TINYINT(1) DEFAULT false, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;
+Executing (default): CREATE TABLE IF NOT EXISTS `stages` (`id` INTEGER NOT NULL auto_increment , `sid` INTEGER NOT NULL, `name` VARCHAR(255) NOT NULL UNIQUE, `photo` JSON, `adress` VARCHAR(255) NOT NULL, `description` TEXT, `images` JSON, `pictures` JSON, `videos` JSON, `audios` JSON, `onZoneEnter` JSON, `onPictureMatch` JSON, `onZoneLeave` JSON, `type` VARCHAR(255) NOT NULL, `stageOrder` INTEGER, `tessellate` INTEGER DEFAULT -1, `geometry` GEOMETRY, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;
+Executing (default): SHOW INDEX FROM `users`
+Executing (default): SHOW INDEX FROM `userPrefs`
+Executing (default): SHOW INDEX FROM `artists`
+Executing (default): SHOW INDEX FROM `stories`
+Executing (default): SHOW INDEX FROM `stages`
+User table created successfully
+User preference table created successfully
+Artists table created successfully
+Stories table created successfully
+Stages table created successfully
+Server has initialized bot nickname. Nick: booksOnWallBot
+BooksOnWall RESTFULL Server listening on port 3010! Go to https://localhost:3000/
+warning: please use IANA standard timezone format ('Etc/GMT0')
+warning: please use IANA standard timezone format ('Etc/GMT0')
+warning: please use IANA standard timezone format ('Etc/GMT0')
+warning: please use IANA standard timezone format ('Etc/GMT0')
+warning: please use IANA standard timezone format ('Etc/GMT0')
+warning: please use IANA standard timezone format ('Etc/GMT0')
+Executing (default): SELECT 1+1 AS result
+Executing (default): CREATE TABLE IF NOT EXISTS `users` (`id` INTEGER NOT NULL auto_increment , `name` VARCHAR(255) NOT NULL UNIQUE, `email` VARCHAR(255) NOT NULL UNIQUE, `password` VARCHAR(255) NOT NULL, `active` TINYINT(1) NOT NULL DEFAULT false, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;
+Executing (default): CREATE TABLE IF NOT EXISTS `userPrefs` (`id` INTEGER NOT NULL auto_increment , `pname` VARCHAR(255) NOT NULL, `pvalue` VARCHAR(255) NOT NULL, `uid` INTEGER NOT NULL, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, UNIQUE `compositeIndex` (`pname`, `uid`), PRIMARY KEY (`id`)) ENGINE=InnoDB;
+Executing (default): CREATE TABLE IF NOT EXISTS `artists` (`id` INTEGER NOT NULL auto_increment , `name` VARCHAR(255) NOT NULL UNIQUE, `email` VARCHAR(255) NOT NULL UNIQUE, `images` JSON, `bio` JSON, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;
+Executing (default): CREATE TABLE IF NOT EXISTS `stories` (`id` INTEGER NOT NULL auto_increment , `title` VARCHAR(255) NOT NULL UNIQUE, `state` VARCHAR(256) DEFAULT '', `city` VARCHAR(256) DEFAULT '', `sinopsys` TEXT, `credits` TEXT, `artist` INTEGER NOT NULL, `active` TINYINT(1) DEFAULT false, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;
+Connection has been established successfully.
+Executing (default): CREATE TABLE IF NOT EXISTS `stages` (`id` INTEGER NOT NULL auto_increment , `sid` INTEGER NOT NULL, `name` VARCHAR(255) NOT NULL UNIQUE, `photo` JSON, `adress` VARCHAR(255) NOT NULL, `description` TEXT, `images` JSON, `pictures` JSON, `videos` JSON, `audios` JSON, `onZoneEnter` JSON, `onPictureMatch` JSON, `onZoneLeave` JSON, `type` VARCHAR(255) NOT NULL, `stageOrder` INTEGER, `tessellate` INTEGER DEFAULT -1, `geometry` GEOMETRY, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;
+Executing (default): SHOW INDEX FROM `users`
+Executing (default): SHOW INDEX FROM `userPrefs`
+Executing (default): SHOW INDEX FROM `artists`
+Executing (default): SHOW INDEX FROM `stories`
+Executing (default): SHOW INDEX FROM `stages`
+User table created successfully
+User preference table created successfully
+Artists table created successfully
+Stories table created successfully
+Stages table created successfully
+Server has initialized bot nickname. Nick: booksOnWallBot
+response time 1ms
+response time 1ms
+response time 0ms
+response time 0ms
+BooksOnWall RESTFULL Server listening on port 3010! Go to https://localhost:3000/
+warning: please use IANA standard timezone format ('Etc/GMT0')
+BooksOnWall RESTFULL Server listening on port 3010! Go to https://localhost:3000/warning: please use IANA standard timezone format ('Etc/GMT0')warning: please use IANA standard timezone format ('Etc/GMT0')
+warning: please use IANA standard timezone format ('Etc/GMT0')
+warning: please use IANA standard timezone format ('Etc/GMT0')
+warning: please use IANA standard timezone format ('Etc/GMT0')
+warning: please use IANA standard timezone format ('Etc/GMT0')
+BooksOnWall RESTFULL Server listening on port 3010! Go to https://localhost:3000/warning: please use IANA standard timezone format ('Etc/GMT0')warning: please use IANA standard timezone format ('Etc/GMT0')warning: please use IANA standard timezone format ('Etc/GMT0')warning: please use IANA standard timezone format ('Etc/GMT0')warning: please use IANA standard timezone format ('Etc/GMT0')warning: please use IANA standard timezone format ('Etc/GMT0')Executing (default): SELECT 1+1 AS result
+Executing (default): CREATE TABLE IF NOT EXISTS `users` (`id` INTEGER NOT NULL auto_increment , `name` VARCHAR(255) NOT NULL UNIQUE, `email` VARCHAR(255) NOT NULL UNIQUE, `password` VARCHAR(255) NOT NULL, `active` TINYINT(1) NOT NULL DEFAULT false, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;
+Executing (default): CREATE TABLE IF NOT EXISTS `userPrefs` (`id` INTEGER NOT NULL auto_increment , `pname` VARCHAR(255) NOT NULL, `pvalue` VARCHAR(255) NOT NULL, `uid` INTEGER NOT NULL, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, UNIQUE `compositeIndex` (`pname`, `uid`), PRIMARY KEY (`id`)) ENGINE=InnoDB;
+Executing (default): CREATE TABLE IF NOT EXISTS `artists` (`id` INTEGER NOT NULL auto_increment , `name` VARCHAR(255) NOT NULL UNIQUE, `email` VARCHAR(255) NOT NULL UNIQUE, `images` JSON, `bio` JSON, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;
+Executing (default): CREATE TABLE IF NOT EXISTS `stories` (`id` INTEGER NOT NULL auto_increment , `title` VARCHAR(255) NOT NULL UNIQUE, `state` VARCHAR(256) DEFAULT '', `city` VARCHAR(256) DEFAULT '', `sinopsys` TEXT, `credits` TEXT, `artist` INTEGER NOT NULL, `active` TINYINT(1) DEFAULT false, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;
+Connection has been established successfully.
+Executing (default): CREATE TABLE IF NOT EXISTS `stages` (`id` INTEGER NOT NULL auto_increment , `sid` INTEGER NOT NULL, `name` VARCHAR(255) NOT NULL UNIQUE, `photo` JSON, `adress` VARCHAR(255) NOT NULL, `description` TEXT, `images` JSON, `pictures` JSON, `videos` JSON, `audios` JSON, `onZoneEnter` JSON, `onPictureMatch` JSON, `onZoneLeave` JSON, `type` VARCHAR(255) NOT NULL, `stageOrder` INTEGER, `tessellate` INTEGER DEFAULT -1, `geometry` GEOMETRY, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;
+Executing (default): SHOW INDEX FROM `users`
+Executing (default): SHOW INDEX FROM `userPrefs`
+Executing (default): SHOW INDEX FROM `artists`
+Executing (default): SHOW INDEX FROM `stories`
+User table created successfully
+User preference table created successfully
+Artists table created successfully
+Executing (default): SHOW INDEX FROM `stages`
+Stories table created successfully
+Stages table created successfully
+Server has initialized bot nickname. Nick: booksOnWallBot
+BooksOnWall RESTFULL Server listening on port 3010! Go to https://localhost:3000/warning: please use IANA standard timezone format ('Etc/GMT0')warning: please use IANA standard timezone format ('Etc/GMT0')warning: please use IANA standard timezone format ('Etc/GMT0')warning: please use IANA standard timezone format ('Etc/GMT0')warning: please use IANA standard timezone format ('Etc/GMT0')warning: please use IANA standard timezone format ('Etc/GMT0')Executing (default): SELECT 1+1 AS resultExecuting (default): CREATE TABLE IF NOT EXISTS `users` (`id` INTEGER NOT NULL auto_increment , `name` VARCHAR(255) NOT NULL UNIQUE, `email` VARCHAR(255) NOT NULL UNIQUE, `password` VARCHAR(255) NOT NULL, `active` TINYINT(1) NOT NULL DEFAULT false, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;Executing (default): CREATE TABLE IF NOT EXISTS `userPrefs` (`id` INTEGER NOT NULL auto_increment , `pname` VARCHAR(255) NOT NULL, `pvalue` VARCHAR(255) NOT NULL, `uid` INTEGER NOT NULL, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, UNIQUE `compositeIndex` (`pname`, `uid`), PRIMARY KEY (`id`)) ENGINE=InnoDB;Executing (default): CREATE TABLE IF NOT EXISTS `artists` (`id` INTEGER NOT NULL auto_increment , `name` VARCHAR(255) NOT NULL UNIQUE, `email` VARCHAR(255) NOT NULL UNIQUE, `images` JSON, `bio` JSON, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;Executing (default): CREATE TABLE IF NOT EXISTS `stories` (`id` INTEGER NOT NULL auto_increment , `title` VARCHAR(255) NOT NULL UNIQUE, `state` VARCHAR(256) DEFAULT '', `city` VARCHAR(256) DEFAULT '', `sinopsys` TEXT, `credits` TEXT, `artist` INTEGER NOT NULL, `active` TINYINT(1) DEFAULT false, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;Connection has been established successfully.Executing (default): CREATE TABLE IF NOT EXISTS `stages` (`id` INTEGER NOT NULL auto_increment , `sid` INTEGER NOT NULL, `name` VARCHAR(255) NOT NULL UNIQUE, `photo` JSON, `adress` VARCHAR(255) NOT NULL, `description` TEXT, `images` JSON, `pictures` JSON, `videos` JSON, `audios` JSON, `onZoneEnter` JSON, `onPictureMatch` JSON, `onZoneLeave` JSON, `type` VARCHAR(255) NOT NULL, `stageOrder` INTEGER, `tessellate` INTEGER DEFAULT -1, `geometry` GEOMETRY, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;Executing (default): SHOW INDEX FROM `users`Executing (default): SHOW INDEX FROM `userPrefs`Executing (default): SHOW INDEX FROM `artists`Executing (default): SHOW INDEX FROM `stories`User table created successfullyUser preference table created successfullyArtists table created successfullyExecuting (default): SHOW INDEX FROM `stages`Stories table created successfullyStages table created successfullyServer has initialized bot nickname. Nick: booksOnWallBotresponse time 0ms
+BooksOnWall RESTFULL Server listening on port 3010! Go to https://localhost:3000/warning: please use IANA standard timezone format ('Etc/GMT0')warning: please use IANA standard timezone format ('Etc/GMT0')warning: please use IANA standard timezone format ('Etc/GMT0')warning: please use IANA standard timezone format ('Etc/GMT0')warning: please use IANA standard timezone format ('Etc/GMT0')warning: please use IANA standard timezone format ('Etc/GMT0')Executing (default): SELECT 1+1 AS resultExecuting (default): CREATE TABLE IF NOT EXISTS `users` (`id` INTEGER NOT NULL auto_increment , `name` VARCHAR(255) NOT NULL UNIQUE, `email` VARCHAR(255) NOT NULL UNIQUE, `password` VARCHAR(255) NOT NULL, `active` TINYINT(1) NOT NULL DEFAULT false, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;Executing (default): CREATE TABLE IF NOT EXISTS `userPrefs` (`id` INTEGER NOT NULL auto_increment , `pname` VARCHAR(255) NOT NULL, `pvalue` VARCHAR(255) NOT NULL, `uid` INTEGER NOT NULL, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, UNIQUE `compositeIndex` (`pname`, `uid`), PRIMARY KEY (`id`)) ENGINE=InnoDB;Executing (default): CREATE TABLE IF NOT EXISTS `artists` (`id` INTEGER NOT NULL auto_increment , `name` VARCHAR(255) NOT NULL UNIQUE, `email` VARCHAR(255) NOT NULL UNIQUE, `images` JSON, `bio` JSON, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;Executing (default): CREATE TABLE IF NOT EXISTS `stories` (`id` INTEGER NOT NULL auto_increment , `title` VARCHAR(255) NOT NULL UNIQUE, `state` VARCHAR(256) DEFAULT '', `city` VARCHAR(256) DEFAULT '', `sinopsys` TEXT, `credits` TEXT, `artist` INTEGER NOT NULL, `active` TINYINT(1) DEFAULT false, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;Connection has been established successfully.Executing (default): CREATE TABLE IF NOT EXISTS `stages` (`id` INTEGER NOT NULL auto_increment , `sid` INTEGER NOT NULL, `name` VARCHAR(255) NOT NULL UNIQUE, `photo` JSON, `adress` VARCHAR(255) NOT NULL, `description` TEXT, `images` JSON, `pictures` JSON, `videos` JSON, `audios` JSON, `onZoneEnter` JSON, `onPictureMatch` JSON, `onZoneLeave` JSON, `type` VARCHAR(255) NOT NULL, `stageOrder` INTEGER, `tessellate` INTEGER DEFAULT -1, `geometry` GEOMETRY, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;Executing (default): SHOW INDEX FROM `users`Executing (default): SHOW INDEX FROM `userPrefs`Executing (default): SHOW INDEX FROM `artists`Executing (default): SHOW INDEX FROM `stories`User table created successfullyUser preference table created successfullyArtists table created successfullyExecuting (default): SHOW INDEX FROM `stages`Stories table created successfullyStages table created successfullyServer has initialized bot nickname. Nick: booksOnWallBotresponse time 0mswatching stopped
+response time 0ms
+warning: please use IANA standard timezone format ('Etc/GMT0')
+Executing (default): SELECT `id`, `name`, `email`, `images`, `bio`, `createdAt`, `updatedAt` FROM `artists` AS `artists`;
+Executing (default): SELECT `id`, `title`, `state`, `city`, `sinopsys`, `credits`, `artist`, `active`, `createdAt`, `updatedAt` FROM `stories` AS `stories` WHERE `stories`.`id` = '10';
+BooksOnWall RESTFULL Server listening on port 3010! Go to https://localhost:3000/
+warning: please use IANA standard timezone format ('Etc/GMT0')
+BooksOnWall RESTFULL Server listening on port 3010! Go to https://localhost:3000/warning: please use IANA standard timezone format ('Etc/GMT0')warning: please use IANA standard timezone format ('Etc/GMT0')
+warning: please use IANA standard timezone format ('Etc/GMT0')
+warning: please use IANA standard timezone format ('Etc/GMT0')
+warning: please use IANA standard timezone format ('Etc/GMT0')
+warning: please use IANA standard timezone format ('Etc/GMT0')
+Executing (default): SELECT 1+1 AS result
+Executing (default): CREATE TABLE IF NOT EXISTS `users` (`id` INTEGER NOT NULL auto_increment , `name` VARCHAR(255) NOT NULL UNIQUE, `email` VARCHAR(255) NOT NULL UNIQUE, `password` VARCHAR(255) NOT NULL, `active` TINYINT(1) NOT NULL DEFAULT false, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;
+Executing (default): CREATE TABLE IF NOT EXISTS `userPrefs` (`id` INTEGER NOT NULL auto_increment , `pname` VARCHAR(255) NOT NULL, `pvalue` VARCHAR(255) NOT NULL, `uid` INTEGER NOT NULL, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, UNIQUE `compositeIndex` (`pname`, `uid`), PRIMARY KEY (`id`)) ENGINE=InnoDB;
+Executing (default): CREATE TABLE IF NOT EXISTS `artists` (`id` INTEGER NOT NULL auto_increment , `name` VARCHAR(255) NOT NULL UNIQUE, `email` VARCHAR(255) NOT NULL UNIQUE, `images` JSON, `bio` JSON, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;
+Executing (default): CREATE TABLE IF NOT EXISTS `stories` (`id` INTEGER NOT NULL auto_increment , `title` VARCHAR(255) NOT NULL UNIQUE, `state` VARCHAR(256) DEFAULT '', `city` VARCHAR(256) DEFAULT '', `sinopsys` TEXT, `credits` TEXT, `artist` INTEGER NOT NULL, `active` TINYINT(1) DEFAULT false, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;
+Connection has been established successfully.
+Executing (default): CREATE TABLE IF NOT EXISTS `stages` (`id` INTEGER NOT NULL auto_increment , `sid` INTEGER NOT NULL, `name` VARCHAR(255) NOT NULL UNIQUE, `photo` JSON, `adress` VARCHAR(255) NOT NULL, `description` TEXT, `images` JSON, `pictures` JSON, `videos` JSON, `audios` JSON, `onZoneEnter` JSON, `onPictureMatch` JSON, `onZoneLeave` JSON, `type` VARCHAR(255) NOT NULL, `stageOrder` INTEGER, `tessellate` INTEGER DEFAULT -1, `geometry` GEOMETRY, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;
+Executing (default): SHOW INDEX FROM `users`
+Executing (default): SHOW INDEX FROM `userPrefs`
+Executing (default): SHOW INDEX FROM `artists`
+Executing (default): SHOW INDEX FROM `stories`
+Executing (default): SHOW INDEX FROM `stages`
+User table created successfully
+User preference table created successfully
+Artists table created successfully
+Stories table created successfully
+Stages table created successfully
+Server has initialized bot nickname. Nick: booksOnWallBot
+BooksOnWall RESTFULL Server listening on port 3010! Go to https://localhost:3000/warning: please use IANA standard timezone format ('Etc/GMT0')warning: please use IANA standard timezone format ('Etc/GMT0')warning: please use IANA standard timezone format ('Etc/GMT0')warning: please use IANA standard timezone format ('Etc/GMT0')warning: please use IANA standard timezone format ('Etc/GMT0')warning: please use IANA standard timezone format ('Etc/GMT0')Executing (default): SELECT 1+1 AS resultExecuting (default): CREATE TABLE IF NOT EXISTS `users` (`id` INTEGER NOT NULL auto_increment , `name` VARCHAR(255) NOT NULL UNIQUE, `email` VARCHAR(255) NOT NULL UNIQUE, `password` VARCHAR(255) NOT NULL, `active` TINYINT(1) NOT NULL DEFAULT false, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;Executing (default): CREATE TABLE IF NOT EXISTS `userPrefs` (`id` INTEGER NOT NULL auto_increment , `pname` VARCHAR(255) NOT NULL, `pvalue` VARCHAR(255) NOT NULL, `uid` INTEGER NOT NULL, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, UNIQUE `compositeIndex` (`pname`, `uid`), PRIMARY KEY (`id`)) ENGINE=InnoDB;Executing (default): CREATE TABLE IF NOT EXISTS `artists` (`id` INTEGER NOT NULL auto_increment , `name` VARCHAR(255) NOT NULL UNIQUE, `email` VARCHAR(255) NOT NULL UNIQUE, `images` JSON, `bio` JSON, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;Executing (default): CREATE TABLE IF NOT EXISTS `stories` (`id` INTEGER NOT NULL auto_increment , `title` VARCHAR(255) NOT NULL UNIQUE, `state` VARCHAR(256) DEFAULT '', `city` VARCHAR(256) DEFAULT '', `sinopsys` TEXT, `credits` TEXT, `artist` INTEGER NOT NULL, `active` TINYINT(1) DEFAULT false, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;Connection has been established successfully.Executing (default): CREATE TABLE IF NOT EXISTS `stages` (`id` INTEGER NOT NULL auto_increment , `sid` INTEGER NOT NULL, `name` VARCHAR(255) NOT NULL UNIQUE, `photo` JSON, `adress` VARCHAR(255) NOT NULL, `description` TEXT, `images` JSON, `pictures` JSON, `videos` JSON, `audios` JSON, `onZoneEnter` JSON, `onPictureMatch` JSON, `onZoneLeave` JSON, `type` VARCHAR(255) NOT NULL, `stageOrder` INTEGER, `tessellate` INTEGER DEFAULT -1, `geometry` GEOMETRY, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;Executing (default): SHOW INDEX FROM `users`Executing (default): SHOW INDEX FROM `userPrefs`Executing (default): SHOW INDEX FROM `artists`Executing (default): SHOW INDEX FROM `stories`Executing (default): SHOW INDEX FROM `stages`User table created successfullyUser preference table created successfullyArtists table created successfullyStories table created successfullyStages table created successfullyServer has initialized bot nickname. Nick: booksOnWallBotwatching stopped
+Sent: avatar.png
+warning: please use IANA standard timezone format ('Etc/GMT0')
+Executing (default): SELECT `id`, `name`, `email`, `images`, `bio`, `createdAt`, `updatedAt` FROM `artists` AS `artists`;
+Executing (default): SELECT `id`, `title`, `state`, `city`, `sinopsys`, `credits`, `artist`, `active`, `createdAt`, `updatedAt` FROM `stories` AS `stories` WHERE `stories`.`id` = '10';
+Sent: avatar.png
+warning: please use IANA standard timezone format ('Etc/GMT0')
+Executing (default): SELECT `id`, `title`, `state`, `city`, `sinopsys`, `credits`, `artist`, `active`, `createdAt`, `updatedAt` FROM `stories` AS `stories`;
+Executing (default): SELECT `id`, `name`, `email`, `images`, `bio`, `createdAt`, `updatedAt` FROM `artists` AS `artists`;
+Executing (default): SELECT `id`, `title`, `state`, `city`, `sinopsys`, `credits`, `artist`, `active`, `createdAt`, `updatedAt` FROM `stories` AS `stories` WHERE `stories`.`id` = '9';
+9
+Executing (default): SELECT `id`, `sid`, `name`, `photo`, `adress`, `description`, `images`, `pictures`, `videos`, `audios`, `onZoneEnter`, `onPictureMatch`, `onZoneLeave`, `type`, `stageOrder`, `tessellate`, `geometry`, `createdAt`, `updatedAt` FROM `stages` AS `stages` WHERE `stages`.`sid` = '9';
+Executing (default): SELECT `id`, `sid`, `name`, `photo`, `adress`, `description`, `images`, `pictures`, `videos`, `audios`, `onZoneEnter`, `onPictureMatch`, `onZoneLeave`, `type`, `stageOrder`, `tessellate`, `geometry`, `createdAt`, `updatedAt` FROM `stages` AS `stages` WHERE `stages`.`id` = '1';
+9
+Executing (default): SELECT `id`, `sid`, `name`, `photo`, `adress`, `description`, `images`, `pictures`, `videos`, `audios`, `onZoneEnter`, `onPictureMatch`, `onZoneLeave`, `type`, `stageOrder`, `tessellate`, `geometry`, `createdAt`, `updatedAt` FROM `stages` AS `stages` WHERE `stages`.`sid` = '9';
+Sent: gatillo video derecha.jpg
+response time 1ms
+warning: please use IANA standard timezone format ('Etc/GMT0')
+Executing (default): SELECT `id`, `name`, `email`, `images`, `bio`, `createdAt`, `updatedAt` FROM `artists` AS `artists`;
+Executing (default): SELECT `id`, `title`, `state`, `city`, `sinopsys`, `credits`, `artist`, `active`, `createdAt`, `updatedAt` FROM `stories` AS `stories` WHERE `stories`.`id` = '9';
+response time 0ms
+response time 0ms
+BooksOnWall RESTFULL Server listening on port 3010! Go to https://localhost:3000/
+warning: please use IANA standard timezone format ('Etc/GMT0')
+BooksOnWall RESTFULL Server listening on port 3010! Go to https://localhost:3000/warning: please use IANA standard timezone format ('Etc/GMT0')warning: please use IANA standard timezone format ('Etc/GMT0')
+warning: please use IANA standard timezone format ('Etc/GMT0')
+warning: please use IANA standard timezone format ('Etc/GMT0')
+warning: please use IANA standard timezone format ('Etc/GMT0')
+warning: please use IANA standard timezone format ('Etc/GMT0')
+Executing (default): SELECT 1+1 AS result
+Executing (default): CREATE TABLE IF NOT EXISTS `users` (`id` INTEGER NOT NULL auto_increment , `name` VARCHAR(255) NOT NULL UNIQUE, `email` VARCHAR(255) NOT NULL UNIQUE, `password` VARCHAR(255) NOT NULL, `active` TINYINT(1) NOT NULL DEFAULT false, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;
+Executing (default): CREATE TABLE IF NOT EXISTS `userPrefs` (`id` INTEGER NOT NULL auto_increment , `pname` VARCHAR(255) NOT NULL, `pvalue` VARCHAR(255) NOT NULL, `uid` INTEGER NOT NULL, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, UNIQUE `compositeIndex` (`pname`, `uid`), PRIMARY KEY (`id`)) ENGINE=InnoDB;
+Executing (default): CREATE TABLE IF NOT EXISTS `artists` (`id` INTEGER NOT NULL auto_increment , `name` VARCHAR(255) NOT NULL UNIQUE, `email` VARCHAR(255) NOT NULL UNIQUE, `images` JSON, `bio` JSON, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;
+Executing (default): CREATE TABLE IF NOT EXISTS `stories` (`id` INTEGER NOT NULL auto_increment , `title` VARCHAR(255) NOT NULL UNIQUE, `state` VARCHAR(256) DEFAULT '', `city` VARCHAR(256) DEFAULT '', `sinopsys` TEXT, `credits` TEXT, `artist` INTEGER NOT NULL, `active` TINYINT(1) DEFAULT false, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;
+Connection has been established successfully.
+Executing (default): CREATE TABLE IF NOT EXISTS `stages` (`id` INTEGER NOT NULL auto_increment , `sid` INTEGER NOT NULL, `name` VARCHAR(255) NOT NULL UNIQUE, `photo` JSON, `adress` VARCHAR(255) NOT NULL, `description` TEXT, `images` JSON, `pictures` JSON, `videos` JSON, `audios` JSON, `onZoneEnter` JSON, `onPictureMatch` JSON, `onZoneLeave` JSON, `type` VARCHAR(255) NOT NULL, `stageOrder` INTEGER, `tessellate` INTEGER DEFAULT -1, `geometry` GEOMETRY, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;
+Executing (default): SHOW INDEX FROM `users`
+Executing (default): SHOW INDEX FROM `userPrefs`
+Executing (default): SHOW INDEX FROM `artists`
+Executing (default): SHOW INDEX FROM `stories`
+User table created successfully
+User preference table created successfully
+Artists table created successfully
+Executing (default): SHOW INDEX FROM `stages`
+Stories table created successfully
+Stages table created successfully
+Server has initialized bot nickname. Nick: booksOnWallBot
+BooksOnWall RESTFULL Server listening on port 3010! Go to https://localhost:3000/warning: please use IANA standard timezone format ('Etc/GMT0')warning: please use IANA standard timezone format ('Etc/GMT0')warning: please use IANA standard timezone format ('Etc/GMT0')warning: please use IANA standard timezone format ('Etc/GMT0')warning: please use IANA standard timezone format ('Etc/GMT0')warning: please use IANA standard timezone format ('Etc/GMT0')Executing (default): SELECT 1+1 AS resultExecuting (default): CREATE TABLE IF NOT EXISTS `users` (`id` INTEGER NOT NULL auto_increment , `name` VARCHAR(255) NOT NULL UNIQUE, `email` VARCHAR(255) NOT NULL UNIQUE, `password` VARCHAR(255) NOT NULL, `active` TINYINT(1) NOT NULL DEFAULT false, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;Executing (default): CREATE TABLE IF NOT EXISTS `userPrefs` (`id` INTEGER NOT NULL auto_increment , `pname` VARCHAR(255) NOT NULL, `pvalue` VARCHAR(255) NOT NULL, `uid` INTEGER NOT NULL, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, UNIQUE `compositeIndex` (`pname`, `uid`), PRIMARY KEY (`id`)) ENGINE=InnoDB;Executing (default): CREATE TABLE IF NOT EXISTS `artists` (`id` INTEGER NOT NULL auto_increment , `name` VARCHAR(255) NOT NULL UNIQUE, `email` VARCHAR(255) NOT NULL UNIQUE, `images` JSON, `bio` JSON, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;Executing (default): CREATE TABLE IF NOT EXISTS `stories` (`id` INTEGER NOT NULL auto_increment , `title` VARCHAR(255) NOT NULL UNIQUE, `state` VARCHAR(256) DEFAULT '', `city` VARCHAR(256) DEFAULT '', `sinopsys` TEXT, `credits` TEXT, `artist` INTEGER NOT NULL, `active` TINYINT(1) DEFAULT false, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;Connection has been established successfully.Executing (default): CREATE TABLE IF NOT EXISTS `stages` (`id` INTEGER NOT NULL auto_increment , `sid` INTEGER NOT NULL, `name` VARCHAR(255) NOT NULL UNIQUE, `photo` JSON, `adress` VARCHAR(255) NOT NULL, `description` TEXT, `images` JSON, `pictures` JSON, `videos` JSON, `audios` JSON, `onZoneEnter` JSON, `onPictureMatch` JSON, `onZoneLeave` JSON, `type` VARCHAR(255) NOT NULL, `stageOrder` INTEGER, `tessellate` INTEGER DEFAULT -1, `geometry` GEOMETRY, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;Executing (default): SHOW INDEX FROM `users`Executing (default): SHOW INDEX FROM `userPrefs`Executing (default): SHOW INDEX FROM `artists`Executing (default): SHOW INDEX FROM `stories`User table created successfullyUser preference table created successfullyArtists table created successfullyExecuting (default): SHOW INDEX FROM `stages`Stories table created successfullyStages table created successfullyServer has initialized bot nickname. Nick: booksOnWallBotwatching stopped
+response time 1ms
