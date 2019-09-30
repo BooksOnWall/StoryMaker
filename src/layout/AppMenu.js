@@ -32,7 +32,7 @@ class AppMenu extends Component {
         <Image className='App-logo'  fluid  src={Logo} style={{ heigt:'100%'  }} />
         </Menu.Item>
         {(!this.props.state.sidebarVisible) ?
-        <Menu.Item  >
+        <Menu.Item  className="slide-out">
         <Button className='hamburger' inverted icon circular
             onClick={this.props.state.handleSideBar}
             ><Icon name='bars'  size='big'/></Button>
