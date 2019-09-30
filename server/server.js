@@ -78,7 +78,8 @@ bot.use((ctx, next) => {
   const start = new Date()
   return next().then(() => {
     const ms = new Date() - start
-    console.log('response time %sms', ms)
+    console.log('response time %sms', ms);
+    //console.log(ctx.message);
   });
 });
 bot.start((ctx) => ctx.reply('Welcome'));
@@ -133,10 +134,12 @@ bot.command('answer', sayYoMiddleware, (ctx) => {
   return ctx.reply('*42*', Extra.markdown());
 });
 let startLog = false;
-bot.command('logs', startLog, (ctx) => {
-  console.log(ctx.message);
-  console.log('toto');
-  return ctx.reply('toto', Extra.markdown());
+
+bot.command('logs',(ctx) => {
+  let str =  ctx.message.text;
+  console.log(str.split(' '));
+  startLog = (str.split(' ')[1] === 'start') ? true : false;
+  (str.split(' ')[1] === 'start') ? ctx.reply('Start logs ... ', Extra.markdown()) : ctx.reply('Stop logs ... ', Extra.markdown()) ;
 });
 // Launch bot
 bot.launch();
@@ -145,7 +148,7 @@ bot.launch();
 // End telegram conf
 tail.on('line', (line) => {
   // if bot logs start === true
-  //bot.telegram.sendMessage(chat_id,"Server log: "+line);
+  if (startLog) bot.telegram.sendMessage(chat_id,"Server log: "+line);
   process.stdout.write(line);
 });
 
