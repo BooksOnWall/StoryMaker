@@ -30,12 +30,15 @@ class AppMenu extends Component {
       <Menu fixed className="top" pointing style={{padding: 0}}>
         <Menu.Item name='homepage' active={this.state.activeItem === 'homepage'} as={Link} to='/'  style={{textAlign: 'left'}}>
         <Image className='App-logo'  fluid  src={Logo} style={{ heigt:'100%'  }} />
-        </Menu.Item>        <Menu.Item  >
+        </Menu.Item>
+        {(!this.props.state.sidebarVisible) ?
+        <Menu.Item  >
         <Button className='hamburger' inverted icon circular
             onClick={this.props.state.handleSideBar}
             ><Icon name='bars'  size='big'/></Button>
         </Menu.Item>
 
+      : ''}
       </Menu>
     );
   }
