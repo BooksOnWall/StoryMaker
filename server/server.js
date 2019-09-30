@@ -150,7 +150,7 @@ tail.on('line', (line) => {
 });
 
 tail.on('close', () => {
-  console.log('watching stopped');
+  //console.log('watching stopped');
 });
 
 tail.watch();
