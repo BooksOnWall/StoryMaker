@@ -24,7 +24,8 @@ require('dotenv').config();
 const host = process.env.SERVER_HOST;
 const protocol = process.env.SERVER_PROTOCOL;
 const port = process.env.SERVER_PORT;
-const hasbot = process.env.BOT_ACTIVE;
+const hasbot = JSON.parse(process.env.BOT_ACTIVE);
+
 // get mysql connection & credentials parameters
 let config = require('./conf/mysql');
 
@@ -58,6 +59,7 @@ let strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
 passport.use(strategy);
 
 if(hasbot) {
+  console.log('Telegram Bot activated', hasbot);
   // set telegram bot y tetunnel before starting express
   //
 
@@ -68,7 +70,7 @@ if(hasbot) {
   bot.telegram.getMe().then((bot_informations) => {
       bot.options.username = bot_informations.username;
       console.log("Server has initialized bot nickname. Nick: "+bot_informations.username);
-    //  bot.telegram.sendMessage(chat_id,"Server has initialized bot nickname. Nick: "+bot_informations.username);
+      bot.telegram.sendMessage(chat_id,"BooksOnWall Server Started and Telegram Bot initialized. Nick: "+bot_informations.username);
   }).catch(function(err){
       console.log(err);
   });
@@ -504,8 +506,6 @@ const importStages = async (sid, geojson) => {
       let onZoneEnter = (properties.onZoneEnter) ? properties.onZoneEnter : null;
       let onPictureMatch = (properties.onPictureMatch) ? properties.onPictureMatch : null;
       let onZoneLeave = (properties.onZoneLeave) ? properties.onZoneLeave : null;
-
-
 
       createStage({ sid , name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry }).then(res =>
         console.log('toto')
