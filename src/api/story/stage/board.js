@@ -36,7 +36,6 @@ const resizeStyle = {
 };
 
 const ObjectsPreview = (props) => {
-  console.log(props);
   let objType=props.objType;
   if(objType) {
     let items = [];
