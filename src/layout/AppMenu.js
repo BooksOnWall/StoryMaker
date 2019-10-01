@@ -26,7 +26,7 @@ class AppMenu extends Component {
 
   render() {
     return (
-      <Menu fixed className="top" pointing style={{padding: 0}}>
+      <Menu  className="top" pointing style={{padding: 0}}>
         <Menu.Item name='homepage' active={this.state.activeItem === 'homepage'} as={Link} to='/'  style={{textAlign: 'left'}}>
         <Image className='App-logo'  fluid  src={Logo} style={{ heigt:'100%'  }} />
         </Menu.Item>

@@ -1018,12 +1018,10 @@ app.post('/stories/:storyId/import', function(req, res) {
 });
 app.get('/stories/:storyId/stages', function(req, res) {
   let sid = req.params.storyId;
-  console.log(sid);
   getAllStages(sid).then(user => res.json(user));
 });
 app.post('/stories/:storyId/0', function(req, res, next) {
   const { name, adress, picture, type, geometry } = req.body;
-  console.log(req.body);
   createStage({ name, adress, picture, type, geometry  }).then((story) => {
     //if(hasbot) { bot.telegram.sendMessage(chat_id,"New stage created: " + name + ','+ adress);}
     return res.json({ story, 'data': story, msg: 'story created successfully' })
