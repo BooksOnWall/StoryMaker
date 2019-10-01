@@ -161,7 +161,7 @@ handleOnResult = event => {
               {...viewport}
               width="inherit"
               ref={this.mapRef}
-              height="40vh"
+              height={this.props.height}
               mapStyle={MAP_STYLE}
               clickRadius={2}
               onClick={this.onClickMap}
