@@ -397,5 +397,8 @@ input[type="color"] {
     padding: 0px !important;
     margin-top: 0px
 }
+
+
 .ui.segment{ box-shadow: none !important; border: 0 !important; border-radius: 0 !important; background: #e2e2e2; padding: 0  }
 .ui.segment.view{ padding: 0 !important}
+.ui.segment.content{ padding:40px !important}
