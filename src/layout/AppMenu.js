@@ -3,7 +3,7 @@ import {
   Menu,
   Image,
   Icon,
-  Button
+  Button,
 } from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
 

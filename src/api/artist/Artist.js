@@ -697,7 +697,7 @@ class Artist extends Component {
         <Loader active={this.state.loading} >Get artist info</Loader>
         <Header as={Segment} vertical size='medium'><FormattedMessage id="app.artists.title" defaultMessage={`Artists`}/></Header>
         <ArtistSteps inverted aid={this.state.aid} step={this.state.step} state={this.state}/>
-        <Segment inverted>
+        <Segment inverted className="content">
         {(this.state.step === 'Artist') ? this.editArtist() : ''}
         {(this.state.step === 'Images') ? this.editImages() : ''}
         {(this.state.step === 'Bio') ? this.editBio() : ''}
