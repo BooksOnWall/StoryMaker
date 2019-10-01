@@ -110,7 +110,7 @@ class Stories extends Component {
                 </Button>
                 </Link>
               </Header>
-              <Table inverted stripped={true} selectable sortable>
+              <Table inverted stripped="true" selectable sortable>
                 <Table.Header className='slide-out' >
                   <Table.Row>
                     <Table.HeaderCell
