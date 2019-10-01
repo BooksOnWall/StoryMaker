@@ -141,7 +141,11 @@ bot.command('logs',(ctx) => {
   console.log(str.split(' '));
   startLog = (str.split(' ')[1] === 'start') ? true : false;
   (str.split(' ')[1] === 'start') ? ctx.reply('Start logs ... ', Extra.markdown()) : ctx.reply('Stop logs ... ', Extra.markdown()) ;
-
+  tail.on('line', (line) => {
+    // if bot logs start === true
+    if (startLog) bot.telegram.sendMessage(chat_id,"Server log: "+line);
+    //process.stdout.write(line);
+  });
 });
 
 // Launch bot
@@ -149,11 +153,7 @@ bot.launch();
 
 //
 // End telegram conf
-tail.on('line', (line) => {
-  // if bot logs start === true
-  if (startLog) bot.telegram.sendMessage(chat_id,"Server log: "+line);
-  //process.stdout.write(line);
-});
+
 
 const app = express();
 
