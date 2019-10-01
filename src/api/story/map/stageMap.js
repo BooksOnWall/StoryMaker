@@ -157,7 +157,6 @@ handleOnResult = event => {
         <Dimmer.Dimmable as={Segment} blurring dimmed={this.state.loading}>
           <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
             <Loader active={loading} >Get map info</Loader>
-            
             <MapGL
               {...viewport}
               width="inherit"

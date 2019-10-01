@@ -12,7 +12,6 @@ import {
   Confirm,
   Image,
   Segment,
-  Header,
   TextArea,
   Dimmer,
   Loader,
@@ -914,6 +913,9 @@ class stage extends Component {
   handleAnimationChange = (animation) => () => this.setState((prevState) => ({ animation, visible: !prevState.visible }))
   handleDimmedChange = (e, { checked }) => this.setState({ dimmed: checked })
   handleDirectionChange = (direction) => () => this.setState({ direction, visible: false })
+  createStage = (values) => {
+    console.log(values);
+  }
   editStage = () => {
     return (
           <Formik
@@ -927,7 +929,7 @@ class stage extends Component {
               if(this.state.mode === 'update') {
                 //    this.updateStage(values);
               } else {
-                //  this.createStage(values);
+                this.createStage(values);
               }
 
               setTimeout(() => {
