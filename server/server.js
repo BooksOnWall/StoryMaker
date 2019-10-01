@@ -800,34 +800,20 @@ app.delete('/users/:userId', function(req, res, next) {
 // register route register create the new user but set it as inactive
 app.post('/register', function(req, res, next) {
   const { name, email, password } = req.body;
-  bcrypt
-  .genSaltSync(saltRounds)
-  .then(salt => {
-    return bcrypt.hashSync(password, salt);
-  })
-  .then(hash => {
-    createUser({ name, email, hash }).then(user =>
-      res.json({ user, msg: 'account created successfully' })
-    );
-    // Store hash in your password DB.
-  })
-  .catch(err => console.error(err.message));
+  var salt = bcrypt.genSaltSync(saltRounds);
+  var hash = bcrypt.hashSync(password, salt);
+  createUser({ name, email, hash }).then(user =>
+    res.json({ user, msg: 'account created successfully' })
+  );
 });
 // register route create new user
 app.post('/users/0', function(req, res, next) {
   const { name, email, password, active } = req.body;
-  bcrypt
-  .genSaltSync(saltRounds)
-  .then(salt => {
-    return bcrypt.hashSync(password, salt);
-  })
-  .then(hash => {
-    createUser({ name, email, hash, active }).then(user =>
-      res.json({ user, msg: 'account created successfully' })
-    );
-    // Store hash in your password DB.
-  })
-  .catch(err => console.error(err.message));
+  var salt = bcrypt.genSaltSync(saltRounds);
+  var hash = bcrypt.hashSync(password, salt);
+  createUser({ name, email, hash, active }).then(user =>
+    res.json({ user, msg: 'account created successfully' })
+  );
 });
 //login route
 app.post('/login', async function(req, res, next) {
