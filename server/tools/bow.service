@@ -1,0 +1,14 @@
+[Unit]
+Description=BooksOnWall Server
+After=network.target
+
+[Service]
+Type=forking
+PIDFile=/var/run/bow/bow.pid
+User=anima
+ExecStart=/etc/init.d/bow start
+ExecStop=/etc/init/d/bow stop
+ExecReload=/etc/init.d/bow restart
+
+[Install]
+WantedBy=multi-user.target
