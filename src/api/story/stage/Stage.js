@@ -916,6 +916,25 @@ class stage extends Component {
   createStage = (values) => {
     console.log(values);
   }
+  handleChange = (e) => this.setState({stage: {
+    id: this.state.stage.id,
+    sid: this.state.stage.sid,
+    ssid: this.state.stage.ssid,
+    name: (e.name === 'name') ? e.value : this.state.stage.name,
+    adress: (e.name === 'adress') ? e.value : this.state.stage.adress,
+    photo: this.state.stage.photo,
+    images: this.state.stage.images,
+    pictures: this.state.stage.pictures,
+    videos: this.state.stage.videos,
+    audios: this.state.stage.audios,
+    onZoneEnter: this.state.stage.onZoneEnter,
+    onPictureMatch: this.state.stage.onPictureMatch,
+    onZoneLeave: this.state.stage.onZoneLeave,
+    type: (e.name === 'type') ? e.value :this.state.stage.type,
+    description: this.state.stage.description,
+    geometry: this.state.stage.geometry,
+    stageLocation: this.state.stage.stageLocation
+  }});
   editStage = () => {
     return (
           <Formik
