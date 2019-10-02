@@ -149,7 +149,8 @@ if(hasbot) {
     if (startLog) {
       tail.on('line', (line) => {
         // if bot logs start === true
-        bot.telegram.sendMessage(chat_id,"Server log: "+line);
+        //bot.telegram.sendMessage(chat_id,"Server log: "+line);
+        ctx.reply(line, Extra.markdown());
         //process.stdout.write(line);
       });
       tail.on('close', () => {
