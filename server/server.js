@@ -143,10 +143,12 @@ if(hasbot) {
     if(!str.split(' ')[1]) return ctx.reply('/logs required an argument to complete , use /logs start or /logs stop instead', Extra.markdown());
     // toggle logs
     startLog = (str.split(' ')[1] === 'start') ? true : false;
-    //(str.split(' ')[1] === 'start') ? ctx.reply('Start logs ... ', Extra.markdown()) : ctx.reply('Stop logs ... ', Extra.markdown()) ;
+    (str.split(' ')[1] === 'start') ? ctx.reply('Start logs ... ', Extra.markdown()) : ctx.reply('Stop logs ... ', Extra.markdown()) ;
     const logfile = './logs/server.log';
-    const tail = new Tail(logfile);
+    const options = { alwaysStat: true, ignoreInitial: false, persistent: true }
+    const tail = new Tail(logfile, options);
     if (startLog) {
+      tail.watch();
       tail.on('line', (line) => {
         // if bot logs start === true
         //bot.telegram.sendMessage(chat_id,"Server log: "+line);
@@ -155,8 +157,7 @@ if(hasbot) {
       });
       tail.on('close', () => {
         console.log('watching stopped');
-      })
-      tail.watch();
+      });
 
     } else {
       tail.close();
