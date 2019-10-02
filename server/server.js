@@ -394,7 +394,16 @@ const deleteArtist = async (aid) => {
 };
 // stories db requests
 const getAllStories = async () => {
-  return await Stories.findAll();
+
+//Stories.hasMany(Artists, {as: 'a', foreignKey: 'artist', targetKey: 'name'});
+
+  return await Stories.findAll(
+    // {attributes: ['id','title', 'active', 'artist', 'city', 'state' ]},
+    // {include: [{
+    //   model: Artists,
+    //   attributes: ['id', 'name']
+    // }]}
+  );
 }
 const createStory = async ({ title, state, city, sinopsys, credits, artist, active }) => {
   try {
