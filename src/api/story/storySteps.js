@@ -74,7 +74,7 @@ class storySteps extends Component {
   }
   render() {
     return (
-      <Step.Group fluid >
+      <Step.Group fluid className="inverted">
         {this.state.steps.map(step => (
           <Step
             key={step.index}

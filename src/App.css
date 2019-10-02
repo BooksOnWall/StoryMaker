@@ -142,7 +142,7 @@ div.DraftEditor-root {
   box-shadow: 0px 0px 6px 1px rgba(0,0,0,0.5);
   min-height: 50vh;
   overflow-y: scroll;
-  padding:20px;
+  padding: 20px 5px;
   font-size: 18px;
   font-family: 'calibri', sans-serif;
 }
@@ -173,6 +173,8 @@ div.DraftEditor-root {
 .dropzone {
   height : 15vh;
 }
+.ui.button.right.floated{display: inherit !important; margin-left: auto !important; }
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -380,12 +382,19 @@ background: linear-gradient(180deg, rgba(4,22,42,1) 0%, rgba(19,32,46,1) 72%, rg
 
 .ui.icon.header{ }
 .ui.fluid.steps, .ui.steps .step:first-child, .ui.steps .step:first-child, .ui.steps .step:last-child{border-radius: 0 !important; margin: 0 !important}
-.ui.segment.view.story, #StepsContent.ui.segment.view {padding: 2em !important; }
+.ui.fluid.steps.inverted{border-color: #222 !important}
+.ui.fluid.steps.inverted .step{ background: #1f1f1f  !important; color: #f1f1f1 !important; border-color: #333}
+.ui.steps.inverted .step.active{ background: #111 !important;}
+.ui.steps.inverted .step.active::after, .ui.steps .step::after{ background: #111 !important; border-color: #333}
+.ui.steps.inverted .step::after{ background: #1f1f1f !important; border-color: #333}
+.ui.fluid.steps.inverted .icon{ color: #f1f1f1 !important}
+.ui.segment.view.story, #StepsContent.ui.segment.view {padding: 0 !important; }
+.ui.segment.view.story, #StepsContent.ui.segment{ padding: 0 !important; margin: 0 !important}
 .ui.segment.stagesMap{ padding: 0 !important}
 .ui.segment.stages { padding: 0 2em 1em }
 .ui.buttons{ padding: 0 0 1em}
-.ui.table{margin: 0 !important; border-radius: 0 !important}
-.ui.table:first-child{margin-top: 1em !important; }
+.ui.table{margin: 0 !important; border-radius: 0 !important; padding: 0 !important}
+.ui.table:first-child{margin-top: 0 !important; }
 .ui.segment.view.map{padding: 0 !important}
 .sytylingMap{margin: 2em !important}
 .ui.label.labelLayer {}
@@ -397,8 +406,11 @@ input[type="color"] {
     padding: 0px !important;
     margin-top: 0px
 }
-
-
+.public-DraftEditor-content{ margin: 2em 0; }
 .ui.segment{ box-shadow: none !important; border: 0 !important; border-radius: 0 !important; background: #e2e2e2; padding: 0  }
 .ui.segment.view{ padding: 0 !important}
 .ui.segment.content{ padding:40px !important}
+.ui.horizontal .segment{ background: transparent !important; }
+.ui.inverted.segment.stages{ padding: 0 !important; margin: 0 !important }
+#StepsContent .segment, #StepsContent .segments{ margin: 0 !important; border: 0 !important}
+#StepsContent .segments .segment{ margin: 0 !important; padding: 0 !important}

@@ -63,8 +63,8 @@ class storyMap extends Component {
             <Segment  className="view map" >
               <MapGL
                 {...viewport}
-                width="92vw"
-                height="72vh"
+                width="94vw"
+                height="78vh"
                 mapStyle={mapStyle}
                 onViewportChange={this.onViewportChange}
                 mapboxApiAccessToken={MapboxAccessToken}

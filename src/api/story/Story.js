@@ -11,6 +11,7 @@ import {
   Confirm,
   Dimmer,
   Loader,
+    Header,
 } from 'semantic-ui-react';
 import {  FormattedMessage } from 'react-intl';
 import { Formik } from 'formik';
@@ -415,7 +416,7 @@ class Story extends Component {
   EditForm = () => {
 
     return (
-    <Segment  className="story">
+    <Segment  className="story" inverted>
       <Formik
         enableReinitialize={true}
         initialValues={this.state.initialSValues}
@@ -454,7 +455,7 @@ class Story extends Component {
               <option key={0} disabled hidden value=''></option>
               {this.state.artistOptions.map(options => <option key={options.key} value={options.value} >{options.text}</option>)}
             </select>
-            <Divider horizontal>...</Divider>
+            <Divider/>
             <Input
               label='Title'
               placeholder='Title'
@@ -466,7 +467,7 @@ class Story extends Component {
               defaultValue={values.title}
               />
             {errors.title && touched.title && errors.title}
-            <Divider horizontal>...</Divider>
+            <Divider/>
             <Input
               label='State'
               placeholder='State'
@@ -477,7 +478,7 @@ class Story extends Component {
               defaultValue={values.state}
               />
             {errors.state && touched.state && errors.state}
-            <Divider horizontal>...</Divider>
+            <Divider/>
             <Input
               label='City'
               placeholder='City'
@@ -534,11 +535,14 @@ class Story extends Component {
   render() {
     return (
       <Container fluid className="main">
-        <Dimmer.Dimmable as={Segment} className="view" blurring dimmed={this.state.loading}>
+        <Dimmer.Dimmable as={Segment} inverted className="view" blurring dimmed={this.state.loading}>
           <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
           <Loader active={this.state.loading} >Get story info</Loader>
-              <StorySteps sid={this.state.sid} step={this.state.step} history={this.props.history} setSteps={this.setSteps} state={this.state} location={this.props.location} />
-              <Segment id='StepsContent'>
+            <Header as={Segment} vertical size='medium'>
+                {(this.state.mode === 'create') ? <FormattedMessage id="app.story.create" defaultMessage={`Create Story`}/> : <FormattedMessage id="app.story.edit" defaultMessage={`Edit Story`}/> }
+            </Header>
+        <StorySteps sid={this.state.sid} step={this.state.step} history={this.props.history} setSteps={this.setSteps} state={this.state} location={this.props.location} />
+              <Segment id='StepsContent' inverted>
                 {(this.state.step === 'Story') ? this.EditForm() : '' }
                 {(this.state.step === 'Sinopsys') ? this.EditSino() : '' }
                 {(this.state.step === 'Credits') ? this.EditCred() : '' }

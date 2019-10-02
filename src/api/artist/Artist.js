@@ -543,7 +543,7 @@ class Artist extends Component {
                 defaultValue={values.name}
                 />
               {errors.name && touched.name && errors.name}
-              <Divider horizontal>...</Divider>
+              <Divider />
               <Input
                 label='E-mail address'
                 icon='mail'
@@ -557,8 +557,9 @@ class Artist extends Component {
                 />
               {errors.email && touched.email && errors.email}
 
-              <Divider horizontal>...</Divider>
-              <Button onClick={handleSubmit} color='grey' size='large' type="submit" disabled={isSubmitting}> {(this.state.mode === 'create') ? 'Create' : 'Update' } </Button>
+              <Divider />
+                <div>
+              <Button onClick={handleSubmit}  floated='right' color='grey' size='large' type="submit" disabled={isSubmitting}> {(this.state.mode === 'create') ? 'Create' : 'Update' } </Button>
               {(this.state.mode === 'update') ? (
                 <div>
                   <Button onClick={this.show} color='red' size='large'  type="submit" disabled={isSubmitting}><FormattedMessage id="app.artist.delete" defaultMessage={`Delete Artist`}/></Button>
@@ -570,7 +571,9 @@ class Artist extends Component {
                     onConfirm={this.handleDelete}
                     />
                 </div>
+                  
               ) : '' }
+            </div>
             </Form>
           )}
         </Formik>
@@ -616,9 +619,11 @@ class Artist extends Component {
               </aside>
               <Previews state={this.state} />
             </div>
-            <Button onClick={this.handleSubmitI} color='grey' size='large' type="submit" disabled={isSubmitting}>
+            <div>
+            <Button onClick={this.handleSubmitI} floated='right' color='grey' size='large' type="submit" disabled={isSubmitting}>
               {(this.state.mode === 'create') ? 'Create' : 'Update'}
             </Button>
+            </div>
           </Form>
         )}
       </Formik>
@@ -680,7 +685,7 @@ class Artist extends Component {
               placeholder='Biographie'
               />
             <Divider/>
-            <Button onClick={handleSubmitBio} color='grey' size='large'  type="submit" disabled={isSubmitting}>
+            <Button onClick={handleSubmitBio} floated='right' color='grey' size='large'  type="submit" disabled={isSubmitting}>
               {(this.state.mode === 'create') ? 'Create' : 'Update'}
             </Button>
           </Form>
@@ -695,9 +700,12 @@ class Artist extends Component {
       <Dimmer.Dimmable as={Segment} inverted className='view' blurring dimmed={this.state.loading}>
         <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
         <Loader active={this.state.loading} >Get artist info</Loader>
-        <Header as={Segment} vertical size='medium'><FormattedMessage id="app.artists.title" defaultMessage={`Artists`}/></Header>
-        <ArtistSteps inverted aid={this.state.aid} step={this.state.step} state={this.state}/>
-        <Segment inverted className="content">
+        
+        <Header as={Segment} vertical size='medium'>
+            {(this.state.mode === 'create') ? <FormattedMessage id="app.artists.title.create" defaultMessage={`Create Artist`}/> : <FormattedMessage id="app.artists.title.edit" defaultMessage={`Edit Artist`}/> }
+        </Header>        
+        <ArtistSteps aid={this.state.aid} step={this.state.step} state={this.state}/>
+        <Segment inverted clearing className="content">
         {(this.state.step === 'Artist') ? this.editArtist() : ''}
         {(this.state.step === 'Images') ? this.editImages() : ''}
         {(this.state.step === 'Bio') ? this.editBio() : ''}
