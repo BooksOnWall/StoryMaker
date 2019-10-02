@@ -444,10 +444,21 @@ const getUserPreferences = async ({id}) => {
 // stories db requests
 const getAllStages = async (sid) => {
   return await Stages.findAll({
+    order: [['stageOrder', 'ASC']],
     where: {sid : sid },
   });
 }
-
+const reindexStages = async ({sid, stages}) => {
+  stages.map((stage, index) => {
+    return reindexStage({sid,stage})
+  });
+}
+const reindexStage = async ({sid, stage}) => {
+  return Stages.update(
+    { stageOrder: stage.stageOrder},
+    { where: {sid : sid , id: stage.id}
+  });
+}
 const createStage = async ({ sid , name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry }) => {
   try {
     let rank = await getNextOrderFromStory(sid);
@@ -1043,6 +1054,15 @@ app.post('/stories/:storyId/import', function(req, res) {
 app.get('/stories/:storyId/stages', function(req, res) {
   let sid = req.params.storyId;
   getAllStages(sid).then(user => res.json(user));
+});
+app.patch('/stories/:storyId/stages', function(req, res) {
+  //reindex stages list when dragged in storyStages
+  let sid = req.params.storyId;
+  let stages = req.body.stages;
+  reindexStages({sid, stages}).then((stages) => {
+    //if(hasbot) { bot.telegram.sendMessage(chat_id,"New stage created: " + name + ','+ adress);}
+    return res.json({ stages, 'data': stages, msg: 'stages reindexed successfully' })
+  });
 });
 app.post('/stories/:storyId/stages/0', function(req, res, next) {
   const { sid, name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, tesselate,  geometry } = req.body;

@@ -35,24 +35,61 @@ class storyStages extends Component {
       location: null,
       listStages: this.listStages,
       confirmOpen: false,
-      sid: parseInt(this.props.sid),
+      sid: parseInt(props.sid),
       stagesURI: server + 'stories/' + parseInt(props.sid) +'/stages',
-      mode: (parseInt(this.props.sid) === 0) ? ('create') : ('update'),
+      mode: (parseInt(props.sid) === 0) ? ('create') : ('update'),
     };
 
     const that = this;
     this.dragProps = {
       onDragEnd(fromIndex, toIndex) {
-        const stages = that.state.stages;
+        let stages = that.state.stages;
         const item = stages.splice(fromIndex, 1)[0];
+        // set new index
+        item.stageOrder = toIndex;
+        //slice item in the list
         stages.splice(toIndex, 0, item);
+        // reindex all list
+        stages = stages.map((stage, index) =>{stage.stageOrder = index +1; return stage});
         that.setState({
           stages
         });
+        return that.reindexStages(props.sid, stages);
       },
       handleSelector: "a"
     };
     this.handleCreate = this.handleCreate.bind(this);
+    this.reindexStages = this.reindexStages.bind(this);
+  }
+  reindexStages = async (sid, stages) => {
+    console.log('sid:',sid);
+    console.log('stages:', stages);
+    try {
+      await fetch(this.state.stagesURI, {
+        method: 'PATCH',
+        credentials: 'same-origin',
+        headers: {'Access-Control-Allow-Origin': '*',  'Content-Type':'application/json'},
+        body: JSON.stringify({stages: stages})
+      })
+      .then(response => {
+        if (response && !response.ok) { throw new Error(response.statusText);}
+        return response.json();
+      })
+      .then(data => {
+          if(data) {
+            console.log(data);
+            return data;
+          } else {
+            console.log('No Data received from the server');
+          }
+      })
+      .catch((error) => {
+        // Your error is here!
+        console.log(error)
+      });
+    } catch(e) {
+      console.log(e.message);
+    }
   }
   tableRowClickFunc(stage) {
     const url = '/stories/' + this.state.sid + '/stages/' + stage.id;
@@ -162,11 +199,9 @@ class storyStages extends Component {
     )
   }
   render() {
-
     return (
-      <Dimmer.Dimmable as={Segment} clearing Inverted blurring dimmed={this.state.loading}>
+      <Dimmer.Dimmable as={Segment} clearing inverted blurring dimmed={this.state.loading}>
           <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
-
             <Segment inverted>
                 <Button primary onClick={this.handleCreate}><Icon name="google wallet" />Add Stage</Button>
                 <Button.Group floated='right'>
@@ -194,7 +229,7 @@ class storyStages extends Component {
                 </Button.Group>
             </Segment>
 
-            <Segment.Group horizontal  clearing >
+            <Segment.Group horizontal  clearing="true" >
 
               <Segment style={{width: '35vw' }} className="stagesMap">
                 {(this.state.location)
@@ -211,7 +246,7 @@ class storyStages extends Component {
                     <Table.Header className='slide-out'>
                       <Table.Row>
                         <Table.HeaderCell   >
-                          <FormattedMessage id="app.stage.drag" defaultMessage={`drag`} />
+                          <FormattedMessage id="app.stage.drag" defaultMessage={`Drag`} />
                         </Table.HeaderCell>
                         <Table.HeaderCell >
                           <FormattedMessage id="app.stage.name" defaultMessage={`Name`} />
