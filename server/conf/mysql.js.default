@@ -3,5 +3,8 @@ module.exports.mysql = {
   username: "user_db",
   password: "password_db",
   dialect: "mysql",
+  dialectOptions: {
+    timezone: "Etc/GMT-3",
+  },
   logging: false
 };

@@ -84,7 +84,6 @@ class storyStages extends Component {
         if(data) {
           this.setState({stages: data, loading: false});
           this.setState({location: data[0].geometry.coordinates});
-          console.log(data[0].geometry.coordinates);
           return data;
         } else {
           console.log('No Data received from the server');
@@ -92,7 +91,7 @@ class storyStages extends Component {
     })
     .catch((error) => {
       // Your error is here!
-      //console.log(error)
+      console.log(error)
     });
   }
   open = () => this.setState({ confirmOpen: true })
@@ -168,7 +167,7 @@ class storyStages extends Component {
       <Dimmer.Dimmable as={Segment} clearing Inverted blurring dimmed={this.state.loading}>
           <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
 
-            <Segment inverted>   
+            <Segment inverted>
                 <Button primary onClick={this.handleCreate}><Icon name="google wallet" />Add Stage</Button>
                 <Button.Group floated='right'>
                   <Button negative loading={this.state.importLoading} onClick={() => this.fileInputRef.current.click()}><Icon name="point" />GeoJSON import</Button>
@@ -196,7 +195,7 @@ class storyStages extends Component {
             </Segment>
 
             <Segment.Group horizontal  clearing >
-                
+
               <Segment style={{width: '35vw' }} className="stagesMap">
                 {(this.state.location)
                   ? <StagesMap goToStage={this.goToStage} stages={this.state.stages} location={this.state.location} state={this.state}/>
