@@ -10,8 +10,7 @@ const Extra = require('telegraf/extra');
 const session = require('telegraf/session');
 const { reply } = Telegraf;
 const Tail = require('nodejs-tail');
-const logfile = './logs/server.log';
-const tail = new Tail(logfile);
+
 
 const bodyParser = require('body-parser');
 //CORS
@@ -144,12 +143,24 @@ if(hasbot) {
     if(!str.split(' ')[1]) return ctx.reply('/logs required an argument to complete , use /logs start or /logs stop instead', Extra.markdown());
     // toggle logs
     startLog = (str.split(' ')[1] === 'start') ? true : false;
-    (str.split(' ')[1] === 'start') ? ctx.reply('Start logs ... ', Extra.markdown()) : ctx.reply('Stop logs ... ', Extra.markdown()) ;
-    tail.on('line', (line) => {
-      // if bot logs start === true
-      if (hasbot && startLog) bot.telegram.sendMessage(chat_id,"Server log: "+line);
-      //process.stdout.write(line);
-    });
+    //(str.split(' ')[1] === 'start') ? ctx.reply('Start logs ... ', Extra.markdown()) : ctx.reply('Stop logs ... ', Extra.markdown()) ;
+    const logfile = './logs/server.log';
+    const tail = new Tail(logfile);
+    if (startLog) {
+      tail.on('line', (line) => {
+        // if bot logs start === true
+        bot.telegram.sendMessage(chat_id,"Server log: "+line);
+        //process.stdout.write(line);
+      });
+      tail.on('close', () => {
+        console.log('watching stopped');
+      })
+      tail.watch();
+
+    } else {
+      tail.close();
+    }
+
   });
 
   // Launch bot
