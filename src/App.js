@@ -46,7 +46,7 @@ import {
   Sidebar,
   Menu,
 } from 'semantic-ui-react';
-import 'semantic-ui-css/semantic.min.css';
+import 'semantic-ui-less/semantic.less';
 
 const PrivateRoute = ({ component: Component, props: cProps, ...rest }) =>(
         <Route {...rest} render={props => (

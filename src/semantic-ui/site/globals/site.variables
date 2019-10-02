@@ -1,0 +1,54 @@
+/*******************************
+     User Global Variables
+*******************************/
+@pageBackground      : #f1f1f1;
+
+@primaryColor   : @brown;
+@secondaryColor : #282828;
+
+@lightPrimaryColor   : @lightBlue;
+@lightSecondaryColor : @lightBlack;
+
+@red            : #e52609;
+@brown          : #b7410e;
+@grey           : #e0deda;
+
+@emSize: 16px;
+
+@googleFontSizes   : '400,700,400italic,700italic';
+@googleSubset      : 'latin';
+@importGoogleFonts : true;
+@googleProtocol    : 'https://';
+@googleFontRequest : 'Lato:400,500|Averia+Serif+Libre:400,700';
+
+@fontSize           : 1.1em;
+@fontName           : 'Lato';
+@fontSmoothing      : antialiased;
+@pageFont           : 'Lato', Helvetica Neue, Arial, Helvetica, sans-serif;
+@headerFont         : 'Averia Serif Libre', cursive;
+@headerFontWeight    : bold;
+@headerLineHeight    : 1.2857em;
+@headerTextTransform : uppercase;
+
+@h1 : 2rem;
+@h2 : 1.714rem;
+@h3 : 1.28rem;
+@h4 : 1.071rem;
+@h5 : 1rem;
+
+@paragraphMargin     : 0em 0em 1.1em;
+@paragraphLineHeight : @lineHeight;
+
+@defaultBorderRadius: 0.2307em;
+
+/* Links */
+@linkColor: @primaryColor;
+@linkHoverColor: @linkColor;
+@linkHoverUnderline: underline;
+
+@menuFontColor: @primaryColor;
+@selectedTextColor : @primaryColor;
+@itemTextTransform: uppercase; 
+
+/* Maximum Glyph Width of Icon */
+@iconWidth : 1.18em;
