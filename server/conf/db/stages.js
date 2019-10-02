@@ -16,7 +16,7 @@ module.exports.stages = {
   },
   adress: {
     type: Sequelize.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   description: {
     type: Sequelize.TEXT,

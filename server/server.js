@@ -24,7 +24,8 @@ require('dotenv').config();
 const host = process.env.SERVER_HOST;
 const protocol = process.env.SERVER_PROTOCOL;
 const port = process.env.SERVER_PORT;
-const hasbot = process.env.BOT_ACTIVE;
+const hasbot = JSON.parse(process.env.BOT_ACTIVE);
+
 // get mysql connection & credentials parameters
 let config = require('./conf/mysql');
 
@@ -58,6 +59,7 @@ let strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
 passport.use(strategy);
 
 if(hasbot) {
+  console.log('Telegram Bot activated', hasbot);
   // set telegram bot y tetunnel before starting express
   //
 
@@ -68,7 +70,7 @@ if(hasbot) {
   bot.telegram.getMe().then((bot_informations) => {
       bot.options.username = bot_informations.username;
       console.log("Server has initialized bot nickname. Nick: "+bot_informations.username);
-    //  bot.telegram.sendMessage(chat_id,"Server has initialized bot nickname. Nick: "+bot_informations.username);
+      bot.telegram.sendMessage(chat_id,"BooksOnWall Server Started and Telegram Bot initialized. Nick: "+bot_informations.username);
   }).catch(function(err){
       console.log(err);
   });
@@ -432,9 +434,13 @@ const getAllStages = async (sid) => {
   });
 }
 
-const createStage = async ({ sid, name, photo, adress, description, images, picture, videos, audios, type, stageOrder, tessellate, geometry }) => {
+const createStage = async ({ sid , name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry }) => {
   try {
-    let res = await Stages.create({ sid, name, photo, adress, description, images, picture, videos, audios, type, stageOrder, tessellate, geometry });
+    let rank = await getNextOrderFromStory(sid);
+    console.log(typeof(geometry));
+    //geometry = (typeof(geometry) === 'object') ? JSON.stringify(geometry) : geometry;
+    stageOrder = (!stageOrder) ? parseInt(rank) : stageOrder;
+    let res = await Stages.create({ sid , name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry });
     const ssid = res.get('id');
     // create story stages directory
     var dir = __dirname + '/public/stories/'+ sid + '/stages/'+ssid;
@@ -465,13 +471,23 @@ const createStage = async ({ sid, name, photo, adress, description, images, pict
     console.log(e.message);
   }
 }
+const getNextOrderFromStory = async (sid) => {
+  let rank;
+  await Stages.max('stageOrder', {
+    where: {sid : sid },
+  }).then(r => {
+    rank =  parseInt(r) + 1;
+  });
+  return rank;
+}
 const importStages = async (sid, geojson) => {
-  console.log(typeof(geojson));
   Stages.destroy({
     where: {sid: sid},
     truncate: true
   });
   //deleteAllStages(sid);
+  // delete also folders
+  //
   if (geojson) {
     geojson.map((feature, index ) => {
       let properties = feature.properties;
@@ -485,12 +501,13 @@ const importStages = async (sid, geojson) => {
       let audios = null; // need to be added once the geojson export is done
       let stageOrder = index;
       let type=feature.geometry.type;
-      let tessellate = properties.tessellate;
+      let tesselate = properties.tesselate;
       let geometry = feature.geometry;
+      let onZoneEnter = (properties.onZoneEnter) ? properties.onZoneEnter : null;
+      let onPictureMatch = (properties.onPictureMatch) ? properties.onPictureMatch : null;
+      let onZoneLeave = (properties.onZoneLeave) ? properties.onZoneLeave : null;
 
-
-
-      createStage({ sid, name, photo, adress, description, images, pictures, videos, audios, type, stageOrder, tessellate, geometry }).then(res =>
+      createStage({ sid , name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry }).then(res =>
         console.log('toto')
         //res.json({ stage, 'data': stage, msg: 'stage created successfully' })
       );
@@ -521,7 +538,6 @@ const removeObjectFromField = async ({ssid, sid, category, obj}) => {
       result = result[0].get(category).filter(function( lobj ) {
         // remove object by name from array
         lobj = (lobj.name) ? lobj : lobj[obj.type];
-
         return lobj.name !== objName;
       });
       return result;
@@ -784,34 +800,20 @@ app.delete('/users/:userId', function(req, res, next) {
 // register route register create the new user but set it as inactive
 app.post('/register', function(req, res, next) {
   const { name, email, password } = req.body;
-  bcrypt
-  .genSaltSync(saltRounds)
-  .then(salt => {
-    return bcrypt.hashSync(password, salt);
-  })
-  .then(hash => {
-    createUser({ name, email, hash }).then(user =>
-      res.json({ user, msg: 'account created successfully' })
-    );
-    // Store hash in your password DB.
-  })
-  .catch(err => console.error(err.message));
+  var salt = bcrypt.genSaltSync(saltRounds);
+  var hash = bcrypt.hashSync(password, salt);
+  createUser({ name, email, hash }).then(user =>
+    res.json({ user, msg: 'account created successfully' })
+  );
 });
 // register route create new user
 app.post('/users/0', function(req, res, next) {
   const { name, email, password, active } = req.body;
-  bcrypt
-  .genSaltSync(saltRounds)
-  .then(salt => {
-    return bcrypt.hashSync(password, salt);
-  })
-  .then(hash => {
-    createUser({ name, email, hash, active }).then(user =>
-      res.json({ user, msg: 'account created successfully' })
-    );
-    // Store hash in your password DB.
-  })
-  .catch(err => console.error(err.message));
+  var salt = bcrypt.genSaltSync(saltRounds);
+  var hash = bcrypt.hashSync(password, salt);
+  createUser({ name, email, hash, active }).then(user =>
+    res.json({ user, msg: 'account created successfully' })
+  );
 });
 //login route
 app.post('/login', async function(req, res, next) {
@@ -1018,17 +1020,21 @@ app.post('/stories/:storyId/import', function(req, res) {
 });
 app.get('/stories/:storyId/stages', function(req, res) {
   let sid = req.params.storyId;
-  console.log(sid);
   getAllStages(sid).then(user => res.json(user));
 });
-app.post('/stories/:storyId/0', function(req, res, next) {
-  const { name, adress, picture, type, geometry } = req.body;
-  console.log(req.body);
-  createStage({ name, adress, picture, type, geometry  }).then((story) => {
+app.post('/stories/:storyId/stages/0', function(req, res, next) {
+  const { sid, name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, tesselate,  geometry } = req.body;
+  const stageOrder = null;
+  console.log('name:', name);
+  console.log('sid', sid);
+  console.log('type', type);
+  console.log('geometry', geometry);
+  createStage({ sid , name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry  }).then((stage) => {
     //if(hasbot) { bot.telegram.sendMessage(chat_id,"New stage created: " + name + ','+ adress);}
-    return res.json({ story, 'data': story, msg: 'story created successfully' })
+    return res.json({ stage, 'data': stage, msg: 'stage created successfully' })
   });
 });
+
 app.get('/stories/:storyId/stages/:stageId', (req, res) => {
   let ssid = req.params.stageId;
   getStage({id: ssid}).then(stage => res.json(stage));

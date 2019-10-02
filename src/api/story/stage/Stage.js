@@ -12,7 +12,6 @@ import {
   Confirm,
   Image,
   Segment,
-  Header,
   TextArea,
   Dimmer,
   Loader,
@@ -97,7 +96,7 @@ class stage extends Component {
           onZoneEnter: null,
           onPictureMatch: null,
           onZoneLeave: null,
-          type: null,
+          type: 'Point',
           description: '',
           geometry: {
             "type": "Point",
@@ -914,6 +913,75 @@ class stage extends Component {
   handleAnimationChange = (animation) => () => this.setState((prevState) => ({ animation, visible: !prevState.visible }))
   handleDimmedChange = (e, { checked }) => this.setState({ dimmed: checked })
   handleDirectionChange = (direction) => () => this.setState({ direction, visible: false })
+  createStage = async (values) => {
+    try  {
+      await fetch(this.state.stagesURI +'/'+ 0, {
+        method: 'post',
+        credentials: 'same-origin',
+        headers: {'Access-Control-Allow-Origin': '*',  'Content-Type':'application/json'},
+        body:JSON.stringify({
+          id: this.state.stage.id,
+          sid: this.state.stage.sid,
+          ssid: this.state.stage.ssid,
+          name: this.state.stage.name,
+          adress:this.state.stage.adress,
+          photo: this.state.stage.photo,
+          images: this.state.stage.images,
+          pictures: this.state.stage.pictures,
+          videos: this.state.stage.videos,
+          audios: this.state.stage.audios,
+          onZoneEnter: this.state.stage.onZoneEnter,
+          onPictureMatch: this.state.stage.onPictureMatch,
+          onZoneLeave: this.state.stage.onZoneLeave,
+          type: this.state.stage.type,
+          description: this.state.stage.description,
+          geometry: this.state.stage.geometry,
+          stageLocation: this.state.stage.stageLocation
+        })
+      })
+      .then(response => {
+        if (response && !response.ok) { throw new Error(response.statusText);}
+        return response.json();
+      })
+      .then(data => {
+          if(data) {
+            // redirect to user edit page
+            this.props.history.push('/stories/' + this.state.sid + '/stages' );
+          }
+      })
+      .catch((error) => {
+        // Your error is here!
+        console.log(error)
+      });
+    } catch(e) {
+      console.log(e.message);
+    }
+  }
+  handleBlur = () =>  true;
+  handleChange = (e) => {
+    console.log(e.target);
+    this.setState({
+      stage: {
+        id: this.state.stage.id,
+        sid: this.state.stage.sid,
+        ssid: this.state.stage.ssid,
+        name: (e.target.name === 'name') ? e.target.value : this.state.stage.name,
+        adress: (e.target.name === 'adress') ? e.target.value : this.state.stage.adress,
+        photo: this.state.stage.photo,
+        images: this.state.stage.images,
+        pictures: this.state.stage.pictures,
+        videos: this.state.stage.videos,
+        audios: this.state.stage.audios,
+        onZoneEnter: this.state.stage.onZoneEnter,
+        onPictureMatch: this.state.stage.onPictureMatch,
+        onZoneLeave: this.state.stage.onZoneLeave,
+        type: (e.target.name && e.target.name === 'type') ? e.target.value : this.state.stage.type,
+        description: this.state.stage.description,
+        geometry: this.state.stage.geometry,
+        stageLocation: (e.target.name === 'stageLocation') ? e.target.value : this.state.stage.stageLocation
+      }
+    });
+  }
   editStage = () => {
     return (
           <Formik
@@ -927,7 +995,7 @@ class stage extends Component {
               if(this.state.mode === 'update') {
                 //    this.updateStage(values);
               } else {
-                //  this.createStage(values);
+                this.createStage(values);
               }
 
               setTimeout(() => {
@@ -957,8 +1025,8 @@ class stage extends Component {
                   autoFocus={true}
                   type="text"
                   name="name"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                  onChange={e => this.handleChange(e)}
+                  onBlur={e => handleBlur}
                   defaultValue={values.name}
                   />
                 {errors.name && touched.name && errors.name}
@@ -969,8 +1037,8 @@ class stage extends Component {
                   label='Adress'
                   type="text"
                   name="adress"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                  onChange={e => this.handleChange(e)}
+                  onBlur={e => handleBlur}
                   defaultValue={values.adress}
                   />
                 {errors.adress && touched.adress && errors.adress}
@@ -981,19 +1049,19 @@ class stage extends Component {
                   placeholder='Stage Location'
                   type="text"
                   name="stagelocation"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  defaultValue={JSON.stringify(values.stageLocation)}
+                  onChange={e => this.handleChange(e)}
+                  onBlur={e => handleBlur}
+                  value={JSON.stringify(this.state.stage.stageLocation)}
                   />
                 {errors.stagelocation && touched.stagelocation && errors.stagelocation}
 
                 <Label>Stage type</Label><Select
                   placeholder='Stage type'
                   label='Stage type'
-                  type="text"
-                  name="stagetype"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                  type="select"
+                  name="type"
+                  onChange={e => this.handleChange(e)}
+                  onBlur={e => handleBlur}
                   options={stageOptions}
                   defaultValue={values.type}
                   />
@@ -1208,9 +1276,9 @@ class stage extends Component {
             <StorySteps sid={this.state.sid} step={this.state.step} history={this.props.history} setSteps={this.setSteps} state={this.state}/>
             {/* Create stage and set location case */}
             {(this.state.ssid === 0) ?
-              <Segment.Group horizontal>
-                <Segment style={{width: '150px'}}>{this.editStage()}</Segment>
-                <Segment>{(this.state.ssid === 0 ) ? <StageMap mode={this.state.mode} setStageLocation={this.setStageLocation} stageLocation={this.state.stage.stageLocation}
+              <Segment.Group horizontal style={{height: '90vh'}}>
+                <Segment style={{height: 'inherit', width: '150px'}}>{this.editStage()}</Segment>
+                <Segment style={{height: 'inherit'}}>{(this.state.ssid === 0 ) ? <StageMap height="80vh" mode={this.state.mode} setStageLocation={this.setStageLocation} stageLocation={this.state.stage.stageLocation}
                 /> : ''}</Segment>
               </Segment.Group>
             : ''}
