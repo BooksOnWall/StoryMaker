@@ -143,7 +143,7 @@ if(hasbot) {
     if(!str.split(' ')[1]) return ctx.reply('/logs required an argument to complete , use /logs start or /logs stop instead', Extra.markdown());
     // toggle logs
     startLog = (str.split(' ')[1] === 'start') ? true : false;
-    (str.split(' ')[1] === 'start') ? ctx.reply('Start logs ... ', Extra.markdown()) : ctx.reply('Stop logs ... ', Extra.markdown()) ;
+    (startLog) ? ctx.reply('Start logs ... ', Extra.markdown()) : ctx.reply('Stop logs ... ', Extra.markdown()) ;
     const logfile = './logs/server.log';
     const options = { alwaysStat: true, ignoreInitial: false, persistent: true }
     const tail = new Tail(logfile, options);
@@ -427,6 +427,7 @@ const deleteStory = async (sid) => {
   rimraf.sync("./public/stories/"+sid);
   return res;
 };
+
 const patchUserPrefs = async ({ uid, pref, pvalue }) => {
   return await UserPref.upsert(
     { uid: uid, pname: pref, pvalue: pvalue},
@@ -534,6 +535,14 @@ const getStage = async obj => {
   return await Stages.findOne({
     where: obj,
   });
+};
+const deleteStage = async (id, sid) => {
+  let res = await Stages.destroy({
+    where: {id : id, sid: sid }
+    });
+  //delete stage directory
+  rimraf.sync("./public/stories/" + sid + "/stages/" + id);
+  return res;
 };
 const updateFieldFromStage = async ({ ssid, sid, field, fieldValue }) => {
   return await Stages.update(
@@ -1047,7 +1056,13 @@ app.post('/stories/:storyId/stages/0', function(req, res, next) {
     return res.json({ stage, 'data': stage, msg: 'stage created successfully' })
   });
 });
-
+app.delete('/stories/:storyId/stages/:stageId', function(req, res, next) {
+  let sid = parseInt(req.params.storyId);
+  let id = parseInt(req.params.stageId);
+  deleteStage(id, sid).then(user => {
+      res.json({ user, msg: 'Stage destroyed successfully' })
+  });
+});
 app.get('/stories/:storyId/stages/:stageId', (req, res) => {
   let ssid = req.params.stageId;
   getStage({id: ssid}).then(stage => res.json(stage));

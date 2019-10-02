@@ -104,10 +104,10 @@ class stage extends Component {
           },
           stageLocation: [-56.1670182, -34.9022229  ],
         },
-
         index: null,
         prev: null,
         next: null,
+        stageDelete: false,
         objDelUrl: server + 'Stories/'+ this.props.match.params.id + '/stages/' + this.props.match.params.sid + '/objDelete',
         objMvUrl: server + 'Stories/'+ this.props.match.params.id + '/stages/' + this.props.match.params.sid + '/objMv',
         objChangePropUrl: server + 'Stories/'+ this.props.match.params.id + '/stages/' + this.props.match.params.sid + '/objChangeProp',
@@ -255,6 +255,35 @@ class stage extends Component {
     tasks[index].confirm = false;
     this.setState({tasks: tasks});
   }
+  handleDelete = async () => {
+    //delete stage
+    try {
+
+        await fetch(this.state.stageURL, {
+          method: 'delete',
+          headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'},
+          body:JSON.stringify({ id: this.state.ssid, sid: this.state.sid })
+        })
+        .then(response => {
+          if (response && !response.ok) { throw new Error(response.statusText);}
+          return response.json();
+        })
+        .then(data => {
+          if(data) {
+            this.setState({stageDelete: false});
+            // redirect to user edit page
+            this.props.history.push('/stories/'+ this.state.sid + '/stages');
+          }
+        })
+        .catch((error) => {
+          // Your error is here!
+          console.log(error)
+        });
+    } catch(e) {
+      console.log(e.message);
+    }
+
+  }
   handleCancel = () => this.setState({ confirm: false })
   handleHideClick = () => this.setState({ sidebarVisible: false })
   handleShowClick = () => this.setState({ sidebarVisible: true })
@@ -262,6 +291,8 @@ class stage extends Component {
   handleTopHideClick = () => this.setState({ topSidebarVisible: false })
   handleTopShowClick = () => this.setState({ topSidebarVisible: true })
   handleTopSidebarHide = () => this.setState({ topSidebarVisible: false })
+  stageDeleteShow = () => this.setState({stageDelete: true})
+  handleDeleteCancel = () => this.setState({stageDelete: false})
   lock = () => this.setState({descLock: true})
   unlock = () => this.setState({descLock: false})
   toggleLock = () => (this.state.descLock === true) ? this.unlock() : this.lock()
@@ -1072,14 +1103,14 @@ class stage extends Component {
                 </Button>
                 {(this.state.mode === 'update') ? (
                   <div>
-                    <Button onClick={this.show} color='red'  size='large' type="submit" disabled={isSubmitting}>
+                    <Button onClick={this.stageDeleteShow} color='red'  size='large' type="submit" disabled={isSubmitting}>
                       <FormattedMessage id="app.story.delete" defaultMessage={`Delete stage`}/>
                     </Button>
                     <Confirm
-                      open={this.state.open}
+                      open={this.state.stageDelete}
                       cancelButton='Never mind'
-                      confirmButton="Delete Story"
-                      onCancel={this.handleCancel}
+                      confirmButton="Delete Stage"
+                      onCancel={this.handleDeleteCancel}
                       onConfirm={this.handleDelete}
                       />
                   </div>
