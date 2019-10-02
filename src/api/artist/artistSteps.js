@@ -26,7 +26,7 @@ class artistSteps extends Component {
   render() {
 
     return (
-      <Step.Group fluid >
+      <Step.Group fluid className="inverted">
         <Step
           icon='area graph'
           active = {this.props.state.step === 'Artist'}
@@ -43,7 +43,7 @@ class artistSteps extends Component {
           name='Images'
           onClick={this.handleSteps}
           icon='images'
-          title={<FormattedMessage id="app.artist.artistSteps.artist.images"  defaultMessage={'Images'} />}
+          title ={<FormattedMessage id="app.artist.artistSteps.artist.images"  defaultMessage={'Images'} />}
           //description={<FormattedMessage id='app.artist.artistSteps.artist.images.desc' defaultMesssages={'Images'} />}
         />
         <Step

@@ -165,21 +165,12 @@ class storyStages extends Component {
   render() {
 
     return (
-      <Dimmer.Dimmable as={Segment} blurring dimmed={this.state.loading}>
+      <Dimmer.Dimmable as={Segment} clearing Inverted blurring dimmed={this.state.loading}>
           <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
-            <Segment.Group horizontal>
-              <Segment style={{width: '40vw' }} className="stagesMap">
-                {(this.state.location)
-                  ? <StagesMap goToStage={this.goToStage} stages={this.state.stages} location={this.state.location} state={this.state}/>
-                  : <Placeholder>
-                    <Placeholder.Image rectangular />
-                  </Placeholder>
-                }
-              </Segment>
-              <Segment  className="stages">
-                <Button.Group>
-                  <Button primary onClick={this.handleCreate}><Icon name="google wallet" />Add Stage</Button>
-                  <Button.Or />
+
+            <Segment inverted>   
+                <Button primary onClick={this.handleCreate}><Icon name="google wallet" />Add Stage</Button>
+                <Button.Group floated='right'>
                   <Button negative loading={this.state.importLoading} onClick={() => this.fileInputRef.current.click()}><Icon name="point" />GeoJSON import</Button>
                     <input
                       id='importfile'
@@ -202,12 +193,26 @@ class storyStages extends Component {
                   <Button.Or />
                   <Button positive><Icon name="external square alternate" /> GeoJSON export</Button>
                 </Button.Group>
+            </Segment>
+
+            <Segment.Group horizontal  clearing >
+                
+              <Segment style={{width: '35vw' }} className="stagesMap">
+                {(this.state.location)
+                  ? <StagesMap goToStage={this.goToStage} stages={this.state.stages} location={this.state.location} state={this.state}/>
+                  : <Placeholder>
+                    <Placeholder.Image rectangular />
+                  </Placeholder>
+                }
+              </Segment>
+
+              <Segment  className="stages" >
                 <ReactDragListView {...this.dragProps}>
-                  <Table color='violet' inverted compact sortable  selectable>
+                  <Table inverted compact sortable  selectable>
                     <Table.Header className='slide-out'>
                       <Table.Row>
                         <Table.HeaderCell   >
-                          <FormattedMessage id="app.stage.drag" defaultMessage={`Drag me`} />
+                          <FormattedMessage id="app.stage.drag" defaultMessage={`drag`} />
                         </Table.HeaderCell>
                         <Table.HeaderCell >
                           <FormattedMessage id="app.stage.name" defaultMessage={`Name`} />
