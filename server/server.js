@@ -359,8 +359,6 @@ const reindexStage = async ({sid, stage}) => {
 const createStage = async ({ sid , name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry }) => {
   try {
     let rank = await getNextOrderFromStory(sid);
-    console.log(typeof(geometry));
-    //geometry = (typeof(geometry) === 'object') ? JSON.stringify(geometry) : geometry;
     stageOrder = (!stageOrder) ? parseInt(rank) : stageOrder;
     let res = await Stages.create({ sid , name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry });
     const ssid = res.get('id');
@@ -430,7 +428,7 @@ const importStages = async (sid, geojson) => {
       let onZoneLeave = (properties.onZoneLeave) ? properties.onZoneLeave : null;
 
       createStage({ sid , name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry }).then(res =>
-        console.log('toto')
+        console.log('batch import create stage sucessfull')
         //res.json({ stage, 'data': stage, msg: 'stage created successfully' })
       );
       return ('toto')
@@ -459,7 +457,7 @@ const updateFieldFromStage = async ({ ssid, sid, field, fieldValue }) => {
   );
 };
 const removeObjectFromField = async ({ssid, sid, category, obj}) => {
-  console.log('remove obj');
+
   try {
 
     let objName = obj.name;
@@ -580,7 +578,7 @@ if(hasbot) {
     const start = new Date()
     return next().then(() => {
       const ms = new Date() - start
-      console.log('response time %sms', ms);
+      console.log('telegram bot response time %sms', ms);
       //console.log(ctx.message);
     });
   });
@@ -632,7 +630,6 @@ if(hasbot) {
   bot.hears('hi', (ctx) => ctx.reply('Hey there'));
   // Command handling
   bot.command('answer', sayYoMiddleware, (ctx) => {
-    console.log(ctx.message);
     return ctx.reply('*42*', Extra.markdown());
   });
   let startLog = false;
@@ -719,9 +716,9 @@ app.get('/assets/stories/:storyId/stages/:stageId/images/:name', function (req, 
   var sid = req.params.storyId;
   var ssid= req.params.stageId;
   var fileName = req.params.name;
-  console.log(fileName);
+
   var path = './public/stories/' + sid + '/stages/' + ssid +'/images/';
-  console.log(path);
+
   var options = {
     root: path ,
     dotfiles: 'deny',
@@ -739,17 +736,6 @@ app.get('/assets/stories/:storyId/stages/:stageId/images/:name', function (req, 
     }
   })
 });
-
-// app.get('/assets/stories/:storyId/stages/:stageId/videos/:name', timeout('10m'), function (req, res, next) {
-//   var sid = req.params.storyId;
-//   var ssid= req.params.stageId;
-//   var fileName = req.params.name;
-//   var path = './public/stories/' + sid + '/stages/' + ssid +'/videos/';
-//   //set a video stream server to serve the file
-//   res.setHeader("content-type", "video/*");
-//   console.log('Starting streaming: file ' + fileName );
-//   fs.createReadStream(path+fileName).pipe(res);
-// });
 
 app.get('/assets/stories/:storyId/stages/:stageId/:category/:name', function (req, res, next) {
   var sid = req.params.storyId;
@@ -943,12 +929,6 @@ app.post('/artists/:artistId/upload', function (req, res, next) {
         return res.json({ user: aid, msg: 'artist images uploaded  successfully', files: req.files })
       }
     });
-  // req.files is array of `images` files
-  //console.log('FILES:');
-  //console.log(req.files);
-  //console.log('BODY:');
-  //console.log(req.body);
-  // req.body will contain the text fields, if there were any
 });
 //Uploading single file avatar
 app.post('/users/:userId/upload', function (req, res, next) {
@@ -969,12 +949,6 @@ app.post('/users/:userId/upload', function (req, res, next) {
           return res.json({ user: uid, msg: 'user avatar uploaded  successfully' })
         }
     });
-  // req.files is array of `images` files
-  //console.log('FILES:');
-  //console.log(req.files);
-  //console.log('BODY:');
-  //console.log(req.body);
-  // req.body will contain the text fields, if there were any
 });
 app.patch('/artists/:artistId/image', function (req, res, next) {
   let id = req.params.artistId;
@@ -983,13 +957,9 @@ app.patch('/artists/:artistId/image', function (req, res, next) {
   //delete file
   rimraf.sync("./public/artists/" + id + "/" + name);
   // update artists.Images
-  console.log(images);
   patchArtist({ id, images }).then(user =>
       res.json({ user, msg: 'artist image removed successfully' })
   );
-  // req.images is array of `image` files
-  //console.log(req.body);
-  // req.body will contain the text fields, if there were any
 });
 
 app.delete('/artists/:artistId', function(req, res, next) {
@@ -1056,9 +1026,6 @@ app.post('/stories/:storyId/import', function(req, res) {
           return res.json({ user: sid, stages: stages, msg: 'geojson imported  successfully' })
         }
     });
-  //console.log(req.file);
-
-  //getAllStages(sid).then(user => res.json(user));
 });
 app.get('/stories/:storyId/stages', function(req, res) {
   let sid = req.params.storyId;
@@ -1076,10 +1043,6 @@ app.patch('/stories/:storyId/stages', function(req, res) {
 app.post('/stories/:storyId/stages/0', function(req, res, next) {
   const { sid, name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, tesselate,  geometry } = req.body;
   const stageOrder = null;
-  console.log('name:', name);
-  console.log('sid', sid);
-  console.log('type', type);
-  console.log('geometry', geometry);
   createStage({ sid , name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry  }).then((stage) => {
     //if(hasbot) { bot.telegram.sendMessage(chat_id,"New stage created: " + name + ','+ adress);}
     return res.json({ stage, 'data': stage, msg: 'stage created successfully' })
@@ -1152,7 +1115,6 @@ app.post('/stories/:storyId/stages/:stageId/uploadPictures', function (req, res,
         return res.end("Error uploading file." + err);
       } else {
         let images=[];
-        console.log(req.files[0].path);
         //bot.telegram.sendPhoto(chat_id, "http://localhost:3010"+req.files[0].path).then(res => res);
          req.files.forEach( function(file) {
 
@@ -1248,9 +1210,6 @@ app.delete('/stories/:storyId/stages/:stageId/objDelete', function(req, res, nex
   let path = './public/stories/'+ sid + '/stages/' + ssid +'/'+ obj.category + '/';
 
   // remove file from db
-  // console.log('Delete: ', objName);
-  // console.log('From category: ', category);
-  // console.log(obj);
    removeObjectFromField({ssid, sid, category, obj}).then(user => {
     //delete file if exist
     if (fs.existsSync(path + objName)) {
@@ -1295,7 +1254,6 @@ app.patch('/stories/:storyId/stages/:stageId/objChangeProp', function(req, res, 
   if(req.body.obj && req.body.obj.name) {
     let sid = parseInt(req.params.storyId);
     let ssid = parseInt(req.params.stageId);
-    console.log(req.body.obj);
     let name = req.body.obj.name;
     let field = req.body.obj.category;
     let prop = req.body.prop;
@@ -1310,9 +1268,6 @@ app.patch('/stories/:storyId/stages/:stageId/objChangeProp', function(req, res, 
 
 });
 
-//bot.telegram.getUpdates();
-//console.log(toto);
-//bot.telegram.sendMessage('@Tom Bouillut', 'test');
 // start app
 if (protocol === 'https') {
   var key = fs.readFileSync('./server.key');
