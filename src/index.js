@@ -5,6 +5,9 @@ import { addLocaleData, IntlProvider } from 'react-intl';
 import enLocaleData from 'react-intl/locale-data/en';
 import esLocaleData from 'react-intl/locale-data/es';
 import ptLocaleData from 'react-intl/locale-data/pt';
+import intlMessages_en from './i18n/locales/en.json';
+import intlMessages_es from './i18n/locales/es.json';
+import intlMessages_pt from './i18n/locales/pt.json';
 import './index.css';
 import App from './App';
 import { ThemeProvider } from './context/ThemeContext';
@@ -15,13 +18,30 @@ addLocaleData(enLocaleData);
 addLocaleData(esLocaleData);
 addLocaleData(ptLocaleData);
 
+/* Define your translations */
+let i18nConfig = {
+    locale: 'es',
+    messages: intlMessages_en
+};
+
+const switchLanguage = (lang) => {
+  console.log(lang);
+  switch (lang) {
+    case 'es': i18nConfig.messages = intlMessages_es; break;
+    case 'en': i18nConfig.messages = intlMessages_en; break;
+    case 'pt': i18nConfig.messages = intlMessages_pt; break;
+    default: i18nConfig.messages = intlMessages_en; break;
+  }
+  i18nConfig.locale = lang;
+}
+
 ReactDOM.render(
-  <IntlProvider locale='en' >
+<IntlProvider key={ i18nConfig.locale } locale={ i18nConfig.locale }  messages={ i18nConfig.messages }>
     <BrowserRouter >
       <UserProvider>
         <LocaleProvider>
           <ThemeProvider>
-            <App />
+            <App switchLanguage={switchLanguage} />
           </ThemeProvider>
         </LocaleProvider>
       </UserProvider>

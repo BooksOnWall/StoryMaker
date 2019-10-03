@@ -16,13 +16,13 @@ export class LocaleProvider extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      theme: locales['en']
+      locale: locales['en']
     };
   }
   handleLocaleChange = e => {
     const key = e.target.value;
-    const theme = locales[key];
-    this.setState({ theme });
+    const locale = locales[key];
+    this.setState({ locale });
   };
   render() {
     return (

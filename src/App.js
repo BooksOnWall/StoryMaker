@@ -89,9 +89,11 @@ class App extends Component {
       }));
     };
     this.setLocale = (key) => {
+      console.log(key);
       this.setState(state => ({
         locale: locales.$key,
       }));
+      this.props.switchLanguage(key);
     };
     this.setAvatar = (avatar) => {
       this.setState(state => ({
@@ -172,7 +174,9 @@ class App extends Component {
   render () {
     const childProps = {
       authenticated: this.state.authenticated,
-      user: this.state.user
+      user: this.state.user,
+      locale: this.props.locale,
+      setLocale: this.setLocale,
     };
 
     return (
@@ -195,7 +199,7 @@ class App extends Component {
                                 direction={this.state.direction}
                                 visible={this.state.sidebarVisible}
                               >
-                                <LeftSlideMenu  state={this.state} childProps={childProps} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()}/>
+                                <LeftSlideMenu  switchLanguage={this.props.switchLanguage} state={this.state} childProps={childProps} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()}/>
                               </Sidebar>
 
                               <Sidebar.Pusher onClick={this.state.handleSidebarHide} dimmed={this.state.dimmed && this.state.sidebarVisible}>
