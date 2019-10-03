@@ -88,6 +88,8 @@
       }
     },
     "story": {
+      "edit": "",
+      "create": "",
       "delete": "",
       "stories": {
         "getuser": "",
@@ -116,6 +118,10 @@
           "files": ""
         }
       }
+    },
+    "artists": {
+      "add": "",
+      "title": ""
     },
     "artist": {
       "delete": "",

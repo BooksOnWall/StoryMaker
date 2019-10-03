@@ -88,6 +88,8 @@
       }
     },
     "story": {
+      "edit": "",
+      "create": "",
       "delete": "Eliminar Cuento",
       "stories": {
         "getuser": "Obtener información del usuario",
@@ -116,6 +118,10 @@
           "files": "Has clic acá o arrastra un archivo para subirlo!"
         }
       }
+    },
+    "artists": {
+      "add": "",
+      "title": ""
     },
     "artist": {
       "delete": "Eliminar Artista",

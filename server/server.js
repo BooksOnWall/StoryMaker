@@ -57,119 +57,7 @@ let strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
 // use the strategy
 passport.use(strategy);
 
-if(hasbot) {
-  console.log('Telegram Bot activated', hasbot);
-  // set telegram bot y tetunnel before starting express
-  //
 
-  const sayYoMiddleware = ({ reply }, next) => reply('yo').then(() => next());
-  const chat_id = '-389718132';
-  const bot = new Telegraf(process.env.BOT_TOKEN);
-  // We can get bot nickname from bot informations. This is particularly useful for groups.
-  bot.telegram.getMe().then((bot_informations) => {
-      bot.options.username = bot_informations.username;
-      console.log("Server has initialized bot nickname. Nick: "+bot_informations.username);
-      bot.telegram.sendMessage(chat_id,"BooksOnWall Server Started and Telegram Bot initialized. Nick: "+bot_informations.username);
-  }).catch(function(err){
-      console.log(err);
-  });
-  // // Register session middleware
-  bot.use(session());
-
-  // Register logger middleware
-  bot.use((ctx, next) => {
-    const start = new Date()
-    return next().then(() => {
-      const ms = new Date() - start
-      console.log('response time %sms', ms);
-      //console.log(ctx.message);
-    });
-  });
-  bot.start((ctx) => ctx.reply('Welcome'));
-
-  const commands = `You can control me by sending these commands:
-  /help - *list all commands*
-  /answer - *the answer for everything*
-  /album - *list of medias*
-  /logs [start|stop] - *start or stop reading server logs*
-  /errors [start|stop] - *idem but just with errors* `;
-
-  bot.help((ctx) => ctx.replyWithMarkdown(commands));
-  bot.on('update', function(message) {
-      // Generic update object
-      // Subscribe on it in case if you want to handle all possible
-      // event types in one callback
-      console.log(message);
-  });
-  bot.on('sticker', (ctx) => ctx.reply('👍'));
-
-  bot.hears('hi', (ctx) => ctx.reply('Hey there'));
-
-  bot.command('album', (ctx) => {
-    ctx.replyWithMediaGroup([
-      {
-        media: 'AgADBAADXME4GxQXZAc6zcjjVhXkE9FAuxkABAIQ3xv265UJKGYEAAEC',
-        caption: 'From file_id',
-        type: 'photo'
-      },
-      {
-        media: 'https://picsum.photos/200/500/',
-        caption: 'From URL',
-        type: 'photo'
-      },
-      {
-        media: { url: 'https://picsum.photos/200/300/?random' },
-        caption: 'From URL',
-        type: 'photo'
-      }
-    ]);
-  });
-  // Text messages handling
-  bot.hears('Hey', sayYoMiddleware, (ctx) => {
-    ctx.session.heyCounter = ctx.session.heyCounter || 0;
-    ctx.session.heyCounter++;
-    return ctx.replyWithMarkdown(`_Hey counter:_ ${ctx.session.heyCounter}`);
-  });
-  bot.hears('hi', (ctx) => ctx.reply('Hey there'));
-  // Command handling
-  bot.command('answer', sayYoMiddleware, (ctx) => {
-    console.log(ctx.message);
-    return ctx.reply('*42*', Extra.markdown());
-  });
-  let startLog = false;
-
-  bot.command('logs',(ctx) => {
-    let str =  ctx.message.text;
-    if(!str.split(' ')[1]) return ctx.reply('/logs required an argument to complete , use /logs start or /logs stop instead', Extra.markdown());
-    // toggle logs
-    startLog = (str.split(' ')[1] === 'start') ? true : false;
-    (startLog) ? ctx.reply('Start logs ... ', Extra.markdown()) : ctx.reply('Stop logs ... ', Extra.markdown()) ;
-    const logfile = './logs/server.log';
-    const options = { alwaysStat: true, ignoreInitial: false, persistent: true }
-    const tail = new Tail(logfile, options);
-    if (startLog) {
-      tail.watch();
-      tail.on('line', (line) => {
-        // if bot logs start === true
-        //bot.telegram.sendMessage(chat_id,"Server log: "+line);
-        ctx.reply(line, Extra.markdown());
-        //process.stdout.write(line);
-      });
-      tail.on('close', () => {
-        console.log('watching stopped');
-      });
-
-    } else {
-      tail.close();
-    }
-
-  });
-
-  // Launch bot
-  bot.launch();
-  //
-  // End telegram conf
-}
 
 
 const app = express();
@@ -668,8 +556,121 @@ var staticoptions = {
     res.set('x-timestamp', Date.now());
   }
 }
+if(hasbot) {
+  console.log('Telegram Bot activated', hasbot);
+  // set telegram bot y tetunnel before starting express
+  //
 
+  const sayYoMiddleware = ({ reply }, next) => reply('yo').then(() => next());
+  const chat_id = '-389718132';
+  const bot = new Telegraf(process.env.BOT_TOKEN);
+  // We can get bot nickname from bot informations. This is particularly useful for groups.
+  bot.telegram.getMe().then((bot_informations) => {
+      bot.options.username = bot_informations.username;
+      console.log("Server has initialized bot nickname. Nick: "+bot_informations.username);
+      bot.telegram.sendMessage(chat_id,"BooksOnWall Server Started and Telegram Bot initialized. Nick: "+bot_informations.username);
+  }).catch(function(err){
+      console.log(err);
+  });
+  // // Register session middleware
+  bot.use(session());
+
+  // Register logger middleware
+  bot.use((ctx, next) => {
+    const start = new Date()
+    return next().then(() => {
+      const ms = new Date() - start
+      console.log('response time %sms', ms);
+      //console.log(ctx.message);
+    });
+  });
+  bot.start((ctx) => ctx.reply('Welcome'));
+
+  const commands = `You can control me by sending these commands:
+  /help - *list all commands*
+  /answer - *the answer for everything*
+  /album - *list of medias*
+  /logs [start|stop] - *start or stop reading server logs*
+  /errors [start|stop] - *idem but just with errors* `;
+
+  bot.help((ctx) => ctx.replyWithMarkdown(commands));
+  bot.on('update', function(message) {
+      // Generic update object
+      // Subscribe on it in case if you want to handle all possible
+      // event types in one callback
+      console.log(message);
+  });
+  bot.on('sticker', (ctx) => ctx.reply('👍'));
+
+  bot.hears('hi', (ctx) => ctx.reply('Hey there'));
+
+  bot.command('album', (ctx) => {
+    ctx.replyWithMediaGroup([
+      {
+        media: 'AgADBAADXME4GxQXZAc6zcjjVhXkE9FAuxkABAIQ3xv265UJKGYEAAEC',
+        caption: 'From file_id',
+        type: 'photo'
+      },
+      {
+        media: 'https://picsum.photos/200/500/',
+        caption: 'From URL',
+        type: 'photo'
+      },
+      {
+        media: { url: 'https://picsum.photos/200/300/?random' },
+        caption: 'From URL',
+        type: 'photo'
+      }
+    ]);
+  });
+  // Text messages handling
+  bot.hears('Hey', sayYoMiddleware, (ctx) => {
+    ctx.session.heyCounter = ctx.session.heyCounter || 0;
+    ctx.session.heyCounter++;
+    return ctx.replyWithMarkdown(`_Hey counter:_ ${ctx.session.heyCounter}`);
+  });
+  bot.hears('hi', (ctx) => ctx.reply('Hey there'));
+  // Command handling
+  bot.command('answer', sayYoMiddleware, (ctx) => {
+    console.log(ctx.message);
+    return ctx.reply('*42*', Extra.markdown());
+  });
+  let startLog = false;
+
+  bot.command('logs',(ctx) => {
+    let str =  ctx.message.text;
+    if(!str.split(' ')[1]) return ctx.reply('/logs required an argument to complete , use /logs start or /logs stop instead', Extra.markdown());
+    // toggle logs
+    startLog = (str.split(' ')[1] === 'start') ? true : false;
+    (startLog) ? ctx.reply('Start logs ... ', Extra.markdown()) : ctx.reply('Stop logs ... ', Extra.markdown()) ;
+    const logfile = './logs/server.log';
+    const options = { alwaysStat: true, ignoreInitial: false, persistent: true }
+    const tail = new Tail(logfile, options);
+    if (startLog) {
+      tail.watch();
+      tail.on('line', (line) => {
+        // if bot logs start === true
+        //bot.telegram.sendMessage(chat_id,"Server log: "+line);
+        ctx.reply(line, Extra.markdown());
+        //process.stdout.write(line);
+      });
+      tail.on('close', () => {
+        console.log('watching stopped');
+      });
+
+    } else {
+      tail.close();
+    }
+
+  });
+
+  // Launch bot
+  bot.launch();
+  //
+  // End telegram conf
+}
 app.use('/assets', express.static(__dirname + 'public', staticoptions));
+
 app.get('/assets/users/:userId/:name', function (req, res, next) {
   var uid = req.params.userId;
   var fileName = req.params.name;
@@ -691,8 +692,7 @@ app.get('/assets/users/:userId/:name', function (req, res, next) {
   })
 });
 
-app.use('/images', express.static(__dirname + 'public', staticoptions));
-app.get('/images/artists/:artistId/:name', function (req, res, next) {
+app.get('/assets/artists/:artistId/:name', function (req, res, next) {
 
   var aid = req.params.artistId;
   var fileName = req.params.name;
@@ -1309,16 +1309,7 @@ app.patch('/stories/:storyId/stages/:stageId/objChangeProp', function(req, res, 
   }
 
 });
-// protected route
-app.post('/git/push', function(req, res) {
-  console.log('git push');
-  console.log(req);
-  //if(hasbot) {bot.telegram.sendMessage(chat_id,"New Git Push " + JSON.stringify(req));}
-  return res.json('Success! You can now see this without a token.', req);
-});
-app.get('/protected', passport.authenticate('jwt', { session: false }), function(req, res) {
-  res.json('Success! You can now see this without a token.');
-});
+
 //bot.telegram.getUpdates();
 //console.log(toto);
 //bot.telegram.sendMessage('@Tom Bouillut', 'test');

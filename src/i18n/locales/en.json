@@ -13,7 +13,7 @@
     "user": {
       "edit": "Edit user",
       "theme": "Choose your theme",
-      "create": "Create user",
+      "create": "Users",
       "delete": "Delete user",
       "locale": "Choose your Language",
       "update": "Update",
@@ -62,7 +62,7 @@
       "unlogged": "You are not logged in.!"
     },
     "stage": {
-      "drag": "Drag me",
+      "drag": "Drag",
       "name": "Name",
       "type": "Type",
       "order": "Order",
@@ -88,6 +88,8 @@
       }
     },
     "story": {
+      "edit": "Edit Story",
+      "create": "Create Story",
       "delete": "Delete Story",
       "stories": {
         "getuser": "Get users info",
@@ -116,6 +118,10 @@
           "files": "Drag and drop some files here, or click to select files"
         }
       }
+    },
+    "artists": {
+      "add": "Add Artist",
+      "title": "Artists"
     },
     "artist": {
       "delete": "Delete Artist",
