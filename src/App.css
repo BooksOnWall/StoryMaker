@@ -404,7 +404,7 @@ div.DraftEditor-root {
 .ui.segment.view.story, #StepsContent.ui.segment.view {padding: 0 !important; }
 .ui.segment.view.story, #StepsContent.ui.segment{ padding: 0 !important; margin: 0 !important}
 .ui.segment.stagesMap{ padding: 0 !important}
-.ui.segment.stages { padding: 0 2em 1em }
+.ui.segment.stages { padding: 0 2em 1em; max-height: 68.2vh; overflow: scroll}
 .ui.buttons{ padding: 0 0 1em}
 .ui.table{margin: 0 !important; border-radius: 0 !important; padding: 0 !important}
 .ui.table:first-child{margin-top: 0 !important; }

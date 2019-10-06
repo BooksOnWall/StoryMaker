@@ -262,7 +262,7 @@ class storyStages extends Component {
                     <Table.Body>
                       {_.map(this.state.stages, ({ id, name, type, description , stageOrder, updatedAt, rank }) => (
                         <Table.Row className='slide-out' key={id} onClick={() => this.tableRowClickFunc({id})}>
-                          <Table.Cell>{<a className="drag-handle" href="void(0)"><Icon name='grab' size='tiny' /> Drage Me</a>}</Table.Cell>
+                          <Table.Cell>{<a className="drag-handle" href="void(0)"><Icon name='sort' /></a>}</Table.Cell>
                           <Table.Cell>{name}</Table.Cell>
                           <Table.Cell>{type}</Table.Cell>
                           <Table.Cell>{stageOrder}</Table.Cell>
