@@ -4,6 +4,7 @@ import {
   Image,
   Icon,
   Button,
+  Divider,
 } from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
 
@@ -36,8 +37,11 @@ class AppMenu extends Component {
             onClick={this.props.state.handleSideBar}
             ><Icon name='bars'  size='big'/></Button>
         </Menu.Item>
-
       : ''}
+        <Divider as={Menu.Item} inverted className='push-donw'  />
+          <Menu.Item name='users' active={this.state.activeItem === 'users'} onClick={this.handleItemClick} as={Link} to='/users' className="userBar"  >
+            <Image  avatar  src={this.state.server + this.props.childProps.user.avatar} />
+          </Menu.Item>
       </Menu>
     );
   }

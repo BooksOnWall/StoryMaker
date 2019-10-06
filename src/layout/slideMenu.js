@@ -69,8 +69,6 @@ class LeftSlideMenu extends Component {
                   <Divider inverted />
                   <Divider as={Menu.Item} inverted className='push-donw'  />
 
-
-
                   <Menu.Item name='users' active={this.state.activeItem === 'users'} onClick={this.handleItemClick} as={Link} to='/users' className="sidemenu users"  >
                     <Image  avatar  src={this.state.server + this.props.childProps.user.avatar} /><span className='text'>Users</span>
                   </Menu.Item>
