@@ -7,7 +7,7 @@ import { locales } from '../i18n/locales/globalLocales';
 // Provider - Single as close to top level as possible
 // Consumer - Multiple have multiple consumers
 const LocaleContext = React.createContext({
-  locale: "en",
+  locale: "es",
   setLocale: () => {}
 });
 export default LocaleContext;
@@ -16,7 +16,7 @@ export class LocaleProvider extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      locale: locales['en']
+      locale: locales['es']
     };
   }
   handleLocaleChange = e => {
