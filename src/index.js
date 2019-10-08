@@ -20,10 +20,10 @@ addLocaleData(ptLocaleData);
 
 /* Define your translations */
 let i18nConfig = {
-    locale: 'es',
+    locale: 'en',
     messages: intlMessages_en
 };
-
+const language = navigator.language.split(/[-_]/)[0];
 const switchLanguage = (lang) => {
   console.log(lang);
   switch (lang) {
@@ -34,6 +34,9 @@ const switchLanguage = (lang) => {
   }
   i18nConfig.locale = lang;
 }
+switchLanguage(language);
+console.log(language);
+
 
 ReactDOM.render(
 <IntlProvider key={ i18nConfig.locale } locale={ i18nConfig.locale }  messages={ i18nConfig.messages }>
@@ -41,7 +44,7 @@ ReactDOM.render(
       <UserProvider>
         <LocaleProvider>
           <ThemeProvider>
-            <App switchLanguage={switchLanguage} />
+            <App  />
           </ThemeProvider>
         </LocaleProvider>
       </UserProvider>

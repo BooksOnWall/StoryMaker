@@ -43,25 +43,7 @@ class LeftSlideMenu extends Component {
               <Menu.Item name='stories' active={this.state.activeItem === 'stories'} onClick={this.handleItemClick} as={Link} to='/stories'  >
                 <Icon size='large' name='book' /><span className='text'>Stories</span>
               </Menu.Item>
-              <Segment inverted >
-                <Accordion inverted >
-                  <Accordion.Title
-                    active={activeIndex === 0}
-                    index={0}
-                    onClick={this.handleClick}
-                    >
-                    <Icon name='dropdown' />
-                    Languages
-                  </Accordion.Title>
-                  <Accordion.Content className="slide-out" active={activeIndex === 0}>
-                    <Button.Group vertical color='black'>
-                      <Button active ><Flag name='uk' />English</Button>
-                      <Button ><Flag name='es' />Spanish</Button>
-                      <Button ><Flag name='pt' />Portuguese</Button>
-                    </Button.Group>
-                  </Accordion.Content>
-                </Accordion>
-              </Segment>
+              
               <Divider inverted />
               <Menu.Item name='logout' className='logout' active={this.state.activeItem === 'logout'} onClick={this.handleItemClick} as={Link} to='/logout' >
                 <Icon name='log out' /><span className='text'>Logout</span>
