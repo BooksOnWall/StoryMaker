@@ -2,9 +2,9 @@
   text-align: center;
 }
 
-body{   
+body{
     background: rgb(200,49,21);
-    background: linear-gradient(172deg, rgba(200,49,21,1) 0%, rgba(253,29,29,1) 26%, rgba(255,164,0,1) 94%) !important;   
+    background: linear-gradient(172deg, rgba(200,49,21,1) 0%, rgba(253,29,29,1) 26%, rgba(255,164,0,1) 94%) !important;
     padding: 0 !important;
     margin: 0 !important;
 }
@@ -191,25 +191,25 @@ div.DraftEditor-root {
   animation: nav 0.2s ease-in-out forwards;
   opacity: 0;
   background: rgb(4,22,42);
-  background: linear-gradient(180deg, rgba(4,22,42,1) 0%, rgba(19,32,46,1) 72%, rgba(4,22,42,1) 100%); 
+  background: linear-gradient(180deg, rgba(4,22,42,1) 0%, rgba(19,32,46,1) 72%, rgba(4,22,42,1) 100%);
 }
 .menu .item.logout{ position: fixed !important; bottom: 0px; display: block; width: 100%}
 .menu .item.users{ position: fixed !important; bottom: 0; display: block; width: 100%; bottom: 80px !important; border-left: 0; border-bottom: 1px #333 solid; border-top: 1px #333 solid !important;  }
-.top.ui.menu{  
-    background: transparent !important; 
-    display: inline; 
+.top.ui.menu{
+    background: transparent !important;
+    display: inline;
     min-height: 100vh !important;
     width: 4vw;
     height: auto;
     min-width: 80px;
     max-height: 100vh;
     position: fixed !important;
-    overflow: hidden !important; 
+    overflow: hidden !important;
     top: 0;
     left: 0;
-    height: 100%; 
-    background: rgb(200,49,21); 
-    background: linear-gradient(172deg, rgba(200,49,21,1) 0%, rgba(253,29,29,1) 26%, rgba(255,164,0,1) 94%) !important; 
+    height: 100%;
+    background: rgb(200,49,21);
+    background: linear-gradient(172deg, rgba(200,49,21,1) 0%, rgba(253,29,29,1) 26%, rgba(255,164,0,1) 94%) !important;
 }
 .top.ui.menu .item { padding: 3px !important;}
 .menu .button.hamburger{ padding: 9px !important; margin: 10px auto !important; border: 0 !important;}
@@ -219,7 +219,7 @@ div.DraftEditor-root {
 .ui.main.container {
   padding: 0 !important;
   max-width: 94vw !important;
-  margin: 0 0 0 80px !important;      
+  margin: 0 0 0 80px !important;
 }
 
 .ui.visible.slide.along.sidebar.bwSidebar,.ui.slide.along.sidebar.bwSidebar {
@@ -243,8 +243,8 @@ div.DraftEditor-root {
 }
 
 .ui.vertical.menu.fluid .item.users  { display: block; position: fixed !importan; bottom: 0 !importan;}
-.ui.vertical.menu.fluid .push-donw{ display: block; position: fixed !importan; bottom: 0 !importan; margin-top: 39vh !important;}
-.ui.top.menu .push-donw { margin: 70vh auto 10px !important; padding:0 !important; border: 0 !important}
+.ui.vertical.menu.fluid .push-down{ display: block; position: fixed !importan; bottom: 0 !importan; margin-top: 39vh !important;}
+.ui.top.menu .push-down { margin: 70vh auto 10px !important; padding:0 !important; border: 0 !important}
 .ui.top.menu .userBar .ui.avatar.image{ width: 53px !important; height: 53px !important; margin: 0 auto; padding:0; border: 2px solid #fff }
 .ui.top.menu .userBar { padding: 13px !important; display: block; position: fixed; bottom: 1vh; }
 
