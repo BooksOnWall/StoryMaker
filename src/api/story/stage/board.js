@@ -175,10 +175,10 @@ class DragDrop extends Component {
       direction2: 'bottom',
       selectedIndex: null,
       loading: null,
-      col1DefaultSize: { width: '18%', height: 'inherit'},
-      col2DefaultSize: { width: '23%', height: 'inherit'},
-      col3DefaultSize: { width: '36%', height: 'inherit'},
-      col4DefaultSize: { width: '23%', height: 'inherit'},
+      col1DefaultSize: { width: '25%', height: 'inherit'},
+      col2DefaultSize: { width: '20%', height: 'inherit'},
+      col3DefaultSize: { width: '35%', height: 'inherit'},
+      col4DefaultSize: { width: '20%', height: 'inherit'},
       dimmed: null,
       import: false,
       reset: false,
@@ -307,7 +307,7 @@ class DragDrop extends Component {
                   style={{maxHeight: '30vh'}}
                   >
                   <Segment.Group  style={{height: 'auto', width: 'inherit'}}>
-                    <Segment >
+                    <Segment inverted >
                       <Button.Group >
                         <Button name="Stage" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Stage') ? true : false } >Stage</Button>
                         <Button.Or text='or' />
@@ -356,7 +356,7 @@ class DragDrop extends Component {
                     </Segment.Group>
 
                   </Sidebar>
-                  <Sidebar
+                  <Sidebar inverted
                     as={Menu}
                     animation={this.state.animation}
                     direction={this.state.direction}
@@ -377,9 +377,9 @@ class DragDrop extends Component {
                       <Button name="Audios" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Audios') ? true : false }>Audios</Button>
                     </Button.Group>
 
-                    <Segment >
+                    <Segment inverted >
                       {(this.props.stageStep === 'Pictures') ? (
-                        <Segment
+                        <Segment inverted
                           className="pictures"
                           onDragOver={(e)=>this.props.onDragOver(e)}
                           onDrop={(e)=>{this.props.onDrop(e, "pictures")}}>
@@ -401,7 +401,7 @@ class DragDrop extends Component {
                         </Segment>
                       ) : ''}
                       {(this.props.stageStep === 'Videos') ? (
-                        <Segment
+                        <Segment inverted
                           className="videos"
                           onDragOver={(e)=>this.props.onDragOver(e)}
                           onDrop={(e)=>{this.props.onDrop(e, "videos")}}>
@@ -424,7 +424,7 @@ class DragDrop extends Component {
                         </Segment>
                       ) : ''}
                       {(this.props.stageStep === 'Audios') ? (
-                        <Segment
+                        <Segment inverted
                           className="audios"
                           onDragOver={(e)=>this.props.onDragOver(e)}
                           onDrop={(e)=>{this.props.onDrop(e, "audios")}}>
@@ -450,38 +450,29 @@ class DragDrop extends Component {
                     </Segment>
 
                   </Sidebar>
-
                   <Sidebar.Pusher>
                     <Segment className="main-board">
                       <Ref innerRef={this.segmentRef}>
-                        <Segment  className="board" style={{minHeight: '90vh'}} fluid="true">
+                        <Segment inverted className="board" style={{minHeight: '70vh'}} fluid="true">
                           <Resizable
                             style={resizeStyle}
                             defaultSize={this.state.col1DefaultSize}
                             >
-                            <Segment className="stageCol">
+                            <Segment inverted className="stageCol">
                               <Card.Group >
-                                <Card>
+                                <Card inverted>
                                   <Card.Content
                                     className="droppable single image"
                                     onDragOver={(e)=>this.props.onDragOver(e)}
                                     onDrop={(e)=>this.props.onDrop(e, "photo")}
                                     >
-                                    <Button  color="violet" onClick={(e) => this.props.toggleSideBar(e, 'Images', 'bottom')} className="task-header">Photo</Button>
+                                    <Button onClick={(e) => this.props.toggleSideBar(e, 'Images', 'bottom')} className="task-header">Photo</Button>
                                     {(tasks.photo.length > 0) ? tasks.photo : <Image  src='https://react.semantic-ui.com/images/avatar/large/matthew.png' wrapped  /> }
                                     <Card.Header>{this.props.stage.name}</Card.Header>
                                     <Card.Meta>Drag your image here </Card.Meta>
                                   </Card.Content>
                                 </Card>
-                                <Card >
-                                  <Card.Content>
-                                    <Card.Description className="single">
-                                      <Button  color="violet" onClick={(e) => this.props.toggleSideBar(e, 'Description', 'bottom')}  className="task-header">Description</Button>
-                                      {this.props.setStageDescription()}
-                                    </Card.Description>
-                                  </Card.Content>
-                                </Card>
-                                <Card >
+                                <Card>
                                   <Card.Content className="single"
                                     onDragOver={(e)=>this.props.onDragOver(e)}
                                     onDrop={(e)=>this.props.onDrop(e, "location")}
@@ -497,7 +488,7 @@ class DragDrop extends Component {
                             style={resizeStyle}
                             defaultSize={this.state.col2DefaultSize}
                             >
-                            <Segment className="stageCol">
+                            <Segment inverted className="stageCol">
                               <div className="droppable"
                                 onDragOver={(e)=>this.props.onDragOver(e)}
                                 onDrop={(e)=>this.props.onDrop(e, "onZoneEnter")}>
@@ -510,7 +501,7 @@ class DragDrop extends Component {
                             style={resizeStyle}
                             defaultSize={this.state.col3DefaultSize}
                             >
-                            <Segment className="stageCol">
+                            <Segment inverted className="stageCol">
                               <div className="droppable"
                                 onDragOver={(e)=>this.props.onDragOver(e)}
                                 onDrop={(e)=>this.props.onDrop(e, "onPictureMatch")}>
@@ -523,7 +514,7 @@ class DragDrop extends Component {
                             style={resizeStyle}
                             defaultSize={this.state.col4DefaultSize}
                             >
-                            <Segment className="stageCol">
+                            <Segment inverted className="stageCol">
                               <div className="droppable"
                                 onDragOver={(e)=>this.props.onDragOver(e)}
                                 onDrop={(e)=>this.props.onDrop(e, "onZoneLeave")}>
