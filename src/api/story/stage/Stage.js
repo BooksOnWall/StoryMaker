@@ -13,6 +13,8 @@ import {
   Image,
   Header,
   Segment,
+  Container,
+    Header,
   TextArea,
   Modal,
   List,
@@ -1347,6 +1349,7 @@ class stage extends Component {
   }
   render() {
       return (
+        <Container inverted className="main" fluid>
         <Segment className="view" >
           <Modal
             open={this.state.preflightModal}
@@ -1364,10 +1367,14 @@ class stage extends Component {
           <Dimmer.Dimmable as={Segment} blurring dimmed={this.state.loading}>
             <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
             <Loader active={this.state.loading} >Get stage info</Loader>
+            <Header inverted as={Segment} vertical size='medium'>
+            {(this.state.mode === 'create') ? <FormattedMessage id="app.story.stage.title.create" defaultMessage={`Story: Create stage`}/> : <FormattedMessage id="app.story.stage.title.edit" defaultMessage={`Story: Edit Stage`}/> }
+            </Header> 
+          
             <StorySteps sid={this.state.sid} step={this.state.step} history={this.props.history} setSteps={this.setSteps} state={this.state}/>
             {/* Create stage and set location case */}
             {(this.state.ssid === 0) ?
-              <Segment.Group horizontal style={{height: '90vh'}}>
+              <Segment.Group horizontal style={{height: '70vh'}}>
                 <Segment style={{height: 'inherit', width: '150px'}}>{this.editStage()}</Segment>
                 <Segment style={{height: 'inherit'}}>{(this.state.ssid === 0 ) ? <StageMap height="80vh" mode={this.state.mode} setStageLocation={this.setStageLocation} stageLocation={this.state.stage.stageLocation}
                 /> : ''}</Segment>
@@ -1414,6 +1421,7 @@ class stage extends Component {
                 }
         </Dimmer.Dimmable>
         </Segment>
+        </Container>
       );
   }
 }

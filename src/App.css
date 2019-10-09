@@ -76,8 +76,9 @@ video {
 .ui.segment.stageCol {
   width: -webkit-fill-available;
   height: -webkit-fill-available;
-    min-height: 100%;
-    min-width: 100%;
+  min-height: 100%;
+  min-width: 100%;
+    padding: 0 !important
 }
 .ui.segment.audio {
   padding: 0;
@@ -101,7 +102,7 @@ video {
   border-left: 1px dotted;
 }
 .stageCol .droppable {
-  height: 65vh;
+  height: 50vh;
 }
 .stageCol .droppable.image {
   height: auto;
@@ -214,6 +215,7 @@ div.DraftEditor-root {
 .top.ui.menu .item { padding: 3px !important;}
 .menu .button.hamburger{ padding: 9px !important; margin: 10px auto !important; border: 0 !important;}
 .top.ui.menu.button::after{ border: 0 !important}
+<<<<<<< Updated upstream
 .ui.segment.main{ padding: 0 !important; }
 .ui.segment.pushable, .ui.segment.main{ background: transparent !important}
 .ui.main.container {
@@ -222,6 +224,8 @@ div.DraftEditor-root {
   margin: 0 0 0 80px !important;
 }
 
+=======
+>>>>>>> Stashed changes
 .ui.visible.slide.along.sidebar.bwSidebar,.ui.slide.along.sidebar.bwSidebar {
   background: rgba(0,0,0,.87) none no-repeat;
   min-height: 100vh;
@@ -422,10 +426,16 @@ input[type="color"] {
     margin-top: 0px
 }
 .public-DraftEditor-content{ margin: 2em 0; }
-.ui.segment{ box-shadow: none !important; border: 0 !important; border-radius: 0 !important; background: #e2e2e2; padding: 0  }
-.ui.segment.view{ padding: 0 !important}
+.ui.segment{ box-shadow: none !important; border: 0 !important; border-radius: 0 !important; background: #e2e2e2; padding: 0 }
+
+.ui.segment.main{ padding: 0 !important; }
+.ui.segment.pushable, .ui.segment.main{ background: transparent !important; margin: 0}
+.ui.main.container { padding: 0 !important; max-width: 94vw !important; margin: 0 0 0 80px !important;}
+.ui.segment.view, .ui.segment.main-board, .ui.segment.blurring.dimmable{ padding: 0 !important; margin:0 !important}
 .ui.segment.content{ padding:40px !important}
 .ui.horizontal .segment{ background: transparent !important; }
 .ui.inverted.segment.stages{ padding: 0 !important; margin: 0 !important }
-#StepsContent .segment, #StepsContent .segments{ margin: 0 !important; border: 0 !important}
+
+#StepsContent .segment, #StepsContent .segments, .ui.segment.stageCol{ margin: 0 !important; border: 0 !important}
 #StepsContent .segments .segment{ margin: 0 !important; padding: 0 !important}
+.ui.segment.stageCol .ui.cards .ui.cards { margin: 0 !important; padding: 0 !important}
