@@ -39,7 +39,8 @@ class logReport extends Component  {
     return (
         items.map((log, index) => (log.category === category) ? (
           <Message key={log.category+index}  icon image color={(log.check) ? 'green' : 'red'}>
-          {(log.check) ? <Icon name='check' /> : <Image   size="small" src={log.src}/> }
+          {(log.check) ? <Icon name='check' /> : <Icon name='bug' /> }
+          {(log.src) ? <Image   size="small" src={log.src}/> : ''}
           <Message.Content>
             <Message.Header>{log.condition}</Message.Header>
             <Message.List>
@@ -59,9 +60,9 @@ class logReport extends Component  {
       }
       return log;
     });
-    let err = (error > 0) ? <Label circular color="red" >{error}</Label>: '';
-    let sucess = (win > 0) ? <Label circular color="green" >{win}</Label>: '';
-    return <Menu.Item key={category +'messages'}>{category} {err} </Menu.Item>;
+    let err = (error > 0) ? <Label size="tiny" circular color="red" >{error}</Label>: '';
+    let sucess = (win > 0) ? <Label size="tiny" circular color="green" >{win}</Label>: '';
+    return <Menu.Item key={category +'messages'}>{err} {sucess} {category.charAt(0).toUpperCase() + category.slice(1)} </Menu.Item>;
 
   }
   buildTab = () => {
@@ -70,6 +71,10 @@ class logReport extends Component  {
       {
         menuItem: this.renderTabHeader(logs, 'photo'),
         pane: {key: 'photo', content: this.renderItems(logs, 'photo')}
+      },
+      {
+        menuItem: this.renderTabHeader(logs, 'description'),
+        pane: {key: 'description', content: this.renderItems(logs, 'description')}
       },
       {
         menuItem: this.renderTabHeader(logs, 'pictures'),
@@ -100,7 +105,7 @@ class logReport extends Component  {
        <Tab
          key="preflight"
          renderActiveOnly={false}
-         menu={{ color: 'violet', inverted: true, attached: false, borderless: true, tabular: false , fluid: true, vertical: true }}
+         menu={{ color: 'orange', inverted: true, attached: false, borderless: true, tabular: false , fluid: false, vertical: true }}
          menuPosition='right'
          panes={this.state.tabs}
        />

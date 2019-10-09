@@ -471,13 +471,12 @@ const checkPreFlight = async obj => {
     log.push(check);
     check = (obj.photo && obj.photo[0].size < 100000  ) ? {category: 'photo', condition: 'Photo cannot be more than 100kb' , check: true} : {category: 'photo', condition: 'Photo cannot be more than 100kb' , check: false,  src: src, path: path,error:  obj.name + ' file weight don\'t match  ' + obj.photo[0].size};
     log.push(check);
-    // pictures match min/max pictures count
-    check = (obj.pictures && obj.pictures.length >= 5 && obj.pictures.length <= 10) ? {category: 'pictures', condition: 'Pictures number must be between 5 and 10 ' , check: true} : {category: 'pictures', condition: 'Pictures number must be between 5 and 10 ' , check: false,  src: obj.src, path: path, error:  JSON.stringify(obj.pictures) + '   ' + obj.pictures.length};
-    log.push(check);
+
+
   } else {
     // error
-      check = {category: 'photo', condition: 'Photo must exist' , check: false,   error:  'Empty: No Photo'};
-      log.push(check);
+    check = {category: 'photo', condition: 'Photo must exist' , check: false,   error:  'Empty: No Photo'};
+    log.push(check);
   }
 
   // check picture dimensions
@@ -502,30 +501,53 @@ const checkPreFlight = async obj => {
       });
       check = (maxWidth <= 2000 && maxHeight <= 2000) ? {category: 'pictures', condition: 'Picture dimension cannot be more than 2000x2000' , check: true} : {category: 'pictures', condition: 'Picture dimension cannot be more than 2000x2000  ' , check: false,  error: err };
       log.push(check);
+      // pictures match min/max pictures count
+      check = (obj.pictures.length >= 5 && obj.pictures.length <= 10) ? {category: 'pictures', condition: 'Pictures number must be between 5 and 10 ' , check: true} : {category: 'pictures', condition: 'Pictures number must be between 5 and 10 ' , check: false,  error:  'Pictures count: ' + obj.pictures.length};
+      log.push(check);
     } else {
       //error
-      check = {category: 'pictures', condition: 'Photo must exist' , check: false,   error:  'Empty: No Pictures'};
+      check = {category: 'pictures', condition: 'Picture must exist' , check: false,   error:  'Empty: No Pictures'};
       log.push(check);
     }
-
+  // Description
+  if(obj.description) {
+    check = (obj.description.length <= 140 ) ?  {category: 'description', condition: 'Description cannot be more than 140 characteres. [' + obj.description.length + ']' , check: true} : {category: 'pictures', condition: 'Description cannot be more than 140 characteres. [' + obj.description.length + ']  ' , check: false,  error: 'Description too large'};
+    log.push(check);
+  } else {
+    check = {category: 'description', condition: 'Description must exist' , check: false,   error:  'Empty: No Description'};
+    log.push(check);
+  }
   // onZoneEnter
-  // audio
-   console.log('onZoneEnter',obj.onZoneEnter );
-  let audios = (obj.onZoneEnter && obj.onZoneEnter.length > 0) ? obj.onZoneEnter.find((el, index) => {
-    return el.type === 'audio';
-  }) : null;
-  //console.log('audios',audios);
-  check = (audios) ? {category: 'onZoneEnter', condition: 'There must be one audio' , check: true} : {category: 'onZoneEnter', error: 'file is missing', condition: 'There must be one audio' , check: false};
-  log.push(check);
-  check = (audios  && audios.length === 1 ) ? {category: 'onZoneEnter', condition: 'There can be only one audio' , check: true} : {category: 'onZoneEnter',  error: 'More than one audio file', condition: 'There can be only one audio' , check: false};
-  log.push(check);
+  if(obj.onZoneEnter) {
+    check = (obj.onZoneEnter.length > 0) ? {category: 'onZoneEnter', condition: 'OnZoneEnter cannot be empty.' , check: true} : {category: 'onZoneEnter', condition: 'OnZoneEnter cannot be empty' , check: false,  error: 'zone is empty' };
+    // audios
+    let audios = (obj.onZoneEnter && obj.onZoneEnter.length > 0) ? obj.onZoneEnter.find((el, index) => {
+      return el.type === 'audio';
+    }) : null;
+    //console.log('audios',audios);
+    check = (audios) ? {category: 'onZoneEnter', condition: 'There must be one audio' , check: true} : {category: 'onZoneEnter', error: 'File is missing', condition: 'There must be one audio' , check: false};
+    log.push(check);
+    check = (audios  && audios.length < 2 ) ? {category: 'onZoneEnter', condition: 'There can be only one audio' , check: true} : {category: 'onZoneEnter',  error: 'More than one audio file: ['+ audios.length + ']', condition: 'There can be only one audio' , check: false};
+    log.push(check);
+  } else {
+    check = {category: 'onZoneEnter', condition: 'There should be an audio file' , check: false,   error:  'Empty: No Audio file'};
+    log.push(check);
+  }
+
   // Pictures
   let pics = (obj.onZoneEnter && obj.onZoneEnter.length > 0) ? obj.onZoneEnter.find((el, index) => {
-    //console.log(el.type);
+    console.log(el);
     return el.type === 'picture';
   }) : null ;
   //console.log('pictures', pics);
   // onPictureMatch
+  if(obj.onPictureMatch) {
+    check = (obj.onPictureMatch[0].type === 'video') ? {category: 'onPictureMatch', condition: 'File must be a video' , check: true} : {category: 'onPictureMatch', condition: 'There must be one video' , check: false, error: 'No video'};
+    log.push(check);
+  } else {
+    check = {category: 'onPictureMatch', condition: 'There should be a video file' , check: false,   error:  'Empty: No Video file'};
+    log.push(check);
+  }
   // Video
   // Audio
   //onZoneLeave
