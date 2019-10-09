@@ -14,7 +14,6 @@ import {
   Header,
   Segment,
   Container,
-    Header,
   TextArea,
   Modal,
   List,
@@ -1369,8 +1368,8 @@ class stage extends Component {
             <Loader active={this.state.loading} >Get stage info</Loader>
             <Header inverted as={Segment} vertical size='medium'>
             {(this.state.mode === 'create') ? <FormattedMessage id="app.story.stage.title.create" defaultMessage={`Story: Create stage`}/> : <FormattedMessage id="app.story.stage.title.edit" defaultMessage={`Story: Edit Stage`}/> }
-            </Header> 
-          
+            </Header>
+
             <StorySteps sid={this.state.sid} step={this.state.step} history={this.props.history} setSteps={this.setSteps} state={this.state}/>
             {/* Create stage and set location case */}
             {(this.state.ssid === 0) ?
