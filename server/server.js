@@ -458,42 +458,56 @@ const checkPreFlight = async obj => {
   //console.log(obj);
   let check = {};
   // check photo
-  let src = obj.photo[0].src;
-  check = (obj.photo && obj.photo.length === 1) ? {category: 'photo', condition: 'There can be only one photo' , check: true} : {category: 'photo', src: src, condition: 'There can be only one photo' , check: false};
-  log.push(check);
-  let path = (obj.photo[0]) ? './public/' + src.replace(url,'') : null;
-  // check photo dimension
-  let photoDimensions = (path) ? sizeOf(path) : null;
-  check = (photoDimensions && photoDimensions.width === photoDimensions.height) ? {category: 'photo', condition: 'Photo must be square' , check: true} : {category: 'photo', condition: 'Photo must be square' , check: false, src: src, path: path, error:  obj.name + ' Photo is:' + photoDimensions.width + ' x ' + photoDimensions.height};
-  log.push(check);
-  check = (photoDimensions && photoDimensions.width < 640 && photoDimensions.height < 640) ? {category: 'photo', condition: 'Photo dimension cannot be more than 640x640' , check: true} : {category: 'photo', condition: 'Photo dimension cannot be more than 640x640  ' , check: false,  src: src, path: path, error:  obj.name + ' Photo is:' + photoDimensions.width + ' x ' + photoDimensions.height};
-  log.push(check);
-  check = (obj.photo && obj.photo[0].size < 100000  ) ? {category: 'photo', condition: 'Photo cannot be more than 100kb' , check: true} : {category: 'photo', condition: 'Photo cannot be more than 100kb' , check: false,  src: src, path: path,error:  obj.name + ' file weight don\'t match  ' + obj.photo[0].size};
-  log.push(check);
-  // pictures match min/max pictures count
-  check = (obj.pictures && obj.pictures.length >= 5 && obj.pictures.length <= 10) ? {category: 'pictures', condition: 'Pictures number must be between 5 and 10 ' , check: true} : {category: 'pictures', condition: 'Pictures number must be between 5 and 10 ' , check: false,  src: obj.src, path: path, error:  JSON.stringify(obj.pictures) + '   ' + obj.pictures.length};
-  log.push(check);
+  if(obj.photo && obj.photo.length > 0 && obj.photo[0].src) {
+    let src = obj.photo[0].src;
+    check = (obj.photo && obj.photo.length === 1) ? {category: 'photo', condition: 'There can be only one photo' , check: true} : {category: 'photo', src: src, condition: 'There can be only one photo' , check: false};
+    log.push(check);
+    let path = (obj.photo[0]) ? './public/' + src.replace(url,'') : null;
+    // check photo dimension
+    let photoDimensions = (path) ? sizeOf(path) : null;
+    check = (photoDimensions && photoDimensions.width === photoDimensions.height) ? {category: 'photo', condition: 'Photo must be square' , check: true} : {category: 'photo', condition: 'Photo must be square' , check: false, src: src, path: path, error:  obj.name + ' Photo is:' + photoDimensions.width + ' x ' + photoDimensions.height};
+    log.push(check);
+    check = (photoDimensions && photoDimensions.width < 640 && photoDimensions.height < 640) ? {category: 'photo', condition: 'Photo dimension cannot be more than 640x640' , check: true} : {category: 'photo', condition: 'Photo dimension cannot be more than 640x640  ' , check: false,  src: src, path: path, error:  obj.name + ' Photo is:' + photoDimensions.width + ' x ' + photoDimensions.height};
+    log.push(check);
+    check = (obj.photo && obj.photo[0].size < 100000  ) ? {category: 'photo', condition: 'Photo cannot be more than 100kb' , check: true} : {category: 'photo', condition: 'Photo cannot be more than 100kb' , check: false,  src: src, path: path,error:  obj.name + ' file weight don\'t match  ' + obj.photo[0].size};
+    log.push(check);
+    // pictures match min/max pictures count
+    check = (obj.pictures && obj.pictures.length >= 5 && obj.pictures.length <= 10) ? {category: 'pictures', condition: 'Pictures number must be between 5 and 10 ' , check: true} : {category: 'pictures', condition: 'Pictures number must be between 5 and 10 ' , check: false,  src: obj.src, path: path, error:  JSON.stringify(obj.pictures) + '   ' + obj.pictures.length};
+    log.push(check);
+  } else {
+    // error
+      check = {category: 'photo', condition: 'Photo must exist' , check: false,   error:  'Empty: No Photo'};
+      log.push(check);
+  }
+
   // check picture dimensions
-  let pictures = obj.pictures;
-  let picsDim=[];
-  pictures.map(pic => {
-    let path = './public/'+pic.image.src.replace('assets/','');
-    let src = pic.image.src;
-    let picDimensions = sizeOf(path);
-    picDimensions.name = pic.image.name;
-    picDimensions.path = path;
-    picDimensions.src = src;
-    picDimensions.Oversize =  (picDimensions.width <= 2000 && picDimensions.height <= 2000) ? false :true;
-    picsDim.push(picDimensions);
-    return pic;
-  });
-  let maxWidth = Math.max.apply(Math, picsDim.map(function(o) { return o.width; }));
-  let maxHeight = Math.max.apply(Math, picsDim.map(function(o) { return o.height; }));
-  const err = picsDim.map((pic) => {
-    return (pic.width >= 2000 || pic.height >=2000) ? pic : ''
-  });
-  check = (maxWidth <= 2000 && maxHeight <= 2000) ? {category: 'pictures', condition: 'Picture dimension cannot be more than 2000x2000' , check: true} : {category: 'pictures', condition: 'Picture dimension cannot be more than 2000x2000  ' , check: false,  error: err };
-  log.push(check);
+  let pictures = (obj.pictures) ? obj.pictures : null ;
+    if(pictures) {
+      let picsDim=[];
+      pictures.map(pic => {
+        let path = './public/'+pic.image.src.replace('assets/','');
+        let src = pic.image.src;
+        let picDimensions = sizeOf(path);
+        picDimensions.name = pic.image.name;
+        picDimensions.path = path;
+        picDimensions.src = src;
+        picDimensions.Oversize =  (picDimensions.width <= 2000 && picDimensions.height <= 2000) ? false :true;
+        picsDim.push(picDimensions);
+        return pic;
+      });
+      let maxWidth = Math.max.apply(Math, picsDim.map(function(o) { return o.width; }));
+      let maxHeight = Math.max.apply(Math, picsDim.map(function(o) { return o.height; }));
+      const err = picsDim.map((pic) => {
+        return (pic.width >= 2000 || pic.height >=2000) ? pic : ''
+      });
+      check = (maxWidth <= 2000 && maxHeight <= 2000) ? {category: 'pictures', condition: 'Picture dimension cannot be more than 2000x2000' , check: true} : {category: 'pictures', condition: 'Picture dimension cannot be more than 2000x2000  ' , check: false,  error: err };
+      log.push(check);
+    } else {
+      //error
+      check = {category: 'pictures', condition: 'Photo must exist' , check: false,   error:  'Empty: No Pictures'};
+      log.push(check);
+    }
+
   // onZoneEnter
   // audio
    console.log('onZoneEnter',obj.onZoneEnter );
