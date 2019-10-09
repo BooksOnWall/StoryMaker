@@ -476,12 +476,11 @@ const checkPreFlight = async obj => {
   // check picture dimensions
   let pictures = obj.pictures;
   let picsDim=[];
-  //console.log('Pictures', pictures);
   pictures.map(pic => {
     let path = './public/'+pic.image.src.replace('assets/','');
     let src = pic.image.src;
     let picDimensions = sizeOf(path);
-    picDimensions.name = pic.name;
+    picDimensions.name = pic.image.name;
     picDimensions.path = path;
     picDimensions.src = src;
     picDimensions.Oversize =  (picDimensions.width <= 2000 && picDimensions.height <= 2000) ? false :true;
@@ -496,12 +495,25 @@ const checkPreFlight = async obj => {
   check = (maxWidth <= 2000 && maxHeight <= 2000) ? {category: 'pictures', condition: 'Picture dimension cannot be more than 2000x2000' , check: true} : {category: 'pictures', condition: 'Picture dimension cannot be more than 2000x2000  ' , check: false,  error: err };
   log.push(check);
   // onZoneEnter
-  check = (obj.onZoneEnter && obj.onZoneEnter.length > 0  ) ? {category: 'onZoneEnter', condition: 'There must be one audio' , check: true} : {category: 'onZoneEnter', error: 'file is missing', condition: 'There must be one audio' , check: false};
+  // audio
+   console.log('onZoneEnter',obj.onZoneEnter );
+  let audios = (obj.onZoneEnter && obj.onZoneEnter.length > 0) ? obj.onZoneEnter.find((el, index) => {
+    return el.type === 'audio';
+  }) : null;
+  //console.log('audios',audios);
+  check = (audios) ? {category: 'onZoneEnter', condition: 'There must be one audio' , check: true} : {category: 'onZoneEnter', error: 'file is missing', condition: 'There must be one audio' , check: false};
   log.push(check);
-  check = (obj.onZoneEnter && obj.onZoneEnter.length > 0  && obj.onZoneEnter.length === 1 ) ? {category: 'onZoneEnter', condition: 'There can be only one audio' , check: true} : {category: 'onZoneEnter',  error: 'More than one audio file', condition: 'There can be only one audio' , check: false};
+  check = (audios  && audios.length === 1 ) ? {category: 'onZoneEnter', condition: 'There can be only one audio' , check: true} : {category: 'onZoneEnter',  error: 'More than one audio file', condition: 'There can be only one audio' , check: false};
   log.push(check);
-  //onPictureMatch
-
+  // Pictures
+  let pics = (obj.onZoneEnter && obj.onZoneEnter.length > 0) ? obj.onZoneEnter.find((el, index) => {
+    //console.log(el.type);
+    return el.type === 'picture';
+  }) : null ;
+  //console.log('pictures', pics);
+  // onPictureMatch
+  // Video
+  // Audio
   //onZoneLeave
   check = (obj.onZoneLeave && obj.onZoneLeave.length > 0  ) ? {category: 'onZoneLeave', condition: 'There must be one audio' , check: true} : {category: 'onZoneLeave', error: 'file is missing', condition: 'There must be one audio' , check: false};
   log.push(check);
