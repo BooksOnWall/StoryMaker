@@ -10,7 +10,7 @@ const Extra = require('telegraf/extra');
 const session = require('telegraf/session');
 const { reply } = Telegraf;
 const Tail = require('nodejs-tail');
-
+var sizeOf = require('image-size');
 
 const bodyParser = require('body-parser');
 //CORS
@@ -21,6 +21,7 @@ var cors = require('cors');
 require('dotenv').config();
 
 const host = process.env.SERVER_HOST;
+
 const protocol = process.env.SERVER_PROTOCOL;
 const port = process.env.SERVER_PORT;
 const hasbot = JSON.parse(process.env.BOT_ACTIVE);
@@ -441,6 +442,73 @@ const getStage = async obj => {
   return await Stages.findOne({
     where: obj,
   });
+};
+const checkPreFlight = async obj => {
+  // Photo / square format-max resolution 640px /max size 100kb / One and only one => done
+  // Description text min 140 characteres/ only text (no url) ??
+  // Location / is in "Zona location" / ??
+  // OnZoneEnter / One and only one Mp3 /
+  // OnZoneEnter / Photo One and only one ??
+  // OnPictureMatch / Picture - minimun 5~10 images / max resolution 2000px / maxi size 200kb per image
+  // OnPictureMatch / Video 1 Minimun / Codec h264 MP4-M4V / max size 10mb (if video has audio ? audio could not exist )
+  // OnPictureMatch / Audio 1 Minimun / Codec Mp3 / Max size 5mb
+  // OnZoneLeve / Audio 1 Minimun / Codec Mp3 / Max size 5mb / Loop
+  let url = protocol+ '://'+host+':'+port+'/assets/';
+  let log = [];
+  //console.log(obj);
+  let check = {};
+  // check photo
+  let src = obj.photo[0].src;
+  check = (obj.photo && obj.photo.length === 1) ? {category: 'photo', condition: 'There can be only one photo' , check: true} : {category: 'photo', src: src, condition: 'There can be only one photo' , check: false};
+  log.push(check);
+  let path = (obj.photo[0]) ? './public/' + src.replace(url,'') : null;
+  // check photo dimension
+  let photoDimensions = (path) ? sizeOf(path) : null;
+  check = (photoDimensions && photoDimensions.width === photoDimensions.height) ? {category: 'photo', condition: 'Photo must be square' , check: true} : {category: 'photo', condition: 'Photo must be square' , check: false, src: src, path: path, error:  obj.name + ' Photo is:' + photoDimensions.width + ' x ' + photoDimensions.height};
+  log.push(check);
+  check = (photoDimensions && photoDimensions.width < 640 && photoDimensions.height < 640) ? {category: 'photo', condition: 'Photo dimension cannot be more than 640x640' , check: true} : {category: 'photo', condition: 'Photo dimension cannot be more than 640x640  ' , check: false,  src: src, path: path, error:  obj.name + ' Photo is:' + photoDimensions.width + ' x ' + photoDimensions.height};
+  log.push(check);
+  check = (obj.photo && obj.photo[0].size < 100000  ) ? {category: 'photo', condition: 'Photo cannot be more than 100kb' , check: true} : {category: 'photo', condition: 'Photo cannot be more than 100kb' , check: false,  src: src, path: path,error:  obj.name + ' file weight don\'t match  ' + obj.photo[0].size};
+  log.push(check);
+  // pictures match min/max pictures count
+  check = (obj.pictures && obj.pictures.length >= 5 && obj.pictures.length <= 10) ? {category: 'pictures', condition: 'Pictures number must be between 5 and 10 ' , check: true} : {category: 'pictures', condition: 'Pictures number must be between 5 and 10 ' , check: false,  src: obj.src, path: path, error:  JSON.stringify(obj.pictures) + '   ' + obj.pictures.length};
+  log.push(check);
+  // check picture dimensions
+  let pictures = obj.pictures;
+  let picsDim=[];
+  //console.log('Pictures', pictures);
+  pictures.map(pic => {
+    let path = './public/'+pic.image.src.replace('assets/','');
+    let src = pic.image.src;
+    let picDimensions = sizeOf(path);
+    picDimensions.name = pic.name;
+    picDimensions.path = path;
+    picDimensions.src = src;
+    picDimensions.Oversize =  (picDimensions.width <= 2000 && picDimensions.height <= 2000) ? false :true;
+    picsDim.push(picDimensions);
+    return pic;
+  });
+  let maxWidth = Math.max.apply(Math, picsDim.map(function(o) { return o.width; }));
+  let maxHeight = Math.max.apply(Math, picsDim.map(function(o) { return o.height; }));
+  const err = picsDim.map((pic) => {
+    return (pic.width >= 2000 || pic.height >=2000) ? pic : ''
+  });
+  check = (maxWidth <= 2000 && maxHeight <= 2000) ? {category: 'pictures', condition: 'Picture dimension cannot be more than 2000x2000' , check: true} : {category: 'pictures', condition: 'Picture dimension cannot be more than 2000x2000  ' , check: false,  error: err };
+  log.push(check);
+  // onZoneEnter
+  check = (obj.onZoneEnter && obj.onZoneEnter.length > 0  ) ? {category: 'onZoneEnter', condition: 'There must be one audio' , check: true} : {category: 'onZoneEnter', error: 'file is missing', condition: 'There must be one audio' , check: false};
+  log.push(check);
+  check = (obj.onZoneEnter && obj.onZoneEnter.length > 0  && obj.onZoneEnter.length === 1 ) ? {category: 'onZoneEnter', condition: 'There can be only one audio' , check: true} : {category: 'onZoneEnter',  error: 'More than one audio file', condition: 'There can be only one audio' , check: false};
+  log.push(check);
+  //onPictureMatch
+
+  //onZoneLeave
+  check = (obj.onZoneLeave && obj.onZoneLeave.length > 0  ) ? {category: 'onZoneLeave', condition: 'There must be one audio' , check: true} : {category: 'onZoneLeave', error: 'file is missing', condition: 'There must be one audio' , check: false};
+  log.push(check);
+  check = (obj.onZoneLeave && obj.onZoneLeave.length > 0  && obj.onZoneLeave.length === 1 ) ? {category: 'onZoneLeave', condition: 'There can be only one audio' , check: true} : {category: 'onZoneLeave',  error: 'More than one audio file', condition: 'There can be only one audio' , check: false};
+  log.push(check);
+
+  return log
 };
 const deleteStage = async (id, sid) => {
   let res = await Stages.destroy({
@@ -1267,7 +1335,19 @@ app.patch('/stories/:storyId/stages/:stageId/objChangeProp', function(req, res, 
   }
 
 });
-
+app.post('/stories/:storyId/stages/:stageId/preflight', function(req, res, next) {
+  let ssid = parseInt(req.params.stageId);
+  // get stage
+  getStage({id: ssid}).then(stage => {
+    // perform preflight check
+    checkPreFlight(stage.get({
+      plain: true
+    })).then(log => {
+      res.json({preflight: log , msg: 'preflight done'})
+    });
+    //res.json(stage)
+  });
+});
 // start app
 if (protocol === 'https') {
   var key = fs.readFileSync('./server.key');
@@ -1283,6 +1363,6 @@ if (protocol === 'https') {
 } else {
   http.createServer(app)
   .listen(port, function () {
-    console.log('BooksOnWall RESTFULL Server listening on port 3010! Go to https://localhost:3000/')
+    console.log('BooksOnWall RESTFULL Server listening on port 3010! Go to http://localhost:3000/')
   });
 }

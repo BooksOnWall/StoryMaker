@@ -11,8 +11,11 @@ import {
   Checkbox,
   Confirm,
   Image,
+  Header,
   Segment,
   TextArea,
+  Modal,
+  List,
   Dimmer,
   Loader,
 } from 'semantic-ui-react';
@@ -25,6 +28,7 @@ import ReactPlayer  from 'react-player';
 import ReactAudioPlayer from 'react-audio-player';
 import ReactCardFlip from 'react-card-flip';
 import StageMap from '../map/stageMap';
+import LogReport from '../logReport';
 
 const stageOptions = [
   { key: 'Point', value: 'Point', text: 'Geo Point' },
@@ -69,6 +73,7 @@ class stage extends Component {
         stagePicturesUploadUrl: server + 'stories/' + this.props.match.params.id + '/stages/' + parseInt(this.props.match.params.sid) + '/uploadPictures',
         stageVideosUploadUrl: server + 'stories/' + this.props.match.params.id + '/stages/' + parseInt(this.props.match.params.sid) + '/uploadVideos',
         stageAudiosUploadUrl: server + 'stories/' + this.props.match.params.id + '/stages/' + parseInt(this.props.match.params.sid) + '/uploadAudios',
+        preflightStageURL: server + 'stories/' + this.props.match.params.id + '/stages/' + parseInt(this.props.match.params.sid) + '/preflight',
         map:  '/stories/'+ this.props.match.params.id  + '/map',
         loading: false,
         step: 'Stages',
@@ -120,6 +125,8 @@ class stage extends Component {
         stageVideos: [],
         stageAudios: [],
         videoDefaultSize: '350',
+        preflightModal: false,
+        preflightLog: null,
         setSteps: this.setSteps,
         setStageLocation: this.setStageLocation,
         toggleAuthenticateStatus: this.props.childProps.toggleAuthenticateStatus,
@@ -1217,7 +1224,35 @@ class stage extends Component {
       //this.setState({ [loadingState] : false});
       console.log(objects);
   }
-
+  exportStage = async () => {
+    this.checkPreflight();
+  }
+  checkPreflight = async () => {
+    try {
+      await fetch(this.state.preflightStageURL, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {'Access-Control-Allow-Origin': '*' },
+      })
+      .then(response => {
+        if (response && !response.ok) { throw new Error(response.statusText);}
+        return response.json();
+      })
+      .then(data => {
+          if(data) {
+            this.setState({preflightModal: true, preflightLog: data.preflight});
+          } else {
+            console.log('No Data received from the server');
+          }
+      })
+      .catch((error) => {
+        // Your error is here!
+        console.log({error});
+      });
+    } catch(e) {
+      console.log(e.message);
+    }
+  }
   getStage = async () => {
     this.setState({loading: true});
     this.setState({tasks: []});
@@ -1298,9 +1333,34 @@ class stage extends Component {
           </Card>
         </ReactCardFlip>)
   handleStageStep = (e) => this.setState({stageStep: e.target.name})
+  handleExport = () => {
+    this.setState({preflightModal: false});
+  }
+  logReport = () => {
+    const logs = (this.state.preflightLog) ? this.state.preflightLog : null;
+    if (logs) {
+      return (
+        <List>{logs.map((line) => (<List.Item>{line.condition}</List.Item>))}</List>
+      );
+    }
+
+  }
   render() {
       return (
         <Segment className="view" >
+          <Modal
+            open={this.state.preflightModal}
+            onClose={this.handleExport}
+            basic
+            size='small'
+            >
+            <Header icon='browser' content='Preflight Check ' />
+            <Modal.Content>
+              <h3>Below a check before exporting.</h3>
+              <LogReport logs={this.state.preflightLog}/>
+            </Modal.Content>
+            <Modal.Actions><Button color='green' onClick={this.handleExport} inverted><Icon name='checkmark' /> Got it </Button></Modal.Actions>
+            </Modal>
           <Dimmer.Dimmable as={Segment} blurring dimmed={this.state.loading}>
             <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
             <Loader active={this.state.loading} >Get stage info</Loader>
@@ -1348,6 +1408,7 @@ class stage extends Component {
               handleTopHideClick={this.handleTopHideClick}
               handleTopShowClick={this.handleTopShowClick}
               handleTopSidebarHide={this.handleTopSidebarHide}
+              exportStage={this.exportStage}
               />
             : ''
                 }

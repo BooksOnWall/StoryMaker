@@ -274,7 +274,18 @@ class DragDrop extends Component {
 
   }
   show = (key) => this.setState({ [key]: true })
-  handleConfirm = (key) => this.setState({ [key]: false })
+  handleConfirm = (key) => {
+    // key ['import', 'reset', 'destroy', 'export']
+    this.setState({ [key]: false });
+    switch(key) {
+      case 'export':
+      this.props.exportStage();
+      break;
+      default:
+      break;
+    }
+  }
+
   handleCancel = (key) => this.setState({ [key]: false })
   render() {
     let tasks = this.props.renderTasks();
