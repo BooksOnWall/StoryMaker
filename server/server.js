@@ -11,6 +11,7 @@ const session = require('telegraf/session');
 const { reply } = Telegraf;
 const Tail = require('nodejs-tail');
 var sizeOf = require('image-size');
+const getSize = require('get-folder-size');
 var tar = require('tar-fs');
 
 const bodyParser = require('body-parser');
@@ -606,8 +607,10 @@ const exportStageTar = async (obj) => {
     // packing a directory
     // __dirname +
     await tar.pack(path).pipe(fs.createWriteStream(dest+'stage_'+obj.id +'.tar'));
+    let stats = fs.statSync(dest+'stage_'+obj.id +'.tar');
+    let size = stats.size / 1000000.0;
     //let size  = (await sizeOf(dest+'stage_'+obj.id +'.tar');
-    return { name: 'stage_'+obj.id +'.tar',  path: dest, src: 'assets/stories/'+ obj.sid + '/export/stages/stage_'+obj.id +'.tar'  }
+    return { name: 'stage_'+obj.id +'.tar', size: size,  path: dest, src: 'assets/stories/'+ obj.sid + '/export/stages/stage_'+obj.id +'.tar'  }
   } catch(e) {
     console.log(e.message);
   }
