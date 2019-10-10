@@ -236,7 +236,7 @@ class DragDrop extends Component {
             onConfirm={e => this.handleConfirm('destroy')}
           />
         <Button.Or />
-        <Button color="teal" onClick={e => this.show('export')}><Icon name="cloud download" /> Export</Button>
+        <Button color="teal" loading={this.props.state.exportLoading} onClick={e => this.show('export')}><Icon name="cloud download" /> Export</Button>
           <Confirm
             open={this.state.export}
             cancelButton='Never mind'

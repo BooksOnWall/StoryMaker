@@ -121,6 +121,7 @@ class stage extends Component {
         picturesLoading: false,
         videosLoading: false,
         audiosLoading: false,
+        exportLoading: false,
         stagePictures: [],
         stageImages: [],
         stageVideos: [],
@@ -1226,7 +1227,13 @@ class stage extends Component {
       console.log(objects);
   }
   exportStage = async () => {
-    this.checkPreflight();
+    try {
+      this.setState({exportLoading: true});
+      await this.checkPreflight();
+    } catch(e) {
+      console.log(e.message);
+    }
+
   }
   checkPreflight = async () => {
     try {
@@ -1241,7 +1248,7 @@ class stage extends Component {
       })
       .then(data => {
           if(data) {
-            this.setState({preflightModal: true, preflightLog: data.preflight});
+            this.setState({exportLoading: false, preflightModal: true, preflightLog: data.preflight});
           } else {
             console.log('No Data received from the server');
           }
