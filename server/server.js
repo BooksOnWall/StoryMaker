@@ -467,12 +467,10 @@ const checkPreFlight = async obj => {
     let photoDimensions = (path) ? sizeOf(path) : null;
     check = (photoDimensions && photoDimensions.width === photoDimensions.height) ? {category: 'photo', condition: 'Photo must be square' , check: true} : {category: 'photo', condition: 'Photo must be square' , check: false, src: src, path: path, error:  obj.name + ' Photo is:' + photoDimensions.width + ' x ' + photoDimensions.height};
     log.push(check);
-    check = (photoDimensions && photoDimensions.width < 640 && photoDimensions.height < 640) ? {category: 'photo', condition: 'Photo dimension cannot be more than 640x640' , check: true} : {category: 'photo', condition: 'Photo dimension cannot be more than 640x640  ' , check: false,  src: src, path: path, error:  obj.name + ' Photo is:' + photoDimensions.width + ' x ' + photoDimensions.height};
+    check = (photoDimensions && photoDimensions.width <= 640 && photoDimensions.height <= 640) ? {category: 'photo', condition: 'Photo dimension cannot be more than 640x640' , check: true} : {category: 'photo', condition: 'Photo dimension cannot be more than 640x640  ' , check: false,  src: src, path: path, error:  obj.name + ' Photo is:' + photoDimensions.width + ' x ' + photoDimensions.height};
     log.push(check);
     check = (obj.photo && obj.photo[0].size < 100000  ) ? {category: 'photo', condition: 'Photo cannot be more than 100kb' , check: true} : {category: 'photo', condition: 'Photo cannot be more than 100kb' , check: false,  src: src, path: path,error:  obj.name + ' file weight don\'t match  ' + obj.photo[0].size};
     log.push(check);
-
-
   } else {
     // error
     check = {category: 'photo', condition: 'Photo must exist' , check: false,   error:  'Empty: No Photo'};
