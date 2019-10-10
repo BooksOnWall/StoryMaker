@@ -460,7 +460,7 @@ class DragDrop extends Component {
                             >
                             <Segment inverted className="stageCol">
                               <Card.Group >
-                                <Card inverted>
+                                <Card >
                                   <Card.Content
                                     className="droppable single image"
                                     onDragOver={(e)=>this.props.onDragOver(e)}

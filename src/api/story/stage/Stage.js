@@ -1361,6 +1361,7 @@ class stage extends Component {
       .then(data => {
           if(data) {
             this.setState({downloadLoading: false, preflightModal: false});
+            window.location.href = this.state.server + data.export.src;
           } else {
             console.log('No Data received from the server');
           }
@@ -1385,8 +1386,8 @@ class stage extends Component {
   }
   render() {
       return (
-        <Container inverted className="main" fluid>
-        <Segment className="view" >
+        <Container  className="main" fluid>
+        <Segment inverted className="view" >
           <Modal
             open={this.state.preflightModal}
             onClose={this.handleExport}

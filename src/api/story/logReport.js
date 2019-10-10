@@ -37,7 +37,7 @@ class logReport extends Component  {
   renderItems =  (items, category) => {
     return (
         items.map((log, index) => (log.category === category) ? (
-          <Message key={log.category+index}  icon image color={(log.check) ? 'green' : 'red'}>
+          <Message key={log.category+index}  icon color={(log.check) ? 'green' : 'red'}>
           {(log.check) ? <Icon name='check' /> : <Icon name='bug' /> }
           {(log.src) ? <Image   size="small" src={log.src}/> : ''}
           <Message.Content>

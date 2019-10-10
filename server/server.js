@@ -541,7 +541,7 @@ const checkPreFlight = async obj => {
 
     // Pictures
     let pics = (obj.onZoneEnter && obj.onZoneEnter.length > 0) ? obj.onZoneEnter.find((el, index) => {
-      console.log(el);
+      //console.log(el);
       return el.type === 'picture';
     }) : null ;
     //console.log('pictures', pics);
@@ -598,11 +598,16 @@ const exportStageJSON = async (obj) => {
 const exportStageTar = async (obj) => {
   try {
     //console.log(obj);
-    let path = './public/stories/'+ obj.sid + '/stages/' + obj.id;
-    let dest = './public/stories/'+ obj.sid + '/export/stages/';
-    if (!fs.existsSync(dest))  fs.mkdirSync(dest, 0o744) ;
+    let path = __dirname +'/public/stories/'+ obj.sid + '/stages/' + obj.id;
+    let ex = __dirname +'/public/stories/'+ obj.sid + '/export/';
+    let dest = ex + 'stages/';
+    if (!fs.existsSync(ex))  await fs.mkdirSync(ex, 0o744) ;
+    if (!fs.existsSync(dest))  await fs.mkdirSync(dest, 0o744) ;
     // packing a directory
+    // __dirname +
     await tar.pack(path).pipe(fs.createWriteStream(dest+'stage_'+obj.id +'.tar'));
+    //let size  = (await sizeOf(dest+'stage_'+obj.id +'.tar');
+    return { name: 'stage_'+obj.id +'.tar',  path: dest, src: 'assets/stories/'+ obj.sid + '/export/stages/stage_'+obj.id +'.tar'  }
   } catch(e) {
     console.log(e.message);
   }
@@ -876,7 +881,29 @@ app.get('/assets/artists/:artistId/:name', function (req, res, next) {
     }
   })
 });
+app.get('/assets/stories/:storyId/export/stages/:name', function (req, res, next) {
+  var sid = req.params.storyId;
+  var fileName = req.params.name;
 
+  var path = './public/stories/' + sid + '/export/stages/';
+
+  var options = {
+    root: path ,
+    dotfiles: 'deny',
+    headers: {
+      'x-timestamp': Date.now(),
+      'x-sent': true
+    }
+  }
+
+  res.sendFile(fileName, options, function (err) {
+    if (err) {
+      next(err)
+    } else {
+      console.log('Sent:', fileName)
+    }
+  })
+});
 app.get('/assets/stories/:storyId/stages/:stageId/images/:name', function (req, res, next) {
   var sid = req.params.storyId;
   var ssid= req.params.stageId;
@@ -901,6 +928,7 @@ app.get('/assets/stories/:storyId/stages/:stageId/images/:name', function (req, 
     }
   })
 });
+
 
 app.get('/assets/stories/:storyId/stages/:stageId/:category/:name', function (req, res, next) {
   var sid = req.params.storyId;
