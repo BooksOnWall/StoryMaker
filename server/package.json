@@ -32,6 +32,7 @@
     "passport-jwt": "^4.0.0",
     "rimraf": "^2.6.3",
     "sequelize": "^5.10.1",
+    "tar-fs": "^2.0.0",
     "telegraf": "^3.32.0"
   }
 }

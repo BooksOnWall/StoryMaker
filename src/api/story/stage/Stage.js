@@ -75,6 +75,7 @@ class stage extends Component {
         stageVideosUploadUrl: server + 'stories/' + this.props.match.params.id + '/stages/' + parseInt(this.props.match.params.sid) + '/uploadVideos',
         stageAudiosUploadUrl: server + 'stories/' + this.props.match.params.id + '/stages/' + parseInt(this.props.match.params.sid) + '/uploadAudios',
         preflightStageURL: server + 'stories/' + this.props.match.params.id + '/stages/' + parseInt(this.props.match.params.sid) + '/preflight',
+        downloadStageURL : server + 'stories/' + this.props.match.params.id + '/stages/' + parseInt(this.props.match.params.sid) + '/download',
         map:  '/stories/'+ this.props.match.params.id  + '/map',
         loading: false,
         step: 'Stages',
@@ -122,6 +123,7 @@ class stage extends Component {
         videosLoading: false,
         audiosLoading: false,
         exportLoading: false,
+        downloadLoading:  false,
         stagePictures: [],
         stageImages: [],
         stageVideos: [],
@@ -1344,6 +1346,34 @@ class stage extends Component {
   handleExport = () => {
     this.setState({preflightModal: false});
   }
+  handleDownload = async () => {
+    try {
+      this.setState({downloadLoading: true});
+      await fetch(this.state.downloadStageURL, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {'Access-Control-Allow-Origin': '*' },
+      })
+      .then(response => {
+        if (response && !response.ok) { throw new Error(response.statusText);}
+        return response.json();
+      })
+      .then(data => {
+          if(data) {
+            this.setState({downloadLoading: false, preflightModal: false});
+          } else {
+            console.log('No Data received from the server');
+          }
+      })
+      .catch((error) => {
+        // Your error is here!
+        console.log({error});
+      });
+    } catch(e) {
+
+    }
+
+  }
   logReport = () => {
     const logs = (this.state.preflightLog) ? this.state.preflightLog : null;
     if (logs) {
@@ -1368,7 +1398,10 @@ class stage extends Component {
               <h3>Below a check before exporting.</h3>
               <LogReport logs={this.state.preflightLog}/>
             </Modal.Content>
-            <Modal.Actions><Button color='green' onClick={this.handleExport} inverted><Icon name='checkmark' /> Got it </Button></Modal.Actions>
+            <Modal.Actions>
+              <Button color='red' onClick={this.handleExport} inverted><Icon name='checkmark' /> Back </Button>
+              <Button color='green' onClick={this.handleDownload} loading={this.state.downloadLoading} inverted><Icon name='cloud download' /> Download Stage </Button>
+            </Modal.Actions>
             </Modal>
           <Dimmer.Dimmable as={Segment} blurring dimmed={this.state.loading}>
             <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />

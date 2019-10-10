@@ -30,7 +30,6 @@ class logReport extends Component  {
         };
   }
   renderImageList = (list) => {
-    console.log(list);
     return (
       <Message.Item><Image.Group size="tiny">{ list.map((img, index) => (img.src) ? <Image key={index}  src={this.state.server+img.src} /> : '') }</Image.Group></Message.Item>
     );
@@ -91,6 +90,10 @@ class logReport extends Component  {
       {
         menuItem: this.renderTabHeader(logs, 'onZoneLeave'),
         pane:  {key: 'onZoneLeave', content: this.renderItems(logs, 'onZoneLeave')}
+      },
+      {
+        menuItem: this.renderTabHeader(logs, 'json'),
+        pane: {key: 'json', content: this.renderItems(logs, 'json')}
       }
     ];
     this.setState({logs: logs, tabs: tabs});
