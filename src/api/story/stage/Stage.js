@@ -11,6 +11,7 @@ import {
   Checkbox,
   Confirm,
   Image,
+  Progress,
   Header,
   Segment,
   Container,
@@ -1384,6 +1385,16 @@ class stage extends Component {
     }
 
   }
+  percentPreflight = (p) => {
+    if (p) {
+      let win = 0;
+      let err = 0;
+      let total = 0;
+      p.map(log => (log.check === true) ? win ++ : err ++);
+      total = (win + err);
+      return parseInt((win / total) * 100);
+    }
+  }
   render() {
       return (
         <Container className="main" fluid>
@@ -1395,10 +1406,12 @@ class stage extends Component {
             size='small'
             >
             <Header icon='browser' content='Preflight Check ' />
+            <Progress size="big" percent={this.percentPreflight(this.state.preflightLog)} attached='top' progress active indicating inverted />
             <Modal.Content>
               <h3>Below a check before exporting.</h3>
               <LogReport logs={this.state.preflightLog}/>
             </Modal.Content>
+            <Progress size="big"  percent={this.percentPreflight(this.state.preflightLog)} attached='bottom' progress active indicating inverted />
             <Modal.Actions>
               <Button color='red' onClick={this.handleExport} inverted><Icon name='checkmark' /> Back </Button>
               <Button color='green' onClick={this.handleDownload} loading={this.state.downloadLoading} inverted><Icon name='cloud download' /> Download Stage </Button>
