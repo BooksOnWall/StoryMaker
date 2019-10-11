@@ -1248,7 +1248,27 @@ app.delete('/artists/:artistId', function(req, res, next) {
 });
 // Stories URI requests
 app.get('/stories', function(req, res) {
-  getAllStories().then(user => res.json(user));
+  getAllStories().then((stories) => {
+    let st = [];
+    stories.map((story, index) => {
+      story = story.get({plain: true});
+      getAllStages(story.id).then(stages => {
+        story['stages'] = stages;
+      });
+
+      //const preflight = storyCheckPreflight(story);
+      let win = 0;
+      let err = 0;
+      let total = 0;
+      //preflight.map(log => (log.check === true) ? win ++ : err ++);
+      total = win + err;
+      story["progress"] = parseInt((win / total) * 100 );
+      console.log('story', story);
+      st.push(story);
+      return story;
+    });
+    return res.json(st);
+  });
 });
 app.post('/stories/0', function(req, res, next) {
   const { title, state, city, sinopsys, credits, artist, active } = req.body;
