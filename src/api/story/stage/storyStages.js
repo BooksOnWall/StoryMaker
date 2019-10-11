@@ -43,6 +43,7 @@ class storyStages extends Component {
       exportLoading: false,
       exportConfirm: false,
       direction: null,
+      story: null,
       stages: null,
       activeIndex: null,
       location: null,
@@ -196,7 +197,7 @@ class storyStages extends Component {
        })
        .then(response => response.json())
        .then(data => {
-         this.setState({stages: data.story.stages, sid: this.state.sid, preflight: data.preflight, exportLoading: true});
+         this.setState({stages: data.story.stages, story: data.story, sid: this.state.sid, preflight: data.preflight, exportLoading: true});
          return data
        });
     } catch(e) {
@@ -342,15 +343,15 @@ class storyStages extends Component {
       });
     }
     let percent = (win === 0) ? 0 : parseInt(win / total * 100);
-    let err = (error > 0) ? <Button size="tiny"  color="red" >Error [{error}]</Button>: '';
-    let sucess = (win > 0) ? <Button size="tiny"  color="green" >Success [{win}]</Button>: '';
-    let name = <Button style={{width: '50%'}} size="tiny"  color="brown" >{stage.name}</Button>;
+    let err = (error > 0) ? <Button basic size="tiny"  color="red" >Error [{error}]</Button>: '';
+    let sucess = (win > 0) ? <Button basic size="tiny"  color="green" >Success [{win}]</Button>: '';
+    let name = (typeof(stage) === 'number') ? <Button style={{width: '50%'}} basic size="tiny"  color="brown" >Story : {(this.state.story) ? this.state.story.title : ''}</Button> : <Button style={{width: '50%'}} basic size="tiny"  color="brown" >{stage.name}</Button> ;
     let progress = <Progress style={{width: '30%'}}  percent={percent}  label="complete"active inverted />;
     return (
       <Button.Group fluid>{name}{sucess}{err}{progress}</Button.Group>
     );
   }
-  storyStats = (stages, logs) => {
+  storyStats = (story, logs) => {
     let error = 0;
     let win = 0;
     let total = 0;
@@ -374,7 +375,7 @@ class storyStages extends Component {
     const { activeIndex } = this.state;
     return (
       <Segment inverted >
-        <Header>Prefligh Check {this.storyStats(stages, this.state.preflight)}</Header>
+        <Header>{(this.state.story) ? this.state.story.title : ''} Prefligh Check {this.storyStats(this.state.story, this.state.preflight)}</Header>
         <Accordion  inverted>
           <Accordion.Title active={activeIndex === -1} index={-1} onClick={this.handleStageClick}>{this.stageStats(this.state.sid, this.state.preflight)}</Accordion.Title><Accordion.Content className="slide-out" active={activeIndex === -1}>{this.getByStage(this.state.sid, this.state.preflight)}</Accordion.Content>
           {(stages) ? stages.map((stage, index) => <Segment key={index} style={{margin: 0, padding: 0}} inverted ><Accordion.Title active={activeIndex === index} index={index} key={index} onClick={this.handleStageClick}>{this.stageStats(stage, this.state.preflight)}</Accordion.Title><Accordion.Content className="slide-out" active={activeIndex === index}>{this.getByStage(stage, this.state.preflight)}</Accordion.Content></Segment>) : ''}
