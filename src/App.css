@@ -53,7 +53,10 @@ video {
   background-color: #EEEEEE;
   border-right: 1px dotted;
 }
-
+.accordion .title, .accordion .title button {
+  padding-top: 0;
+  padding-bottom: 0;
+}
 .ui.header {
   margin: 0 !important;
   padding: 40px !important;
