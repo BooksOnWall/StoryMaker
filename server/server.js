@@ -490,20 +490,20 @@ const checkPreFlight =  (obj) => {
     // check photo
     if(obj.photo && obj.photo.length > 0 && obj.photo[0].src) {
       let src = obj.photo[0].src;
-      check = (obj.photo && obj.photo.length === 1) ? {category: 'photo', condition: 'There can be only one photo' , check: true} : {category: 'photo', src: src, condition: 'There can be only one photo' , check: false};
+      check = (obj.photo && obj.photo.length === 1) ? {ssid: obj.id, category: 'photo', condition: 'There can be only one photo' , check: true} : {ssid: obj.id, category: 'photo', src: src, condition: 'There can be only one photo' , check: false};
       log.push(check);
       let path = (obj.photo[0]) ? './public/' + src.replace(url,'') : null;
       // check photo dimension
       let photoDimensions = (path) ?  sizeOf(path) : null;
-      check = (photoDimensions && photoDimensions.width === photoDimensions.height) ? {category: 'photo', condition: 'Photo must be square' , check: true} : {category: 'photo', condition: 'Photo must be square' , check: false, src: src, path: path, error:  obj.name + ' Photo is:' + photoDimensions.width + ' x ' + photoDimensions.height};
+      check = (photoDimensions && photoDimensions.width === photoDimensions.height) ? {ssid: obj.id, category: 'photo', condition: 'Photo must be square' , check: true} : {ssid: obj.id, category: 'photo', condition: 'Photo must be square' , check: false, src: src, path: path, error:  obj.name + ' Photo is:' + photoDimensions.width + ' x ' + photoDimensions.height};
       log.push(check);
-      check = (photoDimensions && photoDimensions.width <= 640 && photoDimensions.height <= 640) ? {category: 'photo', condition: 'Photo dimension cannot be more than 640x640' , check: true} : {category: 'photo', condition: 'Photo dimension cannot be more than 640x640  ' , check: false,  src: src, path: path, error:  obj.name + ' Photo is:' + photoDimensions.width + ' x ' + photoDimensions.height};
+      check = (photoDimensions && photoDimensions.width <= 640 && photoDimensions.height <= 640) ? {ssid: obj.id, category: 'photo', condition: 'Photo dimension cannot be more than 640x640' , check: true} : {ssid: obj.id, category: 'photo', condition: 'Photo dimension cannot be more than 640x640  ' , check: false,  src: src, path: path, error:  obj.name + ' Photo is:' + photoDimensions.width + ' x ' + photoDimensions.height};
       log.push(check);
-      check = (obj.photo && obj.photo[0].size < 100000  ) ? {category: 'photo', condition: 'Photo cannot be more than 100kb' , check: true} : {category: 'photo', condition: 'Photo cannot be more than 100kb' , check: false,  src: src, path: path,error:  obj.name + ' file weight don\'t match  ' + obj.photo[0].size};
+      check = (obj.photo && obj.photo[0].size < 100000  ) ? {ssid: obj.id, category: 'photo', condition: 'Photo cannot be more than 100kb' , check: true} : {ssid: obj.id, category: 'photo', condition: 'Photo cannot be more than 100kb' , check: false,  src: src, path: path,error:  obj.name + ' file weight don\'t match  ' + obj.photo[0].size};
       log.push(check);
     } else {
       // error
-      check = {category: 'photo', condition: 'Photo must exist' , check: false,   error:  'Empty: No Photo'};
+      check = {ssid: obj.id, category: 'photo', condition: 'Photo must exist' , check: false,   error:  'Empty: No Photo'};
       log.push(check);
     }
 
@@ -527,19 +527,19 @@ const checkPreFlight =  (obj) => {
         const err = picsDim.map((pic) => {
           return (pic.width >= 2000 || pic.height >=2000) ? pic : ''
         });
-        check = (maxWidth <= 2000 && maxHeight <= 2000) ? {category: 'pictures', condition: 'Picture dimension cannot be more than 2000x2000' , check: true} : {category: 'pictures', condition: 'Picture dimension cannot be more than 2000x2000  ' , check: false,  error: err };
+        check = (maxWidth <= 2000 && maxHeight <= 2000) ? {ssid: obj.id, category: 'pictures', condition: 'Picture dimension cannot be more than 2000x2000' , check: true} : {ssid: obj.id, category: 'pictures', condition: 'Picture dimension cannot be more than 2000x2000  ' , check: false,  error: err };
         log.push(check);
         // pictures match min/max pictures count
-        check = (obj.pictures.length >= 5 && obj.pictures.length <= 10) ? {category: 'pictures', condition: 'Pictures number must be between 5 and 10 ' , check: true} : {category: 'pictures', condition: 'Pictures number must be between 5 and 10 ' , check: false,  error:  'Pictures count: ' + obj.pictures.length};
+        check = (obj.pictures.length >= 5 && obj.pictures.length <= 10) ? {ssid: obj.id, category: 'pictures', condition: 'Pictures number must be between 5 and 10 ' , check: true} : {ssid: obj.id, category: 'pictures', condition: 'Pictures number must be between 5 and 10 ' , check: false,  error:  'Pictures count: ' + obj.pictures.length};
         log.push(check);
       } else {
         //error
-        check = {category: 'pictures', condition: 'Picture must exist' , check: false,   error:  'Empty: No Pictures'};
+        check = {ssid: obj.id, category: 'pictures', condition: 'Picture must exist' , check: false,   error:  'Empty: No Pictures'};
         log.push(check);
       }
     // Description
     if(obj.description) {
-      check = (obj.description.length <= 140 ) ?  {category: 'description', condition: 'Description cannot be more than 140 characteres. [' + obj.description.length + ']' , check: true} : {category: 'pictures', condition: 'Description cannot be more than 140 characteres. [' + obj.description.length + ']  ' , check: false,  error: 'Description too large'};
+      check = (obj.description.length <= 140 ) ?  {ssid: obj.id, category: 'description', condition: 'Description cannot be more than 140 characteres. [' + obj.description.length + ']' , check: true} : {ssid: obj.id, category: 'pictures', condition: 'Description cannot be more than 140 characteres. [' + obj.description.length + ']  ' , check: false,  error: 'Description too large'};
       log.push(check);
     } else {
       check = {category: 'description', condition: 'Description must exist' , check: false,   error:  'Empty: No Description'};
@@ -547,18 +547,18 @@ const checkPreFlight =  (obj) => {
     }
     // onZoneEnter
     if(obj.onZoneEnter) {
-      check = (obj.onZoneEnter.length > 0) ? {category: 'onZoneEnter', condition: 'OnZoneEnter cannot be empty.' , check: true} : {category: 'onZoneEnter', condition: 'OnZoneEnter cannot be empty' , check: false,  error: 'zone is empty' };
+      check = (obj.onZoneEnter.length > 0) ? {ssid: obj.id, category: 'onZoneEnter', condition: 'OnZoneEnter cannot be empty.' , check: true} : {ssid: obj.id, category: 'onZoneEnter', condition: 'OnZoneEnter cannot be empty' , check: false,  error: 'zone is empty' };
       // audios
       let audios = (obj.onZoneEnter && obj.onZoneEnter.length > 0) ? obj.onZoneEnter.find((el, index) => {
         return el.type === 'audio';
       }) : null;
       //console.log('audios',audios);
-      check = (audios) ? {category: 'onZoneEnter', condition: 'There must be one audio' , check: true} : {category: 'onZoneEnter', error: 'File is missing', condition: 'There must be one audio' , check: false};
+      check = (audios) ? {ssid: obj.id, category: 'onZoneEnter', condition: 'There must be one audio' , check: true} : {ssid: obj.id, category: 'onZoneEnter', error: 'File is missing', condition: 'There must be one audio' , check: false};
       log.push(check);
-      check = (audios  && audios.length < 2 ) ? {category: 'onZoneEnter', condition: 'There can be only one audio' , check: true} : {category: 'onZoneEnter',  error: 'More than one audio file: ['+ audios.length + ']', condition: 'There can be only one audio' , check: false};
+      check = (audios  && audios.length < 2 ) ? {ssid: obj.id, category: 'onZoneEnter', condition: 'There can be only one audio' , check: true} : {ssid: obj.id, category: 'onZoneEnter',  error: 'More than one audio file: ['+ audios.length + ']', condition: 'There can be only one audio' , check: false};
       log.push(check);
     } else {
-      check = {category: 'onZoneEnter', condition: 'There should be an audio file' , check: false,   error:  'Empty: No Audio file'};
+      check = {ssid: obj.id, category: 'onZoneEnter', condition: 'There should be an audio file' , check: false,   error:  'Empty: No Audio file'};
       log.push(check);
     }
 
@@ -570,18 +570,18 @@ const checkPreFlight =  (obj) => {
     //console.log('pictures', pics);
     // onPictureMatch
     if(obj.onPictureMatch) {
-      check = (obj.onPictureMatch[0] && obj.onPictureMatch[0].type === 'video') ? {category: 'onPictureMatch', condition: 'File must be a video' , check: true} : {category: 'onPictureMatch', condition: 'There must be one video' , check: false, error: 'No video'};
+      check = (obj.onPictureMatch[0] && obj.onPictureMatch[0].type === 'video') ? {ssid: obj.id, category: 'onPictureMatch', condition: 'File must be a video' , check: true} : {ssid: obj.id, category: 'onPictureMatch', condition: 'There must be one video' , check: false, error: 'No video'};
       log.push(check);
     } else {
-      check = {category: 'onPictureMatch', condition: 'There should be a video file' , check: false,   error:  'Empty: No Video file'};
+      check = {ssid: obj.id, category: 'onPictureMatch', condition: 'There should be a video file' , check: false,   error:  'Empty: No Video file'};
       log.push(check);
     }
     // Video
     // Audio
     //onZoneLeave
-    check = (obj.onZoneLeave && obj.onZoneLeave.length > 0  ) ? {category: 'onZoneLeave', condition: 'There must be one audio' , check: true} : {category: 'onZoneLeave', error: 'file is missing', condition: 'There must be one audio' , check: false};
+    check = (obj.onZoneLeave && obj.onZoneLeave.length > 0  ) ? {ssid: obj.id, category: 'onZoneLeave', condition: 'There must be one audio' , check: true} : {ssid: obj.id, category: 'onZoneLeave', error: 'file is missing', condition: 'There must be one audio' , check: false};
     log.push(check);
-    check = (obj.onZoneLeave && obj.onZoneLeave.length > 0  && obj.onZoneLeave.length === 1 ) ? {category: 'onZoneLeave', condition: 'There can be only one audio' , check: true} : {category: 'onZoneLeave',  error: 'More than one audio file', condition: 'There can be only one audio' , check: false};
+    check = (obj.onZoneLeave && obj.onZoneLeave.length > 0  && obj.onZoneLeave.length === 1 ) ? {ssid: obj.id, category: 'onZoneLeave', condition: 'There can be only one audio' , check: true} : {ssid: obj.id, category: 'onZoneLeave',  error: 'More than one audio file', condition: 'There can be only one audio' , check: false};
     log.push(check);
 
     // export JSON file :

@@ -7,9 +7,13 @@ import {
   Message,
   Header,
   Image,
+  Label,
+  Menu,
+  Tab,
   Placeholder,
   Confirm,
   Dimmer,
+  Accordion,
   Icon
 } from 'semantic-ui-react';
 
@@ -38,6 +42,7 @@ class storyStages extends Component {
       exportConfirm: false,
       direction: null,
       stages: null,
+      activeIndex: 0,
       location: null,
       listStages: this.listStages,
       confirmOpen: false,
@@ -206,7 +211,109 @@ class storyStages extends Component {
       <Message.Item><Image.Group size="tiny">{ list.map((img, index) => (img.src) ? <Image key={index}  src={this.state.server+img.src} /> : '') }</Image.Group></Message.Item>
     );
   }
-  ExportPreview = (logs) => {
+  handleStageClick = (e, titleProps) => {
+    const { index } = titleProps
+    const { activeIndex } = this.state
+    const newIndex = activeIndex === index ? -1 : index
+
+    this.setState({ activeIndex: newIndex })
+  }
+  renderTabHeader = (ssid, items, category) => {
+    let error = 0;
+    let win = 0;
+    items.map((log, index) => {
+      if(log.category === category && log.ssid === ssid ) {
+        (log.check === true) ? win ++ : error ++;
+      }
+      return log;
+    });
+    let err = (error > 0) ? <Label size="tiny" circular color="red" >{error}</Label>: '';
+    let sucess = (win > 0) ? <Label size="tiny" circular color="green" >{win}</Label>: '';
+    return <Menu.Item key={category +'messages'}>{err} {sucess} {category.charAt(0).toUpperCase() + category.slice(1)} </Menu.Item>;
+
+  }
+  renderItems =  (ssid, items, category) => {
+    return (
+        items.map((log, index) => (log.category === category && log.ssid === ssid) ? (
+          <Message key={log.category+index}  icon color={(log.check) ? 'green' : 'red'}>
+          {(log.check) ? <Icon name='check' /> : <Icon name='bug' /> }
+          {(log.src) ? <Image   size="small" src={log.src}/> : ''}
+          <Message.Content>
+            <Message.Header>{log.condition}</Message.Header>
+            <Message.List>
+            {(!log.check && typeof(log.error) === 'string') ? <Message.Item>{log.error}</Message.Item> : '' }
+            {(!log.check && log.category==='pictures' && log.error && typeof(log.error) === 'object') ?  this.renderImageList(log.error) : '' }
+            </Message.List>
+          </Message.Content>
+          </Message> ) : null )
+    );
+  }
+  getByStage = (stage, logs) => {
+    if(logs && logs.length > 0) {
+      let build =[];
+      let tabs = [
+        {
+          menuItem: this.renderTabHeader(stage.id, logs, 'photo'),
+          pane: {key: 'photo', content: this.renderItems(stage.id, logs, 'photo')}
+        },
+        {
+          menuItem: this.renderTabHeader(stage.id, logs, 'description'),
+          pane: {key: 'description', content: this.renderItems(stage.id, logs, 'description')}
+        },
+        {
+          menuItem: this.renderTabHeader(stage.id, logs, 'pictures'),
+          pane:  {key: 'pictures', content: this.renderItems(stage.id, logs, 'pictures')}
+        },
+        {
+          menuItem: this.renderTabHeader(stage.id, logs, 'onZoneEnter'),
+          pane:  {key: 'onZoneEnter', content: this.renderItems(stage.id, logs, 'onZoneEnter')}
+        },
+        {
+          menuItem: this.renderTabHeader(stage.id, logs, 'onPictureMatch'),
+          pane:  {key: 'onPictureMatch', content: this.renderItems(stage.id, logs, 'onPictureMatch')}
+        },
+        {
+          menuItem: this.renderTabHeader(stage.id, logs, 'onZoneLeave'),
+          pane:  {key: 'onZoneLeave', content: this.renderItems(stage.id, logs, 'onZoneLeave')}
+        },
+        {
+          menuItem: this.renderTabHeader(stage.id, logs, 'json'),
+          pane: {key: 'json', content: this.renderItems(stage.id, logs, 'json')}
+        }
+      ];
+      build.push(
+        <Tab
+          key="preflight"
+          renderActiveOnly={false}
+          menu={{ color: 'orange', inverted: true, attached: false, borderless: true, tabular: false , fluid: false, vertical: true }}
+          menuPosition='right'
+          panes={tabs}
+        />
+      );
+
+      logs.map((log , index) => {
+        if(log.ssid === stage.id) {
+          return build.push(<Message key={log.category+index}  icon color={(log.check) ? 'green' : 'red'}>
+          {(log.check) ? <Icon name='check' /> : <Icon name='bug' /> }
+          {(log.src) ? <Image   size="small" src={log.src}/> : ''}
+          <Message.Content>
+            <Message.Header>{log.condition}</Message.Header>
+            <Message.List>
+            {(!log.check && typeof(log.error) === 'string') ? <Message.Item>{log.error}</Message.Item> : '' }
+            {(!log.check && log.category==='pictures' && log.error && typeof(log.error) === 'object') ?  this.renderImageList(log.error) : '' }
+            </Message.List>
+          </Message.Content>
+        </Message>)
+        } else return '';
+      });
+      return build;
+    }
+  }
+  ExportPreview = (log) => {
+    let categories = [];
+    let stages = this.state.stages;
+    const logs = this.state.preflight;
+    const { activeIndex } = this.state;
     return (
       <Segment>
         <Header icon='browser'>Prefligh Check</Header>
@@ -215,24 +322,9 @@ class storyStages extends Component {
           header='Warning'
           content='This export all files and data from story !'
           />
-
-        {(this.state.preflight && this.state.preflight.length > 0 ) ? this.state.preflight.map((log, index) => {
-
-          return (
-            <Message key={log.category+index}  icon color={(log.check) ? 'green' : 'red'}>
-            {(log.check) ? <Icon name='check' /> : <Icon name='bug' /> }
-            {(log.src) ? <Image   size="small" src={log.src}/> : ''}
-            <Message.Content>
-              <Message.Header>{log.condition}</Message.Header>
-              <Message.List>
-              {(!log.check && typeof(log.error) === 'string') ? <Message.Item>{log.error}</Message.Item> : '' }
-              {(!log.check && log.category==='pictures' && log.error && typeof(log.error) === 'object') ?  this.renderImageList(log.error) : '' }
-              </Message.List>
-            </Message.Content>
-            </Message>
-          );
-
-      }) : ''}
+        <Accordion styled>
+          {(stages) ? stages.map((stage, index) => <Segment><Accordion.Title active={activeIndex === index} index={index} onClick={this.handleStageClick}>{stage.name}</Accordion.Title><Accordion.Content active={activeIndex === index}>{this.getByStage(stage, this.state.preflight)}</Accordion.Content></Segment>) : ''}
+        </Accordion>
       </Segment>
     );
   }
