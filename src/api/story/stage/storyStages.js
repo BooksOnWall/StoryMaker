@@ -408,7 +408,7 @@ class storyStages extends Component {
     let err = (error > 0) ? <Button basic size="tiny"  color="red" >Error [{error}]</Button>: '';
     let sucess = (win > 0) ? <Button basic size="tiny"  color="green" >Success [{win}]</Button>: '';
     let name = (typeof(stage) === 'number') ? <Button style={{width: '30%'}} basic size="tiny"  color="brown" >Story : {(this.state.story) ? this.state.story.title : ''}</Button> : <Button style={{width: '50%'}} basic size="tiny"  color="brown" >{stage.name}</Button> ;
-    let progress = <Progress style={{ width: '30%'}}  percent={percent}   progress active indicating inverted />;
+    let progress = <Progress style={{ width: '40%'}}  percent={percent}   progress active indicating inverted />;
     return (
       <Button.Group fluid>{name}{sucess}{err}{progress}</Button.Group>
     );
@@ -427,7 +427,7 @@ class storyStages extends Component {
     let percent = (win === 0) ? 0 : parseInt((win / total) * 100);
     let err = (error > 0) ? <Button size="tiny" basic  color="red" >Error [{error}]</Button>: '';
     let sucess = (win > 0) ? <Button size="tiny" basic  color="green" >Success [{win}]</Button>: '';
-    let progress = <Progress style={{width: '30%'}}  size='large' percent={percent}   progress active indicating inverted />;
+    let progress = <Progress style={{width: '60%'}}  size='large' percent={percent}   progress active indicating inverted />;
     return (
       <Button.Group fluid>{sucess}{err}{progress}</Button.Group>
     );
