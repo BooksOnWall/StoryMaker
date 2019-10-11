@@ -290,24 +290,26 @@ class storyStages extends Component {
           panes={tabs}
         />
       );
-
-      logs.map((log , index) => {
-        if(log.ssid === stage.id) {
-          return build.push(<Message key={log.category+index}  icon color={(log.check) ? 'green' : 'red'}>
-          {(log.check) ? <Icon name='check' /> : <Icon name='bug' /> }
-          {(log.src) ? <Image   size="small" src={log.src}/> : ''}
-          <Message.Content>
-            <Message.Header>{log.condition}</Message.Header>
-            <Message.List>
-            {(!log.check && typeof(log.error) === 'string') ? <Message.Item>{log.error}</Message.Item> : '' }
-            {(!log.check && log.category==='pictures' && log.error && typeof(log.error) === 'object') ?  this.renderImageList(log.error) : '' }
-            </Message.List>
-          </Message.Content>
-        </Message>)
-        } else return '';
-      });
       return build;
     }
+  }
+  stageStats = (stage,logs) => {
+    let error = 0;
+    let win = 0;
+    if(logs && logs.length >0) {
+      logs.map((log, index) => {
+        if(log.ssid === stage.id) {
+          (log.check === true) ? win ++ : error ++;
+        }
+        return log;
+      });
+    }
+    let err = (error > 0) ? <Label size="tiny" circular color="red" >Error [{error}]</Label>: '';
+    let sucess = (win > 0) ? <Label size="tiny" circular color="green" >Success [{win}]</Label>: '';
+    let name = <Label size="tiny" circular color="gray" >{stage.name}</Label>
+    return (
+      <Label.Group>{name}{sucess}{err}</Label.Group>
+    );
   }
   ExportPreview = (log) => {
     let categories = [];
@@ -315,15 +317,10 @@ class storyStages extends Component {
     const logs = this.state.preflight;
     const { activeIndex } = this.state;
     return (
-      <Segment>
+      <Segment inverted >
         <Header icon='browser'>Prefligh Check</Header>
-        <Message
-          attached
-          header='Warning'
-          content='This export all files and data from story !'
-          />
-        <Accordion styled>
-          {(stages) ? stages.map((stage, index) => <Segment><Accordion.Title active={activeIndex === index} index={index} onClick={this.handleStageClick}>{stage.name}</Accordion.Title><Accordion.Content active={activeIndex === index}>{this.getByStage(stage, this.state.preflight)}</Accordion.Content></Segment>) : ''}
+        <Accordion  inverted>
+          {(stages) ? stages.map((stage, index) => <Segment style={{margin: 0, padding: 0}} inverted color="gray"><Accordion.Title active={activeIndex === index} index={index} onClick={this.handleStageClick}>{this.stageStats(stage, this.state.preflight)}</Accordion.Title><Accordion.Content className="slide-out" active={activeIndex === index}>{this.getByStage(stage, this.state.preflight)}</Accordion.Content></Segment>) : ''}
         </Accordion>
       </Segment>
     );
@@ -391,6 +388,7 @@ class storyStages extends Component {
                   <Button.Or />
                   <Button positive loading={this.state.exportLoading} onClick={this.exportOpen} ><Icon name="external square alternate" /> GeoJSON <FormattedMessage id="app.stage.storystage.export" defaultMessage={`export`} /></Button>
                     <Confirm
+                       basic
                         header='Complete Story GeoJSON Export'
                         content={this.ExportPreview}
                         cancelButton='Never mind'
