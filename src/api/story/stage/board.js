@@ -236,7 +236,7 @@ class DragDrop extends Component {
             onConfirm={e => this.handleConfirm('destroy')}
           />
         <Button.Or />
-        <Button color="teal" onClick={e => this.show('export')}><Icon name="cloud download" /> <FormattedMessage id="app.story.board.export" defaultMessage={`Export`}/></Button>
+        <Button color="teal" loading={this.props.state.exportLoading} onClick={e => this.show('export')}><Icon name="cloud download" /> <FormattedMessage id="app.story.board.export" defaultMessage={`Export`}/></Button>
           <Confirm
             open={this.state.export}
             cancelButton='Never mind'
@@ -460,7 +460,7 @@ class DragDrop extends Component {
                             >
                             <Segment inverted className="stageCol">
                               <Card.Group >
-                                <Card inverted>
+                                <Card >
                                   <Card.Content
                                     className="droppable single image"
                                     onDragOver={(e)=>this.props.onDragOver(e)}

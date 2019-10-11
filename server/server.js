@@ -11,6 +11,8 @@ const session = require('telegraf/session');
 const { reply } = Telegraf;
 const Tail = require('nodejs-tail');
 var sizeOf = require('image-size');
+const getSize = require('get-folder-size');
+var tar = require('tar-fs');
 
 const bodyParser = require('body-parser');
 //CORS
@@ -302,6 +304,10 @@ const createStory = async ({ title, state, city, sinopsys, credits, artist, acti
     if (!fs.existsSync(dir)) { fs.mkdirSync(dir, 0o744); }
     var sdir = __dirname + '/public/stories/' + sid + '/stages';
     if (!fs.existsSync(sdir)) { fs.mkdirSync(sdir, 0o744); }
+    var edir =  __dirname + '/public/stories/' + sid + '/export';
+    if (!fs.existsSync(edir)) { fs.mkdirSync(edir, 0o744); }
+    var idir = __dirname + '/public/stories/' + sid + '/import';
+    if (!fs.existsSync(idir)) { fs.mkdirSync(idir, 0o744); }
     return res;
   } catch(e) {
     console.log(e.message);
@@ -443,84 +449,196 @@ const getStage = async obj => {
     where: obj,
   });
 };
-const checkPreFlight = async obj => {
+const storyCheckPreflight =  (obj) => {
+
+    let log = [];
+    let check = {};
+    check = (obj) ? {sid: obj.id, category: 'story', condition: 'Story exist' , check: true} : {sid: obj.id, category: 'story', condition: 'Story does not exist' , check: false};
+    log.push(check);
+    check = (obj.title ) ? {sid: obj.id, category: 'title', condition: 'Title must be filled' , check: true} : {sid: obj.id, category: 'title', title: obj.title, condition: 'Title cannot be empty' , check: false};
+    log.push(check);
+    let stages = obj.stages;
+    //preflight stages
+    stages.map(stage => {
+      stage = stage.get({
+        plain: true
+      });
+      let logs = checkPreFlight(stage);
+      log = [...log, ...logs];
+      return stage;
+    });
+
+    console.log('story log:', log)
+    return log;
+};
+const checkPreFlight =  (obj) => {
   // Photo / square format-max resolution 640px /max size 100kb / One and only one => done
   // Description text min 140 characteres/ only text (no url) ??
   // Location / is in "Zona location" / ??
   // OnZoneEnter / One and only one Mp3 /
   // OnZoneEnter / Photo One and only one ??
   // OnPictureMatch / Picture - minimun 5~10 images / max resolution 2000px / maxi size 200kb per image
-  // OnPictureMatch / Video 1 Minimun / Codec h264 MP4-M4V / max size 10mb (if video has audio ? audio could not exist )
+  // OnPictureMatch / Video 1 Minimun / Codec h264 MP4-M4V / max size 20mb (if video has audio ? audio could not exist )
   // OnPictureMatch / Audio 1 Minimun / Codec Mp3 / Max size 5mb
-  // OnZoneLeve / Audio 1 Minimun / Codec Mp3 / Max size 5mb / Loop
+  // OnZoneLeave / Audio 1 Minimun / Codec Mp3 / Max size 5mb / Loop
+
   let url = protocol+ '://'+host+':'+port+'/assets/';
   let log = [];
   //console.log(obj);
   let check = {};
-  // check photo
-  let src = obj.photo[0].src;
-  check = (obj.photo && obj.photo.length === 1) ? {category: 'photo', condition: 'There can be only one photo' , check: true} : {category: 'photo', src: src, condition: 'There can be only one photo' , check: false};
-  log.push(check);
-  let path = (obj.photo[0]) ? './public/' + src.replace(url,'') : null;
-  // check photo dimension
-  let photoDimensions = (path) ? sizeOf(path) : null;
-  check = (photoDimensions && photoDimensions.width === photoDimensions.height) ? {category: 'photo', condition: 'Photo must be square' , check: true} : {category: 'photo', condition: 'Photo must be square' , check: false, src: src, path: path, error:  obj.name + ' Photo is:' + photoDimensions.width + ' x ' + photoDimensions.height};
-  log.push(check);
-  check = (photoDimensions && photoDimensions.width < 640 && photoDimensions.height < 640) ? {category: 'photo', condition: 'Photo dimension cannot be more than 640x640' , check: true} : {category: 'photo', condition: 'Photo dimension cannot be more than 640x640  ' , check: false,  src: src, path: path, error:  obj.name + ' Photo is:' + photoDimensions.width + ' x ' + photoDimensions.height};
-  log.push(check);
-  check = (obj.photo && obj.photo[0].size < 100000  ) ? {category: 'photo', condition: 'Photo cannot be more than 100kb' , check: true} : {category: 'photo', condition: 'Photo cannot be more than 100kb' , check: false,  src: src, path: path,error:  obj.name + ' file weight don\'t match  ' + obj.photo[0].size};
-  log.push(check);
-  // pictures match min/max pictures count
-  check = (obj.pictures && obj.pictures.length >= 5 && obj.pictures.length <= 10) ? {category: 'pictures', condition: 'Pictures number must be between 5 and 10 ' , check: true} : {category: 'pictures', condition: 'Pictures number must be between 5 and 10 ' , check: false,  src: obj.src, path: path, error:  JSON.stringify(obj.pictures) + '   ' + obj.pictures.length};
-  log.push(check);
-  // check picture dimensions
-  let pictures = obj.pictures;
-  let picsDim=[];
-  pictures.map(pic => {
-    let path = './public/'+pic.image.src.replace('assets/','');
-    let src = pic.image.src;
-    let picDimensions = sizeOf(path);
-    picDimensions.name = pic.image.name;
-    picDimensions.path = path;
-    picDimensions.src = src;
-    picDimensions.Oversize =  (picDimensions.width <= 2000 && picDimensions.height <= 2000) ? false :true;
-    picsDim.push(picDimensions);
-    return pic;
-  });
-  let maxWidth = Math.max.apply(Math, picsDim.map(function(o) { return o.width; }));
-  let maxHeight = Math.max.apply(Math, picsDim.map(function(o) { return o.height; }));
-  const err = picsDim.map((pic) => {
-    return (pic.width >= 2000 || pic.height >=2000) ? pic : ''
-  });
-  check = (maxWidth <= 2000 && maxHeight <= 2000) ? {category: 'pictures', condition: 'Picture dimension cannot be more than 2000x2000' , check: true} : {category: 'pictures', condition: 'Picture dimension cannot be more than 2000x2000  ' , check: false,  error: err };
-  log.push(check);
-  // onZoneEnter
-  // audio
-   console.log('onZoneEnter',obj.onZoneEnter );
-  let audios = (obj.onZoneEnter && obj.onZoneEnter.length > 0) ? obj.onZoneEnter.find((el, index) => {
-    return el.type === 'audio';
-  }) : null;
-  //console.log('audios',audios);
-  check = (audios) ? {category: 'onZoneEnter', condition: 'There must be one audio' , check: true} : {category: 'onZoneEnter', error: 'file is missing', condition: 'There must be one audio' , check: false};
-  log.push(check);
-  check = (audios  && audios.length === 1 ) ? {category: 'onZoneEnter', condition: 'There can be only one audio' , check: true} : {category: 'onZoneEnter',  error: 'More than one audio file', condition: 'There can be only one audio' , check: false};
-  log.push(check);
-  // Pictures
-  let pics = (obj.onZoneEnter && obj.onZoneEnter.length > 0) ? obj.onZoneEnter.find((el, index) => {
-    //console.log(el.type);
-    return el.type === 'picture';
-  }) : null ;
-  //console.log('pictures', pics);
-  // onPictureMatch
-  // Video
-  // Audio
-  //onZoneLeave
-  check = (obj.onZoneLeave && obj.onZoneLeave.length > 0  ) ? {category: 'onZoneLeave', condition: 'There must be one audio' , check: true} : {category: 'onZoneLeave', error: 'file is missing', condition: 'There must be one audio' , check: false};
-  log.push(check);
-  check = (obj.onZoneLeave && obj.onZoneLeave.length > 0  && obj.onZoneLeave.length === 1 ) ? {category: 'onZoneLeave', condition: 'There can be only one audio' , check: true} : {category: 'onZoneLeave',  error: 'More than one audio file', condition: 'There can be only one audio' , check: false};
-  log.push(check);
+  try {
+    // check photo
+    if(obj.photo && obj.photo.length > 0 && obj.photo[0].src) {
+      let src = obj.photo[0].src;
+      check = (obj.photo && obj.photo.length === 1) ? {category: 'photo', condition: 'There can be only one photo' , check: true} : {category: 'photo', src: src, condition: 'There can be only one photo' , check: false};
+      log.push(check);
+      let path = (obj.photo[0]) ? './public/' + src.replace(url,'') : null;
+      // check photo dimension
+      let photoDimensions = (path) ?  sizeOf(path) : null;
+      check = (photoDimensions && photoDimensions.width === photoDimensions.height) ? {category: 'photo', condition: 'Photo must be square' , check: true} : {category: 'photo', condition: 'Photo must be square' , check: false, src: src, path: path, error:  obj.name + ' Photo is:' + photoDimensions.width + ' x ' + photoDimensions.height};
+      log.push(check);
+      check = (photoDimensions && photoDimensions.width <= 640 && photoDimensions.height <= 640) ? {category: 'photo', condition: 'Photo dimension cannot be more than 640x640' , check: true} : {category: 'photo', condition: 'Photo dimension cannot be more than 640x640  ' , check: false,  src: src, path: path, error:  obj.name + ' Photo is:' + photoDimensions.width + ' x ' + photoDimensions.height};
+      log.push(check);
+      check = (obj.photo && obj.photo[0].size < 100000  ) ? {category: 'photo', condition: 'Photo cannot be more than 100kb' , check: true} : {category: 'photo', condition: 'Photo cannot be more than 100kb' , check: false,  src: src, path: path,error:  obj.name + ' file weight don\'t match  ' + obj.photo[0].size};
+      log.push(check);
+    } else {
+      // error
+      check = {category: 'photo', condition: 'Photo must exist' , check: false,   error:  'Empty: No Photo'};
+      log.push(check);
+    }
 
-  return log
+    // check picture dimensions
+    let pictures = (obj.pictures) ? obj.pictures : null ;
+      if(pictures) {
+        let picsDim=[];
+         pictures.map(pic => {
+          let path = './public/'+pic.image.src.replace('assets/','');
+          let src = pic.image.src;
+          let picDimensions = sizeOf(path);
+          picDimensions.name = pic.image.name;
+          picDimensions.path = path;
+          picDimensions.src = src;
+          picDimensions.Oversize =  (picDimensions.width <= 2000 && picDimensions.height <= 2000) ? false :true;
+          picsDim.push(picDimensions);
+          return pic;
+        });
+        let maxWidth = Math.max.apply(Math, picsDim.map(function(o) { return o.width; }));
+        let maxHeight = Math.max.apply(Math, picsDim.map(function(o) { return o.height; }));
+        const err = picsDim.map((pic) => {
+          return (pic.width >= 2000 || pic.height >=2000) ? pic : ''
+        });
+        check = (maxWidth <= 2000 && maxHeight <= 2000) ? {category: 'pictures', condition: 'Picture dimension cannot be more than 2000x2000' , check: true} : {category: 'pictures', condition: 'Picture dimension cannot be more than 2000x2000  ' , check: false,  error: err };
+        log.push(check);
+        // pictures match min/max pictures count
+        check = (obj.pictures.length >= 5 && obj.pictures.length <= 10) ? {category: 'pictures', condition: 'Pictures number must be between 5 and 10 ' , check: true} : {category: 'pictures', condition: 'Pictures number must be between 5 and 10 ' , check: false,  error:  'Pictures count: ' + obj.pictures.length};
+        log.push(check);
+      } else {
+        //error
+        check = {category: 'pictures', condition: 'Picture must exist' , check: false,   error:  'Empty: No Pictures'};
+        log.push(check);
+      }
+    // Description
+    if(obj.description) {
+      check = (obj.description.length <= 140 ) ?  {category: 'description', condition: 'Description cannot be more than 140 characteres. [' + obj.description.length + ']' , check: true} : {category: 'pictures', condition: 'Description cannot be more than 140 characteres. [' + obj.description.length + ']  ' , check: false,  error: 'Description too large'};
+      log.push(check);
+    } else {
+      check = {category: 'description', condition: 'Description must exist' , check: false,   error:  'Empty: No Description'};
+      log.push(check);
+    }
+    // onZoneEnter
+    if(obj.onZoneEnter) {
+      check = (obj.onZoneEnter.length > 0) ? {category: 'onZoneEnter', condition: 'OnZoneEnter cannot be empty.' , check: true} : {category: 'onZoneEnter', condition: 'OnZoneEnter cannot be empty' , check: false,  error: 'zone is empty' };
+      // audios
+      let audios = (obj.onZoneEnter && obj.onZoneEnter.length > 0) ? obj.onZoneEnter.find((el, index) => {
+        return el.type === 'audio';
+      }) : null;
+      //console.log('audios',audios);
+      check = (audios) ? {category: 'onZoneEnter', condition: 'There must be one audio' , check: true} : {category: 'onZoneEnter', error: 'File is missing', condition: 'There must be one audio' , check: false};
+      log.push(check);
+      check = (audios  && audios.length < 2 ) ? {category: 'onZoneEnter', condition: 'There can be only one audio' , check: true} : {category: 'onZoneEnter',  error: 'More than one audio file: ['+ audios.length + ']', condition: 'There can be only one audio' , check: false};
+      log.push(check);
+    } else {
+      check = {category: 'onZoneEnter', condition: 'There should be an audio file' , check: false,   error:  'Empty: No Audio file'};
+      log.push(check);
+    }
+
+    // Pictures
+    let pics = (obj.onZoneEnter && obj.onZoneEnter.length > 0) ? obj.onZoneEnter.find((el, index) => {
+      //console.log(el);
+      return el.type === 'picture';
+    }) : null ;
+    //console.log('pictures', pics);
+    // onPictureMatch
+    if(obj.onPictureMatch) {
+      check = (obj.onPictureMatch[0] && obj.onPictureMatch[0].type === 'video') ? {category: 'onPictureMatch', condition: 'File must be a video' , check: true} : {category: 'onPictureMatch', condition: 'There must be one video' , check: false, error: 'No video'};
+      log.push(check);
+    } else {
+      check = {category: 'onPictureMatch', condition: 'There should be a video file' , check: false,   error:  'Empty: No Video file'};
+      log.push(check);
+    }
+    // Video
+    // Audio
+    //onZoneLeave
+    check = (obj.onZoneLeave && obj.onZoneLeave.length > 0  ) ? {category: 'onZoneLeave', condition: 'There must be one audio' , check: true} : {category: 'onZoneLeave', error: 'file is missing', condition: 'There must be one audio' , check: false};
+    log.push(check);
+    check = (obj.onZoneLeave && obj.onZoneLeave.length > 0  && obj.onZoneLeave.length === 1 ) ? {category: 'onZoneLeave', condition: 'There can be only one audio' , check: true} : {category: 'onZoneLeave',  error: 'More than one audio file', condition: 'There can be only one audio' , check: false};
+    log.push(check);
+
+    // export JSON file :
+     exportStageJSON(obj);
+    return log
+
+  } catch(e) {
+    console.log(e.message);
+  }
+
+};
+const exportStageJSON = async (obj) => {
+
+  try {
+    let res ={};
+    let ssid = obj.id;
+    let sid = obj.sid;
+    let filePath = './public/stories/' + sid + '/stages/' + ssid + '/json/';
+    let fileName = 'stage.json';
+
+    if (fs.existsSync(filePath+fileName)) {
+      //file already exist rmove it :
+      await rimraf.sync(filePath+fileName);
+      await fs.writeFile(filePath+fileName, JSON.stringify(obj), 'utf8', function(err) {
+        if (err) res = {category: 'json', condition: 'JSON export complete' , check: false, error: err };
+        res = {category: 'json', condition: 'JSON export complete' , check: true };
+      });
+    } else {
+      await fs.writeFile(filePath+fileName, JSON.stringify(obj), 'utf8', function(err) {
+        if (err) res =  {category: 'json', condition: 'JSON export' , check: false, error: err };
+        res = {category: 'json', condition: 'JSON export complete' , check: true };
+      });
+    }
+    return res;
+  } catch(e) {
+    console.log('error', {category: 'json', condition: 'JSON export' , check: false, error: e.message });
+  }
+
+};
+const exportStageTar = async (obj) => {
+  try {
+    //console.log(obj);
+    let path = __dirname +'/public/stories/'+ obj.sid + '/stages/' + obj.id;
+    let ex = __dirname +'/public/stories/'+ obj.sid + '/export/';
+    let dest = ex + 'stages/';
+    if (!fs.existsSync(ex))  await fs.mkdirSync(ex, 0o744) ;
+    if (!fs.existsSync(dest))  await fs.mkdirSync(dest, 0o744) ;
+    // packing a directory
+    // __dirname +
+    await tar.pack(path).pipe(fs.createWriteStream(dest+'stage_'+obj.id +'.tar'));
+    let stats = fs.statSync(dest+'stage_'+obj.id +'.tar');
+    let size = stats.size / 1000000.0;
+    //let size  = (await sizeOf(dest+'stage_'+obj.id +'.tar');
+    return { name: 'stage_'+obj.id +'.tar', size: size,  path: dest, src: 'assets/stories/'+ obj.sid + '/export/stages/stage_'+obj.id +'.tar'  }
+  } catch(e) {
+    console.log(e.message);
+  }
 };
 const deleteStage = async (id, sid) => {
   let res = await Stages.destroy({
@@ -791,7 +909,29 @@ app.get('/assets/artists/:artistId/:name', function (req, res, next) {
     }
   })
 });
+app.get('/assets/stories/:storyId/export/stages/:name', function (req, res, next) {
+  var sid = req.params.storyId;
+  var fileName = req.params.name;
 
+  var path = './public/stories/' + sid + '/export/stages/';
+
+  var options = {
+    root: path ,
+    dotfiles: 'deny',
+    headers: {
+      'x-timestamp': Date.now(),
+      'x-sent': true
+    }
+  }
+
+  res.sendFile(fileName, options, function (err) {
+    if (err) {
+      next(err)
+    } else {
+      console.log('Sent:', fileName)
+    }
+  })
+});
 app.get('/assets/stories/:storyId/stages/:stageId/images/:name', function (req, res, next) {
   var sid = req.params.storyId;
   var ssid= req.params.stageId;
@@ -816,6 +956,7 @@ app.get('/assets/stories/:storyId/stages/:stageId/images/:name', function (req, 
     }
   })
 });
+
 
 app.get('/assets/stories/:storyId/stages/:stageId/:category/:name', function (req, res, next) {
   var sid = req.params.storyId;
@@ -1358,6 +1499,53 @@ app.post('/stories/:storyId/stages/:stageId/preflight', function(req, res, next)
       res.json({preflight: log , msg: 'preflight done'})
     });
     //res.json(stage)
+  });
+});
+app.post('/stories/:storyId/preflight', function(req, res, next) {
+  let sid = parseInt(req.params.storyId);
+  // get stage
+  //console.log('stages:', stages);
+  getStory({id: sid}).then(story => {
+    //story[dataValues].stages ='toto' ;
+    let st = story.get({
+      plain: true
+    });
+    getAllStages(sid).then(stages => {
+      st['stages'] = stages;
+      // write json file
+      let filePath = './public/stories/' + sid + '/export/';
+      let fileName = 'story.json';
+
+      if (fs.existsSync(filePath+fileName)) {
+        //file already exist remove it :
+         rimraf.sync(filePath+fileName);
+         fs.writeFile(filePath+fileName, JSON.stringify(st), 'utf8', function(err) {
+          if (err) res = {category: 'json', condition: 'JSON export complete' , check: false, error: err };
+          res = {category: 'json', condition: 'JSON export complete' , check: true };
+        });
+      } else {
+         fs.writeFile(filePath+fileName, JSON.stringify(st), 'utf8', function(err) {
+          if (err) res =  {category: 'json', condition: 'JSON export' , check: false, error: err };
+          res = {category: 'json', condition: 'JSON export complete' , check: true };
+        });
+      }
+      // story preflight
+      let preflight= storyCheckPreflight(st);
+      console.log(preflight);
+      res.json({story: st , preflight: preflight, msg: 'Story preflight ok'});
+    });
+  });
+});
+app.post('/stories/:storyId/stages/:stageId/download', function(req, res, next) {
+  let ssid = parseInt(req.params.stageId);
+  // get stage
+  getStage({id: ssid}).then(stage => {
+    // perform export
+    exportStageTar(stage.get({
+      plain: true
+    })).then(log => {
+      res.json({export: log , msg: 'export done'})
+    });
   });
 });
 // start app
