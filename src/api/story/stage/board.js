@@ -12,7 +12,7 @@ import {
   Confirm,
   Button,
 } from 'semantic-ui-react';
-
+import {  FormattedMessage } from 'react-intl';
 import { Link , withRouter} from 'react-router-dom';
 import StageMap from '../map/stageMap';
 import StagePictures from './stagePictures';
@@ -194,7 +194,7 @@ class DragDrop extends Component {
       <Button.Group fluid>
         {(this.props.state.prev)
           ? <Button as={Link} to={this.props.state.prev}  animated primary floated="left">
-            <Button.Content  >Prev</Button.Content>
+            <Button.Content  ><FormattedMessage id="app.story.board.preview" defaultMessage={`Preview`}/></Button.Content>
             <Button.Content hidden>
               <Icon name='arrow left' />
             </Button.Content>
@@ -203,7 +203,7 @@ class DragDrop extends Component {
         }
 
         <Button color="grey"><header as='h1'>{this.props.stage.name}</header></Button>
-        <Button color="olive"  onClick={e => this.show('import')} ><Icon name="cloud upload" /> Import</Button>
+        <Button color="olive"  onClick={e => this.show('import')} ><Icon name="cloud upload" /> <FormattedMessage id="app.story.board.import" defaultMessage={`Import`}/></Button>
           <Confirm
             open={this.state.import}
             cancelButton='Never mind'
@@ -214,7 +214,7 @@ class DragDrop extends Component {
             onConfirm={e => this.handleConfirm('import')}
           />
         <Button.Or />
-        <Button color="brown"  onClick={e => this.show('reset')} ><Icon name="erase" />Reset</Button>
+        <Button color="brown"  onClick={e => this.show('reset')} ><Icon name="erase" /><FormattedMessage id="app.story.board.reset" defaultMessage={`Reset`}/></Button>
           <Confirm
             open={this.state.reset}
             cancelButton='Never mind'
@@ -225,7 +225,7 @@ class DragDrop extends Component {
             onConfirm={e => this.handleConfirm('reset')}
           />
         <Button.Or />
-        <Button color="red"  onClick={e => this.show('destroy')} ><Icon name="bomb" /> Destroy</Button>
+        <Button color="red"  onClick={e => this.show('destroy')} ><Icon name="bomb" /> <FormattedMessage id="app.story.board.destroy" defaultMessage={`Destroy`}/></Button>
           <Confirm
             open={this.state.destroy}
             cancelButton='Never mind'
@@ -236,7 +236,7 @@ class DragDrop extends Component {
             onConfirm={e => this.handleConfirm('destroy')}
           />
         <Button.Or />
-        <Button color="teal" loading={this.props.state.exportLoading} onClick={e => this.show('export')}><Icon name="cloud download" /> Export</Button>
+        <Button color="teal" loading={this.props.state.exportLoading} onClick={e => this.show('export')}><Icon name="cloud download" /> <FormattedMessage id="app.story.board.export" defaultMessage={`Export`}/></Button>
           <Confirm
             open={this.state.export}
             cancelButton='Never mind'
@@ -249,7 +249,7 @@ class DragDrop extends Component {
 
         {(this.props.state.next)
           ? <Button as={Link} to={this.props.state.next}  animated primary floated="right">
-            <Button.Content  >Next</Button.Content>
+            <Button.Content  ><FormattedMessage id="app.story.board.next" defaultMessage={`Next`}/></Button.Content>
             <Button.Content hidden>
               <Icon name='arrow right' />
             </Button.Content>
@@ -309,13 +309,13 @@ class DragDrop extends Component {
                   <Segment.Group  style={{height: 'auto', width: 'inherit'}}>
                     <Segment inverted >
                       <Button.Group >
-                        <Button name="Stage" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Stage') ? true : false } >Stage</Button>
+                        <Button name="Stage" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Stage') ? true : false } ><FormattedMessage id="app.story.board.stage" defaultMessage={`Stage`}/></Button>
                         <Button.Or text='or' />
                         <Button name="Geo" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Geo') ? true : false }>Geo</Button>
                         <Button.Or text='or' />
-                        <Button name="Images" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Images') ? true : false }>Images</Button>
+                        <Button name="Images" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Images') ? true : false }><FormattedMessage id="app.story.board.images" defaultMessage={`Images`}/>Images</Button>
                         <Button.Or text='or' />
-                        <Button name="Description" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Description') ? true : false }>Description</Button>
+                        <Button name="Description" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Description') ? true : false }><FormattedMessage id="app.story.board.description" defaultMessage={`Description`}/></Button>
                       </Button.Group>
                     </Segment>
                     <Segment>
@@ -328,7 +328,7 @@ class DragDrop extends Component {
                             className="images"
                             onDragOver={(e)=>this.props.onDragOver(e)}
                             onDrop={(e)=>{this.props.onDrop(e, "images")}}>
-                            <Button className="task-header">Images</Button>
+                            <Button className="task-header"><FormattedMessage id="app.story.board.images" defaultMessage={`Images`}/></Button>
                             {tasks.images}
                           </Segment>
                           <ObjectsPreview
@@ -370,7 +370,7 @@ class DragDrop extends Component {
                     >
 
                     <Button.Group>
-                      <Button name="Pictures" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Pictures') ? true : false }>Pictures</Button>
+                      <Button name="Pictures" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Pictures') ? true : false }><FormattedMessage id="app.story.board.pictures" defaultMessage={`Pictures`}/></Button>
                       <Button.Or text='or' />
                       <Button name="Videos" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Videos') ? true : false }>Videos</Button>
                       <Button.Or text='or' />
@@ -383,7 +383,7 @@ class DragDrop extends Component {
                           className="pictures"
                           onDragOver={(e)=>this.props.onDragOver(e)}
                           onDrop={(e)=>{this.props.onDrop(e, "pictures")}}>
-                          <Label inverted="true" color="violet" className="task-header">Pictures</Label>
+                          <Label inverted="true" color="violet" className="task-header"><FormattedMessage id="app.story.board.pictures" defaultMessage={`Pictures`}/></Label>
                           {tasks.pictures}
 
                           <ObjectsPreview
@@ -461,23 +461,17 @@ class DragDrop extends Component {
                             <Segment inverted className="stageCol">
                               <Card.Group >
                                 <Card >
-                                  <Card.Content
-                                    className="droppable single image"
-                                    onDragOver={(e)=>this.props.onDragOver(e)}
-                                    onDrop={(e)=>this.props.onDrop(e, "photo")}
-                                    >
-                                    <Button onClick={(e) => this.props.toggleSideBar(e, 'Images', 'bottom')} className="task-header">Photo</Button>
+                                    <Button onClick={(e) => this.props.toggleSideBar(e, 'Images', 'bottom')} className="task-header"><FormattedMessage id="app.story.board.photo" defaultMessage={`Photo`}/> </Button>
                                     {(tasks.photo.length > 0) ? tasks.photo : <Image  src='https://react.semantic-ui.com/images/avatar/large/matthew.png' wrapped  /> }
                                     <Card.Header>{this.props.stage.name}</Card.Header>
-                                    <Card.Meta>Drag your image here </Card.Meta>
-                                  </Card.Content>
+                                    <Card.Meta><FormattedMessage id="app.story.board.dragimage" defaultMessage={`Drag your image here`}/> </Card.Meta>
                                 </Card>
                                 <Card>
                                   <Card.Content className="single"
                                     onDragOver={(e)=>this.props.onDragOver(e)}
                                     onDrop={(e)=>this.props.onDrop(e, "location")}
                                     >
-                                    <Button  color="violet" onClick={(e) => this.props.toggleSideBar(e, 'Geo', 'bottom')}  className="task-header">Location</Button>
+                                    <Button  color="violet" onClick={(e) => this.props.toggleSideBar(e, 'Geo', 'bottom')}  className="task-header"><FormattedMessage id="app.story.board.location" defaultMessage={`Location`}/></Button>
                                     {tasks.location}
                                   </Card.Content>
                                 </Card>
@@ -492,7 +486,7 @@ class DragDrop extends Component {
                               <div className="droppable"
                                 onDragOver={(e)=>this.props.onDragOver(e)}
                                 onDrop={(e)=>this.props.onDrop(e, "onZoneEnter")}>
-                                <Button  color="violet" onClick={(e) => this.props.toggleSideBar(e, 'Audios', 'right')} className="task-header">On Zone Enter</Button>
+                                <Button  color="violet" onClick={(e) => this.props.toggleSideBar(e, 'Audios', 'right')} className="task-header"><FormattedMessage id="app.story.board.onzoneenter" defaultMessage={`On Zone Enter`}/></Button>
                                 {tasks.onZoneEnter}
                               </div>
                             </Segment>
@@ -505,7 +499,7 @@ class DragDrop extends Component {
                               <div className="droppable"
                                 onDragOver={(e)=>this.props.onDragOver(e)}
                                 onDrop={(e)=>this.props.onDrop(e, "onPictureMatch")}>
-                                <Button  color="violet" onClick={(e) => this.props.toggleSideBar(e, 'Videos', 'right')} className="task-header">On Picture Match</Button>
+                                <Button  color="violet" onClick={(e) => this.props.toggleSideBar(e, 'Videos', 'right')} className="task-header"><FormattedMessage id="app.story.board.onpicturematch" defaultMessage={`On Picture Match`}/></Button>
                                 {tasks.onPictureMatch}
                               </div>
                             </Segment>
@@ -518,7 +512,8 @@ class DragDrop extends Component {
                               <div className="droppable"
                                 onDragOver={(e)=>this.props.onDragOver(e)}
                                 onDrop={(e)=>this.props.onDrop(e, "onZoneLeave")}>
-                                <Button  color="violet" onClick={(e) => this.props.toggleSideBar(e, 'Audios', 'right')} className="task-header">On Zone Leave</Button>
+                                <Button  color="violet" onClick={(e) => this.props.toggleSideBar(e, 'Audios', 'right')} className="task-header"><FormattedMessage id="app.story.board.onzoneleave" defaultMessage={`On Zone Leave`}/>
+                                </Button>
                                 {tasks.onZoneLeave}
                               </div>
                             </Segment>

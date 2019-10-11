@@ -11,6 +11,7 @@ import {
 import Logo from '../../logo.svg';
 import Auth from '../../module/Auth';
 import { Redirect } from 'react-router-dom';
+import {  FormattedMessage } from 'react-intl';
 
 class Login extends Component {
   constructor(props) {
@@ -163,7 +164,7 @@ class Login extends Component {
                   />
                   {errors.password && touched.password && errors.password}
                   <Button onClick={handleSubmit} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
-                    Login
+                    <FormattedMessage id="app.user.login" defaultMessage={`Login`}/>
                   </Button>
                 </Form>
               )}

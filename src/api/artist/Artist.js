@@ -702,7 +702,7 @@ class Artist extends Component {
         <Loader active={this.state.loading} >Get artist info</Loader>
         
         <Header as={Segment} vertical size='medium'>
-            {(this.state.mode === 'create') ? <FormattedMessage id="app.artists.title.create" defaultMessage={`Create Artist`}/> : <FormattedMessage id="app.artists.title.edit" defaultMessage={`Edit Artist`}/> }
+            {(this.state.mode === 'create') ? <FormattedMessage id="app.artist.title.create" defaultMessage={`Create Artist`}/> : <FormattedMessage id="app.artist.title.edit" defaultMessage={`Edit Artist`}/> }
         </Header>        
         <ArtistSteps aid={this.state.aid} step={this.state.step} state={this.state}/>
         <Segment inverted clearing className="content">

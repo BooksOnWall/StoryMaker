@@ -26,20 +26,20 @@ class stageSteps extends Component {
       <Button.Group>
         <Button primary name='Stage' onClick={this.handleSSteps}><Icon name="google wallet" />
         {<FormattedMessage 
-                id="app.stories.stage.stageSteps.stage" 
+                id="app.story.stage.stageSteps.stage" 
                 defaultMessage={'Stage'}
             />}
         </Button>
         <Button.Or />
            <Button name="geoposition"><Icon name="map marker alternate" />        {<FormattedMessage 
-                id="app.stories.stage.stageSteps.geoposition" 
+                id="app.story.stage.stageSteps.geoposition" 
                 defaultMessage={'GeoPosition'}
             />}
         </Button>
        <Button.Or />
        <Button positive name="augmentedReality"><Icon name="road" /> 
             {<FormattedMessage 
-                id="app.stories.stage.stageSteps.augmentedReality" 
+                id="app.story.stage.stageSteps.augmentedReality" 
                 defaultMessage={'Augmented Reality'}
             />}
         </Button>

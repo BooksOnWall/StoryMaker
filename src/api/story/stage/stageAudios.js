@@ -36,8 +36,8 @@ function StageAudios(props) {
         <div {...getRootProps({className: 'dropzone'})}>
           <input  id='stageAudios' name='files' onChange={props.onChangeAudiosHandler} ref={ref => this.fileInput = ref} {...getInputProps()} />
             <p>{<FormattedMessage id="app.story.stage.stageaudios.files"  defaultMessage={"Drag and drop some files here, or click to select files"} />}</p>
-          {!isDragActive && <FormattedMessage id="app.stage.stageaudios.files.dragactive"  defaultMessage={"Click here or drop a file to upload!"} />}
-          {isDragActive && !isDragReject &&  <FormattedMessage id="app.story.stage.stageaudios.files.dragactive"  defaultMessage={"Drop it like it's hot!"} />}
+          {!isDragActive && <FormattedMessage id="app.story.stage.stageaudios.files.dragactive"  defaultMessage={"Click here or drop a file to upload!"} />}
+          {isDragActive && !isDragReject &&  <FormattedMessage id="app.story.stage.stageaudios.files.dragactive.Drop"  defaultMessage={"Drop it like it's hot!"} />}
           {isDragReject && <FormattedMessage id="app.story.stage.stageaudios.files.dragreject"  defaultMessage={"File type not accepted, sorry!"} />}
         </div>
       </Segment>

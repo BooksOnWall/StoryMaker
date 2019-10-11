@@ -9,8 +9,8 @@ import {
   Button,
   Icon,
 } from 'semantic-ui-react';
+import {  FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
-
 import MapGL, { Marker, Popup, FlyToInterpolator } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MAP_STYLE from './map-style-basic-v8.json';
@@ -176,7 +176,7 @@ class stagesMap extends Component {
       <Segment  className="stagesMap" >
         <Dimmer.Dimmable as={Segment} blurring dimmed={loading}>
           <Dimmer active={loading} onClickOutside={this.handleHide} />
-          <Loader active={loading} >Get map info</Loader>
+          <Loader active={loading} ><FormattedMessage id="app.story.map.stagemap.getmapinfo"  defaultMessage={"Get Map Info"} /></Loader>
             <MapGL
               {...viewport}
               width="inherit"

@@ -4,7 +4,7 @@ import {
   Dimmer,
   Loader,
 } from 'semantic-ui-react';
-
+import {  FormattedMessage } from 'react-intl';
 import MapGL from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import StylePanel from './stylePanel';
@@ -59,7 +59,7 @@ class storyMap extends Component {
     return (
       <Dimmer.Dimmable as={Segment} blurring dimmed={loading}>
           <Dimmer active={loading} onClickOutside={this.handleHide} />
-          <Loader active={loading} >Get map info</Loader>
+          <Loader active={loading} ><FormattedMessage id="app.story.map.getmapinfo" defaultMessage={`Get map info`}/></Loader>
             <Segment  className="view map" >
               <MapGL
                 {...viewport}

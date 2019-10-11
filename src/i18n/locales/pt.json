@@ -12,22 +12,30 @@
     },
     "user": {
       "edit": "",
+      "login": "",
       "theme": "",
       "create": "",
       "delete": "",
       "locale": "",
+      "logout": "",
+      "singup": "",
       "update": "",
       "created": "",
       "loading": "",
       "required": "",
-      "passwdTitle": "",
-      "wrongPasswd": "",
+      "passwdtitle": "",
       "invalidEmail": "",
-      "userEdit": {
+      "useredit": {
         "name": "",
         "email": "",
         "password": "",
         "repeatpassword": ""
+      },
+      "wrongpassword": "",
+      "profile": {
+        "update": "",
+        "myprofile": "",
+        "userpreferences": ""
       },
       "user": {
         "useravatar": {
@@ -61,50 +69,39 @@
       "subtitle": "",
       "unlogged": ""
     },
-    "stage": {
-      "drag": "",
-      "name": "",
-      "type": "",
-      "order": "",
-      "stageaudios": {
-        "files": {
-          "dragactive": ""
-        }
-      },
-      "stageimages": {
-        "files": {
-          "dragactive": ""
-        }
-      },
-      "stagevideos": {
-        "files": {
-          "dragactive": ""
-        }
-      },
-      "stagepicture": {
-        "files": {
-          "dragactive": ""
-        }
-      }
-    },
     "story": {
       "edit": "",
       "create": "",
       "delete": "",
-      "stories": {
-        "getuser": "",
-        "addstory": "",
-        "table": {
-          "id": "",
-          "city": "",
-          "state": "",
-          "title": "",
-          "artist": "",
-          "create": "",
-          "updated": ""
-        }
+      "board": {
+        "next": "",
+        "photo": "",
+        "reset": "",
+        "stage": "",
+        "export": "",
+        "images": "",
+        "import": "",
+        "destroy": "",
+        "preview": "",
+        "location": "",
+        "pictures": "",
+        "dragimage": "",
+        "description": "",
+        "onzoneenter": "",
+        "onzoneleave": "",
+        "onpicturematch": ""
       },
       "stage": {
+        "delete": "",
+        "title": {
+          "edit": "",
+          "create": ""
+        },
+        "stageSteps": {
+          "stage": "",
+          "geoposition": "",
+          "augmentedReality": ""
+        },
         "stageaudios": {
           "files": ""
         },
@@ -117,6 +114,25 @@
         "stagepicture": {
           "files": ""
         }
+      },
+      "map": {
+        "getmapinfo": "",
+        "stagemap": {
+          "getmapinfo": ""
+        }
+      },
+      "stories": {
+        "getuser": "",
+        "addstory": "",
+        "table": {
+          "id": "",
+          "city": "",
+          "state": "",
+          "title": "",
+          "artist": "",
+          "create": "",
+          "updated": ""
+        }
       }
     },
     "artists": {
@@ -125,6 +141,10 @@
     },
     "artist": {
       "delete": "",
+      "title": {
+        "edit": "",
+        "create": ""
+      },
       "artistSteps": {
         "artist": {
           "bio": "",
@@ -136,13 +156,14 @@
     "userPrefs": {
       "loading": ""
     },
-    "stories": {
-      "stage": {
-        "stageSteps": {
-          "stage": "",
-          "geoposition": "",
-          "augmentedReality": ""
-        }
+    "stage": {
+      "storystage": {
+        "drag": "",
+        "name": "",
+        "type": "",
+        "order": "",
+        "export": "",
+        "import": ""
       }
     }
   }

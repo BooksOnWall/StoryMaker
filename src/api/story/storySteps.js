@@ -4,7 +4,6 @@ import {
   Step,
 } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import { FormattedMessage, defineMessages } from 'react-intl';
 
 class storySteps extends Component {
   constructor(props) {

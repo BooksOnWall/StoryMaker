@@ -9,8 +9,6 @@ import {
   Tab,
 } from 'semantic-ui-react';
 
-import { FormattedMessage, defineMessages } from 'react-intl';
-
 // const listItems = (this.props.logs)
 // ? props.logs.map((number) => <List.Item>{number.condition} <Icon name={number.condition} /><List.Item>
 // : null;

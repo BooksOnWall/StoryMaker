@@ -12,22 +12,30 @@
     },
     "user": {
       "edit": "Edit user",
+      "login": "Login",
       "theme": "Choose your theme",
       "create": "Users",
       "delete": "Delete user",
       "locale": "Choose your Language",
+      "logout": "Logging out",
+      "singup": "Login",
       "update": "Update",
       "created": "Create",
       "loading": "Get user info",
       "required": "Required",
-      "passwdTitle": "Change password",
-      "wrongPasswd": "Invalid repeat password",
+      "passwdtitle": "Change password",
       "invalidEmail": "Invalid email",
-      "userEdit": {
+      "useredit": {
         "name": "Name",
         "email": "Email",
         "password": "Password",
         "repeatpassword": "Repeat Password"
+      },
+      "wrongpassword": "Invalid repeat password",
+      "profile": {
+        "update": "Update",
+        "myprofile": "My Profile",
+        "userpreferences": "User preferences"
       },
       "user": {
         "useravatar": {
@@ -61,50 +69,39 @@
       "subtitle": "This is the home page.",
       "unlogged": "You are not logged in.!"
     },
-    "stage": {
-      "drag": "Drag",
-      "name": "Name",
-      "type": "Type",
-      "order": "Order",
-      "stageaudios": {
-        "files": {
-          "dragactive": "Click here or drop a file to upload!"
-        }
-      },
-      "stageimages": {
-        "files": {
-          "dragactive": "Click here or drop a file to upload!"
-        }
-      },
-      "stagevideos": {
-        "files": {
-          "dragactive": "Click here or drop a file to upload!"
-        }
-      },
-      "stagepicture": {
-        "files": {
-          "dragactive": "Click here or drop a file to upload!"
-        }
-      }
-    },
     "story": {
       "edit": "Edit Story",
       "create": "Create Story",
       "delete": "Delete Story",
-      "stories": {
-        "getuser": "Get users info",
-        "addstory": "Add Story",
-        "table": {
-          "id": "Id",
-          "city": "City",
-          "state": "State",
-          "title": "Title",
-          "artist": "Artist",
-          "create": "Created",
-          "updated": "Updated"
-        }
+      "board": {
+        "next": "Next",
+        "photo": "Photo",
+        "reset": "Reset",
+        "stage": "Stage",
+        "export": "Export",
+        "images": "Images",
+        "import": "Import",
+        "destroy": "Destroy",
+        "preview": "Preview",
+        "location": "Location",
+        "pictures": "Pictures",
+        "dragimage": "Drag your image here",
+        "description": "Description",
+        "onzoneenter": "On Zone Enter",
+        "onzoneleave": "On Zone Leave",
+        "onpicturematch": "On Picture Match"
       },
       "stage": {
+        "delete": "Delete stage",
+        "title": {
+          "edit": "Story: Edit Stage",
+          "create": "Story: Create stage"
+        },
+        "stageSteps": {
+          "stage": "Stage",
+          "geoposition": "GeoPosition",
+          "augmentedReality": "Augmented Reality"
+        },
         "stageaudios": {
           "files": "Drag and drop some files here, or click to select files"
         },
@@ -117,6 +114,25 @@
         "stagepicture": {
           "files": "Drag and drop some files here, or click to select files"
         }
+      },
+      "map": {
+        "getmapinfo": "Get map info",
+        "stagemap": {
+          "getmapinfo": "Get Map Info"
+        }
+      },
+      "stories": {
+        "getuser": "Get users info",
+        "addstory": "Add Story",
+        "table": {
+          "id": "Id",
+          "city": "City",
+          "state": "State",
+          "title": "Title",
+          "artist": "Artist",
+          "create": "Created",
+          "updated": "Updated"
+        }
       }
     },
     "artists": {
@@ -125,6 +141,10 @@
     },
     "artist": {
       "delete": "Delete Artist",
+      "title": {
+        "edit": "Edit Artist",
+        "create": "Create Artist"
+      },
       "artistSteps": {
         "artist": {
           "bio": "Bio",
@@ -136,13 +156,14 @@
     "userPrefs": {
       "loading": "Get users preferences"
     },
-    "stories": {
-      "stage": {
-        "stageSteps": {
-          "stage": "Stage",
-          "geoposition": "GeoPosition",
-          "augmentedReality": "Augmented Reality"
-        }
+    "stage": {
+      "storystage": {
+        "drag": "Drag",
+        "name": "Name",
+        "type": "Type",
+        "order": "Order",
+        "export": "export",
+        "import": "import"
       }
     }
   }
