@@ -183,7 +183,6 @@ class storyStages extends Component {
     } catch(e) {
       console.log(e.message);
     }
-    let sid = this.props.sid;
   }
   preflight = async () => {
     try {
@@ -314,7 +313,7 @@ class storyStages extends Component {
         <Tab
           key="preflight"
           renderActiveOnly={false}
-          menu={{ color: 'orange', inverted: true, attached: false, borderless: true, tabular: false , fluid: false, vertical: true }}
+          menu={{ color: 'black', inverted: true, attached: false, borderless: true, tabular: false , fluid: false, vertical: true }}
           menuPosition='right'
           panes={tabs}
         />
@@ -343,9 +342,9 @@ class storyStages extends Component {
       });
     }
     let percent = (win === 0) ? 0 : parseInt(win / total * 100);
-    let err = (error > 0) ? <Button size="tiny" circular color="red" >Error [{error}]</Button>: '';
-    let sucess = (win > 0) ? <Button size="tiny" circular color="green" >Success [{win}]</Button>: '';
-    let name = <Button style={{width: '50%'}} size="tiny" circular color="brown" >{stage.name}</Button>;
+    let err = (error > 0) ? <Button size="tiny"  color="red" >Error [{error}]</Button>: '';
+    let sucess = (win > 0) ? <Button size="tiny"  color="green" >Success [{win}]</Button>: '';
+    let name = <Button style={{width: '50%'}} size="tiny"  color="brown" >{stage.name}</Button>;
     let progress = <Progress style={{width: '30%'}}  percent={percent}  label="complete"active inverted />;
     return (
       <Button.Group fluid>{name}{sucess}{err}{progress}</Button.Group>
@@ -363,8 +362,8 @@ class storyStages extends Component {
       });
     }
     let percent = (win === 0) ? 0 : parseInt(win / total * 100);
-    let err = (error > 0) ? <Button size="tiny" circular color="red" >Error [{error}]</Button>: '';
-    let sucess = (win > 0) ? <Button size="tiny" circular color="green" >Success [{win}]</Button>: '';
+    let err = (error > 0) ? <Button size="tiny" basic  color="red" >Error [{error}]</Button>: '';
+    let sucess = (win > 0) ? <Button size="tiny" basic  color="green" >Success [{win}]</Button>: '';
     let progress = <Progress style={{width: '30%'}}  percent={percent}  label="Complete" active inverted />;
     return (
       <Button.Group fluid>{sucess}{err}{progress}</Button.Group>
@@ -378,7 +377,7 @@ class storyStages extends Component {
         <Header>Prefligh Check {this.storyStats(stages, this.state.preflight)}</Header>
         <Accordion  inverted>
           <Accordion.Title active={activeIndex === -1} index={-1} onClick={this.handleStageClick}>{this.stageStats(this.state.sid, this.state.preflight)}</Accordion.Title><Accordion.Content className="slide-out" active={activeIndex === -1}>{this.getByStage(this.state.sid, this.state.preflight)}</Accordion.Content>
-          {(stages) ? stages.map((stage, index) => <Segment key={index} style={{margin: 0, padding: 0}} inverted color="brown"><Accordion.Title active={activeIndex === index} index={index} key={index} onClick={this.handleStageClick}>{this.stageStats(stage, this.state.preflight)}</Accordion.Title><Accordion.Content className="slide-out" active={activeIndex === index}>{this.getByStage(stage, this.state.preflight)}</Accordion.Content></Segment>) : ''}
+          {(stages) ? stages.map((stage, index) => <Segment key={index} style={{margin: 0, padding: 0}} inverted ><Accordion.Title active={activeIndex === index} index={index} key={index} onClick={this.handleStageClick}>{this.stageStats(stage, this.state.preflight)}</Accordion.Title><Accordion.Content className="slide-out" active={activeIndex === index}>{this.getByStage(stage, this.state.preflight)}</Accordion.Content></Segment>) : ''}
         </Accordion>
       </Segment>
     );
