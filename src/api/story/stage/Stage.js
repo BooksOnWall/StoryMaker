@@ -14,6 +14,10 @@ import {
   Header,
   Segment,
   Container,
+<<<<<<< Updated upstream
+=======
+    Header,
+>>>>>>> Stashed changes
   TextArea,
   Modal,
   List,
@@ -1386,6 +1390,7 @@ class stage extends Component {
   }
   render() {
       return (
+<<<<<<< Updated upstream
         <Container className="main" fluid>
         <Segment inverted className="view" >
           <Modal
@@ -1405,12 +1410,22 @@ class stage extends Component {
             </Modal.Actions>
             </Modal>
           <Dimmer.Dimmable as={Segment} blurring dimmed={this.state.loading}>
+=======
+        <Container inverted className="main" fluid>
+        <Segment inverted className="view" >
+          <Dimmer.Dimmable inverted as={Segment} blurring dimmed={this.state.loading}>
+>>>>>>> Stashed changes
             <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
             <Loader active={this.state.loading} >Get stage info</Loader>
             <Header inverted as={Segment} vertical size='medium'>
             {(this.state.mode === 'create') ? <FormattedMessage id="app.story.stage.title.create" defaultMessage={`Story: Create stage`}/> : <FormattedMessage id="app.story.stage.title.edit" defaultMessage={`Story: Edit Stage`}/> }
+<<<<<<< Updated upstream
             </Header>
 
+=======
+            </Header> 
+          
+>>>>>>> Stashed changes
             <StorySteps sid={this.state.sid} step={this.state.step} history={this.props.history} setSteps={this.setSteps} state={this.state}/>
             {/* Create stage and set location case */}
             {(this.state.ssid === 0) ?

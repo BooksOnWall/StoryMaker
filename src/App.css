@@ -216,6 +216,7 @@ div.DraftEditor-root {
 .menu .button.hamburger{ padding: 9px !important; margin: 10px auto !important; border: 0 !important;}
 .top.ui.menu.button::after{ border: 0 !important}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 .ui.segment.main{ padding: 0 !important; }
 .ui.segment.pushable, .ui.segment.main{ background: transparent !important}
 .ui.main.container {
@@ -224,6 +225,8 @@ div.DraftEditor-root {
   margin: 0 0 0 80px !important;
 }
 
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 .ui.visible.slide.along.sidebar.bwSidebar,.ui.slide.along.sidebar.bwSidebar {
@@ -426,17 +429,27 @@ input[type="color"] {
     margin-top: 0px
 }
 .public-DraftEditor-content{ margin: 2em 0; }
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 .ui.segment{ box-shadow: none !important; border: 0 !important; border-radius: 0 !important; background: #e2e2e2; padding: 0 }
 
 .ui.segment.main{ padding: 0 !important; }
 .ui.segment.pushable, .ui.segment.main{ background: transparent !important; margin: 0}
 .ui.main.container { padding: 0 !important; max-width: 94vw !important; margin: 0 0 0 80px !important;}
 .ui.segment.view, .ui.segment.main-board, .ui.segment.blurring.dimmable{ padding: 0 !important; margin:0 !important}
+<<<<<<< Updated upstream
 .ui.segment.sinopsys{padding: 2em !important; background: }
+=======
+>>>>>>> Stashed changes
 .ui.segment.content{ padding:40px !important}
 z.ui.horizontal .segment{ background: transparent !important; }
 .ui.inverted.segment.stages{ padding: 0 !important; margin: 0 !important }
 #StepsContent .segment, #StepsContent .segments, .ui.segment.stageCol{ margin: 0 !important; border: 0 !important}
 #StepsContent .segments .segment{ margin: 0 !important; padding: 0 !important}
+<<<<<<< Updated upstream
 .ui.segment.stageCol .ui.cards .ui.cards { margin: 0 !important; padding: 0 !important}
+=======
+.ui.segment.stageCol .ui.cards .ui.cards { margin: 0 !important; padding: 0 !important}
+>>>>>>> Stashed changes

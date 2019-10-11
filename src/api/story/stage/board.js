@@ -460,16 +460,27 @@ class DragDrop extends Component {
                             >
                             <Segment inverted className="stageCol">
                               <Card.Group >
+<<<<<<< Updated upstream
                                 <Card >
+=======
+                                <Card inverted>
+>>>>>>> Stashed changes
                                   <Card.Content
                                     className="droppable single image"
                                     onDragOver={(e)=>this.props.onDragOver(e)}
                                     onDrop={(e)=>this.props.onDrop(e, "photo")}
                                     >
+<<<<<<< Updated upstream
                                     <Button onClick={(e) => this.props.toggleSideBar(e, 'Images', 'bottom')} className="task-header"><FormattedMessage id="app.story.board.photo" defaultMessage={`Photo`}/> </Button>
                                     {(tasks.photo.length > 0) ? tasks.photo : <Image  src='https://react.semantic-ui.com/images/avatar/large/matthew.png' wrapped  /> }
                                     <Card.Header>{this.props.stage.name}</Card.Header>
                                     <Card.Meta><FormattedMessage id="app.story.board.dragimage" defaultMessage={`Drag your image here`}/> </Card.Meta>
+=======
+                                    <Button onClick={(e) => this.props.toggleSideBar(e, 'Images', 'bottom')} className="task-header">Photo</Button>
+                                    {(tasks.photo.length > 0) ? tasks.photo : <Image  src='https://react.semantic-ui.com/images/avatar/large/matthew.png' wrapped  /> }
+                                    <Card.Header>{this.props.stage.name}</Card.Header>
+                                    <Card.Meta>Drag your image here </Card.Meta>
+>>>>>>> Stashed changes
                                   </Card.Content>
                                 </Card>
                                 <Card>
