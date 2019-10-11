@@ -247,12 +247,18 @@ class storyStages extends Component {
 
     this.setState({ activeIndex: newIndex })
   }
-  renderTabHeader = (ssid, items, category) => {
+  renderTabHeader = (sid, ssid, items, category) => {
     let error = 0;
     let win = 0;
     items.map((log, index) => {
-      if(log.category === category && log.ssid === ssid ) {
-        (log.check === true) ? win ++ : error ++;
+      if(ssid) {
+        if(log.category === category && log.ssid === ssid ) {
+          (log.check === true) ? win ++ : error ++;
+        }
+      } else {
+        if(log.category === category && log.sid === sid ) {
+          (log.check === true) ? win ++ : error ++;
+        }
       }
       return log;
     });
@@ -261,55 +267,109 @@ class storyStages extends Component {
     return <Menu.Item key={category +'messages'}>{err} {sucess} {category.charAt(0).toUpperCase() + category.slice(1)} </Menu.Item>;
 
   }
-  renderItems =  (ssid, items, category) => {
-    return (
-        items.map((log, index) => (log.category === category && log.ssid === ssid) ? (
-          <Message key={log.category+index}  icon color={(log.check) ? 'green' : 'red'}>
-          {(log.check) ? <Icon name='check' /> : <Icon name='bug' /> }
-          {(log.src) ? <Image   size="small" src={log.src}/> : ''}
-          <Message.Content>
-            <Message.Header>{log.condition}</Message.Header>
-            <Message.List>
-            {(!log.check && typeof(log.error) === 'string') ? <Message.Item>{log.error}</Message.Item> : '' }
-            {(!log.check && log.category==='pictures' && log.error && typeof(log.error) === 'object') ?  this.renderImageList(log.error) : '' }
-            </Message.List>
-          </Message.Content>
-          </Message> ) : null )
-    );
+  renderItems =  (sid, ssid, items, category) => {
+    if (ssid) {
+      return (
+          items.map((log, index) => (log.category === category && log.ssid === ssid) ? (
+            <Message key={log.category+index}  icon color={(log.check) ? 'green' : 'red'}>
+            {(log.check) ? <Icon name='check' /> : <Icon name='bug' /> }
+            {(log.src) ? <Image   size="small" src={log.src}/> : ''}
+            <Message.Content>
+              <Message.Header>{log.condition}</Message.Header>
+              <Message.List>
+              {(!log.check && typeof(log.error) === 'string') ? <Message.Item>{log.error}</Message.Item> : '' }
+              {(!log.check && log.category==='pictures' && log.error && typeof(log.error) === 'object') ?  this.renderImageList(log.error) : '' }
+              </Message.List>
+            </Message.Content>
+            </Message> ) : null )
+      );
+    } else {
+      return (
+          items.map((log, index) => (log.category === category && log.sid === sid) ? (
+            <Message key={log.category+index}  icon color={(log.check) ? 'green' : 'red'}>
+            {(log.check) ? <Icon name='check' /> : <Icon name='bug' /> }
+            {(log.src) ? <Image   size="small" src={log.src}/> : ''}
+            <Message.Content>
+              <Message.Header>{log.condition}</Message.Header>
+              <Message.List>
+              {(!log.check && typeof(log.error) === 'string') ? <Message.Item>{log.error}</Message.Item> : '' }
+              {(!log.check && log.category==='pictures' && log.error && typeof(log.error) === 'object') ?  this.renderImageList(log.error) : '' }
+              </Message.List>
+            </Message.Content>
+            </Message> ) : null )
+      );
+    }
+
   }
   getByStage = (stage, logs) => {
     if(logs && logs.length > 0) {
       let build =[];
-      let tabs = [
-        {
-          menuItem: this.renderTabHeader(stage.id, logs, 'photo'),
-          pane: {key: 'photo', content: this.renderItems(stage.id, logs, 'photo')}
-        },
-        {
-          menuItem: this.renderTabHeader(stage.id, logs, 'description'),
-          pane: {key: 'description', content: this.renderItems(stage.id, logs, 'description')}
-        },
-        {
-          menuItem: this.renderTabHeader(stage.id, logs, 'pictures'),
-          pane:  {key: 'pictures', content: this.renderItems(stage.id, logs, 'pictures')}
-        },
-        {
-          menuItem: this.renderTabHeader(stage.id, logs, 'onZoneEnter'),
-          pane:  {key: 'onZoneEnter', content: this.renderItems(stage.id, logs, 'onZoneEnter')}
-        },
-        {
-          menuItem: this.renderTabHeader(stage.id, logs, 'onPictureMatch'),
-          pane:  {key: 'onPictureMatch', content: this.renderItems(stage.id, logs, 'onPictureMatch')}
-        },
-        {
-          menuItem: this.renderTabHeader(stage.id, logs, 'onZoneLeave'),
-          pane:  {key: 'onZoneLeave', content: this.renderItems(stage.id, logs, 'onZoneLeave')}
-        },
-        {
-          menuItem: this.renderTabHeader(stage.id, logs, 'json'),
-          pane: {key: 'json', content: this.renderItems(stage.id, logs, 'json')}
-        }
-      ];
+      let tabs = [];
+      if(typeof(stage) === 'number') {
+        console.log(this.state.story);
+        tabs = [
+          {
+            menuItem: this.renderTabHeader(this.state.story.id,null, logs, 'title'),
+            pane: {key: 'photo', content: this.renderItems(this.state.story.id, null, logs, 'title')}
+          },
+          {
+            menuItem: this.renderTabHeader(this.state.story.id, null, logs, 'artist'),
+            pane: {key: 'description', content: this.renderItems(this.state.story.id, null, logs, 'artist')}
+          },
+          {
+            menuItem: this.renderTabHeader(this.state.story.id, null, logs, 'state'),
+            pane:  {key: 'pictures', content: this.renderItems(this.state.story.id, null, logs, 'state')}
+          },
+          {
+            menuItem: this.renderTabHeader(this.state.story.id, null , logs, 'city'),
+            pane:  {key: 'onZoneEnter', content: this.renderItems(this.state.story.id, null, logs, 'city')}
+          },
+          {
+            menuItem: this.renderTabHeader(this.state.story.id, null, logs, 'credits'),
+            pane:  {key: 'onPictureMatch', content: this.renderItems(this.state.story.id, null, logs, 'credits')}
+          },
+          {
+            menuItem: this.renderTabHeader(this.state.story.id, null, logs, 'sinopsys'),
+            pane:  {key: 'onZoneLeave', content: this.renderItems(this.state.story.id, null, logs, 'sinopsys')}
+          },
+          {
+            menuItem: this.renderTabHeader(this.state.story.id, null, logs, 'json'),
+            pane: {key: 'json', content: this.renderItems(this.state.story.id, null, logs, 'json')}
+          }
+        ];
+      } else {
+        tabs = [
+          {
+            menuItem: this.renderTabHeader(this.state.story.id, stage.id, logs, 'photo'),
+            pane: {key: 'photo', content: this.renderItems(this.state.story.id, stage.id, logs, 'photo')}
+          },
+          {
+            menuItem: this.renderTabHeader(this.state.story.id, stage.id, logs, 'description'),
+            pane: {key: 'description', content: this.renderItems(this.state.story.id, stage.id, logs, 'description')}
+          },
+          {
+            menuItem: this.renderTabHeader(this.state.story.id, stage.id, logs, 'pictures'),
+            pane:  {key: 'pictures', content: this.renderItems(this.state.story.id, stage.id, logs, 'pictures')}
+          },
+          {
+            menuItem: this.renderTabHeader(this.state.story.id, stage.id, logs, 'onZoneEnter'),
+            pane:  {key: 'onZoneEnter', content: this.renderItems(this.state.story.id, stage.id, logs, 'onZoneEnter')}
+          },
+          {
+            menuItem: this.renderTabHeader(this.state.story.id, stage.id, logs, 'onPictureMatch'),
+            pane:  {key: 'onPictureMatch', content: this.renderItems(this.state.story.id, stage.id, logs, 'onPictureMatch')}
+          },
+          {
+            menuItem: this.renderTabHeader(this.state.story.id, stage.id, logs, 'onZoneLeave'),
+            pane:  {key: 'onZoneLeave', content: this.renderItems(this.state.story.id, stage.id, logs, 'onZoneLeave')}
+          },
+          {
+            menuItem: this.renderTabHeader(this.state.story.id, stage.id, logs, 'json'),
+            pane: {key: 'json', content: this.renderItems(this.state.story.id, stage.id, logs, 'json')}
+          }
+        ];
+      }
+
       build.push(
         <Tab
           key="preflight"
@@ -375,7 +435,8 @@ class storyStages extends Component {
     const { activeIndex } = this.state;
     return (
       <Segment inverted >
-        <Header>{(this.state.story) ? this.state.story.title : ''} Prefligh Check {this.storyStats(this.state.story, this.state.preflight)}</Header>
+        {this.storyStats(this.state.story, this.state.preflight)}
+        <Header>Story : {(this.state.story) ? this.state.story.title : ''} Prefligh Check </Header>
         <Accordion  inverted>
           <Accordion.Title active={activeIndex === -1} index={-1} onClick={this.handleStageClick}>{this.stageStats(this.state.sid, this.state.preflight)}</Accordion.Title><Accordion.Content className="slide-out" active={activeIndex === -1}>{this.getByStage(this.state.sid, this.state.preflight)}</Accordion.Content>
           {(stages) ? stages.map((stage, index) => <Segment key={index} style={{margin: 0, padding: 0}} inverted ><Accordion.Title active={activeIndex === index} index={index} key={index} onClick={this.handleStageClick}>{this.stageStats(stage, this.state.preflight)}</Accordion.Title><Accordion.Content className="slide-out" active={activeIndex === index}>{this.getByStage(stage, this.state.preflight)}</Accordion.Content></Segment>) : ''}

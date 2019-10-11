@@ -462,9 +462,7 @@ const storyCheckPreflight =  (obj) => {
 
     let log = [];
     let check = {};
-    check = (obj) ? {sid: obj.id, category: 'story', condition: 'Story exist' , check: true} : {sid: obj.id, category: 'story', condition: 'Story does not exist' , check: false};
-    log.push(check);
-    check = (obj.title ) ? {sid: obj.id, category: 'title', condition: 'Title must be filled' , check: true} : {sid: obj.id, category: 'title', title: obj.title, condition: 'Title cannot be empty' , check: false};
+    check = (obj.title ) ? {sid: obj.id, category: 'title', condition: 'Title must be filled' , check: true} : {sid: obj.id, category: 'title', error: obj.title, condition: 'Title cannot be empty' , check: false};
     log.push(check);
     let stages = obj.stages;
     //preflight stages
