@@ -648,7 +648,7 @@ const exportStageTar = async (obj) => {
     let stats = fs.statSync(dest+'stage_'+obj.id +'.tar');
     let size = stats.size / 1000000.0;
     //let size  = (await sizeOf(dest+'stage_'+obj.id +'.tar');
-    return { name: 'stage_'+obj.id +'.tar', size: size,  path: dest, src: 'assets/stories/'+ obj.sid + '/export/stages/stage_'+obj.id +'.tar'  }
+    return { name: 'stage_'+obj.id +'.tar', size: size,  path: dest, src: 'assets/export/stories/'+ obj.sid + '/stages/stage_'+obj.id +'.tar'  }
   } catch(e) {
     console.log(e.message);
   }
@@ -968,11 +968,11 @@ app.get('/assets/export/stories/:storyId/:name', function (req, res, next) {
     }
   })
 });
-app.get('/assets/stories/:storyId/export/stages/:name', function (req, res, next) {
+app.get('/assets/export/stories/:storyId/stages/:name', function (req, res, next) {
   var sid = req.params.storyId;
   var fileName = req.params.name;
 
-  var path = './public/stories/' + sid + '/export/stages/';
+  var path = './public/export/stories/' + sid + '/stages/';
 
   var options = {
     root: path ,
@@ -1552,12 +1552,11 @@ app.post('/stories/:storyId/stages/:stageId/preflight', function(req, res, next)
   // get stage
   getStage({id: ssid}).then(stage => {
     // perform preflight check
-    checkPreFlight(stage.get({
+    let log = checkPreFlight(stage.get({
       plain: true
-    })).then(log => {
-      res.json({preflight: log , msg: 'preflight done'})
-    });
-    //res.json(stage)
+    }));
+    if(log) res.json({preflight: log , msg: 'preflight done'})
+
   });
 });
 app.post('/stories/:storyId/preflight', function(req, res, next) {
