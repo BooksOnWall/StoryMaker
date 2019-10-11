@@ -390,10 +390,10 @@ class storyStages extends Component {
       logs.map((log, index) => {
 
         if(typeof(stage) === 'number') {
-          total ++;
+
           if(log.sid === parseInt(stage)) { (log.check === true) ? win ++ : error ++; }
         } else {
-          total ++;
+
           if(log.ssid === stage.id) {
             (log.check === true) ? win ++ : error ++;
           }
@@ -402,11 +402,13 @@ class storyStages extends Component {
         return log;
       });
     }
-    let percent = (win === 0) ? 0 : parseInt(win / total * 100);
+    total = win + error;
+    let percent = (win === 0) ? 0 : parseInt((win / total) * 100);
+
     let err = (error > 0) ? <Button basic size="tiny"  color="red" >Error [{error}]</Button>: '';
     let sucess = (win > 0) ? <Button basic size="tiny"  color="green" >Success [{win}]</Button>: '';
-    let name = (typeof(stage) === 'number') ? <Button style={{width: '50%'}} basic size="tiny"  color="brown" >Story : {(this.state.story) ? this.state.story.title : ''}</Button> : <Button style={{width: '50%'}} basic size="tiny"  color="brown" >{stage.name}</Button> ;
-    let progress = <Progress style={{width: '30%'}}  percent={percent}  label="complete"active inverted />;
+    let name = (typeof(stage) === 'number') ? <Button style={{width: '30%'}} basic size="tiny"  color="brown" >Story : {(this.state.story) ? this.state.story.title : ''}</Button> : <Button style={{width: '50%'}} basic size="tiny"  color="brown" >{stage.name}</Button> ;
+    let progress = <Progress style={{width: '30%'}}  percent={percent}   progress active indicating inverted />;
     return (
       <Button.Group fluid>{name}{sucess}{err}{progress}</Button.Group>
     );
@@ -417,15 +419,15 @@ class storyStages extends Component {
     let total = 0;
     if(logs && logs.length >0) {
       logs.map((log, index) => {
-        total ++;
         (log.check === true) ? win ++ : error ++;
         return log;
       });
     }
-    let percent = (win === 0) ? 0 : parseInt(win / total * 100);
+    total = win + error;
+    let percent = (win === 0) ? 0 : parseInt((win / total) * 100);
     let err = (error > 0) ? <Button size="tiny" basic  color="red" >Error [{error}]</Button>: '';
     let sucess = (win > 0) ? <Button size="tiny" basic  color="green" >Success [{win}]</Button>: '';
-    let progress = <Progress style={{width: '30%'}}  percent={percent}  label="Complete" active inverted />;
+    let progress = <Progress style={{width: '30%'}}  percent={percent}   progress active indicating inverted />;
     return (
       <Button.Group fluid>{sucess}{err}{progress}</Button.Group>
     );
