@@ -37,6 +37,7 @@ class storyStages extends Component {
       history: this.props.history,
       importURL: server + 'stories/' + props.sid + '/import',
       preflightURL: server + 'stories/' + props.sid + '/preflight',
+      downloadStoryURL: server + 'stories/' + props.sid + '/download',
       preflight: null,
       importLoading: false,
       exportLoading: false,
@@ -150,11 +151,39 @@ class storyStages extends Component {
   storyExport = async () => {
     try {
       this.setState({ exportConfirm: false });
-
+      return this.downloadStory(this.state.sid);
     } catch(e) {
       console.log(e.message);
     }
 
+  }
+  downloadStory = async () => {
+    try {
+      await fetch(this.state.downloadStoryURL, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {'Access-Control-Allow-Origin': '*' },
+      })
+      .then(response => {
+        if (response && !response.ok) { throw new Error(response.statusText);}
+        return response.json();
+      })
+      .then(data => {
+          if(data) {
+            this.setState({exportLoading: false, exportConfirm: false});
+            window.location.href = this.state.server + data.export.src;
+          } else {
+            console.log('No Data received from the server');
+          }
+      })
+      .catch((error) => {
+        // Your error is here!
+        console.log({error});
+      });
+    } catch(e) {
+      console.log(e.message);
+    }
+    let sid = this.props.sid;
   }
   preflight = async () => {
     try {
@@ -317,7 +346,7 @@ class storyStages extends Component {
     let err = (error > 0) ? <Button size="tiny" circular color="red" >Error [{error}]</Button>: '';
     let sucess = (win > 0) ? <Button size="tiny" circular color="green" >Success [{win}]</Button>: '';
     let name = <Button style={{width: '50%'}} size="tiny" circular color="brown" >{stage.name}</Button>;
-    let progress = <Progress style={{width: '30%'}} value={win} total={total} percent={percent} progress='percent' label="complete"active inverted />;
+    let progress = <Progress style={{width: '30%'}}  percent={percent}  label="complete"active inverted />;
     return (
       <Button.Group fluid>{name}{sucess}{err}{progress}</Button.Group>
     );
@@ -336,7 +365,7 @@ class storyStages extends Component {
     let percent = (win === 0) ? 0 : parseInt(win / total * 100);
     let err = (error > 0) ? <Button size="tiny" circular color="red" >Error [{error}]</Button>: '';
     let sucess = (win > 0) ? <Button size="tiny" circular color="green" >Success [{win}]</Button>: '';
-    let progress = <Progress style={{width: '30%'}} value={win} total={total} percent={percent} progress='percent' label="complete"active inverted />;
+    let progress = <Progress style={{width: '30%'}}  percent={percent}  label="Complete" active inverted />;
     return (
       <Button.Group fluid>{sucess}{err}{progress}</Button.Group>
     );
@@ -346,10 +375,10 @@ class storyStages extends Component {
     const { activeIndex } = this.state;
     return (
       <Segment inverted >
-        <Header icon='browser'>Prefligh Check {this.storyStats(stages, this.state.preflight)}</Header>
+        <Header>Prefligh Check {this.storyStats(stages, this.state.preflight)}</Header>
         <Accordion  inverted>
           <Accordion.Title active={activeIndex === -1} index={-1} onClick={this.handleStageClick}>{this.stageStats(this.state.sid, this.state.preflight)}</Accordion.Title><Accordion.Content className="slide-out" active={activeIndex === -1}>{this.getByStage(this.state.sid, this.state.preflight)}</Accordion.Content>
-          {(stages) ? stages.map((stage, index) => <Segment style={{margin: 0, padding: 0}} inverted color="gray"><Accordion.Title active={activeIndex === index} index={index} onClick={this.handleStageClick}>{this.stageStats(stage, this.state.preflight)}</Accordion.Title><Accordion.Content className="slide-out" active={activeIndex === index}>{this.getByStage(stage, this.state.preflight)}</Accordion.Content></Segment>) : ''}
+          {(stages) ? stages.map((stage, index) => <Segment key={index} style={{margin: 0, padding: 0}} inverted color="brown"><Accordion.Title active={activeIndex === index} index={index} key={index} onClick={this.handleStageClick}>{this.stageStats(stage, this.state.preflight)}</Accordion.Title><Accordion.Content className="slide-out" active={activeIndex === index}>{this.getByStage(stage, this.state.preflight)}</Accordion.Content></Segment>) : ''}
         </Accordion>
       </Segment>
     );
@@ -406,6 +435,7 @@ class storyStages extends Component {
                       onChange={this.geojsonImport}
                    />
                  <Confirm
+                     key='import'
                      header='Are you sure ?'
                      content={this.ImportPreview}
                      cancelButton='Never mind'
@@ -417,11 +447,12 @@ class storyStages extends Component {
                   <Button.Or />
                   <Button positive loading={this.state.exportLoading} onClick={this.exportOpen} ><Icon name="external square alternate" /> GeoJSON <FormattedMessage id="app.stage.storystage.export" defaultMessage={`export`} /></Button>
                     <Confirm
-                       basic
+                        key='export'
+                        basic
                         header='Complete Story GeoJSON Export'
                         content={this.ExportPreview}
                         cancelButton='Never mind'
-                        confirmButton="Let's do it"
+                        confirmButton="Download story GeoJSON archive"
                         open={this.state.exportConfirm}
                         onCancel={this.exportClose}
                         onConfirm={this.storyExport}

@@ -638,6 +638,24 @@ const exportStageTar = async (obj) => {
     console.log(e.message);
   }
 };
+const exportStoryTar = async (sid) => {
+  try {
+    //console.log(obj);
+    let path = __dirname +'/public/stories/'+ sid ;
+    let ex = path + '/export/';
+
+    if (!fs.existsSync(ex))  await fs.mkdirSync(ex, 0o744) ;
+    // packing a directory
+    // __dirname +
+    await tar.pack(path).pipe(fs.createWriteStream(ex+'story_'+ sid +'.tar'));
+    let stats = fs.statSync(ex +'story_'+ sid +'.tar');
+    let size = stats.size / 1000000.0;
+    //let size  = (await sizeOf(dest+'stage_'+obj.id +'.tar');
+    return { name: 'story_'+ sid +'.tar', size: size,  path: ex, src: 'assets/stories/'+ sid + '/export/story_'+ sid +'.tar'  }
+  } catch(e) {
+    console.log(e.message);
+  }
+};
 const deleteStage = async (id, sid) => {
   let res = await Stages.destroy({
     where: {id : id, sid: sid }
@@ -890,6 +908,29 @@ app.get('/assets/artists/:artistId/:name', function (req, res, next) {
   var aid = req.params.artistId;
   var fileName = req.params.name;
   var path = 'public/artists/'+aid+'/';
+  var options = {
+    root: path ,
+    dotfiles: 'deny',
+    headers: {
+      'x-timestamp': Date.now(),
+      'x-sent': true
+    }
+  }
+
+  res.sendFile(fileName, options, function (err) {
+    if (err) {
+      next(err)
+    } else {
+      console.log('Sent:', fileName)
+    }
+  })
+});
+app.get('/assets/stories/:storyId/export/:name', function (req, res, next) {
+  var sid = req.params.storyId;
+  var fileName = req.params.name;
+
+  var path = './public/stories/' + sid + '/export/';
+
   var options = {
     root: path ,
     dotfiles: 'deny',
@@ -1541,6 +1582,16 @@ app.post('/stories/:storyId/stages/:stageId/download', function(req, res, next) 
     exportStageTar(stage.get({
       plain: true
     })).then(log => {
+      res.json({ export: log , msg: 'export done'})
+    });
+  });
+});
+app.post('/stories/:storyId/download', function(req, res, next) {
+  let sid = parseInt(req.params.storyId);
+  // get stage
+  getStory({id: sid}).then(story => {
+    // perform export
+    exportStoryTar(sid).then(log => {
       res.json({export: log , msg: 'export done'})
     });
   });
