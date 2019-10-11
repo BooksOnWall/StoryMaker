@@ -11,6 +11,7 @@ import {
   Button,
   Checkbox,
 } from 'semantic-ui-react';
+import {  FormattedMessage } from 'react-intl';
 import { Formik } from 'formik';
 import Logo from '../../logo.svg';
 import UserPref from './userPreferences';
@@ -37,7 +38,7 @@ class Profile extends Component {
         <Grid.Row>
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as='h2' color='orange' textAlign='center'>
-            <Image className="App-logo" alt="logo" src={Logo} />My Profile
+            <Image className="App-logo" alt="logo" src={Logo} /><FormattedMessage id="app.user.profile.myprofile" defaultMessage={`My Profile`}/>
           </Header>
             <Segment stacked>
             <Formik
@@ -84,7 +85,7 @@ class Profile extends Component {
                     value={values.name}
                   />
                   {errors.name && touched.name && errors.name}
-                  <Divider horizontal>...</Divider>
+                  <Divider />
                   <input
                     icon='user'
                     iconposition='left'
@@ -96,7 +97,7 @@ class Profile extends Component {
                     value={values.email}
                   />
                   {errors.email && touched.email && errors.email}
-                  <Divider horizontal>...</Divider>
+                  <Divider/>
                   <input
                     icon='lock'
                     iconposition='left'
@@ -108,7 +109,7 @@ class Profile extends Component {
                     value={values.password}
                   />
                   {errors.password && touched.password && errors.password}
-                  <Divider horizontal>...</Divider>
+                  <Divider />
                   <Checkbox
                     icon='user'
                     iconposition='left'
@@ -124,7 +125,7 @@ class Profile extends Component {
                   {errors.active && touched.active && errors.active}
                   <Divider horizontal>...</Divider>
                   <Button onClick={handleSubmit} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
-                    Update
+                    <FormattedMessage id="app.user.profile.update" defaultMessage={`Update`}/>
                   </Button>
                 </Form>
               )}
@@ -133,7 +134,7 @@ class Profile extends Component {
         </Grid.Column>
         <Grid.Column>
           <Header as='h2' color='orange' textAlign='center'>
-            <Image className="App-logo" alt="logo" src={Logo} />User Preferences
+            <Image className="App-logo" alt="logo" src={Logo} /><FormattedMessage id="app.user.profile.userpreferences" defaultMessage={`User preferences`}/>
           </Header>
           <UserPref toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
         </Grid.Column>

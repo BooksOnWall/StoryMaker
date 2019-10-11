@@ -37,8 +37,8 @@ function StagePictures(props) {
           <input  id='stagePictures' name='files' onChange={props.onChangePicturesHandler} ref={ref => this.fileInput = ref} {...getInputProps()} />
 
             <p>{<FormattedMessage id="app.story.stage.stagepicture.files"  defaultMessage={"Drag and drop some files here, or click to select files"} />}</p>
-          {!isDragActive && <FormattedMessage id="app.stage.stagepicture.files.dragactive"  defaultMessage={"Click here or drop a file to upload!"} />}
-          {isDragActive && !isDragReject &&  <FormattedMessage id="app.story.stage.stagepicture.files.dragactive"  defaultMessage={"Drop it like it's hot!"} />}
+          {!isDragActive && <FormattedMessage id="app.story.stage.stagepicture.files.dragactive"  defaultMessage={"Click here or drop a file to upload!"} />}
+          {isDragActive && !isDragReject &&  <FormattedMessage id="app.story.stage.stagepicture.files.dragactive.drop"  defaultMessage={"Drop it like it's hot!"} />}
           {isDragReject && <FormattedMessage id="app.story.stage.stagepicture.files.dragreject"  defaultMessage={"File type not accepted, sorry!"} />}
         </div>
       </Segment>

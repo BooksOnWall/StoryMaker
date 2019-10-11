@@ -12,22 +12,30 @@
     },
     "user": {
       "edit": "Editar usuario",
+      "login": "",
       "theme": "Seleciona tu tema",
       "create": "Crear usuario",
       "delete": "Borrar cuenta de usuario",
       "locale": "Seleciona tu idioma",
+      "logout": "",
+      "singup": "",
       "update": "Actualizar",
       "created": "Creado",
       "loading": "Obtener información del usuario",
       "required": "Requerido",
-      "passwdTitle": "Cambiar clave",
-      "wrongPasswd": "Clave invalida",
+      "passwdtitle": "",
       "invalidEmail": "Email invalido",
-      "userEdit": {
-        "name": "nombre",
-        "email": "Email",
-        "password": "Clave",
-        "repeatpassword": "Repite tu clave"
+      "useredit": {
+        "name": "",
+        "email": "",
+        "password": "",
+        "repeatpassword": ""
+      },
+      "wrongpassword": "",
+      "profile": {
+        "update": "",
+        "myprofile": "",
+        "userpreferences": ""
       },
       "user": {
         "useravatar": {
@@ -61,50 +69,39 @@
       "subtitle": "Este es el home",
       "unlogged": "Debes ingresar con tu usuario y clave secreta"
     },
-    "stage": {
-      "drag": "Arrastrar",
-      "name": "Nombre",
-      "type": "Tipo",
-      "order": "Orden",
-      "stageaudios": {
-        "files": {
-          "dragactive": "Has clic acá o arrastra un archivo para subirlo!"
-        }
-      },
-      "stageimages": {
-        "files": {
-          "dragactive": "Has clic acá o arrastra un archivo para subirlo!"
-        }
-      },
-      "stagevideos": {
-        "files": {
-          "dragactive": "Has clic acá o arrastra un archivo para subirlo!"
-        }
-      },
-      "stagepicture": {
-        "files": {
-          "dragactive": "Has clic acá o arrastra un archivo para subirlo!"
-        }
-      }
-    },
     "story": {
-      "edit": "",
-      "create": "",
+      "edit": "Editar",
+      "create": "Crear",
       "delete": "Eliminar Cuento",
-      "stories": {
-        "getuser": "Obtener información del usuario",
-        "addstory": "Añadir Cuento",
-        "table": {
-          "id": "Id",
-          "city": "Ciudad",
-          "state": "Localidad",
-          "title": "Titulo",
-          "artist": "Autor",
-          "create": "Fecha de creación",
-          "updated": "Última actualización"
-        }
+      "board": {
+        "next": "",
+        "photo": "",
+        "reset": "",
+        "stage": "",
+        "export": "",
+        "images": "",
+        "import": "",
+        "destroy": "",
+        "preview": "",
+        "location": "",
+        "pictures": "",
+        "dragimage": "",
+        "description": "",
+        "onzoneenter": "",
+        "onzoneleave": "",
+        "onpicturematch": ""
       },
       "stage": {
+        "delete": "",
+        "title": {
+          "edit": "",
+          "create": ""
+        },
+        "stageSteps": {
+          "stage": "",
+          "geoposition": "",
+          "augmentedReality": ""
+        },
         "stageaudios": {
           "files": "Has clic acá o arrastra un archivo para subirlo!"
         },
@@ -117,6 +114,25 @@
         "stagepicture": {
           "files": "Has clic acá o arrastra un archivo para subirlo!"
         }
+      },
+      "map": {
+        "getmapinfo": "",
+        "stagemap": {
+          "getmapinfo": ""
+        }
+      },
+      "stories": {
+        "getuser": "Obtener información del usuario",
+        "addstory": "Añadir Cuento",
+        "table": {
+          "id": "Id",
+          "city": "Ciudad",
+          "state": "Localidad",
+          "title": "Titulo",
+          "artist": "Autor",
+          "create": "Fecha de creación",
+          "updated": "Última actualización"
+        }
       }
     },
     "artists": {
@@ -125,6 +141,10 @@
     },
     "artist": {
       "delete": "Eliminar Artista",
+      "title": {
+        "edit": "",
+        "create": ""
+      },
       "artistSteps": {
         "artist": {
           "bio": "Bio",
@@ -136,13 +156,14 @@
     "userPrefs": {
       "loading": "Obtener información del usuario"
     },
-    "stories": {
-      "stage": {
-        "stageSteps": {
-          "stage": "Estación",
-          "geoposition": "Ubicaiíon",
-          "augmentedReality": "Realidad Ahumentada"
-        }
+    "stage": {
+      "storystage": {
+        "drag": "",
+        "name": "",
+        "type": "",
+        "order": "",
+        "export": "",
+        "import": ""
       }
     }
   }

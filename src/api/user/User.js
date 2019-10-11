@@ -463,10 +463,10 @@ class User extends Component {
           <Form size='large' onSubmit={this.handleSubmit}>
             {(this.state.userEdit.mode === 'update') ? <Image src={this.state.avatar_path} avatar  /> : '' }
             <Input
-              label={<FormattedMessage id="app.user.userEdit.name" defaultMessage={'Name'}/>}
+              label={<FormattedMessage id="app.user.useredit.name" defaultMessage={'Name'}/>}
               icon='user'
               iconposition='left'
-              placeholder= {<FormattedMessage id="app.user.userEdit.name" defaultMessage={'Name'}/>}
+              placeholder= {<FormattedMessage id="app.user.useredit.name" defaultMessage={'Name'}/>}
               autoFocus={true}
               type="text"
               name="name"
@@ -477,10 +477,10 @@ class User extends Component {
             {errors.name && touched.name && errors.name}
 
             <Input
-              label={<FormattedMessage id="app.user.userEdit.email" defaultMessage={'Email'}/>}
+              label={<FormattedMessage id="app.user.useredit.email" defaultMessage={'Email'}/>}
               icon='mail'
               iconposition='left'
-              placeholder={<FormattedMessage id="app.user.userEdit.email" defaultMessage={'Email'}/>}
+              placeholder={<FormattedMessage id="app.user.useredit.email" defaultMessage={'Email'}/>}
               type="email"
               name="email"
               onChange={handleChange}
@@ -491,10 +491,10 @@ class User extends Component {
             {(this.state.userEdit.mode === 'create') ? (
               <div>
                 <Input
-                  label={<FormattedMessage id="app.user.userEdit.password" defaultMessage={'Password'}/>}
+                  label={<FormattedMessage id="app.user.useredit.password" defaultMessage={'Password'}/>}
                   icon='lock'
                   iconposition='left'
-                  placeholder={<FormattedMessage id="app.user.userEdit.password" defaultMessage={'Password'}/>}
+                  placeholder={<FormattedMessage id="app.user.useredit.password" defaultMessage={'Password'}/>}
                   type="password"
                   name="password"
                   onChange={handleChange}
@@ -506,7 +506,7 @@ class User extends Component {
                 <Input
                   icon='lock'
                   iconposition='left'
-                  placeholder={<FormattedMessage id="app.user.userEdit.repeatpassword" defaultMessage={'Repeat Password'}/>}
+                  placeholder={<FormattedMessage id="app.user.useredit.repeatpassword" defaultMessage={'Repeat Password'}/>}
                   type="password"
                   name="password2"
                   onChange={handleChange}
@@ -556,7 +556,7 @@ class User extends Component {
     return(
       <Segment className='slide-out'>
         <Header as='h3' color='violet' textAlign='center'>
-          <FormattedMessage id="app.user.passwdTitle" defaultMessage={`Change password`}/>
+          <FormattedMessage id="app.user.passwdtitle" defaultMessage={`Change password`}/>
         </Header>
         <Formik
           initialUValues={this.state.userEdit.initialPValues}
@@ -567,7 +567,7 @@ class User extends Component {
             } else if (
               values.password !== values.password2
             ) {
-              errors.password =  <FormattedMessage id="app.user.wrongPasswd" defaultMessage={`Invalid repeat password`}/>;
+              errors.password =  <FormattedMessage id="app.user.wrongpassword" defaultMessage={`Invalid repeat password`}/>;
             }
             return errors;
           }}

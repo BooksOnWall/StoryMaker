@@ -9,6 +9,7 @@ import {
   Header,
   Segment } from "semantic-ui-react";
 import Logo from '../../logo.svg';
+import {  FormattedMessage } from 'react-intl';
 
 class SignUp extends Component {
   constructor(props) {
@@ -99,7 +100,7 @@ class SignUp extends Component {
       <Grid  className="view" id="signup" textAlign='center' style={{ height: '60vh' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as='h2' color='orange' textAlign='center'>
-            <Image className="App-logo" alt="logo" src={Logo} /> Sign Up to your account
+            <Image className="App-logo" alt="logo" src={Logo} />                    <FormattedMessage id="app.user.singup.youraccount" defaultMessage={` Sign Up to your account`}/>
           </Header>
             <Segment stacked>
             <Formik
@@ -180,7 +181,7 @@ class SignUp extends Component {
                   />
                   {errors.password2 && touched.password2 && errors.password2}
                   <Button onClick={handleSubmit} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
-                    Login
+                    <FormattedMessage id="app.user.singup" defaultMessage={`Login`}/>
                   </Button>
                 </Form>
               )}

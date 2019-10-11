@@ -205,7 +205,7 @@ class storyStages extends Component {
             <Segment inverted>
                 <Button primary onClick={this.handleCreate}><Icon name="google wallet" />Add Stage</Button>
                 <Button.Group floated='right'>
-                  <Button negative loading={this.state.importLoading} onClick={() => this.fileInputRef.current.click()}><Icon name="point" />GeoJSON import</Button>
+                  <Button negative loading={this.state.importLoading} onClick={() => this.fileInputRef.current.click()}><Icon name="point" />GeoJSON <FormattedMessage id="app.stage.storystage.import" defaultMessage={`import`} /></Button>
                     <input
                       id='importfile'
                       name="files"
@@ -225,7 +225,8 @@ class storyStages extends Component {
                      onConfirm={this.close}
                    />
                   <Button.Or />
-                  <Button positive><Icon name="external square alternate" /> GeoJSON export</Button>
+                  <Button positive><Icon name="external square alternate" /> GeoJSON             <FormattedMessage id="app.stage.storystage.export" defaultMessage={`export`} />
+                      </Button>
                 </Button.Group>
             </Segment>
 
@@ -246,16 +247,16 @@ class storyStages extends Component {
                     <Table.Header className='slide-out'>
                       <Table.Row>
                         <Table.HeaderCell   >
-                          <FormattedMessage id="app.stage.drag" defaultMessage={`Drag`} />
+                          <FormattedMessage id="app.stage.storystage.drag" defaultMessage={`Drag`} />
                         </Table.HeaderCell>
                         <Table.HeaderCell >
-                          <FormattedMessage id="app.stage.name" defaultMessage={`Name`} />
+                          <FormattedMessage id="app.stage.storystage.name" defaultMessage={`Name`} />
                         </Table.HeaderCell>
                         <Table.HeaderCell   >
-                          <FormattedMessage id="app.stage.type" defaultMessage={`Type`} />
+                          <FormattedMessage id="app.stage.storystage.type" defaultMessage={`Type`} />
                         </Table.HeaderCell>
                         <Table.HeaderCell   >
-                          <FormattedMessage id="app.stage.order" defaultMessage={`Order`} />
+                          <FormattedMessage id="app.stage.storystage.order" defaultMessage={`Order`} />
                         </Table.HeaderCell>
                       </Table.Row>
                     </Table.Header>

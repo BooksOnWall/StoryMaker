@@ -399,17 +399,17 @@ class Story extends Component {
   EditSino = () => {
 
     return (
-      <Segment  className="view sinopsys">
+      <Segment inverted className="view sinopsys">
           <Editor
            editorState={this.state.sinoState}
            wrapperClassName="demo-wrapper"
            editorClassName="demo-editor"
            onEditorStateChange={this.onSinoStateChange}
          />
+        <Divider/>
         <Button onClick={this.handleSubmitSino} floated='right' secondary size='large' type="submit" >
           {(this.state.mode === 'create') ? 'Create' : 'Update'}
         </Button>
-
       </Segment>
     );
   }

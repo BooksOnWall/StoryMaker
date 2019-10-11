@@ -14,7 +14,6 @@ import {
   Header,
   Segment,
   Container,
-    Header,
   TextArea,
   Modal,
   List,
@@ -1113,7 +1112,7 @@ class stage extends Component {
                 {(this.state.mode === 'update') ? (
                   <div>
                     <Button onClick={this.stageDeleteShow} color='red'  size='large' type="submit" disabled={isSubmitting}>
-                      <FormattedMessage id="app.story.delete" defaultMessage={`Delete stage`}/>
+                      <FormattedMessage id="app.story.stage.delete" defaultMessage={`Delete stage`}/>
                     </Button>
                     <Confirm
                       open={this.state.stageDelete}
@@ -1349,8 +1348,8 @@ class stage extends Component {
   }
   render() {
       return (
-        <Container inverted className="main" fluid>
-        <Segment className="view" >
+        <Container className="main" fluid>
+        <Segment inverted className="view" >
           <Modal
             open={this.state.preflightModal}
             onClose={this.handleExport}
