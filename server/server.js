@@ -449,7 +449,29 @@ const getStage = async obj => {
     where: obj,
   });
 };
-const checkPreFlight = async obj => {
+const storyCheckPreflight =  (obj) => {
+
+    let log = [];
+    let check = {};
+    check = (obj) ? {sid: obj.id, category: 'story', condition: 'Story exist' , check: true} : {sid: obj.id, category: 'story', condition: 'Story does not exist' , check: false};
+    log.push(check);
+    check = (obj.title ) ? {sid: obj.id, category: 'title', condition: 'Title must be filled' , check: true} : {sid: obj.id, category: 'title', title: obj.title, condition: 'Title cannot be empty' , check: false};
+    log.push(check);
+    let stages = obj.stages;
+    //preflight stages
+    stages.map(stage => {
+      stage = stage.get({
+        plain: true
+      });
+      let logs = checkPreFlight(stage);
+      log = [...log, ...logs];
+      return stage;
+    });
+
+    console.log('story log:', log)
+    return log;
+};
+const checkPreFlight =  (obj) => {
   // Photo / square format-max resolution 640px /max size 100kb / One and only one => done
   // Description text min 140 characteres/ only text (no url) ??
   // Location / is in "Zona location" / ??
@@ -472,7 +494,7 @@ const checkPreFlight = async obj => {
       log.push(check);
       let path = (obj.photo[0]) ? './public/' + src.replace(url,'') : null;
       // check photo dimension
-      let photoDimensions = (path) ? await sizeOf(path) : null;
+      let photoDimensions = (path) ?  sizeOf(path) : null;
       check = (photoDimensions && photoDimensions.width === photoDimensions.height) ? {category: 'photo', condition: 'Photo must be square' , check: true} : {category: 'photo', condition: 'Photo must be square' , check: false, src: src, path: path, error:  obj.name + ' Photo is:' + photoDimensions.width + ' x ' + photoDimensions.height};
       log.push(check);
       check = (photoDimensions && photoDimensions.width <= 640 && photoDimensions.height <= 640) ? {category: 'photo', condition: 'Photo dimension cannot be more than 640x640' , check: true} : {category: 'photo', condition: 'Photo dimension cannot be more than 640x640  ' , check: false,  src: src, path: path, error:  obj.name + ' Photo is:' + photoDimensions.width + ' x ' + photoDimensions.height};
@@ -489,7 +511,7 @@ const checkPreFlight = async obj => {
     let pictures = (obj.pictures) ? obj.pictures : null ;
       if(pictures) {
         let picsDim=[];
-        pictures.map(pic => {
+         pictures.map(pic => {
           let path = './public/'+pic.image.src.replace('assets/','');
           let src = pic.image.src;
           let picDimensions = sizeOf(path);
@@ -561,12 +583,15 @@ const checkPreFlight = async obj => {
     log.push(check);
     check = (obj.onZoneLeave && obj.onZoneLeave.length > 0  && obj.onZoneLeave.length === 1 ) ? {category: 'onZoneLeave', condition: 'There can be only one audio' , check: true} : {category: 'onZoneLeave',  error: 'More than one audio file', condition: 'There can be only one audio' , check: false};
     log.push(check);
+
     // export JSON file :
-    await exportStageJSON(obj);
+     exportStageJSON(obj);
+    return log
+
   } catch(e) {
     console.log(e.message);
   }
-  return log
+
 };
 const exportStageJSON = async (obj) => {
 
@@ -1474,6 +1499,41 @@ app.post('/stories/:storyId/stages/:stageId/preflight', function(req, res, next)
       res.json({preflight: log , msg: 'preflight done'})
     });
     //res.json(stage)
+  });
+});
+app.post('/stories/:storyId/preflight', function(req, res, next) {
+  let sid = parseInt(req.params.storyId);
+  // get stage
+  //console.log('stages:', stages);
+  getStory({id: sid}).then(story => {
+    //story[dataValues].stages ='toto' ;
+    let st = story.get({
+      plain: true
+    });
+    getAllStages(sid).then(stages => {
+      st['stages'] = stages;
+      // write json file
+      let filePath = './public/stories/' + sid + '/export/';
+      let fileName = 'story.json';
+
+      if (fs.existsSync(filePath+fileName)) {
+        //file already exist remove it :
+         rimraf.sync(filePath+fileName);
+         fs.writeFile(filePath+fileName, JSON.stringify(st), 'utf8', function(err) {
+          if (err) res = {category: 'json', condition: 'JSON export complete' , check: false, error: err };
+          res = {category: 'json', condition: 'JSON export complete' , check: true };
+        });
+      } else {
+         fs.writeFile(filePath+fileName, JSON.stringify(st), 'utf8', function(err) {
+          if (err) res =  {category: 'json', condition: 'JSON export' , check: false, error: err };
+          res = {category: 'json', condition: 'JSON export complete' , check: true };
+        });
+      }
+      // story preflight
+      let preflight= storyCheckPreflight(st);
+      console.log(preflight);
+      res.json({story: st , preflight: preflight, msg: 'Story preflight ok'});
+    });
   });
 });
 app.post('/stories/:storyId/stages/:stageId/download', function(req, res, next) {

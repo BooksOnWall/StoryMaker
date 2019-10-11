@@ -5,6 +5,8 @@ import {
   Table,
   Button,
   Message,
+  Header,
+  Image,
   Placeholder,
   Confirm,
   Dimmer,
@@ -29,7 +31,11 @@ class storyStages extends Component {
       column: null,
       history: this.props.history,
       importURL: server + 'stories/' + props.sid + '/import',
+      preflightURL: server + 'stories/' + props.sid + '/preflight',
+      preflight: null,
       importLoading: false,
+      exportLoading: false,
+      exportConfirm: false,
       direction: null,
       stages: null,
       location: null,
@@ -62,8 +68,6 @@ class storyStages extends Component {
     this.reindexStages = this.reindexStages.bind(this);
   }
   reindexStages = async (sid, stages) => {
-    console.log('sid:',sid);
-    console.log('stages:', stages);
     try {
       await fetch(this.state.stagesURI, {
         method: 'PATCH',
@@ -77,7 +81,6 @@ class storyStages extends Component {
       })
       .then(data => {
           if(data) {
-            console.log(data);
             return data;
           } else {
             console.log('No Data received from the server');
@@ -133,6 +136,40 @@ class storyStages extends Component {
   }
   open = () => this.setState({ confirmOpen: true })
   close = () => this.setState({ confirmOpen: false })
+  exportOpen = () => {
+    this.setState({ exportConfirm: true, exportLoading: true });
+    return this.preflight();
+  }
+  exportClose = () => this.setState({ exportConfirm: false, exportLoading: false })
+  storyExport = async () => {
+    try {
+      this.setState({ exportConfirm: false });
+
+    } catch(e) {
+      console.log(e.message);
+    }
+
+  }
+  preflight = async () => {
+    try {
+      await fetch(this.state.preflightURL, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Accept':'application/json; charset=utf-8'
+        },
+       })
+       .then(response => response.json())
+       .then(data => {
+         console.log(data.preflight);
+         this.setState({stages: data.story.stages, preflight: data.preflight, exportLoading: true});
+         return data
+       });
+    } catch(e) {
+      console.log(e.message);
+    }
+  }
   geojsonImport = async (e) => {
     //this.open();
     this.setState({importLoading: true});
@@ -163,6 +200,41 @@ class storyStages extends Component {
     } catch(e) {
       console.log(e.message);
     }
+  }
+  renderImageList = (list) => {
+    return (
+      <Message.Item><Image.Group size="tiny">{ list.map((img, index) => (img.src) ? <Image key={index}  src={this.state.server+img.src} /> : '') }</Image.Group></Message.Item>
+    );
+  }
+  ExportPreview = (logs) => {
+    return (
+      <Segment>
+        <Header icon='browser'>Prefligh Check</Header>
+        <Message
+          attached
+          header='Warning'
+          content='This export all files and data from story !'
+          />
+
+        {(this.state.preflight && this.state.preflight.length > 0 ) ? this.state.preflight.map((log, index) => {
+
+          return (
+            <Message key={log.category+index}  icon color={(log.check) ? 'green' : 'red'}>
+            {(log.check) ? <Icon name='check' /> : <Icon name='bug' /> }
+            {(log.src) ? <Image   size="small" src={log.src}/> : ''}
+            <Message.Content>
+              <Message.Header>{log.condition}</Message.Header>
+              <Message.List>
+              {(!log.check && typeof(log.error) === 'string') ? <Message.Item>{log.error}</Message.Item> : '' }
+              {(!log.check && log.category==='pictures' && log.error && typeof(log.error) === 'object') ?  this.renderImageList(log.error) : '' }
+              </Message.List>
+            </Message.Content>
+            </Message>
+          );
+
+      }) : ''}
+      </Segment>
+    );
   }
   ImportPreview = (geojson) => {
 
@@ -225,7 +297,16 @@ class storyStages extends Component {
                      onConfirm={this.close}
                    />
                   <Button.Or />
-                  <Button positive><Icon name="external square alternate" /> GeoJSON export</Button>
+                  <Button positive loading={this.state.exportLoading} onClick={this.exportOpen} ><Icon name="external square alternate" /> GeoJSON export</Button>
+                    <Confirm
+                        header='Complete Story GeoJSON Export'
+                        content={this.ExportPreview}
+                        cancelButton='Never mind'
+                        confirmButton="Let's do it"
+                        open={this.state.exportConfirm}
+                        onCancel={this.exportClose}
+                        onConfirm={this.storyExport}
+                      />
                 </Button.Group>
             </Segment>
 
