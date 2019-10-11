@@ -300,14 +300,23 @@ const createStory = async ({ title, state, city, sinopsys, credits, artist, acti
   try {
     let res = await Stories.create({ title, state, city, sinopsys, credits, artist, active });
     const sid = res.get('id');
+    // create directory structure
+    // story files
     var dir = __dirname + '/public/stories/'+sid;
     if (!fs.existsSync(dir)) { fs.mkdirSync(dir, 0o744); }
     var sdir = __dirname + '/public/stories/' + sid + '/stages';
     if (!fs.existsSync(sdir)) { fs.mkdirSync(sdir, 0o744); }
-    var edir =  __dirname + '/public/stories/' + sid + '/export';
-    if (!fs.existsSync(edir)) { fs.mkdirSync(edir, 0o744); }
     var idir = __dirname + '/public/stories/' + sid + '/import';
     if (!fs.existsSync(idir)) { fs.mkdirSync(idir, 0o744); }
+
+    // Export directory structure
+    var exdir = __dirname + '/public/export/';
+    if (!fs.existsSync(exdir)) { fs.mkdirSync(exdir, 0o744); }
+    var sexdir = exdir + 'stories/';
+    if (!fs.existsSync(sexdir)) { fs.mkdirSync(sexdir, 0o744); }
+    var edir =  sexdir + sid + '/';
+    if (!fs.existsSync(edir)) { fs.mkdirSync(edir, 0o744); }
+
     return res;
   } catch(e) {
     console.log(e.message);
@@ -464,9 +473,25 @@ const storyCheckPreflight =  (obj) => {
         plain: true
       });
       let logs = checkPreFlight(stage);
-      log = [...log, ...logs];
+      // console.log('stage',stage);
+      // console.log('logs', logs);
+      if(logs) log = [...log, ...logs];
       return stage;
     });
+    // export story json
+
+    let sid = obj.id;
+    let filePath = __dirname +'/public/stories/' + sid + '/';
+    let fileName = 'story.json';
+    if (fs.existsSync(filePath+fileName)) {
+      //file already exist rmove it :
+      rimraf.sync(filePath+fileName);
+    }
+    fs.writeFile(filePath+fileName, JSON.stringify(obj), 'utf8', function(err) {
+      if (err) log.push({sid: sid,  category: 'json', condition: 'JSON export' , check: false, error: err });
+      log.push({sid: sid,  category: 'json', condition: 'JSON export complete' , check: true });
+    });
+
     return log;
 };
 const checkPreFlight =  (obj) => {
@@ -583,7 +608,21 @@ const checkPreFlight =  (obj) => {
     log.push(check);
 
     // export JSON file :
-     exportStageJSON(obj);
+
+    let ssid = obj.id;
+    let sid = obj.sid;
+    let filePath = __dirname + '/public/stories/' + sid + '/stages/' + ssid + '/json/';
+    let fileName = 'stage.json';
+
+    if (fs.existsSync(filePath+fileName)) {
+      //file already exist rmove it :
+       rimraf.sync(filePath+fileName);
+    }
+     fs.writeFile(filePath+fileName, JSON.stringify(obj), 'utf8', function(err) {
+      if (err) log.push({sid: sid, ssid: ssid, category: 'json', condition: 'JSON export' , check: false, error: err });
+      log.push({sid: sid, ssid: ssid, category: 'json', condition: 'JSON export complete' , check: true });
+    });
+
     return log
 
   } catch(e) {
@@ -591,39 +630,15 @@ const checkPreFlight =  (obj) => {
   }
 
 };
-const exportStageJSON = async (obj) => {
 
-  try {
-    let res ={};
-    let ssid = obj.id;
-    let sid = obj.sid;
-    let filePath = './public/stories/' + sid + '/stages/' + ssid + '/json/';
-    let fileName = 'stage.json';
-
-    if (fs.existsSync(filePath+fileName)) {
-      //file already exist rmove it :
-      await rimraf.sync(filePath+fileName);
-      await fs.writeFile(filePath+fileName, JSON.stringify(obj), 'utf8', function(err) {
-        if (err) res = {category: 'json', condition: 'JSON export complete' , check: false, error: err };
-        res = {category: 'json', condition: 'JSON export complete' , check: true };
-      });
-    } else {
-      await fs.writeFile(filePath+fileName, JSON.stringify(obj), 'utf8', function(err) {
-        if (err) res =  {category: 'json', condition: 'JSON export' , check: false, error: err };
-        res = {category: 'json', condition: 'JSON export complete' , check: true };
-      });
-    }
-    return res;
-  } catch(e) {
-    console.log('error', {category: 'json', condition: 'JSON export' , check: false, error: e.message });
-  }
-
-};
 const exportStageTar = async (obj) => {
   try {
     //console.log(obj);
     let path = __dirname +'/public/stories/'+ obj.sid + '/stages/' + obj.id;
-    let ex = __dirname +'/public/stories/'+ obj.sid + '/export/';
+    let archive = __dirname +'/public/export/';
+    if (!fs.existsSync(archive))  await fs.mkdirSync(archive, 0o744) ;
+    if (!fs.existsSync(archive+'stories/'))  await fs.mkdirSync(archive+'stories/', 0o744) ;
+    let ex = archive + 'stories/'+ obj.sid + '/';
     let dest = ex + 'stages/';
     if (!fs.existsSync(ex))  await fs.mkdirSync(ex, 0o744) ;
     if (!fs.existsSync(dest))  await fs.mkdirSync(dest, 0o744) ;
@@ -641,9 +656,14 @@ const exportStageTar = async (obj) => {
 const exportStoryTar = async (sid) => {
   try {
     //console.log(obj);
-    let path = __dirname +'/public/stories/'+ sid ;
-    let ex = path + '/export/';
-
+    // create export for story
+    // __dirname +'/public/export/stories/'
+    let archive = __dirname +'/public/export/';
+    if (!fs.existsSync(archive))  await fs.mkdirSync(archive, 0o744) ;
+    if (!fs.existsSync(archive+'stories'))  await fs.mkdirSync(archive+'stories', 0o744) ;
+    let path = __dirname +'/public/stories/'+ sid  ;
+    let ex = __dirname +'/public/export/stories/'+ sid +'/' ;;
+    if (!fs.existsSync(path))  await fs.mkdirSync(path, 0o744) ;
     if (!fs.existsSync(ex))  await fs.mkdirSync(ex, 0o744) ;
     // packing a directory
     // __dirname +
@@ -651,7 +671,7 @@ const exportStoryTar = async (sid) => {
     let stats = fs.statSync(ex +'story_'+ sid +'.tar');
     let size = stats.size / 1000000.0;
     //let size  = (await sizeOf(dest+'stage_'+obj.id +'.tar');
-    return { name: 'story_'+ sid +'.tar', size: size,  path: ex, src: 'assets/stories/'+ sid + '/export/story_'+ sid +'.tar'  }
+    return { name: 'story_'+ sid +'.tar', size: size,  path: ex, src: 'assets/export/stories/'+ sid + '/story_'+ sid +'.tar'  }
   } catch(e) {
     console.log(e.message);
   }
@@ -925,11 +945,11 @@ app.get('/assets/artists/:artistId/:name', function (req, res, next) {
     }
   })
 });
-app.get('/assets/stories/:storyId/export/:name', function (req, res, next) {
+app.get('/assets/export/stories/:storyId/:name', function (req, res, next) {
   var sid = req.params.storyId;
   var fileName = req.params.name;
 
-  var path = './public/stories/' + sid + '/export/';
+  var path = './public/export/stories/' + sid + '/';
 
   var options = {
     root: path ,
@@ -1552,7 +1572,7 @@ app.post('/stories/:storyId/preflight', function(req, res, next) {
     getAllStages(sid).then(stages => {
       st['stages'] = stages;
       // write json file
-      let filePath = './public/stories/' + sid + '/export/';
+      let filePath = './public/export/stories/' + sid + '/export/';
       let fileName = 'story.json';
 
       if (fs.existsSync(filePath+fileName)) {
