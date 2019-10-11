@@ -13,6 +13,7 @@ import {
   Placeholder,
   Confirm,
   Dimmer,
+  Progress,
   Accordion,
   Icon
 } from 'semantic-ui-react';
@@ -42,7 +43,7 @@ class storyStages extends Component {
       exportConfirm: false,
       direction: null,
       stages: null,
-      activeIndex: 0,
+      activeIndex: null,
       location: null,
       listStages: this.listStages,
       confirmOpen: false,
@@ -167,8 +168,7 @@ class storyStages extends Component {
        })
        .then(response => response.json())
        .then(data => {
-         console.log(data.preflight);
-         this.setState({stages: data.story.stages, preflight: data.preflight, exportLoading: true});
+         this.setState({stages: data.story.stages, sid: this.state.sid, preflight: data.preflight, exportLoading: true});
          return data
        });
     } catch(e) {
@@ -296,30 +296,59 @@ class storyStages extends Component {
   stageStats = (stage,logs) => {
     let error = 0;
     let win = 0;
+    let total = 0;
     if(logs && logs.length >0) {
       logs.map((log, index) => {
-        if(log.ssid === stage.id) {
-          (log.check === true) ? win ++ : error ++;
+
+        if(typeof(stage) === 'number') {
+          total ++;
+          if(log.sid === parseInt(stage)) { (log.check === true) ? win ++ : error ++; }
+        } else {
+          total ++;
+          if(log.ssid === stage.id) {
+            (log.check === true) ? win ++ : error ++;
+          }
         }
+
         return log;
       });
     }
-    let err = (error > 0) ? <Label size="tiny" circular color="red" >Error [{error}]</Label>: '';
-    let sucess = (win > 0) ? <Label size="tiny" circular color="green" >Success [{win}]</Label>: '';
-    let name = <Label size="tiny" circular color="gray" >{stage.name}</Label>
+    let percent = (win === 0) ? 0 : parseInt(win / total * 100);
+    let err = (error > 0) ? <Button size="tiny" circular color="red" >Error [{error}]</Button>: '';
+    let sucess = (win > 0) ? <Button size="tiny" circular color="green" >Success [{win}]</Button>: '';
+    let name = <Button style={{width: '50%'}} size="tiny" circular color="brown" >{stage.name}</Button>;
+    let progress = <Progress style={{width: '30%'}} value={win} total={total} percent={percent} progress='percent' label="complete"active inverted />;
     return (
-      <Label.Group>{name}{sucess}{err}</Label.Group>
+      <Button.Group fluid>{name}{sucess}{err}{progress}</Button.Group>
+    );
+  }
+  storyStats = (stages, logs) => {
+    let error = 0;
+    let win = 0;
+    let total = 0;
+    if(logs && logs.length >0) {
+      logs.map((log, index) => {
+        total ++;
+        (log.check === true) ? win ++ : error ++;
+        return log;
+      });
+    }
+    let percent = (win === 0) ? 0 : parseInt(win / total * 100);
+    let err = (error > 0) ? <Button size="tiny" circular color="red" >Error [{error}]</Button>: '';
+    let sucess = (win > 0) ? <Button size="tiny" circular color="green" >Success [{win}]</Button>: '';
+    let progress = <Progress style={{width: '30%'}} value={win} total={total} percent={percent} progress='percent' label="complete"active inverted />;
+    return (
+      <Button.Group fluid>{sucess}{err}{progress}</Button.Group>
     );
   }
   ExportPreview = (log) => {
-    let categories = [];
     let stages = this.state.stages;
-    const logs = this.state.preflight;
     const { activeIndex } = this.state;
     return (
       <Segment inverted >
-        <Header icon='browser'>Prefligh Check</Header>
+        <Header icon='browser'>Prefligh Check {this.storyStats(stages, this.state.preflight)}</Header>
         <Accordion  inverted>
+          <Accordion.Title active={activeIndex === -1} index={-1} onClick={this.handleStageClick}>{this.stageStats(this.state.sid, this.state.preflight)}</Accordion.Title><Accordion.Content className="slide-out" active={activeIndex === -1}>{this.getByStage(this.state.sid, this.state.preflight)}</Accordion.Content>
           {(stages) ? stages.map((stage, index) => <Segment style={{margin: 0, padding: 0}} inverted color="gray"><Accordion.Title active={activeIndex === index} index={index} onClick={this.handleStageClick}>{this.stageStats(stage, this.state.preflight)}</Accordion.Title><Accordion.Content className="slide-out" active={activeIndex === index}>{this.getByStage(stage, this.state.preflight)}</Accordion.Content></Segment>) : ''}
         </Accordion>
       </Segment>

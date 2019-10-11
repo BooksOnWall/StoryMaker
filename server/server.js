@@ -467,8 +467,6 @@ const storyCheckPreflight =  (obj) => {
       log = [...log, ...logs];
       return stage;
     });
-
-    console.log('story log:', log)
     return log;
 };
 const checkPreFlight =  (obj) => {
@@ -1531,7 +1529,6 @@ app.post('/stories/:storyId/preflight', function(req, res, next) {
       }
       // story preflight
       let preflight= storyCheckPreflight(st);
-      console.log(preflight);
       res.json({story: st , preflight: preflight, msg: 'Story preflight ok'});
     });
   });
