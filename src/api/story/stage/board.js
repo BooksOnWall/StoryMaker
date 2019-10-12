@@ -8,11 +8,9 @@ import {
   Icon,
   Label,
   Dimmer,
-  Card,
   Confirm,
   Button,
   Grid,
-  Rail,
   Header,
   Divider,
 } from 'semantic-ui-react';

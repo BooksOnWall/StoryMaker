@@ -58,7 +58,7 @@ video {
   padding-top: 0;
   padding-bottom: 0;
 }
-.ui.header segment{
+.ui.header.segment{
   margin: 0 !important;
   padding: 31px !important;
   background-color: transparent !important;
