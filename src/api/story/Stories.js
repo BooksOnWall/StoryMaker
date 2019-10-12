@@ -178,7 +178,7 @@ class Stories extends Component {
                       <Table.Cell>{artist}</Table.Cell>
                       <Table.Cell>{state}</Table.Cell>
                       <Table.Cell>{city}</Table.Cell>
-                      <Table.Cell><Progress  percent={progress} label="Complete" progress active indicating inverted /></Table.Cell>
+                      <Table.Cell><Progress  percent={progress}  progress active indicating inverted /></Table.Cell>
                       <Table.Cell>{Moment(createdAt).format('LL')}</Table.Cell>
                       <Table.Cell>{Moment(updatedAt).format('LL')}</Table.Cell>
 
