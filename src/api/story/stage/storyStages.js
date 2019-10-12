@@ -43,6 +43,7 @@ class storyStages extends Component {
       exportLoading: false,
       exportConfirm: false,
       direction: null,
+      story: null,
       stages: null,
       activeIndex: null,
       location: null,
@@ -183,7 +184,6 @@ class storyStages extends Component {
     } catch(e) {
       console.log(e.message);
     }
-    let sid = this.props.sid;
   }
   preflight = async () => {
     try {
@@ -197,7 +197,7 @@ class storyStages extends Component {
        })
        .then(response => response.json())
        .then(data => {
-         this.setState({stages: data.story.stages, sid: this.state.sid, preflight: data.preflight, exportLoading: true});
+         this.setState({stages: data.story.stages, story: data.story, sid: this.state.sid, preflight: data.preflight, exportLoading: true});
          return data
        });
     } catch(e) {
@@ -247,12 +247,18 @@ class storyStages extends Component {
 
     this.setState({ activeIndex: newIndex })
   }
-  renderTabHeader = (ssid, items, category) => {
+  renderTabHeader = (sid, ssid, items, category) => {
     let error = 0;
     let win = 0;
     items.map((log, index) => {
-      if(log.category === category && log.ssid === ssid ) {
-        (log.check === true) ? win ++ : error ++;
+      if(ssid) {
+        if(log.category === category && log.ssid === ssid ) {
+          (log.check === true) ? win ++ : error ++;
+        }
+      } else {
+        if(log.category === category && log.sid === sid ) {
+          (log.check === true) ? win ++ : error ++;
+        }
       }
       return log;
     });
@@ -261,60 +267,114 @@ class storyStages extends Component {
     return <Menu.Item key={category +'messages'}>{err} {sucess} {category.charAt(0).toUpperCase() + category.slice(1)} </Menu.Item>;
 
   }
-  renderItems =  (ssid, items, category) => {
-    return (
-        items.map((log, index) => (log.category === category && log.ssid === ssid) ? (
-          <Message key={log.category+index}  icon color={(log.check) ? 'green' : 'red'}>
-          {(log.check) ? <Icon name='check' /> : <Icon name='bug' /> }
-          {(log.src) ? <Image   size="small" src={log.src}/> : ''}
-          <Message.Content>
-            <Message.Header>{log.condition}</Message.Header>
-            <Message.List>
-            {(!log.check && typeof(log.error) === 'string') ? <Message.Item>{log.error}</Message.Item> : '' }
-            {(!log.check && log.category==='pictures' && log.error && typeof(log.error) === 'object') ?  this.renderImageList(log.error) : '' }
-            </Message.List>
-          </Message.Content>
-          </Message> ) : null )
-    );
+  renderItems =  (sid, ssid, items, category) => {
+    if (ssid) {
+      return (
+          items.map((log, index) => (log.category === category && log.ssid === ssid) ? (
+            <Message key={log.category+index}  icon color={(log.check) ? 'green' : 'red'}>
+            {(log.check) ? <Icon name='check' /> : <Icon name='bug' /> }
+            {(log.src) ? <Image   size="small" src={log.src}/> : ''}
+            <Message.Content>
+              <Message.Header>{log.condition}</Message.Header>
+              <Message.List>
+              {(!log.check && typeof(log.error) === 'string') ? <Message.Item>{log.error}</Message.Item> : '' }
+              {(!log.check && log.category==='pictures' && log.error && typeof(log.error) === 'object') ?  this.renderImageList(log.error) : '' }
+              </Message.List>
+            </Message.Content>
+            </Message> ) : null )
+      );
+    } else {
+      return (
+          items.map((log, index) => (log.category === category && log.sid === sid) ? (
+            <Message key={log.category+index}  icon color={(log.check) ? 'green' : 'red'}>
+            {(log.check) ? <Icon name='check' /> : <Icon name='bug' /> }
+            {(log.src) ? <Image   size="small" src={log.src}/> : ''}
+            <Message.Content>
+              <Message.Header>{log.condition}</Message.Header>
+              <Message.List>
+              {(!log.check && typeof(log.error) === 'string') ? <Message.Item>{log.error}</Message.Item> : '' }
+              {(!log.check && log.category==='pictures' && log.error && typeof(log.error) === 'object') ?  this.renderImageList(log.error) : '' }
+              </Message.List>
+            </Message.Content>
+            </Message> ) : null )
+      );
+    }
+
   }
   getByStage = (stage, logs) => {
     if(logs && logs.length > 0) {
       let build =[];
-      let tabs = [
-        {
-          menuItem: this.renderTabHeader(stage.id, logs, 'photo'),
-          pane: {key: 'photo', content: this.renderItems(stage.id, logs, 'photo')}
-        },
-        {
-          menuItem: this.renderTabHeader(stage.id, logs, 'description'),
-          pane: {key: 'description', content: this.renderItems(stage.id, logs, 'description')}
-        },
-        {
-          menuItem: this.renderTabHeader(stage.id, logs, 'pictures'),
-          pane:  {key: 'pictures', content: this.renderItems(stage.id, logs, 'pictures')}
-        },
-        {
-          menuItem: this.renderTabHeader(stage.id, logs, 'onZoneEnter'),
-          pane:  {key: 'onZoneEnter', content: this.renderItems(stage.id, logs, 'onZoneEnter')}
-        },
-        {
-          menuItem: this.renderTabHeader(stage.id, logs, 'onPictureMatch'),
-          pane:  {key: 'onPictureMatch', content: this.renderItems(stage.id, logs, 'onPictureMatch')}
-        },
-        {
-          menuItem: this.renderTabHeader(stage.id, logs, 'onZoneLeave'),
-          pane:  {key: 'onZoneLeave', content: this.renderItems(stage.id, logs, 'onZoneLeave')}
-        },
-        {
-          menuItem: this.renderTabHeader(stage.id, logs, 'json'),
-          pane: {key: 'json', content: this.renderItems(stage.id, logs, 'json')}
-        }
-      ];
+      let tabs = [];
+      if(typeof(stage) === 'number') {
+        console.log(this.state.story);
+        tabs = [
+          {
+            menuItem: this.renderTabHeader(this.state.story.id,null, logs, 'title'),
+            pane: {key: 'photo', content: this.renderItems(this.state.story.id, null, logs, 'title')}
+          },
+          {
+            menuItem: this.renderTabHeader(this.state.story.id, null, logs, 'artist'),
+            pane: {key: 'description', content: this.renderItems(this.state.story.id, null, logs, 'artist')}
+          },
+          {
+            menuItem: this.renderTabHeader(this.state.story.id, null, logs, 'state'),
+            pane:  {key: 'pictures', content: this.renderItems(this.state.story.id, null, logs, 'state')}
+          },
+          {
+            menuItem: this.renderTabHeader(this.state.story.id, null , logs, 'city'),
+            pane:  {key: 'onZoneEnter', content: this.renderItems(this.state.story.id, null, logs, 'city')}
+          },
+          {
+            menuItem: this.renderTabHeader(this.state.story.id, null, logs, 'credits'),
+            pane:  {key: 'onPictureMatch', content: this.renderItems(this.state.story.id, null, logs, 'credits')}
+          },
+          {
+            menuItem: this.renderTabHeader(this.state.story.id, null, logs, 'sinopsys'),
+            pane:  {key: 'onZoneLeave', content: this.renderItems(this.state.story.id, null, logs, 'sinopsys')}
+          },
+          {
+            menuItem: this.renderTabHeader(this.state.story.id, null, logs, 'json'),
+            pane: {key: 'json', content: this.renderItems(this.state.story.id, null, logs, 'json')}
+          }
+        ];
+      } else {
+        tabs = [
+          {
+            menuItem: this.renderTabHeader(this.state.story.id, stage.id, logs, 'photo'),
+            pane: {key: 'photo', content: this.renderItems(this.state.story.id, stage.id, logs, 'photo')}
+          },
+          {
+            menuItem: this.renderTabHeader(this.state.story.id, stage.id, logs, 'description'),
+            pane: {key: 'description', content: this.renderItems(this.state.story.id, stage.id, logs, 'description')}
+          },
+          {
+            menuItem: this.renderTabHeader(this.state.story.id, stage.id, logs, 'pictures'),
+            pane:  {key: 'pictures', content: this.renderItems(this.state.story.id, stage.id, logs, 'pictures')}
+          },
+          {
+            menuItem: this.renderTabHeader(this.state.story.id, stage.id, logs, 'onZoneEnter'),
+            pane:  {key: 'onZoneEnter', content: this.renderItems(this.state.story.id, stage.id, logs, 'onZoneEnter')}
+          },
+          {
+            menuItem: this.renderTabHeader(this.state.story.id, stage.id, logs, 'onPictureMatch'),
+            pane:  {key: 'onPictureMatch', content: this.renderItems(this.state.story.id, stage.id, logs, 'onPictureMatch')}
+          },
+          {
+            menuItem: this.renderTabHeader(this.state.story.id, stage.id, logs, 'onZoneLeave'),
+            pane:  {key: 'onZoneLeave', content: this.renderItems(this.state.story.id, stage.id, logs, 'onZoneLeave')}
+          },
+          {
+            menuItem: this.renderTabHeader(this.state.story.id, stage.id, logs, 'json'),
+            pane: {key: 'json', content: this.renderItems(this.state.story.id, stage.id, logs, 'json')}
+          }
+        ];
+      }
+
       build.push(
         <Tab
           key="preflight"
           renderActiveOnly={false}
-          menu={{ color: 'orange', inverted: true, attached: false, borderless: true, tabular: false , fluid: false, vertical: true }}
+          menu={{ color: 'black', inverted: true, attached: false, borderless: true, tabular: false , fluid: false, vertical: true }}
           menuPosition='right'
           panes={tabs}
         />
@@ -330,10 +390,10 @@ class storyStages extends Component {
       logs.map((log, index) => {
 
         if(typeof(stage) === 'number') {
-          total ++;
+
           if(log.sid === parseInt(stage)) { (log.check === true) ? win ++ : error ++; }
         } else {
-          total ++;
+
           if(log.ssid === stage.id) {
             (log.check === true) ? win ++ : error ++;
           }
@@ -342,30 +402,32 @@ class storyStages extends Component {
         return log;
       });
     }
-    let percent = (win === 0) ? 0 : parseInt(win / total * 100);
-    let err = (error > 0) ? <Button size="tiny" circular color="red" >Error [{error}]</Button>: '';
-    let sucess = (win > 0) ? <Button size="tiny" circular color="green" >Success [{win}]</Button>: '';
-    let name = <Button style={{width: '50%'}} size="tiny" circular color="brown" >{stage.name}</Button>;
-    let progress = <Progress style={{width: '30%'}}  percent={percent}  label="complete"active inverted />;
+    total = win + error;
+    let percent = (win === 0) ? 0 : parseInt((win / total) * 100);
+
+    let err = (error > 0) ? <Button basic size="tiny"  color="red" >Error [{error}]</Button>: '';
+    let sucess = (win > 0) ? <Button basic size="tiny"  color="green" >Success [{win}]</Button>: '';
+    let name = (typeof(stage) === 'number') ? <Button style={{width: '30%'}} basic size="tiny"  color="brown" >Story : {(this.state.story) ? this.state.story.title : ''}</Button> : <Button style={{width: '50%'}} basic size="tiny"  color="brown" >{stage.name}</Button> ;
+    let progress = <Progress style={{ width: '40%'}}  percent={percent}   progress active indicating inverted />;
     return (
       <Button.Group fluid>{name}{sucess}{err}{progress}</Button.Group>
     );
   }
-  storyStats = (stages, logs) => {
+  storyStats = (story, logs) => {
     let error = 0;
     let win = 0;
     let total = 0;
     if(logs && logs.length >0) {
       logs.map((log, index) => {
-        total ++;
         (log.check === true) ? win ++ : error ++;
         return log;
       });
     }
-    let percent = (win === 0) ? 0 : parseInt(win / total * 100);
-    let err = (error > 0) ? <Button size="tiny" circular color="red" >Error [{error}]</Button>: '';
-    let sucess = (win > 0) ? <Button size="tiny" circular color="green" >Success [{win}]</Button>: '';
-    let progress = <Progress style={{width: '30%'}}  percent={percent}  label="Complete" active inverted />;
+    total = win + error;
+    let percent = (win === 0) ? 0 : parseInt((win / total) * 100);
+    let err = (error > 0) ? <Button size="tiny" basic  color="red" >Error [{error}]</Button>: '';
+    let sucess = (win > 0) ? <Button size="tiny" basic  color="green" >Success [{win}]</Button>: '';
+    let progress = <Progress style={{width: '60%'}}  size='large' percent={percent}   progress active indicating inverted />;
     return (
       <Button.Group fluid>{sucess}{err}{progress}</Button.Group>
     );
@@ -375,10 +437,11 @@ class storyStages extends Component {
     const { activeIndex } = this.state;
     return (
       <Segment inverted >
-        <Header>Prefligh Check {this.storyStats(stages, this.state.preflight)}</Header>
-        <Accordion  inverted>
-          <Accordion.Title active={activeIndex === -1} index={-1} onClick={this.handleStageClick}>{this.stageStats(this.state.sid, this.state.preflight)}</Accordion.Title><Accordion.Content className="slide-out" active={activeIndex === -1}>{this.getByStage(this.state.sid, this.state.preflight)}</Accordion.Content>
-          {(stages) ? stages.map((stage, index) => <Segment key={index} style={{margin: 0, padding: 0}} inverted color="brown"><Accordion.Title active={activeIndex === index} index={index} key={index} onClick={this.handleStageClick}>{this.stageStats(stage, this.state.preflight)}</Accordion.Title><Accordion.Content className="slide-out" active={activeIndex === index}>{this.getByStage(stage, this.state.preflight)}</Accordion.Content></Segment>) : ''}
+        {this.storyStats(this.state.story, this.state.preflight)}
+        <Header>Story : {(this.state.story) ? this.state.story.title : ''} Prefligh Check </Header>
+        <Accordion className="preflight"  inverted>
+          <Accordion.Title active={activeIndex === -1} index={-1}  onClick={this.handleStageClick}>{this.stageStats(this.state.sid, this.state.preflight)}</Accordion.Title><Accordion.Content className="slide-out" active={activeIndex === -1}>{this.getByStage(this.state.sid, this.state.preflight)}</Accordion.Content>
+          {(stages) ? stages.map((stage, index) => <Segment key={index} style={{margin: 0, padding: 0}} inverted ><Accordion.Title active={activeIndex === index} index={index} key={index} onClick={this.handleStageClick}>{this.stageStats(stage, this.state.preflight)}</Accordion.Title><Accordion.Content className="slide-out" active={activeIndex === index}>{this.getByStage(stage, this.state.preflight)}</Accordion.Content></Segment>) : ''}
         </Accordion>
       </Segment>
     );

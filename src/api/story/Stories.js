@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Dimmer, Loader, Segment, Header, Table, Icon, Button } from 'semantic-ui-react';
+import { Progress, Container, Dimmer, Loader, Segment, Header, Table, Icon, Button } from 'semantic-ui-react';
 import Moment from 'moment';
 import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
@@ -82,6 +82,15 @@ class Stories extends Component {
   tableRowClickFunc(story) {
     return this.props.history.push('/stories/'+story.id);
   }
+  getProgress = async (type, id) => {
+    try  {
+      let percent = 0;
+      //return ();
+    } catch(e) {
+      console.log(e.message);
+    }
+    return 'toto';
+  }
   render() {
     const { column, data, direction } = this.state;
     Moment.locale('en');
@@ -116,51 +125,63 @@ class Stories extends Component {
                     <Table.HeaderCell
                       sorted={column === 'id' ? direction : null}
                       onClick={this.handleSort('id')}
-                    >
+                      >
                       <FormattedMessage id="app.story.stories.table.id"  defaultMessage={'Id'} />
-                  </Table.HeaderCell>
+                    </Table.HeaderCell>
                     <Table.HeaderCell
                       sorted={column === 'title' ? direction : null}
                       onClick={this.handleSort('title')}
-                    >
-                      <FormattedMessage id="app.story.stories.table.title"  defaultMessage={'Title'} />             </Table.HeaderCell>
+                      >
+                      <FormattedMessage id="app.story.stories.table.title"  defaultMessage={'Title'} />
+                    </Table.HeaderCell>
                     <Table.HeaderCell
                       sorted={column === 'artist' ? direction : null}
                       onClick={this.handleSort('artist')}
-                    >
-                      <FormattedMessage id="app.story.stories.table.artist"  defaultMessage={'Artist'} />               </Table.HeaderCell>
+                      >
+                      <FormattedMessage id="app.story.stories.table.artist"  defaultMessage={'Artist'} />
+                    </Table.HeaderCell>
                     <Table.HeaderCell
                       sorted={column === 'state' ? direction : null}
                       onClick={this.handleSort('state')}
-                    >
-                      <FormattedMessage id="app.story.stories.table.state"  defaultMessage={'State'} />               </Table.HeaderCell>
+                      >
+                      <FormattedMessage id="app.story.stories.table.state"  defaultMessage={'State'} />
+                    </Table.HeaderCell>
                     <Table.HeaderCell
                       sorted={column === 'city' ? direction : null}
                       onClick={this.handleSort('city')}
-                    >
-                      <FormattedMessage id="app.story.stories.table.city"  defaultMessage={'City'} />              </Table.HeaderCell>
+                      >
+                      <FormattedMessage id="app.story.stories.table.city"  defaultMessage={'City'} />
+                    </Table.HeaderCell>
+                    <Table.HeaderCell>
+                      <FormattedMessage id="app.story.stories.table.progress"  defaultMessage={'Progress'} />
+                    </Table.HeaderCell>
                     <Table.HeaderCell
                       sorted={column === 'createdAt' ? direction : null}
                       onClick={this.handleSort('createdAt')}
-                    >
-                      <FormattedMessage id="app.story.stories.table.create"  defaultMessage={'Created'} />              </Table.HeaderCell>
+                      >
+                      <FormattedMessage id="app.story.stories.table.create"  defaultMessage={'Created'} />
+                    </Table.HeaderCell>
                     <Table.HeaderCell
                       sorted={column === 'updatedAt' ? direction : null}
                       onClick={this.handleSort('updatedAt')}
-                    >
-                      <FormattedMessage id="app.story.stories.table.updated"  defaultMessage={'Updated'} />             </Table.HeaderCell>
-                  </Table.Row>
+                      >
+                      <FormattedMessage id="app.story.stories.table.updated"  defaultMessage={'Updated'} />
+                      </Table.HeaderCell>
+
+                    </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                  {_.map(data, ({ id, title, artist, state, city, createdAt, updatedAt }) => (
+                  {_.map(data, ({ id, title, artist, state, city, createdAt, updatedAt, progress }) => (
                     <Table.Row className='slide-out'  key={id} onClick={() => this.tableRowClickFunc({id})}>
                       <Table.Cell>{id}</Table.Cell>
                       <Table.Cell>{title}</Table.Cell>
                       <Table.Cell>{artist}</Table.Cell>
                       <Table.Cell>{state}</Table.Cell>
                       <Table.Cell>{city}</Table.Cell>
-                      <Table.Cell>{Moment(createdAt).format('LLL')}</Table.Cell>
-                      <Table.Cell>{Moment(updatedAt).format('LLL')}</Table.Cell>
+                      <Table.Cell><Progress  percent={progress}  progress active indicating inverted /></Table.Cell>
+                      <Table.Cell>{Moment(createdAt).format('LL')}</Table.Cell>
+                      <Table.Cell>{Moment(updatedAt).format('LL')}</Table.Cell>
+
                     </Table.Row>
                   ))}
                 </Table.Body>

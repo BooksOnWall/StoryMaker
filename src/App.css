@@ -54,7 +54,11 @@ video {
   border-right: 1px dotted;
 }
 
-.ui.header.segment {
+.accordion .title, .accordion .title button {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.ui.header segment{
   margin: 0 !important;
   padding: 31px !important;
   background-color: transparent !important;
@@ -427,7 +431,6 @@ input[type="color"] {
 .public-DraftEditor-content{ margin: 2em 0; }
 .ui.segment.main-board  .segment.board{padding: .6em}
 .ui.segment.main-board  .segment.board .segment .droppable{box-shadow: inset 0px 0px 10px rgba(0,0,0,0.9) !important; border:0; }
-
 .ui.segment{ box-shadow: auto ; border: 0 !important; border-radius: 0 !important; background: #e2e2e2; padding: 0 }
 .ui.segment.main{ padding: 0 !important; }
 .ui.segment.pushable, .ui.segment.main{ background: transparent !important; margin: 0}
