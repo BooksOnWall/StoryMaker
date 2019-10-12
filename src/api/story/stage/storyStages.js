@@ -422,7 +422,7 @@ class storyStages extends Component {
       <Dimmer.Dimmable as={Segment} clearing inverted blurring dimmed={this.state.loading}>
           <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
             <Segment inverted>
-                <Button primary onClick={this.handleCreate}><Icon name="google wallet" />Add Stage</Button>
+                <Button primary onClick={this.handleCreate}><Icon name="google wallet" /><FormattedMessage id="app.stage.storystage.addstage" defaultMessage={`Add Stage`} /></Button>
                 <Button.Group floated='right'>
                   <Button negative loading={this.state.importLoading} onClick={() => this.fileInputRef.current.click()}><Icon name="point" />GeoJSON <FormattedMessage id="app.stage.storystage.import" defaultMessage={`import`} /></Button>
                     <input
@@ -462,7 +462,7 @@ class storyStages extends Component {
 
             <Segment.Group horizontal  clearing="true" >
 
-              <Segment style={{width: '35vw' }} className="stagesMap">
+              <Segment style={{width: '30vw' }} className="stagesMap">
                 {(this.state.location)
                   ? <StagesMap goToStage={this.goToStage} stages={this.state.stages} location={this.state.location} state={this.state}/>
                   : <Placeholder>
@@ -477,7 +477,7 @@ class storyStages extends Component {
                     <Table.Header className='slide-out'>
                       <Table.Row>
                         <Table.HeaderCell   >
-                          <FormattedMessage id="app.stage.storystage.drag" defaultMessage={`Drag`} />
+                          <FormattedMessage id="app.stage.storystage.order" defaultMessage={`Order`} />
                         </Table.HeaderCell>
                         <Table.HeaderCell >
                           <FormattedMessage id="app.stage.storystage.name" defaultMessage={`Name`} />
@@ -486,17 +486,17 @@ class storyStages extends Component {
                           <FormattedMessage id="app.stage.storystage.type" defaultMessage={`Type`} />
                         </Table.HeaderCell>
                         <Table.HeaderCell   >
-                          <FormattedMessage id="app.stage.storystage.order" defaultMessage={`Order`} />
+                          <FormattedMessage id="app.stage.storystage.drag" defaultMessage={`Drag`} />
                         </Table.HeaderCell>
                       </Table.Row>
                     </Table.Header>
                     <Table.Body>
                       {_.map(this.state.stages, ({ id, name, type, description , stageOrder, updatedAt, rank }) => (
                         <Table.Row className='slide-out' key={id} onClick={() => this.tableRowClickFunc({id})}>
-                          <Table.Cell>{<a className="drag-handle" href="void(0)"><Icon name='sort' /></a>}</Table.Cell>
+                          <Table.Cell>{stageOrder}</Table.Cell>
                           <Table.Cell>{name}</Table.Cell>
                           <Table.Cell>{type}</Table.Cell>
-                          <Table.Cell>{stageOrder}</Table.Cell>
+                          <Table.Cell>{<a className="drag-handle" href="void(0)"><Icon name='sort' /></a>}</Table.Cell>
                         </Table.Row>
                         ))}
                     </Table.Body>

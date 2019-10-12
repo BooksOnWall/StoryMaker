@@ -1404,10 +1404,10 @@ class stage extends Component {
               <Button color='green' onClick={this.handleDownload} loading={this.state.downloadLoading} inverted><Icon name='cloud download' /> Download Stage </Button>
             </Modal.Actions>
             </Modal>
-          <Dimmer.Dimmable as={Segment} blurring dimmed={this.state.loading}>
+          <Dimmer.Dimmable inverted as={Segment} blurring dimmed={this.state.loading}>
             <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
             <Loader active={this.state.loading} >Get stage info</Loader>
-            <Header inverted as={Segment} vertical size='medium'>
+            <Header as={Segment} vertical size='medium'>
             {(this.state.mode === 'create') ? <FormattedMessage id="app.story.stage.title.create" defaultMessage={`Story: Create stage`}/> : <FormattedMessage id="app.story.stage.title.edit" defaultMessage={`Story: Edit Stage`}/> }
             </Header>
 

@@ -503,12 +503,12 @@ class Story extends Component {
               />
             {errors.active && touched.active && errors.active}
             <Divider  />
-            <Button onClick={handleSubmit} floated='right' secondary size='large' type="submit" disabled={isSubmitting}>
+            <Button onClick={handleSubmit} floated='right' size='large' type="submit" disabled={isSubmitting}>
               {(this.state.mode === 'create') ? 'Create' : 'Update'}
             </Button>
             {(this.state.mode === 'update') ? (
               <div>
-                <Button onClick={this.show} color='red' floated='right' size='large' type="submit" disabled={isSubmitting}>
+                <Button onClick={this.show} color='red' floated='left' size='large' type="submit" disabled={isSubmitting}>
                   <FormattedMessage id="app.story.delete" defaultMessage={`Delete Story`}/>
                 </Button>
                 <Confirm
