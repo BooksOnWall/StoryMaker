@@ -1390,7 +1390,7 @@ app.post('/stories/:storyId/stages/:stageId', function(req, res, next) {
   let sid = parseInt(req.params.storyId);
   let id = parseInt(req.params.stageId);
   const { name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, tesselate,  geometry } = req.body;
-  updateStage({id, sid,name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, tesselate,  geometry }).then(stage => {
+  updateStage({id, sid, name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, tesselate,  geometry }).then(stage => {
       res.json({ stage, msg: 'Stage updated successfully' })
   });
 });

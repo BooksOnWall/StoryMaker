@@ -55,6 +55,7 @@ video {
 }
 .ui.card, .ui.card .content, .ui.card .content  .react-card-flip {
   background-color: transparent !important;
+  border: 0 !important;
 }
 .accordion .title, .accordion .title button {
   padding-top: 0;
