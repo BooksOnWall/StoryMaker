@@ -24,14 +24,17 @@ class stageMap extends Component {
     let location = (this.props.stageLocation)
       ? this.props.stageLocation
       : [-56.1670182, -34.9022229  ];
-
+      let protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
+      let domain = protocol + '://' + process.env.REACT_APP_SERVER_HOST;
+      let server = domain + ':'+ process.env.REACT_APP_SERVER_PORT+'/';
     this.state = {
       toggleAuthenticateStatus: this.props.toggleAuthenticateStatus,
       authenticated: this.props.authenticated,
       sid: (!this.props.sid) ? (0) : (parseInt(this.props.sid)),
       mode: (!this.props.mode) ? (0) : this.props.mode,
+      mapURL: server + 'stories/'+ this.props.sid +'/map',
       loading: false,
-      mapStyle: '',
+      mapStyle: null,
       active: 'Map',
       stagePosition: null,
       location: (location) ? location : null ,
@@ -47,9 +50,36 @@ class stageMap extends Component {
       interactiveLayerIds: []
     };
   }
+  getMapPreferences = async () => {
+    try {
+      await fetch(this.state.mapURL, {
+        method: 'get',
+        headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'},
+      })
+      .then(response => {
+        if (response && !response.ok) { throw new Error(response.statusText);}
+        return response.json();
+      })
+      .then(data => {
+          if(data) {
+            const map  = JSON.parse(data.map);
+            this.setState({mapStyle: map.style, viewport: map.viewport});
+          } else {
+            console.log('No Data received from the server');
+          }
+      })
+      .catch((error) => {
+        // Your error is here!
+        console.log(error)
+      });
+    } catch(e) {
+      console.log(e.message);
+    }
+  }
   componentDidMount = async () => {
     try {
       this.setState({loading: false});
+      await this.getMapPreferences();
     } catch(e) {
       console.log(e.message);
     }
@@ -151,7 +181,7 @@ handleOnResult = event => {
         this.setState({viewport});
     };
   render() {
-    const {viewport, searchResultLayer, interactiveLayerIds,  loading} = this.state;
+    const {mapStyle, viewport, searchResultLayer, interactiveLayerIds,  loading} = this.state;
     return (
       <Segment  className="stageMap" >
         <Dimmer.Dimmable as={Segment} blurring dimmed={this.state.loading}>
@@ -162,7 +192,7 @@ handleOnResult = event => {
               width="inherit"
               ref={this.mapRef}
               height={this.props.height}
-              mapStyle={MAP_STYLE}
+              mapStyle={mapStyle}
               clickRadius={2}
               onClick={this.onClickMap}
               getCursor={this.getCursor}

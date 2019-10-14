@@ -527,7 +527,7 @@ class storyStages extends Component {
 
               <Segment style={{width: '30vw' }} className="stagesMap">
                 {(this.state.location)
-                  ? <StagesMap goToStage={this.goToStage} stages={this.state.stages} location={this.state.location} state={this.state}/>
+                  ? <StagesMap goToStage={this.goToStage} stages={this.state.stages} location={this.state.location} sid={this.state.sid} state={this.state}/>
                   : <Placeholder>
                     <Placeholder.Image rectangular />
                   </Placeholder>

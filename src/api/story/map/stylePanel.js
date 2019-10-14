@@ -4,7 +4,6 @@ import MAP_STYLE from './map-style-basic-v8.json';
 import { Slider } from "react-semantic-ui-range";
 import {
   Label,
-  Checkbox,
   Segment
 } from 'semantic-ui-react';
 const defaultMapStyle = fromJS(MAP_STYLE);

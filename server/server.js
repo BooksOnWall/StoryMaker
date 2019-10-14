@@ -1355,6 +1355,18 @@ app.post('/stories/:storyId/map', function(req, res, next) {
     return res.json({msg: 'map saved'});
   });
 });
+app.get('/stories/:storyId/map', function(req, res, next) {
+  const sid = req.params.storyId;
+  const mapPath = __dirname + '/public/stories/'+sid+'/';
+  const fileName = 'map.json';
+  if (fs.existsSync(mapPath+fileName)) {
+    //file already exist read and return  it :
+   fs.readFile(mapPath+fileName,'utf8', (err, data) => {
+      if (err) return res.json({error:err, msg:'Error reading '+mapPath+fileName})
+      return res.json({map: data, msg: 'map received'});
+    });
+  }
+});
 app.post('/stories/:storyId/stages/0', function(req, res, next) {
   const { sid, name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, tesselate,  geometry } = req.body;
   const stageOrder = null;

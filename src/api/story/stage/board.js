@@ -347,7 +347,8 @@ class DragDrop extends Component {
                         </Segment> ) : ''}
                         {(this.props.stageStep === 'Geo') ? (
                           <StageMap
-                            height="25vh"
+                            height="18vh"
+                            sid={this.props.state.sid}
                             setStageLocation={this.props.setStageLocation}
                             stageLocation={this.props.stage.stageLocation}
                             />
