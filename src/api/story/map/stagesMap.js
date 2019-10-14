@@ -66,6 +66,9 @@ class stagesMap extends Component {
       .then(data => {
           if(data) {
             const map  = JSON.parse(data.map);
+            map.viewport.zoom = 18;
+            map.viewport.latitude = parseFloat(this.props.location[1]);
+            map.viewport.longitude = parseFloat(this.props.location[0]);
             this.setState({mapStyle: map.style, viewport: map.viewport});
           } else {
             console.log('No Data received from the server');
