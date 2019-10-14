@@ -33,9 +33,8 @@ const colorClass = {
 export default class StyleControls extends PureComponent {
   constructor(props) {
     super(props);
-
     this._defaultLayers = defaultMapStyle.get('layers');
-
+    console.log(this.props.colors);
     this.state = {
       visibility: {
         water: true,
@@ -46,12 +45,12 @@ export default class StyleControls extends PureComponent {
         background: true
       },
       color: {
-        water: '#aad9f5',
-        parks: '#2bedbd',
-        buildings: '#2d2e23',
-        roads: '#5a5050',
-        labels: '#080808',
-        background: '#02020e'
+        water: (this.props.colors.water) ? this.props.colors.water : '#aad9f5',
+        parks: (this.props.colors.landuse_park) ? this.props.colors.landuse_park : '#2bedbd',
+        buildings: (this.props.colors.buildings) ? this.props.colors.building : '#2d2e23',
+        roads: (this.props.colors.road_major) ? this.props.colors.road_major : '#5a5050',
+        labels: (this.props.colors.place_label) ? this.props.colors.place_label :'#FFFFFF',
+        background: (this.props.colors.background) ? this.props.colors.background : '#02020e'
       },
       zsettings : {
           start: this.props.viewport.zoom,

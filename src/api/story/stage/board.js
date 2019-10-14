@@ -6,7 +6,6 @@ import {
   Menu,
   Ref,
   Icon,
-  Card,
   Label,
   Dimmer,
   Confirm,
@@ -459,8 +458,8 @@ class DragDrop extends Component {
                                     onDrop={(e)=>this.props.onDrop(e, "photo")}>
                                     {(tasks.photo.length > 0) ? tasks.photo : <Image  src='https://react.semantic-ui.com/images/avatar/large/matthew.png' wrapped  /> }
                                 </Grid.Column>
-                                <Grid.Column>
-                                  <Card description={this.props.setStageDescription()}/>
+                                <Grid.Column >
+                                  {this.props.setStageDescription()}
                                 </Grid.Column>
                                 <Grid.Column className="single" verticalAlign='middle'>
                                     <Header inverted as='h4'>{this.props.stage.name}</Header>

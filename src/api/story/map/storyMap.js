@@ -29,6 +29,7 @@ class storyMap extends Component {
       mapURL: server+'stories/'+this.props.sid+'/map',
       loading: null,
       mapStyle: '',
+      colors: null,
       active: 'Map',
       bounds: bounds,
       viewport: {
@@ -77,7 +78,16 @@ class storyMap extends Component {
       .then(data => {
           if(data) {
             const map  = JSON.parse(data.map);
-            this.setState({mapStyle: map.style, viewport: map.viewport});
+            const colors = {};
+            map.style.layers.map((layer) => {
+              let color = (layer.paint['background-color']) ? layer.paint['background-color'] : '';
+              color = (layer.paint['fill-color']) ? layer.paint['fill-color'] : color;
+              color = (layer.paint['line-color']) ? layer.paint['line-color'] : color;
+              color = (layer.paint['text-color']) ? layer.paint['text-color'] : color;
+              if(layer.paint) { colors[layer.id] = color ; }
+              return layer;
+            });
+            this.setState({colors: colors, mapStyle: map.style, viewport: map.viewport});
           } else {
             console.log('No Data received from the server');
           }
@@ -144,12 +154,17 @@ class storyMap extends Component {
                 mapboxApiAccessToken={MapboxAccessToken}
               >
                 <Button onClick={this.saveMapPrefs} primary>Save Map Preferences</Button>
-                <StylePanel
-                  setViewport={this.setViewport}
-                  viewport={this.state.viewport}
-                  containerComponent={this.props.containerComponent}
-                  onChange={this.onStyleChange}
-                />
+                {(this.state.colors)
+                  ? <StylePanel
+                    colors={this.state.colors}
+                    setViewport={this.setViewport}
+                    viewport={this.state.viewport}
+                    containerComponent={this.props.containerComponent}
+                    onChange={this.onStyleChange}
+                  />
+
+                  : ''}
+
               </MapGL>
           </Segment>
         </Dimmer.Dimmable>
