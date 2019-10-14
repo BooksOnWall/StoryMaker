@@ -454,22 +454,22 @@ class DragDrop extends Component {
                   <Sidebar.Pusher>
                     <Segment className="main-board">
                             <Segment className='stageProfile' inverted style={{minHeight: '18vh'}}>
-                              <Grid  columns={3} columns='equal'>
+                              <Grid  columns={3} >
                                 <Grid.Column  width={2} onDragOver={(e)=>this.props.onDragOver(e)}
                                     onDrop={(e)=>this.props.onDrop(e, "photo")}>
                                     {(tasks.photo.length > 0) ? tasks.photo : <Image  src='https://react.semantic-ui.com/images/avatar/large/matthew.png' wrapped  /> }
                                 </Grid.Column>
                                 <Grid.Column className="single" verticalAlign='middle'>
                                     <Header inverted as='h4'>{this.props.stage.name}</Header>
-                                    <Button circular primary floated='left' icon='edit' onClick={(e) => this.props.toggleSideBar(e, 'Stage', 'bottom')} className="task-header "></Button>                                    
-                                    <Button circular floated='left' icon='picture' onClick={(e) => this.props.toggleSideBar(e, 'Images', 'bottom')} className="task-header "></Button>                                    
+                                    <Button circular primary floated='left' icon='edit' onClick={(e) => this.props.toggleSideBar(e, 'Stage', 'bottom')} className="task-header "></Button>
+                                    <Button circular floated='left' icon='picture' onClick={(e) => this.props.toggleSideBar(e, 'Images', 'bottom')} className="task-header "></Button>
                                     <Button circular floated='left' icon='map pin' onClick={(e) => this.props.toggleSideBar(e, 'Geo', 'bottom')}  className="task-header"></Button> {tasks.location}
-                                </Grid.Column> 
+                                </Grid.Column>
                                 <Grid.Column verticalAlign='middle' textAlign='right' >
                                     {(this.props.stages) ? this.StagesNav(this.props.stages, this.props.stage) : null}
-                                </Grid.Column> 
+                                </Grid.Column>
                             </Grid>
-                        </Segment>                                   
+                        </Segment>
                         <Ref innerRef={this.segmentRef}>
                         <Segment inverted className="board" style={{minHeight: '58vh'}} fluid="true">
                           <Resizable

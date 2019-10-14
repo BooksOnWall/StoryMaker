@@ -1341,6 +1341,20 @@ app.patch('/stories/:storyId/stages', function(req, res) {
     return res.json({ stages, 'data': stages, msg: 'stages reindexed successfully' })
   });
 });
+app.post('/stories/:storyId/map', function(req, res, next) {
+  const { prefs } = req.body;
+  const sid = req.params.storyId;
+  const mapPath = __dirname + '/public/stories/'+sid+'/';
+  const fileName = 'map.json';
+  if (fs.existsSync(mapPath+fileName)) {
+    //file already exist remove it :
+    rimraf.sync(mapPath+fileName);
+  }
+  fs.writeFile(mapPath+fileName, JSON.stringify(prefs), 'utf8', function(err) {
+    if (err) return res.json({msg: 'error map  not saved' , error: err});
+    return res.json({msg: 'map saved'});
+  });
+});
 app.post('/stories/:storyId/stages/0', function(req, res, next) {
   const { sid, name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, tesselate,  geometry } = req.body;
   const stageOrder = null;

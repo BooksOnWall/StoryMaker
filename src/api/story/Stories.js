@@ -82,15 +82,6 @@ class Stories extends Component {
   tableRowClickFunc(story) {
     return this.props.history.push('/stories/'+story.id);
   }
-  getProgress = async (type, id) => {
-    try  {
-      let percent = 0;
-      //return ();
-    } catch(e) {
-      console.log(e.message);
-    }
-    return 'toto';
-  }
   render() {
     const { column, data, direction } = this.state;
     Moment.locale('en');

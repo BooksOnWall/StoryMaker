@@ -1,8 +1,10 @@
 import React, {PureComponent} from 'react';
 import {fromJS} from 'immutable';
 import MAP_STYLE from './map-style-basic-v8.json';
+import { Slider } from "react-semantic-ui-range";
 import {
   Label,
+  Checkbox,
   Segment
 } from 'semantic-ui-react';
 const defaultMapStyle = fromJS(MAP_STYLE);
@@ -51,7 +53,28 @@ export default class StyleControls extends PureComponent {
         roads: '#5a5050',
         labels: '#080808',
         background: '#02020e'
-      }
+      },
+      zsettings : {
+          start: this.props.viewport.zoom,
+          min: 0,
+          max: 24,
+          step: 1,
+          onChange: value => this.props.setViewport('zoom', value)
+        },
+        psettings : {
+          start: this.props.viewport.pitch,
+          min: 0,
+          max: 60,
+          step: 1,
+          onChange: value => this.props.setViewport('pitch', value),
+        },
+        bsettings : {
+          start: this.props.viewport.bearing,
+          min: -180,
+          max: 180,
+          step: 1,
+          onChange: value =>   this.props.setViewport('bearing', value)
+        }
     };
   }
 
@@ -118,16 +141,16 @@ export default class StyleControls extends PureComponent {
     //const Container = this.props.containerComponent || defaultContainer;
 
     return (
-      <Segment className="stylingMap" style={{ width: '20vw', height: '31vh', float: 'right'}} inverted color="black">
+      <Segment className="stylingMap" style={{ width: '20vw', height: 'auto', float: 'right'}} inverted color="black">
         <h3>Map Styling</h3>
         <hr />
         {categories.map(name => this._renderLayerControl(name))}
         <hr />
-        zoom:
+        <Label>Zoom: {this.props.viewport.zoom.toFixed(2)}</Label>  <Slider name="zoom" value={this.props.viewport.zoom} color="red" settings={this.state.zsettings} />
         <br/>
-        pitch:
+        <Label>Pitch: {this.props.viewport.pitch.toFixed(2)}</Label> <Slider name="pitch" value={this.props.viewport.pitch} color="blue" settings={this.state.psettings}/>
         <br/>
-        bear:
+        <Label>Bearing: {this.props.viewport.bearing.toFixed(2)}</Label> <Slider name="bearing" value={this.props.viewport.bearing} color="green" settings={this.state.bsettings} />
       </Segment>
     );
   }
