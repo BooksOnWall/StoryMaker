@@ -54,6 +54,7 @@ class storyMap extends Component {
     // check if user is logged in on refresh
     try {
       await this.state.toggleAuthenticateStatus;
+      await this.getMapPreferences();
       //await this.setState({loading: true});
     } catch(e) {
       console.log(e.message);
@@ -62,6 +63,32 @@ class storyMap extends Component {
   }
   toggleLoading(val) {
     this.setState({loading: false});
+  }
+  getMapPreferences = async () => {
+    try {
+      await fetch(this.state.mapURL, {
+        method: 'get',
+        headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'},
+      })
+      .then(response => {
+        if (response && !response.ok) { throw new Error(response.statusText);}
+        return response.json();
+      })
+      .then(data => {
+          if(data) {
+            const map  = JSON.parse(data.map);
+            this.setState({mapStyle: map.style, viewport: map.viewport});
+          } else {
+            console.log('No Data received from the server');
+          }
+      })
+      .catch((error) => {
+        // Your error is here!
+        console.log(error)
+      });
+    } catch(e) {
+      console.log(e.message);
+    }
   }
   saveMapPrefs = async () => {
     try {

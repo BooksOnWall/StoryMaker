@@ -372,6 +372,17 @@ const reindexStage = async ({sid, stage}) => {
     { where: {sid : sid , id: stage.id}
   });
 }
+const updateStage = async ({ id, sid , name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry }) => {
+  try {
+    return   await Stages.update(
+      { sid , name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry },
+      { where: { id: id } }
+    );
+
+  } catch(e) {
+    console.log(e.message);
+  }
+};
 const createStage = async ({ sid , name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry }) => {
   try {
     let rank = await getNextOrderFromStory(sid);
@@ -1373,6 +1384,14 @@ app.post('/stories/:storyId/stages/0', function(req, res, next) {
   createStage({ sid , name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry  }).then((stage) => {
     //if(hasbot) { bot.telegram.sendMessage(chat_id,"New stage created: " + name + ','+ adress);}
     return res.json({ stage, 'data': stage, msg: 'stage created successfully' })
+  });
+});
+app.post('/stories/:storyId/stages/:stageId', function(req, res, next) {
+  let sid = parseInt(req.params.storyId);
+  let id = parseInt(req.params.stageId);
+  const { name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, tesselate,  geometry } = req.body;
+  updateStage({id, sid,name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, tesselate,  geometry }).then(stage => {
+      res.json({ stage, msg: 'Stage updated successfully' })
   });
 });
 app.delete('/stories/:storyId/stages/:stageId', function(req, res, next) {

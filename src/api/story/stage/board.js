@@ -6,6 +6,7 @@ import {
   Menu,
   Ref,
   Icon,
+  Card,
   Label,
   Dimmer,
   Confirm,
@@ -313,15 +314,13 @@ class DragDrop extends Component {
                         <Button.Or text='or' />
                         <Button name="Geo" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Geo') ? true : false }>Geo</Button>
                         <Button.Or text='or' />
-                        <Button name="Images" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Images') ? true : false }><FormattedMessage id="app.story.board.images" defaultMessage={`Images`}/>Images</Button>
-                        <Button.Or text='or' />
-                        <Button name="Description" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Description') ? true : false }><FormattedMessage id="app.story.board.description" defaultMessage={`Description`}/></Button>
+                        <Button name="Images" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Images') ? true : false }><FormattedMessage id="app.story.board.images" defaultMessage={`Images`}/></Button>
                       </Button.Group>
                     </Segment>
+
                     <Segment>
 
                       {(this.props.stageStep === 'Stage') ? this.props.editStage() : ''}
-                      {(this.props.stageStep === 'Description') ? this.props.setStageDescription() : ''}
                       {(this.props.stageStep === 'Images') ? (
                         <Segment stacked>
                           <Segment
@@ -455,10 +454,13 @@ class DragDrop extends Component {
                   <Sidebar.Pusher>
                     <Segment className="main-board">
                             <Segment className='stageProfile' inverted style={{minHeight: '18vh'}}>
-                              <Grid  columns={3} >
+                              <Grid  columns={4} >
                                 <Grid.Column  width={2} onDragOver={(e)=>this.props.onDragOver(e)}
                                     onDrop={(e)=>this.props.onDrop(e, "photo")}>
                                     {(tasks.photo.length > 0) ? tasks.photo : <Image  src='https://react.semantic-ui.com/images/avatar/large/matthew.png' wrapped  /> }
+                                </Grid.Column>
+                                <Grid.Column>
+                                  <Card description={this.props.setStageDescription()}/>
                                 </Grid.Column>
                                 <Grid.Column className="single" verticalAlign='middle'>
                                     <Header inverted as='h4'>{this.props.stage.name}</Header>
