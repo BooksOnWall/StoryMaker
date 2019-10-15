@@ -194,7 +194,7 @@ class DragDrop extends Component {
     return (
     <Segment className="StagesNav">
         <Button.Group>
-        <Button basic color='blue' onClick={e => this.show('import')} ><Icon name="cloud upload" /> <FormattedMessage id="app.story.board.import" defaultMessage={`Import`}/></Button>
+        <Button disabled basic color='blue' onClick={e => this.show('import')} ><Icon name="cloud upload" /> <FormattedMessage id="app.story.board.import" defaultMessage={`Import`}/></Button>
           <Confirm
             open={this.state.import}
             cancelButton='Never mind'
@@ -216,7 +216,7 @@ class DragDrop extends Component {
           />
       </Button.Group>
     <Button.Group>
-        <Button basic color='grey' onClick={e => this.show('reset')} ><Icon name="erase" /><FormattedMessage id="app.story.board.reset" defaultMessage={`Reset`}/></Button>
+        <Button disabled basic color='grey' onClick={e => this.show('reset')} ><Icon name="erase" /><FormattedMessage id="app.story.board.reset" defaultMessage={`Reset`}/></Button>
           <Confirm
             open={this.state.reset}
             cancelButton='Never mind'
@@ -226,7 +226,7 @@ class DragDrop extends Component {
             onCancel={e => this.handleCancel('reset')}
             onConfirm={e => this.handleConfirm('reset')}
           />
-        <Button basic color='red' onClick={e => this.show('destroy')} ><Icon name="bomb" /> <FormattedMessage id="app.story.board.destroy" defaultMessage={`Destroy`}/></Button>
+        <Button disabled basic color='red' onClick={e => this.show('destroy')} ><Icon name="bomb" /> <FormattedMessage id="app.story.board.destroy" defaultMessage={`Destroy`}/></Button>
           <Confirm
             open={this.state.destroy}
             cancelButton='Never mind'
