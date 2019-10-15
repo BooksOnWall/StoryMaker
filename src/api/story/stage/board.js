@@ -240,7 +240,7 @@ class DragDrop extends Component {
         <Divider />
       <Button.Group>
         {(this.props.state.prev)
-          ? <Button as={Link} to={this.props.state.prev}  animated primary floated="left">
+          ? <Button disabled as={Link} to={this.props.state.prev}  animated primary floated="left">
             <Button.Content  ><FormattedMessage id="app.story.board.preview" defaultMessage={`Preview`}/></Button.Content>
             <Button.Content hidden>
               <Icon name='arrow left' />
@@ -249,7 +249,7 @@ class DragDrop extends Component {
           : ''
         }
         {(this.props.state.next)
-          ? <Button as={Link} to={this.props.state.next}  animated primary floated="right">
+          ? <Button disabled as={Link} to={this.props.state.next}  animated primary floated="right">
             <Button.Content  ><FormattedMessage id="app.story.board.next" defaultMessage={`Next`}/></Button.Content>
             <Button.Content hidden>
               <Icon name='arrow right' />
