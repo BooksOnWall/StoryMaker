@@ -31,6 +31,7 @@ class storyMap extends Component {
       mapStyle: '',
       colors: null,
       active: 'Map',
+      saveMapLoading: false,
       bounds: bounds,
       viewport: {
         latitude: -34.9022229,
@@ -102,12 +103,11 @@ class storyMap extends Component {
   }
   saveMapPrefs = async () => {
     try {
-      console.log(this.state.mapURL);
+      this.setState({saveMapLoading: true});
       let prefs = {
         style: this.state.mapStyle,
         viewport: this.state.viewport
       };
-      console.log(prefs);
       await fetch(this.state.mapURL, {
         method: 'post',
         headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'},
@@ -119,7 +119,8 @@ class storyMap extends Component {
       })
       .then(data => {
           if(data) {
-            console.log(data);
+            this.setState({saveMapLoading: false});
+            
           } else {
             console.log('No Data received from the server');
           }
@@ -153,7 +154,7 @@ class storyMap extends Component {
                 onViewportChange={this.onViewportChange}
                 mapboxApiAccessToken={MapboxAccessToken}
               >
-                <Button onClick={this.saveMapPrefs} primary>Save Map Preferences</Button>
+                <Button loading={this.state.saveMapLoading} onClick={this.saveMapPrefs} primary>Save Map Preferences</Button>
                 {(this.state.colors)
                   ? <StylePanel
                     colors={this.state.colors}

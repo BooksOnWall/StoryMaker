@@ -485,7 +485,7 @@ class storyStages extends Component {
       <Dimmer.Dimmable as={Segment} clearing inverted blurring dimmed={this.state.loading}>
           <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
             <Segment inverted>
-                <Button primary onClick={this.handleCreate}><Icon name="google wallet" /><FormattedMessage id="app.stage.storystage.addstage" defaultMessage={`Add Stage`} /></Button>
+                <Button  primary onClick={this.handleCreate}><Icon name="google wallet" /><FormattedMessage id="app.stage.storystage.addstage" defaultMessage={`Add Stage`} /></Button>
                 <Button.Group floated='right'>
                   <Button negative loading={this.state.importLoading} onClick={() => this.fileInputRef.current.click()}><Icon name="point" />GeoJSON <FormattedMessage id="app.stage.storystage.import" defaultMessage={`import`} /></Button>
                     <input
