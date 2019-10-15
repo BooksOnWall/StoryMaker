@@ -207,6 +207,9 @@ div.DraftEditor-root {
 .ui.segment.stageProfile.inverted{
       background: rgb(4,22,42);
 }
+.ui.segment.stageProfile.inverted .grid .two.wide.column {
+  width: 250px !important;
+}
 .menu .item.logout{ position: fixed !important; bottom: 0px; display: block; width: 100%}
 .menu .item.users{ position: fixed !important; bottom: 0; display: block; width: 100%; bottom: 80px !important; border-left: 0; border-bottom: 1px #333 solid; border-top: 1px #333 solid !important;  }
 .top.ui.menu{
