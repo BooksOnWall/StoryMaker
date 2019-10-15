@@ -1338,7 +1338,22 @@ app.post('/stories/:storyId/import', function(req, res) {
 });
 app.get('/stories/:storyId/stages', function(req, res) {
   let sid = req.params.storyId;
-  getAllStages(sid).then(user => res.json(user));
+  getAllStages(sid).then(stages => {
+    stages = stages.map((stage) => {
+      stage = stage.get({plain: true});
+      let preflight = checkPreFlight(stage);
+      let win = 0;
+      let err = 0;
+      preflight.map((log) => {
+        (log.check === false) ? err++ : win++ ;
+        return log;
+      });
+      stage['progress'] = (win / (win + err) * 100).toFixed(0);
+      console.log(stage.progress);
+      return stage;
+    })
+    res.json(stages)
+  });
 });
 app.patch('/stories/:storyId/stages', function(req, res) {
   //reindex stages list when dragged in storyStages

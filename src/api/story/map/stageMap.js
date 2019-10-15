@@ -23,7 +23,7 @@ class stageMap extends Component {
     super(props);
     let location = (this.props.stageLocation)
       ? this.props.stageLocation
-      : [-56.1670182, -34.9022229  ];
+      : [-56.1670182, -34.9022229];
       let protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
       let domain = protocol + '://' + process.env.REACT_APP_SERVER_HOST;
       let server = domain + ':'+ process.env.REACT_APP_SERVER_PORT+'/';

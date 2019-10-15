@@ -546,6 +546,9 @@ class storyStages extends Component {
                           <FormattedMessage id="app.stage.storystage.name" defaultMessage={`Name`} />
                         </Table.HeaderCell>
                         <Table.HeaderCell   >
+                          <FormattedMessage id="app.stage.storystage.progress" defaultMessage={`Progress`} />
+                        </Table.HeaderCell>
+                        <Table.HeaderCell   >
                           <FormattedMessage id="app.stage.storystage.type" defaultMessage={`Type`} />
                         </Table.HeaderCell>
                         <Table.HeaderCell   >
@@ -554,10 +557,11 @@ class storyStages extends Component {
                       </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                      {_.map(this.state.stages, ({ id, name, type, description , stageOrder, updatedAt, rank }) => (
+                      {_.map(this.state.stages, ({ id, name, type, description , stageOrder, updatedAt, rank, progress }) => (
                         <Table.Row className='slide-out' key={id} onClick={() => this.tableRowClickFunc({id})}>
                           <Table.Cell>{stageOrder}</Table.Cell>
                           <Table.Cell>{name}</Table.Cell>
+                          <Table.Cell><Progress percent={progress} progress active indicating inverted /></Table.Cell>
                           <Table.Cell>{type}</Table.Cell>
                           <Table.Cell>{<a className="drag-handle" href="void(0)"><Icon name='sort' /></a>}</Table.Cell>
                         </Table.Row>
