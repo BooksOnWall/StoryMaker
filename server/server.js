@@ -1349,7 +1349,6 @@ app.get('/stories/:storyId/stages', function(req, res) {
         return log;
       });
       stage['progress'] = (win / (win + err) * 100).toFixed(0);
-      console.log(stage.progress);
       return stage;
     })
     res.json(stages)
