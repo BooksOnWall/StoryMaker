@@ -1378,13 +1378,15 @@ class stage extends Component {
 
   setStageDescription = () => (
     <ReactCardFlip id="stageDesc" style={{backgroundColor: 'transparent', height: 'auto', width: 'inherit'}}  isFlipped={this.state.descLock} flipDirection="vertical">
-          <Card className="desc" color='violet'  key="front">
+          <Card className="desc"  key="front">
+            <Form >
             <Button  circular primary floated='right' icon='edit' onClick={this.toggleLock} />
             {this.state.stage.description}
+            </Form>
           </Card>
-          <Card className="desc" color='violet' fluid key="back">
+          <Card className="desc"  fluid key="back">
 
-            <Form color='violet'>
+            <Form >
               <TextArea
                 id="StageDesc"
                 className="desc-edit"

@@ -196,7 +196,7 @@ class stagesMap extends Component {
             size={20}
             onClick={() => this.handleMapClick(stage)}
             />
-          <Label color="red">{stage.name}</Label>
+          <Label circular color="brown">{stage.name}</Label>
         </Marker>
       ));
       return listStages
