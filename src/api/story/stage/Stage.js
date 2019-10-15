@@ -125,6 +125,7 @@ class stage extends Component {
         audiosLoading: false,
         exportLoading: false,
         downloadLoading:  false,
+        saveDescLoading: false,
         stagePictures: [],
         stageImages: [],
         stageVideos: [],
@@ -1028,6 +1029,7 @@ class stage extends Component {
   }
   updateStageDescription = async () => {
     try {
+      this.setState({saveDescLoading: true});
       const desc = document.getElementById("StageDesc").value;
       // this.setState({stage: {
       //   ...stage, description: desc
@@ -1063,6 +1065,7 @@ class stage extends Component {
       .then(data => {
           if(data) {
             // redirect to user edit page
+            this.setState({saveDescLoading: false});
             this.toggleLock();
             this.getStage();
           }
@@ -1377,24 +1380,25 @@ class stage extends Component {
   }
 
   setStageDescription = () => (
-    <ReactCardFlip id="stageDesc" style={{backgroundColor: 'transparent', height: 'auto', width: 'inherit'}}  isFlipped={this.state.descLock} flipDirection="vertical">
-          <Card className="desc"  key="front">
-            <Form >
+    <ReactCardFlip id="stageDesc" style={{backgroundColor: 'transparent', height: 'auto', width: '100%'}}  isFlipped={this.state.descLock} flipDirection="vertical">
+          <Card className="desc"  fluid key="front">
+            <Form fluid>
             <Button  circular primary floated='right' icon='edit' onClick={this.toggleLock} />
             {this.state.stage.description}
             </Form>
           </Card>
           <Card className="desc"  fluid key="back">
 
-            <Form >
+            <Form fluid>
               <TextArea
+                rows={6}
                 id="StageDesc"
                 className="desc-edit"
                 name="description"
                 placeholder='Description'
                 defaultValue={this.state.stage.description}
               />
-            <Button circular icon="save" primary onClick={this.updateStageDescription} />
+            <Button loading={this.state.saveDescLoading} circular icon="save" primary onClick={this.updateStageDescription} />
           </Form>
           </Card>
         </ReactCardFlip>)

@@ -57,6 +57,9 @@ video {
   background-color: transparent !important;
   border: 0 !important;
 }
+.ui.card.desc {
+  box-shadow: none !important;
+}
 .accordion .title, .accordion .title button {
   padding-top: 0;
   padding-bottom: 0;
