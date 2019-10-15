@@ -564,7 +564,7 @@ const checkPreFlight =  (obj) => {
         check = (maxWidth <= 2000 && maxHeight <= 2000) ? {ssid: obj.id, category: 'pictures', condition: 'Picture dimension cannot be more than 2000x2000' , check: true} : {ssid: obj.id, category: 'pictures', condition: 'Picture dimension cannot be more than 2000x2000  ' , check: false,  error: err };
         log.push(check);
         // pictures match min/max pictures count
-        check = (obj.pictures && obj.pictures.length >= 5 && obj.pictures.length <= 10) ? {ssid: obj.id, category: 'pictures', condition: 'Pictures number must be between 5 and 10 ' , check: true} : {ssid: obj.id, category: 'pictures', condition: 'Pictures number must be between 5 and 10 ' , check: false,  error:  'Pictures count: ' + obj.pictures.length};
+        check = (obj.pictures && obj.pictures.length >= 5 && obj.pictures.length <= 10) ? {ssid: obj.id, category: 'pictures', condition: 'Pictures number must be between 5 and 10 ' , check: true} : {ssid: obj.id, category: 'pictures', condition: 'Pictures number must be between 5 and 10 ' , check: false,  error:  'Pictures count: ' + (obj.pictures) ? obj.pictures.length : 'null'};
         log.push(check);
       } else {
         //error
@@ -573,14 +573,15 @@ const checkPreFlight =  (obj) => {
       }
     // Description
     if(obj.description) {
-      check = (obj.description.length <= 140 ) ?  {ssid: obj.id, category: 'description', condition: 'Description cannot be more than 140 characteres. [' + obj.description.length + ']' , check: true} : {ssid: obj.id, category: 'pictures', condition: 'Description cannot be more than 140 characteres. [' + obj.description.length + ']  ' , check: false,  error: 'Description too large'};
+      check = (obj.description.length <= 140 ) ?  {ssid: obj.id, category: 'description', condition: 'Description cannot be more than 140 characteres. [' + (obj.description) ? obj.description.length : null + ']' , check: true} : {ssid: obj.id, category: 'pictures', condition: 'Description cannot be more than 140 characteres. [' + obj.description.length + ']  ' , check: false,  error: 'Description too large'};
       log.push(check);
     } else {
       check = {category: 'description', condition: 'Description must exist' , check: false,   error:  'Empty: No Description'};
       log.push(check);
     }
     // onZoneEnter
-    if(obj.onZoneEnter) {
+    if(obj.onZoneEnter && obj.onZoneEnter.length > 0 ) {
+      console.log('onZoneEnter',obj.onZoneEnter);
       check = (obj.onZoneEnter.length > 0) ? {ssid: obj.id, category: 'onZoneEnter', condition: 'OnZoneEnter cannot be empty.' , check: true} : {ssid: obj.id, category: 'onZoneEnter', condition: 'OnZoneEnter cannot be empty' , check: false,  error: 'zone is empty' };
       // audios
       let audios = (obj.onZoneEnter && obj.onZoneEnter.length > 0) ? obj.onZoneEnter.find((el, index) => {
