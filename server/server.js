@@ -284,18 +284,7 @@ const deleteArtist = async (aid) => {
   return response;
 };
 // stories db requests
-const getAllStories = async () => {
-
-//Stories.hasMany(Artists, {as: 'a', foreignKey: 'artist', targetKey: 'name'});
-
-  return await Stories.findAll(
-    // {attributes: ['id','title', 'active', 'artist', 'city', 'state' ]},
-    // {include: [{
-    //   model: Artists,
-    //   attributes: ['id', 'name']
-    // }]}
-  );
-}
+const getAllStories = async () => await Stories.findAll();
 const createStory = async ({ title, state, city, sinopsys, credits, artist, active }) => {
   try {
     let res = await Stories.create({ title, state, city, sinopsys, credits, artist, active });
@@ -470,7 +459,7 @@ const getStage = async obj => {
   });
 };
 const storyCheckPreflight =  (obj) => {
-
+    console.log(obj);
     let log = [];
     let check = {};
     check = (obj.title ) ? {sid: obj.id, category: 'title', condition: 'Title must be filled' , check: true} : {sid: obj.id, category: 'title', error: obj.title, condition: 'Title cannot be empty' , check: false};
@@ -479,9 +468,11 @@ const storyCheckPreflight =  (obj) => {
     if(stages) {
       //preflight stages
       stages.map(stage => {
-        stage = stage.get({
-          plain: true
-        });
+        if(stage.dataValues) {
+          stage = stage.get({
+            plain: true
+          });
+        }
         let logs = checkPreFlight(stage);
         // console.log('stage',stage);
         // console.log('logs', logs);
@@ -489,7 +480,6 @@ const storyCheckPreflight =  (obj) => {
         return stage;
       });
     }
-
     // export story json
     let sid = obj.id;
     let filePath = __dirname +'/public/stories/' + sid + '/';
@@ -1259,33 +1249,48 @@ app.delete('/artists/:artistId', function(req, res, next) {
 // Stories URI requests
 app.get('/stories', function(req, res) {
   getAllStories().then((stories) => {
-    let sts = [];
-    stories.map((story, index) => {
-      let st = story.get({plain: true});
-      let win = 0;
-      let err = 0;
-      let total = 0;
-      getAllStages(st.id).then(stages => {
-        st['stages'] = stages;
-        let preflight = storyCheckPreflight(st);
-        //console.log('Preflight',preflight);
-        preflight.map(log => (log.check === true) ? win ++ : err ++);
-        total = win + err;
-        st["progress"] = parseInt((win / total) * 100 );
-        st["preflight"] = preflight;
-        sts.push(st);
-        return res.json(sts);
+    if(stories && stories.length > 0) {
+      let sts = [];
+      stories.map((story, index) => {
+        story = story.get({plain: true});
+        let win = 0;
+        let err = 0;
+        let total = 0;
+        getAllStages(story.id).then(stages => {
+          if(stages && stages.length > 0) {
+            stages = stages.map(stage => {return  stage.get({plain: true}) });
+            console.log(stages);
+            story['stages'] = stages;
+            let preflight = storyCheckPreflight(story);
+            //console.log('Preflight',preflight);
+            preflight.map(log => (log.check === true) ? win ++ : err ++);
+            total = win + err;
+            story["progress"] = parseInt((win / total) * 100 );
+            console.log(story.progress);
+            story["preflight"] = preflight;
+          }
+          sts.push(story);
+        });
+        console.log()
+        return story
       });
-      return false;
-    });
+      return res.json({ stories: stories, msg: 'Stories listed'});
+    } else {
+      // no results
+      return res.json({ stories: stories, msg: 'Stories empty'});
+    }
 
+
+
+  }).catch(e => {
+    console.log(e.message);
   });
 });
 app.post('/stories/0', function(req, res, next) {
   const { title, state, city, sinopsys, credits, artist, active } = req.body;
   createStory({ title, state, city, sinopsys, credits, artist, active }).then((story) => {
     //if(hasbot) {bot.telegram.sendMessage(chat_id,"New Story created: " + title); }
-    return res.json({ story, 'data': story, msg: 'story created successfully' })
+    return res.json({ 'data': story, msg: 'story created successfully' })
   });
 });
 app.get('/stories/:storyId', (req, res) => {
