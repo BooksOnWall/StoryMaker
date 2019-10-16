@@ -373,8 +373,11 @@ const updateStage = async ({ id, sid , name, photo, adress, description, images,
   }
 };
 const createStage = async ({ sid , name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry }) => {
+
   try {
     let rank = await getNextOrderFromStory(sid);
+    rank = (rank) ? rank : 1;
+    console.log(rank);
     stageOrder = (!stageOrder) ? parseInt(rank) : stageOrder;
     let res = await Stages.create({ sid , name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry });
     const ssid = res.get('id');
@@ -1279,9 +1282,6 @@ app.get('/stories', function(req, res) {
       // no results
       return res.json({ stories: stories, msg: 'Stories empty'});
     }
-
-
-
   }).catch(e => {
     console.log(e.message);
   });
