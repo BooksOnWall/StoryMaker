@@ -67,7 +67,6 @@ class storySteps extends Component {
     //e.preventDefault();
     let step = (e.target.name) ? e.target.name : null;
     let url = (e.target.href) ? e.target.href : null;
-    console.log(url);
     if (step) this.props.setSteps({step: step});
     //this.props.history.push(url);
   }

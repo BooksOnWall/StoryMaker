@@ -28,13 +28,17 @@ var bounds = [
 class stagesMap extends Component {
   constructor(props) {
     super(props);
+    let protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
+    let domain = protocol + '://' + process.env.REACT_APP_SERVER_HOST;
+    let server = domain + ':'+ process.env.REACT_APP_SERVER_PORT+'/';
     let location = this.props.location;
     this.state = {
       toggleAuthenticateStatus: this.props.toggleAuthenticateStatus,
       authenticated: this.props.authenticated,
       sid: (!this.props.sid) ? (0) : (parseInt(this.props.sid)),
       loading: null,
-      mapStyle: '',
+      mapStyle: null,
+      mapURL: server + 'stories/'+ props.sid+'/map',
       active: 'Map',
       bounds: bounds,
       popupInfo: null,
@@ -49,8 +53,38 @@ class stagesMap extends Component {
       interactiveLayerIds: []
     };
   }
+  getMapPreferences = async () => {
+    try {
+      await fetch(this.state.mapURL, {
+        method: 'get',
+        headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'},
+      })
+      .then(response => {
+        if (response && !response.ok) { throw new Error(response.statusText);}
+        return response.json();
+      })
+      .then(data => {
+          if(data) {
+            const map  = JSON.parse(data.map);
+            map.viewport.zoom = 18;
+            map.viewport.latitude = parseFloat(this.props.location[1]);
+            map.viewport.longitude = parseFloat(this.props.location[0]);
+            this.setState({mapStyle: map.style, viewport: map.viewport});
+          } else {
+            console.log('No Data received from the server');
+          }
+      })
+      .catch((error) => {
+        // Your error is here!
+        console.log(error)
+      });
+    } catch(e) {
+      console.log(e.message);
+    }
+  }
   componentDidMount= async () => {
     try {
+      await this.getMapPreferences();
       await this.handleStages();
     } catch(e) {
       console.log(e.message);
@@ -162,7 +196,7 @@ class stagesMap extends Component {
             size={20}
             onClick={() => this.handleMapClick(stage)}
             />
-          {stage.name}
+          <Label circular color="brown">{stage.name}</Label>
         </Marker>
       ));
       return listStages
@@ -181,7 +215,7 @@ class stagesMap extends Component {
               {...viewport}
               width="inherit"
               height="68.2vh"
-              mapStyle={MAP_STYLE}
+              mapStyle={this.state.mapStyle}
               clickRadius={2}
               onClick={this.onClick}
               getCursor={this.getCursor}

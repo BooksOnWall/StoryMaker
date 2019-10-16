@@ -18,12 +18,12 @@ import StagePin from './stagePin';
 let MapboxAccessToken = process.env.REACT_APP_MAT;
 
 
-class stageMap extends Component {
+class storyLocation extends Component {
   constructor(props) {
     super(props);
     let location = (this.props.stageLocation)
       ? this.props.stageLocation
-      : [-56.1670182, -34.9022229];
+      : [-56.1670182, -34.9022229  ];
       let protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
       let domain = protocol + '://' + process.env.REACT_APP_SERVER_HOST;
       let server = domain + ':'+ process.env.REACT_APP_SERVER_PORT+'/';
@@ -78,6 +78,7 @@ class stageMap extends Component {
   }
   componentDidMount = async () => {
     try {
+      console.log('map start');
       this.setState({loading: false});
       await this.getMapPreferences();
     } catch(e) {
@@ -183,7 +184,7 @@ handleOnResult = event => {
   render() {
     const {mapStyle, viewport, searchResultLayer, interactiveLayerIds,  loading} = this.state;
     return (
-      <Segment  className="stageMap" >
+      <Segment  className="storyLocation" >
         <Dimmer.Dimmable as={Segment} blurring dimmed={this.state.loading}>
           <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
             <Loader active={loading} >Get map info</Loader>
@@ -222,4 +223,4 @@ handleOnResult = event => {
     );
   }
 }
-export default stageMap;
+export default storyLocation;

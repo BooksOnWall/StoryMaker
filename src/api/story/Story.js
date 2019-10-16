@@ -25,6 +25,7 @@ import htmlToDraft from 'html-to-draftjs';
 import sanitizeHtml from 'sanitize-html';
 // maps
 import StoryMap from './map/storyMap';
+import StoryLocation from './map/storyLocation';
 //Stages
 import StoryStages from './stage/storyStages';
 
@@ -449,77 +450,77 @@ class Story extends Component {
           isSubmitting,
           /* and other goodies */
         }) => (
-
           <Form size='large' onSubmit={this.handleSubmit}>
-            <select size='small' label='Choose your artist:' name="artist" type="select" defaultValue={this.state.artist} onChange={this.handleChange}>
-              <option key={0} disabled hidden value=''></option>
-              {this.state.artistOptions.map(options => <option key={options.key} value={options.value} >{options.text}</option>)}
-            </select>
-            <Divider/>
-            <Input
-              label='Title'
-              placeholder='Title'
-              autoFocus={true}
-              type="text"
-              name="title"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              defaultValue={values.title}
-              />
-            {errors.title && touched.title && errors.title}
-            <Divider/>
-            <Input
-              label='State'
-              placeholder='State'
-              type="text"
-              name="state"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              defaultValue={values.state}
-              />
-            {errors.state && touched.state && errors.state}
-            <Divider/>
-            <Input
-              label='City'
-              placeholder='City'
-              type="text"
-              name="city"
-              color="teal"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              defaultValue={values.city}
-              />
-            {errors.city && touched.city && errors.city}
-            <Checkbox
-              label='Active'
-              placeholder=''
-              ref = "active"
-              name="active"
-              defaultChecked= {values.checked}
-              onChange = {(e, { checked }) => handleChange(checked)}
-              onBlur = {handleBlur}
-              defaultValue={(values.active === true) ? 1 : 0 }
-              toggle
-              />
-            {errors.active && touched.active && errors.active}
-            <Divider  />
-            <Button onClick={handleSubmit} floated='right' size='large' type="submit" disabled={isSubmitting}>
-              {(this.state.mode === 'create') ? 'Create' : 'Update'}
-            </Button>
-            {(this.state.mode === 'update') ? (
-              <div>
-                <Button onClick={this.show} color='red' floated='left' size='large' type="submit" disabled={isSubmitting}>
-                  <FormattedMessage id="app.story.delete" defaultMessage={`Delete Story`}/>
-                </Button>
-                <Confirm
-                  open={this.state.open}
-                  cancelButton='Never mind'
-                  confirmButton="Delete Story"
-                  onCancel={this.handleCancel}
-                  onConfirm={this.handleDelete}
+
+                 <select size='small' label='Choose your artist:' name="artist" type="select" defaultValue={this.state.artist} onChange={this.handleChange}>
+                  <option key={0} disabled hidden value=''></option>
+                  {this.state.artistOptions.map(options => <option key={options.key} value={options.value} >{options.text}</option>)}
+                </select>
+                <Divider/>
+                <Input
+                  label='Title'
+                  placeholder='Title'
+                  autoFocus={true}
+                  type="text"
+                  name="title"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  defaultValue={values.title}
                   />
-              </div>
-            ) : '' }
+                {errors.title && touched.title && errors.title}
+                <Divider/>
+                <Input
+                  label='State'
+                  placeholder='State'
+                  type="text"
+                  name="state"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  defaultValue={values.state}
+                  />
+                {errors.state && touched.state && errors.state}
+                <Divider/>
+                <Input
+                  label='City'
+                  placeholder='City'
+                  type="text"
+                  name="city"
+                  color="teal"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  defaultValue={values.city}
+                  />
+                {errors.city && touched.city && errors.city}
+                <Checkbox
+                  label='Active'
+                  placeholder=''
+                  ref = "active"
+                  name="active"
+                  defaultChecked= {values.checked}
+                  onChange = {(e, { checked }) => handleChange(checked)}
+                  onBlur = {handleBlur}
+                  defaultValue={(values.active === true) ? 1 : 0 }
+                  toggle
+                  />
+                {errors.active && touched.active && errors.active}
+                <Divider  />
+                <Button onClick={handleSubmit} floated='right' size='large' type="submit" disabled={isSubmitting}>
+                  {(this.state.mode === 'create') ? 'Create' : 'Update'}
+                </Button>
+                {(this.state.mode === 'update') ? (
+                  <div>
+                    <Button onClick={this.show} color='red' floated='left' size='large' type="submit" disabled={isSubmitting}>
+                      <FormattedMessage id="app.story.delete" defaultMessage={`Delete Story`}/>
+                    </Button>
+                    <Confirm
+                      open={this.state.open}
+                      cancelButton='Never mind'
+                      confirmButton="Delete Story"
+                      onCancel={this.handleCancel}
+                      onConfirm={this.handleDelete}
+                      />
+                  </div>
+                ) : '' }
           </Form>
         )}
       </Formik>

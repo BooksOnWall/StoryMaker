@@ -372,6 +372,17 @@ const reindexStage = async ({sid, stage}) => {
     { where: {sid : sid , id: stage.id}
   });
 }
+const updateStage = async ({ id, sid , name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry }) => {
+  try {
+    return   await Stages.update(
+      { sid , name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry },
+      { where: { id: id } }
+    );
+
+  } catch(e) {
+    console.log(e.message);
+  }
+};
 const createStage = async ({ sid , name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry }) => {
   try {
     let rank = await getNextOrderFromStory(sid);
@@ -553,7 +564,7 @@ const checkPreFlight =  (obj) => {
         check = (maxWidth <= 2000 && maxHeight <= 2000) ? {ssid: obj.id, category: 'pictures', condition: 'Picture dimension cannot be more than 2000x2000' , check: true} : {ssid: obj.id, category: 'pictures', condition: 'Picture dimension cannot be more than 2000x2000  ' , check: false,  error: err };
         log.push(check);
         // pictures match min/max pictures count
-        check = (obj.pictures.length >= 5 && obj.pictures.length <= 10) ? {ssid: obj.id, category: 'pictures', condition: 'Pictures number must be between 5 and 10 ' , check: true} : {ssid: obj.id, category: 'pictures', condition: 'Pictures number must be between 5 and 10 ' , check: false,  error:  'Pictures count: ' + obj.pictures.length};
+        check = (obj.pictures && obj.pictures.length >= 5 && obj.pictures.length <= 10) ? {ssid: obj.id, category: 'pictures', condition: 'Pictures number must be between 5 and 10 ' , check: true} : {ssid: obj.id, category: 'pictures', condition: 'Pictures number must be between 5 and 10 ' , check: false,  error:  'Pictures count: ' + (obj.pictures) ? obj.pictures.length : 'null'};
         log.push(check);
       } else {
         //error
@@ -562,14 +573,15 @@ const checkPreFlight =  (obj) => {
       }
     // Description
     if(obj.description) {
-      check = (obj.description.length <= 140 ) ?  {ssid: obj.id, category: 'description', condition: 'Description cannot be more than 140 characteres. [' + obj.description.length + ']' , check: true} : {ssid: obj.id, category: 'pictures', condition: 'Description cannot be more than 140 characteres. [' + obj.description.length + ']  ' , check: false,  error: 'Description too large'};
+      check = (obj.description.length <= 140 ) ?  {ssid: obj.id, category: 'description', condition: 'Description cannot be more than 140 characteres. [' + (obj.description) ? obj.description.length : null + ']' , check: true} : {ssid: obj.id, category: 'pictures', condition: 'Description cannot be more than 140 characteres. [' + obj.description.length + ']  ' , check: false,  error: 'Description too large'};
       log.push(check);
     } else {
       check = {category: 'description', condition: 'Description must exist' , check: false,   error:  'Empty: No Description'};
       log.push(check);
     }
     // onZoneEnter
-    if(obj.onZoneEnter) {
+    if(obj.onZoneEnter && obj.onZoneEnter.length > 0 ) {
+      console.log('onZoneEnter',obj.onZoneEnter);
       check = (obj.onZoneEnter.length > 0) ? {ssid: obj.id, category: 'onZoneEnter', condition: 'OnZoneEnter cannot be empty.' , check: true} : {ssid: obj.id, category: 'onZoneEnter', condition: 'OnZoneEnter cannot be empty' , check: false,  error: 'zone is empty' };
       // audios
       let audios = (obj.onZoneEnter && obj.onZoneEnter.length > 0) ? obj.onZoneEnter.find((el, index) => {
@@ -580,16 +592,12 @@ const checkPreFlight =  (obj) => {
       log.push(check);
       check = (audios  && audios.length < 2 ) ? {ssid: obj.id, category: 'onZoneEnter', condition: 'There can be only one audio' , check: true} : {ssid: obj.id, category: 'onZoneEnter',  error: 'More than one audio file: ['+ audios.length + ']', condition: 'There can be only one audio' , check: false};
       log.push(check);
+
     } else {
       check = {ssid: obj.id, category: 'onZoneEnter', condition: 'There should be an audio file' , check: false,   error:  'Empty: No Audio file'};
       log.push(check);
     }
 
-    // Pictures
-    let pics = (obj.onZoneEnter && obj.onZoneEnter.length > 0) ? obj.onZoneEnter.find((el, index) => {
-      //console.log(el);
-      return el.type === 'picture';
-    }) : null ;
     //console.log('pictures', pics);
     // onPictureMatch
     if(obj.onPictureMatch) {
@@ -1330,7 +1338,21 @@ app.post('/stories/:storyId/import', function(req, res) {
 });
 app.get('/stories/:storyId/stages', function(req, res) {
   let sid = req.params.storyId;
-  getAllStages(sid).then(user => res.json(user));
+  getAllStages(sid).then(stages => {
+    stages = stages.map((stage) => {
+      stage = stage.get({plain: true});
+      let preflight = checkPreFlight(stage);
+      let win = 0;
+      let err = 0;
+      preflight.map((log) => {
+        (log.check === false) ? err++ : win++ ;
+        return log;
+      });
+      stage['progress'] = (win / (win + err) * 100).toFixed(0);
+      return stage;
+    })
+    res.json(stages)
+  });
 });
 app.patch('/stories/:storyId/stages', function(req, res) {
   //reindex stages list when dragged in storyStages
@@ -1341,12 +1363,46 @@ app.patch('/stories/:storyId/stages', function(req, res) {
     return res.json({ stages, 'data': stages, msg: 'stages reindexed successfully' })
   });
 });
+app.post('/stories/:storyId/map', function(req, res, next) {
+  const { prefs } = req.body;
+  const sid = req.params.storyId;
+  const mapPath = __dirname + '/public/stories/'+sid+'/';
+  const fileName = 'map.json';
+  if (fs.existsSync(mapPath+fileName)) {
+    //file already exist remove it :
+    rimraf.sync(mapPath+fileName);
+  }
+  fs.writeFile(mapPath+fileName, JSON.stringify(prefs), 'utf8', function(err) {
+    if (err) return res.json({msg: 'error map  not saved' , error: err});
+    return res.json({msg: 'map saved'});
+  });
+});
+app.get('/stories/:storyId/map', function(req, res, next) {
+  const sid = req.params.storyId;
+  const mapPath = __dirname + '/public/stories/'+sid+'/';
+  const fileName = 'map.json';
+  if (fs.existsSync(mapPath+fileName)) {
+    //file already exist read and return  it :
+   fs.readFile(mapPath+fileName,'utf8', (err, data) => {
+      if (err) return res.json({error:err, msg:'Error reading '+mapPath+fileName})
+      return res.json({map: data, msg: 'map received'});
+    });
+  }
+});
 app.post('/stories/:storyId/stages/0', function(req, res, next) {
   const { sid, name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, tesselate,  geometry } = req.body;
   const stageOrder = null;
   createStage({ sid , name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry  }).then((stage) => {
     //if(hasbot) { bot.telegram.sendMessage(chat_id,"New stage created: " + name + ','+ adress);}
     return res.json({ stage, 'data': stage, msg: 'stage created successfully' })
+  });
+});
+app.post('/stories/:storyId/stages/:stageId', function(req, res, next) {
+  let sid = parseInt(req.params.storyId);
+  let id = parseInt(req.params.stageId);
+  const { name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, tesselate,  geometry } = req.body;
+  updateStage({id, sid, name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, tesselate,  geometry }).then(stage => {
+      res.json({ stage, msg: 'Stage updated successfully' })
   });
 });
 app.delete('/stories/:storyId/stages/:stageId', function(req, res, next) {

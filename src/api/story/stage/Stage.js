@@ -99,13 +99,13 @@ class stage extends Component {
           photo: null,
           images: null,
           pictures: null,
+          description: '',
           videos: null,
           audios: null,
           onZoneEnter: null,
           onPictureMatch: null,
           onZoneLeave: null,
           type: 'Point',
-          description: '',
           geometry: {
             "type": "Point",
             "coordinates": [-56.1670182, -34.9022229  ]
@@ -125,6 +125,7 @@ class stage extends Component {
         audiosLoading: false,
         exportLoading: false,
         downloadLoading:  false,
+        saveDescLoading: false,
         stagePictures: [],
         stageImages: [],
         stageVideos: [],
@@ -1002,7 +1003,8 @@ class stage extends Component {
   }
   handleBlur = () =>  true;
   handleChange = (e) => {
-    console.log(e.target);
+    console.log(e.target.name);
+    console.log(e.target.value);
     this.setState({
       stage: {
         id: this.state.stage.id,
@@ -1010,6 +1012,7 @@ class stage extends Component {
         ssid: this.state.stage.ssid,
         name: (e.target.name === 'name') ? e.target.value : this.state.stage.name,
         adress: (e.target.name === 'adress') ? e.target.value : this.state.stage.adress,
+        description: (e.target.name === 'description') ? e.target.value : this.state.stage.description,
         photo: this.state.stage.photo,
         images: this.state.stage.images,
         pictures: this.state.stage.pictures,
@@ -1019,11 +1022,62 @@ class stage extends Component {
         onPictureMatch: this.state.stage.onPictureMatch,
         onZoneLeave: this.state.stage.onZoneLeave,
         type: (e.target.name && e.target.name === 'type') ? e.target.value : this.state.stage.type,
-        description: this.state.stage.description,
         geometry: this.state.stage.geometry,
         stageLocation: (e.target.name === 'stageLocation') ? e.target.value : this.state.stage.stageLocation
       }
     });
+  }
+  updateStageDescription = async () => {
+    try {
+      this.setState({saveDescLoading: true});
+      const desc = document.getElementById("StageDesc").value;
+      // this.setState({stage: {
+      //   ...stage, description: desc
+      // }})
+      await fetch(this.state.stagesURI +'/'+ this.props.match.params.sid, {
+        method: 'post',
+        credentials: 'same-origin',
+        headers: {'Access-Control-Allow-Origin': '*',  'Content-Type':'application/json'},
+        body:JSON.stringify({
+          id: this.state.stage.id,
+          sid: this.state.stage.sid,
+          ssid: this.state.stage.ssid,
+          name: this.state.stage.name,
+          adress:this.state.stage.adress,
+          photo: this.state.stage.photo,
+          images: this.state.stage.images,
+          pictures: this.state.stage.pictures,
+          videos: this.state.stage.videos,
+          audios: this.state.stage.audios,
+          onZoneEnter: this.state.stage.onZoneEnter,
+          onPictureMatch: this.state.stage.onPictureMatch,
+          onZoneLeave: this.state.stage.onZoneLeave,
+          type: this.state.stage.type,
+          description: desc,
+          geometry: this.state.stage.geometry,
+          stageLocation: this.state.stage.stageLocation
+        })
+      })
+      .then(response => {
+        if (response && !response.ok) { throw new Error(response.statusText);}
+        return response.json();
+      })
+      .then(data => {
+          if(data) {
+            // redirect to user edit page
+            this.setState({saveDescLoading: false});
+            this.toggleLock();
+            this.getStage();
+          }
+      })
+      .catch((error) => {
+        // Your error is here!
+        console.log(error)
+      });
+      console.log('desc',desc);
+    } catch(e) {
+      console.log(e.message);
+    }
   }
   editStage = () => {
     return (
@@ -1326,20 +1380,25 @@ class stage extends Component {
   }
 
   setStageDescription = () => (
-    <ReactCardFlip style={{height: 'auto', width: 'inherit'}}  isFlipped={this.state.descLock} flipDirection="vertical">
-          <Card color='violet' className="fluid" key="front">
-            <Button primary onClick={this.toggleLock}><Icon name='edit' />Edit</Button>
-            {ReactHtmlParser(this.state.stage.description)}
+    <ReactCardFlip id="stageDesc" style={{backgroundColor: 'transparent', height: 'auto', width: '100%'}}  isFlipped={this.state.descLock} flipDirection="vertical">
+          <Card className="desc"  fluid key="front">
+            <Form fluid>
+            <Button  circular primary floated='right' icon='edit' onClick={this.toggleLock} />
+            {this.state.stage.description}
+            </Form>
           </Card>
-          <Card color='violet' fluid key="back">
+          <Card className="desc"  fluid key="back">
 
-            <Form color='violet'><TextArea
-              className="desc-edit"
-              name="description"
-              placeholder='Description'
-              value={(this.state.stage.description) ? this.state.stage.description : '' }
+            <Form fluid>
+              <TextArea
+                rows={6}
+                id="StageDesc"
+                className="desc-edit"
+                name="description"
+                placeholder='Description'
+                defaultValue={this.state.stage.description}
               />
-            <Button primary onClick={this.toggleLock}><Icon name='save' />Save</Button>
+            <Button loading={this.state.saveDescLoading} circular icon="save" primary onClick={this.updateStageDescription} />
           </Form>
           </Card>
         </ReactCardFlip>)
@@ -1429,7 +1488,7 @@ class stage extends Component {
             {(this.state.ssid === 0) ?
               <Segment.Group horizontal style={{height: '70vh'}}>
                 <Segment style={{height: 'inherit', width: '150px'}}>{this.editStage()}</Segment>
-                <Segment style={{height: 'inherit'}}>{(this.state.ssid === 0 ) ? <StageMap height="80vh" mode={this.state.mode} setStageLocation={this.setStageLocation} stageLocation={this.state.stage.stageLocation}
+                <Segment style={{height: 'inherit'}}>{(this.state.ssid === 0 ) ? <StageMap height="80vh" sid={this.state.sid} mode={this.state.mode} setStageLocation={this.setStageLocation} stageLocation={this.state.stage.stageLocation}
                 /> : ''}</Segment>
               </Segment.Group>
             : ''}
