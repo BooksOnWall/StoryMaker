@@ -241,6 +241,7 @@ div.DraftEditor-root {
 .ui.visible.slide.along.sidebar.bwSidebar,.ui.slide.along.sidebar.bwSidebar {
   background: rgba(0,0,0,.87) none no-repeat;
   min-height: 100vh;
+  min-width: 20vw;
 }
 .ui.menu {
   /* min-height: 100vh; */
@@ -443,7 +444,7 @@ input[type="color"] {
 .ui.segment{ box-shadow: auto ; border: 0 !important; border-radius: 0 !important; background: #e2e2e2; padding: 0 }
 .ui.segment.main{ padding: 0 !important; }
 .ui.segment.pushable, .ui.segment.main{ background: transparent !important; margin: 0}
-.ui.main.container { padding: 0 !important; max-width: 94vw !important; margin: 0 0 0 80px !important;}
+.ui.main.container { padding: 0 !important; max-width: 94vw !important; margin: 0 0 0 80px !important; width: 100%;}
 .ui.segment.view, .ui.segment.main-board, .ui.segment.blurring.dimmable, .ui.segment .StagesNav{ padding: 0 !important; margin:0 !important}
 .ui.segment .StagesNav .ui.buttons{ margin: 0 5px}
 .ui.segment .StagesNav {background: transparent}

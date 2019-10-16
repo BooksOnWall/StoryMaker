@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Card } from 'semantic-ui-react';
+import { Container, Card, Segment, Header } from 'semantic-ui-react';
 import Auth from '../module/Auth';
 import { injectIntl, FormattedMessage } from 'react-intl';
 
@@ -13,32 +13,32 @@ class HomePage extends Component {
 
   render() {
     return (
-      <Container className="view" fluid>
-      <Card className="container" fluid>
-        <Card.Content>
-        <Card.Header
+      <Container fluid className="main">
+      <Segment inverted className="view" fluid>
+      <Segment inverted>
+        <Header as='h1' textAlign='center'
             title=<FormattedMessage id="app.home.title" defaultMessage={`Books on Wall`}/>
             subtitle=<FormattedMessage id="app.home.subtitle" defaultMessage={`This is the home page.`}/>
         />
           {Auth.isUserAuthenticated() ? (
-            <Card.Description
+            <Header as='h1' textAlign='center'
               style={{ fontSize: '16px', color: 'green' }}>
               <FormattedMessage
                 id="app.home.logged"
-                defaultMessage={`You are  logged in.!`}
+                defaultMessage={`You are  logged in!`}
               />
-            </Card.Description>
+            </Header>
           ) : (
-            <Card.Description
-              style={{ fontSize: '16px',  color: 'red' }}>
+            <Header as='h1' textAlign='center'
+              style={{ fontSize: '16px',  color: 'brown' }}>
                 <FormattedMessage
                   id="app.home.unlogged"
-                  defaultMessage={`You are not logged in.!`}
+                  defaultMessage={`You are not logged in!`}
                 />
-            </Card.Description>
+            </Header>
           )}
-          </Card.Content>
-      </Card>
+      </Segment>
+    </Segment>
     </Container>
     )
   }
