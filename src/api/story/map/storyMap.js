@@ -9,6 +9,7 @@ import {  FormattedMessage } from 'react-intl';
 import MapGL from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import StylePanel from './stylePanel';
+import MAP_STYLE from './map-style-basic-v8.json';
 
 let MapboxAccessToken = process.env.REACT_APP_MAT;
 // Set bounds toMontevideo
@@ -28,8 +29,15 @@ class storyMap extends Component {
       sid: (!this.props.sid) ? (0) : (parseInt(this.props.sid)),
       mapURL: server+'stories/'+this.props.sid+'/map',
       loading: null,
-      mapStyle: '',
-      colors: null,
+      mapStyle: MAP_STYLE,
+      colors: {
+        water: '#aad9f5',
+        parks: '#2bedbd',
+        buildings: '#2d2e23',
+        roads: '#5a5050',
+        labels: '#FFFFFF',
+        background: '#02020e'
+      },
       active: 'Map',
       saveMapLoading: false,
       bounds: bounds,
@@ -77,6 +85,7 @@ class storyMap extends Component {
         return response.json();
       })
       .then(data => {
+        console.log(data);
           if(data) {
             const map  = JSON.parse(data.map);
             const colors = {};
@@ -120,7 +129,7 @@ class storyMap extends Component {
       .then(data => {
           if(data) {
             this.setState({saveMapLoading: false});
-            
+
           } else {
             console.log('No Data received from the server');
           }

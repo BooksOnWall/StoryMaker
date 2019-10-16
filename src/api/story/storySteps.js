@@ -71,19 +71,22 @@ class storySteps extends Component {
     //this.props.history.push(url);
   }
   render() {
+    console.log(typeof(this.state.sid));
     return (
       <Step.Group fluid className="inverted">
         {this.state.steps.map(step => (
+
           <Step
             key={step.index}
             icon={step.icon}
             active = {this.props.state.step === step.name}
+            disabled = {this.state.sid === parseInt(0) }
             name={step.name}
             onClick={this.handleSteps}
             as={Link}
             to={step.to}
             title= {step.title}
-
+            description={this.state.sid}
             // {defineMessages({stepstitle: { id: 'app.story.storySteps.steps.title', defaultMessage: [step.title] }})}
 
            // description={<FormattedMessage id="app.story.storySteps.edit"  defaultMessage={step.desc} />}

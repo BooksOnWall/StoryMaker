@@ -38,7 +38,8 @@ class Stories extends Component {
     })
     .then(data => {
         if(data) {
-          this.setState({data: data});
+          console.log(data);
+          this.setState({data: data.stories});
           // set loading
           this.setState({loading: false});
         } else {
