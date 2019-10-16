@@ -7,7 +7,9 @@ import {
   Form,
   Image,
   Header,
-  Segment } from "semantic-ui-react";
+  Segment,
+    Divider,
+  Container } from "semantic-ui-react";
 import Logo from '../../logo.svg';
 import Auth from '../../module/Auth';
 import { Redirect } from 'react-router-dom';
@@ -102,12 +104,14 @@ class Login extends Component {
       return <Redirect to={{ pathname: `/dashboard` }} />
     }
     return (
-      <Grid  className="view" id="login" textAlign='center' style={{ height: '60vh' }} verticalAlign='middle'>
+    <Container className='main'>
+    <Segment inverted>
+      <Grid className="view" id="login" textAlign='center' style={{ height: '60vh' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as='h2' color='orange' textAlign='center'>
             <Image className="App-logo" alt="logo" src={Logo} /> Log-in to your account
           </Header>
-            <Segment stacked>
+            <Segment inverted stacked>
             <Formik
               initialValues={{ email: '', password: '' }}
               validate={values => {
@@ -151,6 +155,7 @@ class Login extends Component {
                     onBlur={handleBlur}
                     value={values.email}
                   />
+                  <Divider/>
                   {errors.email && touched.email && errors.email}
                   <input
                     icon='lock'
@@ -163,6 +168,7 @@ class Login extends Component {
                     value={values.password}
                   />
                   {errors.password && touched.password && errors.password}
+                  <Divider/>
                   <Button onClick={handleSubmit} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
                     <FormattedMessage id="app.user.login" defaultMessage={`Login`}/>
                   </Button>
@@ -172,6 +178,8 @@ class Login extends Component {
             </Segment>
         </Grid.Column>
       </Grid>
+    </Segment>
+    </Container>
     );
   }
 }
