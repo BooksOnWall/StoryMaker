@@ -7,7 +7,10 @@ import {
   Form,
   Image,
   Header,
-  Segment } from "semantic-ui-react";
+  Segment,
+    Container,
+    Divider,
+} from "semantic-ui-react";
 import Logo from '../../logo.svg';
 import {  FormattedMessage } from 'react-intl';
 
@@ -97,12 +100,15 @@ class SignUp extends Component {
   }
   render() {
     return (
+<Container className="main">        
+  <Segment inverted >        
       <Grid  className="view" id="signup" textAlign='center' style={{ height: '60vh' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: 450 }}>
-          <Header as='h2' color='orange' textAlign='center'>
-            <Image className="App-logo" alt="logo" src={Logo} />                    <FormattedMessage id="app.user.singup.youraccount" defaultMessage={` Sign Up to your account`}/>
+          <Header as='h1' color='orange' textAlign='center'>
+            <Image className="App-logo" alt="logo" src={Logo} />                    
+            <FormattedMessage id="app.user.singup.youraccount" defaultMessage={` Signup`}/>
           </Header>
-            <Segment stacked>
+            <Segment inverted stacked>
             <Formik
               initialValues={{ name: '', email: '', password: '', password2: '' }}
               validate={values => {
@@ -179,8 +185,9 @@ class SignUp extends Component {
                     onBlur={handleBlur}
                     value={values.password2}
                   />
+                  <Divider />
                   {errors.password2 && touched.password2 && errors.password2}
-                  <Button onClick={handleSubmit} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
+                  <Button onClick={handleSubmit} primary fluid size='large' type="submit" disabled={isSubmitting}>
                     <FormattedMessage id="app.user.singup" defaultMessage={`Login`}/>
                   </Button>
                 </Form>
@@ -189,6 +196,8 @@ class SignUp extends Component {
             </Segment>
         </Grid.Column>
       </Grid>
+</Segment>        
+</Container>        
     );
   }
 }

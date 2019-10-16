@@ -108,8 +108,8 @@ class Login extends Component {
     <Segment inverted>
       <Grid className="view" id="login" textAlign='center' style={{ height: '60vh' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: 450 }}>
-          <Header as='h2' color='orange' textAlign='center'>
-            <Image className="App-logo" alt="logo" src={Logo} /> Log-in to your account
+          <Header as='h1' color='orange' textAlign='center'>
+            <Image className="App-logo" alt="logo" src={Logo} /> Login
           </Header>
             <Segment inverted stacked>
             <Formik
@@ -155,7 +155,6 @@ class Login extends Component {
                     onBlur={handleBlur}
                     value={values.email}
                   />
-                  <Divider/>
                   {errors.email && touched.email && errors.email}
                   <input
                     icon='lock'
@@ -168,8 +167,8 @@ class Login extends Component {
                     value={values.password}
                   />
                   {errors.password && touched.password && errors.password}
-                  <Divider/>
-                  <Button onClick={handleSubmit} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
+                  <Divider />
+                  <Button onClick={handleSubmit} primary fluid size='large' type="submit" disabled={isSubmitting}>
                     <FormattedMessage id="app.user.login" defaultMessage={`Login`}/>
                   </Button>
                 </Form>
