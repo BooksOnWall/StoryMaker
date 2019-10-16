@@ -45,7 +45,7 @@ class Story extends Component {
       artists: server + 'artists',
       initialSValues:  (!this.props.match.params.id) ?{ artist: 1, title: '', state: '', city: '', sinopsys: '' , credits: '', active: true} : this.getStory,
       artistOptions: [],
-      sid: (!this.props.match.params.id) ? (0) : (parseInt(this.props.match.params.id)),
+      sid: (!this.props.match.params.id) ? (0) : parseInt(this.props.match.params.id),
       mode: (parseInt(this.props.match.params.id) === 0) ? ('create') : ('update'),
       name: null,
       stages: '/stories/' + this.props.match.params.id + '/stages',
@@ -192,7 +192,7 @@ class Story extends Component {
     }
   }
 
-  async handleSubmit(e) {
+  handleSubmit = async (e) => {
     let mode = this.state.mode;
 
     try {
@@ -240,8 +240,9 @@ class Story extends Component {
       .then(data => {
           if(data) {
             // redirect to user edit page
+            console.log(data);
             this.setState({sid: data.data.id })
-            this.props.history.push('/stories/' + data.data.id );
+            this.props.history.push('/stories' );
           }
       })
       .catch((error) => {
