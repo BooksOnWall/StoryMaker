@@ -136,9 +136,9 @@ padding: 1em
   padding: 0 !important;
 }
 .container {
-  display: flex;
   flex-direction: column;
   font-family: sans-serif;
+    overflow: scroll !important;
 }
 .slidemenu {
   text-align: left!important;
@@ -154,11 +154,12 @@ div.DraftEditor-root {
   width:100%;
   margin:auto;
   box-shadow: 0px 0px 6px 1px rgba(0,0,0,0.5);
-  min-height: 50vh;
+  min-height: 49vh;
   overflow-y: scroll;
   padding: 20px 5px;
   font-size: 18px;
   font-family: 'calibri', sans-serif;
+    overflow: scroll;
 }
 .dropzone {
   flex: 1;
@@ -170,10 +171,10 @@ div.DraftEditor-root {
   border-radius: 1px;
   border-color: #999;
   border-style: dashed;
-  background-color: #666;
   color: #bdbdbd;
   outline: none;
   transition: border .24s ease-in-out;
+  min-height: 18vh;
 }
 .dropzone:focus {
   border-color: #2196f3;
@@ -409,6 +410,9 @@ div.DraftEditor-root {
 
 .ui.icon.header{ text-align: right !important; }
 
+.ui.segment .ui.header .icon{ padding: 10px; margin-top: -6px}
+.ui.segment .ui.header .icon i { margin: 0px; padding:0 }
+
 .ui.visible.left.sidebar ~ .fixed, .ui.visible.left.sidebar ~ .pusher{transform: translate3d(160px,0,0) !important;}
 
 .ui.icon.header{ }
@@ -450,7 +454,7 @@ input[type="color"] {
 .ui.segment .StagesNav .ui.buttons{ margin: 0 5px}
 .ui.segment .StagesNav {background: transparent}
 .ui.segment.sinopsys{padding: 2em !important; background:; }
-.ui.segment.content, .ui.segment.story{ padding:3em !important}
+.ui.segment.content, .ui.segment.story{ padding:3em !important; margin:0}
 .ui.segment.main-board .segment.stageProfile{box-shadow: inset 0px 0px 10px rgba(0,0,0,0.9);}
 .ui.segment.single{ max-height: 23vh !important}
 .ui.segment.main-board .segment ui.column.grid .ui.image, .ui.segment.main-board
@@ -463,3 +467,11 @@ input[type="color"] {
 .ui.segment.stageCol { border: 2px solid #222 !important}
 
 #login  .ui.form input, #signup .ui.form input, #login .button, #signup button{ margin: 5px 0 !important;}
+
+.ui.card.inverted{ background: #222 !important; color:#fff !important; border: 0px transparent solid !important; box-shadow: 0px 1px 3px 0px #000, 0px 0px 0px 1px #000 !important; }
+.ui.card.inverted .content {padding: 7px !important}
+.ui.card.inverted .content img{ border-radius: 2px}
+.ui.card.inverted .header, .ui.card.inverted .description, .ui.card.inverted .meta{color: #fff !important; padding:0px 10px}
+
+.ui.main.artist .ui.form input{ margin-left: 10px}
+.ui.main .ui.form .ui.labeled.input.inverted > .label{color: #fff; background: #333}

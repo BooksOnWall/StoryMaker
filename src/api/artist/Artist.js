@@ -63,14 +63,14 @@ function humanFileSize(bytes, si) {
   const build = images.map((image, index) => {
     // switch oject structure from create to update
     return (
-      <Card key={index} color='violet'>
+      <Card key={index} className='inverted'>
         <Card.Content>
-          <Modal
+          <Modal inverted basic dimmer='blurring' closeIcon
             onClose={props.handleModalImgDeleteClose}
             size='fullscreen'
-            trigger={<Image floated='right' size='massive'  src={props.server + image.image.path} />} centered={true} >
+            trigger={<Image floated='right' src={props.server + image.image.path} />} centered={true} >
             <Modal.Content image>
-              <Image src={props.server + image.image.path} />
+              <Image wrapped src={props.server + image.image.path} />
             </Modal.Content>
             <Modal.Actions>
               <Button name={image.image.name} color='red' onClick={props.handleImageDelete} inverted>
@@ -78,11 +78,11 @@ function humanFileSize(bytes, si) {
               </Button>
             </Modal.Actions>
           </Modal>
-          <Card.Header>{image.image.name}</Card.Header>
+        { /* <Card.Header as='h3'>{image.image.name}</Card.Header>
           <Card.Meta>{image.image.type}</Card.Meta>
           <Card.Description>
             { humanFileSize(image.image.size, true)}
-          </Card.Description>
+          </Card.Description> */}
         </Card.Content>
       </Card>
     );
@@ -530,10 +530,13 @@ class Artist extends Component {
             /* and other goodies */
           }) => (
             <Form size='large' onSubmit={this.handleSubmit}>
-              <Input
+              <Input 
+                fluid
+                transparent
+                inverted
                 label='Name'
                 icon='user'
-                iconposition='left'
+                iconPosition='right'
                 placeholder='Name'
                 autoFocus={true}
                 type="text"
@@ -545,6 +548,9 @@ class Artist extends Component {
               {errors.name && touched.name && errors.name}
               <Divider />
               <Input
+                fluid
+                transparent
+                inverted
                 label='E-mail address'
                 icon='mail'
                 iconposition='left'
@@ -559,10 +565,10 @@ class Artist extends Component {
 
               <Divider />
                 <div>
-              <Button onClick={handleSubmit}  floated='right' color='grey' size='large' type="submit" disabled={isSubmitting}> {(this.state.mode === 'create') ? 'Create' : 'Update' } </Button>
+              <Button onClick={handleSubmit}  floated='right' primary size='large' type="submit" disabled={isSubmitting}> {(this.state.mode === 'create') ? 'Create' : 'Update' } </Button>
               {(this.state.mode === 'update') ? (
                 <div>
-                  <Button onClick={this.show} color='red' size='large'  type="submit" disabled={isSubmitting}><FormattedMessage id="app.artist.delete" defaultMessage={`Delete Artist`}/></Button>
+                  <Button onClick={this.show} basic color='red' size='large'  type="submit" disabled={isSubmitting}><FormattedMessage id="app.artist.delete" defaultMessage={`Delete Artist`}/></Button>
                   <Confirm
                     open={this.state.open}
                     cancelButton='Never mind'
@@ -613,14 +619,14 @@ class Artist extends Component {
           <Form size='large' onSubmit={this.handleSubmitI}>
             <div>
               <aside style={thumbsContainer}>
-                 <Card.Group itemsPerRow={4}>
+                 <Card.Group itemsPerRow={5}>
                 {(this.state.images && this.state.images.length > 0) ? <Listimages mode={this.state.mode} handleImageDelete={this.handleImageDelete} handleImgDeleteOpen={this.handleImgDeleteOpen} handleModalImgDeleteClose={this.handleModalImgDeleteClose}  state={this.state} images={this.state.images} server={this.state.server}/> : ''}
                  </Card.Group>
               </aside>
               <Previews state={this.state} />
             </div>
             <div>
-            <Button onClick={this.handleSubmitI} floated='right' color='grey' size='large' type="submit" disabled={isSubmitting}>
+            <Button onClick={this.handleSubmitI} floated='right' primary size='large' type="submit" disabled={isSubmitting}>
               {(this.state.mode === 'create') ? 'Create' : 'Update'}
             </Button>
             </div>
@@ -685,7 +691,7 @@ class Artist extends Component {
               placeholder='Biographie'
               />
             <Divider/>
-            <Button onClick={handleSubmitBio} floated='right' color='grey' size='large'  type="submit" disabled={isSubmitting}>
+            <Button onClick={handleSubmitBio} floated='right' primary size='large'  type="submit" disabled={isSubmitting}>
               {(this.state.mode === 'create') ? 'Create' : 'Update'}
             </Button>
           </Form>
@@ -696,7 +702,7 @@ class Artist extends Component {
   onChangeHandler = event => this.setState({ selectedFile: event.target.files })
   render() {
     return (
-    <Container className="main" fluid>
+    <Container className="main artist" fluid>
       <Dimmer.Dimmable as={Segment} inverted className='view' blurring dimmed={this.state.loading}>
         <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
         <Loader active={this.state.loading} >Get artist info</Loader>

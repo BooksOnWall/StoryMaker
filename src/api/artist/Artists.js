@@ -95,13 +95,8 @@ class Artists extends Component {
         <Header as={Segment} vertical size='large'>
             {<FormattedMessage id="app.artists.title" defaultMessage={`Artists`}/>}          
           <Link to="/artists/0">
-            <Button color='grey' animated='vertical' size='large' floated='right' >
-              <Button.Content hidden>
-                  <FormattedMessage id="app.artists.add"  defaultMessage={`Add Artist`}/>
-              </Button.Content>
-              <Button.Content visible>
-                <Icon name='paint brush' />
-              </Button.Content>
+            <Button primary size='large' icon floated='right' >
+                <Icon name='plus' />
             </Button>         
           </Link>
         </Header>
