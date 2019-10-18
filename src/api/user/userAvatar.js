@@ -13,6 +13,8 @@ import {
   Container,
   Placeholder,
   Segment,
+    Divider,
+    Responsive,
 } from 'semantic-ui-react';
 
 import src from '../../assets/images/patrick.png';
@@ -275,9 +277,12 @@ class userAvatar extends Component {
   }
   render() {
     return (
-      <Container  fluid className="view" style={{textAlign: 'left'}}>
-        <Segment>
-          <Dropzone
+      <Segment inverted fluid className="view" style={{textAlign: 'left'}}>
+        <Segment inverted>
+        <Segment.Group horizontal inverted>
+            <Responsive as={Segment} inverted>
+        
+            <Dropzone
             onDrop={this.handleDrop}
             disableClick
             multiple={false}
@@ -300,8 +305,9 @@ class userAvatar extends Component {
                 className="editor-canvas"
               />}
           </Dropzone>
-          <br />
+        <Divider />
           <Input
+            fluid
             ref={this.inputOpenFileRef}
             id="avatar"
             placeholder="New File"
@@ -309,14 +315,16 @@ class userAvatar extends Component {
             type="file"
             onChange={this.handleNewImage}
           />
+        <br/>
           <Button
             animated="fade"
-            content={<FormattedMessage id="app.user.user.useravatar.file"  defaultMessage={'choose File'} />}
+            content={<FormattedMessage id="app.user.user.useravatar.file"  defaultMessage={'Upload'} />}
             labelPosition="left"
             icon="file"
             onClick={this.handleNewImage}
           />
-        <br />
+          </Responsive>
+          <Responsive as={Segment} inverted>
          {<FormattedMessage id="app.user.user.useravatar.zoom"  defaultMessage={'Zoom'} />}
         <Input
           name="scale"
@@ -327,7 +335,7 @@ class userAvatar extends Component {
           step="0.01"
           defaultValue="1"
         />
-        <br />
+        <Divider />
         {'Allow Scale < 1'}
         <Input
           name="allowZoomOut"
@@ -335,18 +343,7 @@ class userAvatar extends Component {
           onChange={this.handleAllowZoomOut}
           checked={this.state.allowZoomOut}
         />
-        <br />
-         {<FormattedMessage id="app.user.user.useravatar.scale"  defaultMessage={'Broders radius'} />}
-        <Input
-          name="scale"
-          type="range"
-          onChange={this.handleBorderRadius}
-          min="0"
-          max="50"
-          step="1"
-          defaultValue="0"
-        />
-        <br />
+        <Divider />
          {<FormattedMessage id="app.user.user.useravatar.width"  defaultMessage={'Avatar width'} />}
         <Input
           name="width"
@@ -357,7 +354,7 @@ class userAvatar extends Component {
           step="10"
           value={this.state.width}
         />
-        <br />
+        <Divider />
          {<FormattedMessage id="app.user.user.useravatar.height"  defaultMessage={'Avatar height'} />}
         <Input
           name="height"
@@ -368,7 +365,8 @@ class userAvatar extends Component {
           step="10"
           value={this.state.height}
         />
-        <br />
+        </Responsive>
+        <Responsive as={Segment} inverted>      
          <FormattedMessage id="app.user.user.useravatar.scale.x"  defaultMessage={'Position X'} />
         <Input
           name="scale"
@@ -379,7 +377,7 @@ class userAvatar extends Component {
           step="0.01"
           value={this.state.position.x}
         />
-        <br />
+        <Divider />
          <FormattedMessage id="app.user.user.useravatar.scale.y"  defaultMessage={'Position Y'} />
         <Input
           name="scale"
@@ -390,17 +388,21 @@ class userAvatar extends Component {
           step="0.01"
           value={this.state.position.y}
         />
-        <br />
-         <FormattedMessage id="app.user.user.useravatar.rotate"  defaultMessage={'rotate'} />
-        <Button onClick={this.rotateLeft}>
-         {<FormattedMessage id="app.user.user.useravatar.rotate.left"  defaultMessage={'Left'} />}
-            </Button>
-        <Button onClick={this.rotateRight}>
-         {<FormattedMessage id="app.user.user.useravatar.rotate.right"  defaultMessage={'Right'} />}
-            </Button>
-        <br />
-          <Modal
-            trigger={<Button primary onClick={this.handlePreview}>
+            <Divider />
+             <FormattedMessage id="app.user.user.useravatar.rotate"  defaultMessage={'rotate'} />
+            <Button onClick={this.rotateLeft}>
+             {<FormattedMessage id="app.user.user.useravatar.rotate.left"  defaultMessage={'Left'} />}
+                </Button>
+            <Button onClick={this.rotateRight}>
+             {<FormattedMessage id="app.user.user.useravatar.rotate.right"  defaultMessage={'Right'} />}
+                </Button>
+        </Responsive>
+      
+        </Segment.Group>
+        
+    <Divider />
+      <Modal
+            trigger={<Button primary floated='right' onClick={this.handlePreview}>
                 {<FormattedMessage id="app.user.user.useravatar.preview."  defaultMessage={'Preview'} />}
                 </Button>}
             open={this.state.modalOpen}
@@ -448,11 +450,12 @@ class userAvatar extends Component {
                  </Button>
                 <Button onClick={this.handleSave} primary inverted>
                   <Icon name='save' />
-                      {<FormattedMessage id="app.user.user.useravatar.save"  defaultMessage={'save'} />}                </Button>
+                      {<FormattedMessage id="app.user.user.useravatar.save"  defaultMessage={'save'} />}                
+                </Button>
               </Modal.Actions>
           </Modal>
         </Segment>
-      </Container>
+      </Segment>
     );
   }
 }

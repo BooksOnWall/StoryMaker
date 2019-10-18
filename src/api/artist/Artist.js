@@ -534,10 +534,10 @@ class Artist extends Component {
                 fluid
                 transparent
                 inverted
-                label='Name'
+                label={<FormattedMessage id="app.artist.name" defaultMessage={'Name'}/>}
                 icon='user'
                 iconPosition='right'
-                placeholder='Name'
+                placeholder={<FormattedMessage id="app.artist.name" defaultMessage={'Name'}/>}
                 autoFocus={true}
                 type="text"
                 name="name"
@@ -551,10 +551,10 @@ class Artist extends Component {
                 fluid
                 transparent
                 inverted
-                label='E-mail address'
+                label={<FormattedMessage id="app.artist.email" defaultMessage={'E-mail address'}/>}
                 icon='mail'
-                iconposition='left'
-                placeholder='E-mail address'
+                iconposition='right'
+                placeholder={<FormattedMessage id="app.artist.email" defaultMessage={'E-mail address'}/>}
                 type="email"
                 name="email"
                 onChange={handleChange}

@@ -6,6 +6,7 @@ import {
   Dimmer,
   Loader,
   Dropdown,
+    Header,
 } from 'semantic-ui-react';
 import { themes } from '../../theme/globalStyle';
 import { locales } from '../../i18n/locales/globalLocales';
@@ -129,7 +130,7 @@ class userPreferences extends Component {
   render() {
     if (this.state.theme.value === null && this.state.locale.value === null) return null;
     return (
-      <Segment className='slide-out'>
+      <Segment inverted className='slide-out'>
         <Dimmer active={this.state.loading}>
           <Loader active={this.state.loading} >
             <FormattedMessage id="app.userPrefs.loading" defaultMessage={`Get users preferences`}/>
@@ -138,15 +139,19 @@ class userPreferences extends Component {
         <ThemeContext.Consumer>
           {({theme, setTheme}) => (
             <div>
-            <Label><FormattedMessage id="app.user.theme" defaultMessage={`Choose your theme`}/></Label>
+              <Header inverted as='h3' primary>
+              <FormattedMessage id="app.user.theme" defaultMessage={`Choose your theme`}/>   </Header>         
             <Dropdown
+             inverted
                fluid
                name='theme'
                pref='theme'
-               selection
-               simple
-               item
-
+                button
+                className='icon'
+                floating
+                labeled
+                icon='paint brush'
+                search
                onChange={this.setPreference}
                options={ThemeOptions}
                defaultValue={this.props.state.user.theme}
@@ -155,18 +160,22 @@ class userPreferences extends Component {
           )}
         </ThemeContext.Consumer>
 
-          <Divider horizontal>...</Divider>
+          <Divider/>
             <LocaleContext.Consumer>
               {({locale, setLocale}) => (
                 <div>
-                <Label><FormattedMessage id="app.user.locale" defaultMessage={`Choose your Language`}/></Label>
+                  <Header inverted as='h3' primary>
+                  <FormattedMessage id="app.user.locale" defaultMessage={`Choose your Language`}/>   </Header>             
                 <Dropdown
                    fluid
                    pref='locale'
-                   name='locale'
-                   selection
-                   simple
-                   item
+                   name='locale'                  
+                    button
+                    className='icon'
+                    floating
+                    labeled
+                    icon='world'
+                    search      
                    onChange={this.setPreference}
                    options={LocaleOptions}
                    defaultValue={this.props.state.user.locale}

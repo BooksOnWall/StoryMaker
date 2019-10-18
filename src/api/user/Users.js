@@ -89,14 +89,14 @@ class Users extends Component {
     if(data === null) return null;
     return (
 
-    <Container  className="main" fluid>
-      <Dimmer.Dimmable as={Segment} blurring dimmed={this.state.loading}>
+    <Container className="main" fluid>
+      <Dimmer.Dimmable as={Segment} inverted blurring dimmed={this.state.loading}>
         <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
         <Loader active={this.state.loading} >
           <FormattedMessage id="app.users.loading" defaultMessage={`Get users info`}/>
         </Loader>
-        <Segment className="view">
-        <Header as={Segment} textAlign='center' vertical size='medium'>
+        <Segment inverted className="view">
+        <Header as={Segment} vertical size='medium'>
             {<FormattedMessage id="app.user.create" defaultMessage={`Users`}/>}
           <Link to="/users/0">
             <Button secondary animated='vertical' size='large' floated='right' >
@@ -109,7 +109,7 @@ class Users extends Component {
             </Button>
           </Link>
         </Header>
-        <Table striped sortable selectable>
+        <Table inverted striped sortable selectable>
           <Table.Header className='slide-out'>
             <Table.Row>
               <Table.HeaderCell

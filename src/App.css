@@ -466,12 +466,15 @@ input[type="color"] {
 #StepsContent .segments .segment{ margin: 0 !important; padding: 0 !important}
 .ui.segment.stageCol { border: 2px solid #222 !important}
 
-#login  .ui.form input, #signup .ui.form input, #login .button, #signup button{ margin: 5px 0 !important;}
+#login .ui.form input, #signup .ui.form input, #login .button, #signup button, #users .ui.form input{ margin: 5px 0 !important;}
 
 .ui.card.inverted{ background: #222 !important; color:#fff !important; border: 0px transparent solid !important; box-shadow: 0px 1px 3px 0px #000, 0px 0px 0px 1px #000 !important; }
 .ui.card.inverted .content {padding: 7px !important}
 .ui.card.inverted .content img{ border-radius: 2px}
 .ui.card.inverted .header, .ui.card.inverted .description, .ui.card.inverted .meta{color: #fff !important; padding:0px 10px}
 
-.ui.main.artist .ui.form input{ margin-left: 10px}
-.ui.main .ui.form .ui.labeled.input.inverted > .label{color: #fff; background: #333}
+.ui.main.artist .ui.form input, .ui.main.user .ui.form input, .ui.segments .input, .ui.segments .button{ margin-left: 10px}
+.ui.main .ui.form .ui.labeled.input.inverted > span, .ui.labeled.input > .label{color: #fff; background: #222 !important; padding: 10px; font-weight: 600}
+.ui.main .ui.form  .checkbox.inverted label{ color: #fff}
+.ui.user .ui.avatar {width: 6em; height: 6em}
+.ui.main .segments {background: transparent !important}

@@ -417,7 +417,7 @@ class User extends Component {
   editForm() {
     if(!this.state.userEdit.name && this.state.userEdit.mode === 'update') {return null}
     return (
-      <Segment className="slide-out" >
+      <Segment inverted className="slide-out" >
       <Formik
         enableReinitialize={false}
         initialValues={this.state.userEdit.initialUValues}
@@ -461,11 +461,15 @@ class User extends Component {
           /* and other goodies */
         }) => (
           <Form size='large' onSubmit={this.handleSubmit}>
-            {(this.state.userEdit.mode === 'update') ? <Image src={this.state.avatar_path} avatar  /> : '' }
+            {(this.state.userEdit.mode === 'update') ? <Image src={this.state.avatar_path} avatar   /> : '' }
+            <Divider/>
             <Input
+              fluid
+              transparent
+              inverted              
               label={<FormattedMessage id="app.user.useredit.name" defaultMessage={'Name'}/>}
               icon='user'
-              iconposition='left'
+              iconposition='right'
               placeholder= {<FormattedMessage id="app.user.useredit.name" defaultMessage={'Name'}/>}
               autoFocus={true}
               type="text"
@@ -475,8 +479,11 @@ class User extends Component {
               defaultValue={(values && values.name) ? values.name : ''}
             />
             {errors.name && touched.name && errors.name}
-
+            <Divider/>
             <Input
+              fluid
+              transparent
+              inverted
               label={<FormattedMessage id="app.user.useredit.email" defaultMessage={'Email'}/>}
               icon='mail'
               iconposition='left'
@@ -486,12 +493,16 @@ class User extends Component {
               onChange={handleChange}
               onBlur={handleBlur}
               defaultValue={(values && values.email) ? values.email : ''}
-            />
+            />           
+            <Divider/>
             {errors.email && touched.email && errors.email}
             {(this.state.userEdit.mode === 'create') ? (
               <div>
                 <Input
-                  label={<FormattedMessage id="app.user.useredit.password" defaultMessage={'Password'}/>}
+                fluid
+                transparent
+                inverted 
+                label={<FormattedMessage id="app.user.useredit.password" defaultMessage={'Password'}/>}
                   icon='lock'
                   iconposition='left'
                   placeholder={<FormattedMessage id="app.user.useredit.password" defaultMessage={'Password'}/>}
@@ -502,8 +513,11 @@ class User extends Component {
                   defaultValue={values.password}
                 />
               {errors.password && touched.password && errors.password}
-
+            <Divider/>
                 <Input
+                  fluid
+                  transparent
+                  inverted                   
                   icon='lock'
                   iconposition='left'
                   placeholder={<FormattedMessage id="app.user.useredit.repeatpassword" defaultMessage={'Repeat Password'}/>}
@@ -517,6 +531,7 @@ class User extends Component {
             </div>
               ) : ''}
              <Checkbox
+               className='inverted'
                toggle
                name="active"
                label = 'Active'
@@ -527,20 +542,20 @@ class User extends Component {
               />
 
             {errors.active && touched.active && errors.active}
-            <Divider horizontal>...</Divider>
-              <Button onClick={handleSubmit} color='violet'   floated='right' type="submit" disabled={isSubmitting}>
+            <Divider/>
+              <Button onClick={handleSubmit} primary floated='right' type="submit" disabled={isSubmitting}>
                 {(this.state.userEdit.mode === 'create') ? <FormattedMessage id="app.user.created" defaultMessage={`Create`}/> : <FormattedMessage id="app.user.update" defaultMessage={`Update`}/>}
               </Button>
             {(this.state.userEdit.mode !== 'create') ? (
                 <div>
-                  <Button onClick={this.show} color='red'  type="submit" disabled={isSubmitting}>
+                  <Button onClick={this.show} color='red' basic type="submit" disabled={isSubmitting}>
                     <FormattedMessage id="app.user.delete" defaultMessage={`Delete user`} />
                   </Button>
                   <Confirm
                     open = {this.state.open}
                     onCancel = {this.handleCancel}
                     onConfirm = {this.handleDelete}
-                    cancelButton = {<Button secondary><FormattedMessage id="app.user.delete.cancel" defaultMessage="Never Mind"/></Button>}
+                    cancelButton = {<Button primary><FormattedMessage id="app.user.delete.cancel" defaultMessage="Never Mind"/></Button>}
                     confirmButton = {<Button primary onClick={this.deleteUser}><FormattedMessage id="app.user.delete.confirm" defaultMessage="Delete User"/></Button>}
                     />
                 </div>
@@ -554,10 +569,11 @@ class User extends Component {
   editPasswd() {
     if(this.state.step !== 'Password') {return null}
     return(
-      <Segment className='slide-out'>
-        <Header as='h3' color='violet' textAlign='center'>
+      <Segment inverted className='slide-out'>
+        <Header as='h3' primary>
           <FormattedMessage id="app.user.passwdtitle" defaultMessage={`Change password`}/>
         </Header>
+        <Divider/>
         <Formik
           initialUValues={this.state.userEdit.initialPValues}
           validate={values => {
@@ -593,10 +609,12 @@ class User extends Component {
             isSubmitting,
             /* and other goodies */
           }) => (
-            <Form  size='large' onSubmit={this.handleSubmit}>
+            <Form size='large' onSubmit={this.handleSubmit}>
               <Input
-                label="Password"
                 fluid
+                transparent
+                inverted                 
+                label="Password"
                 icon='lock'
                 iconposition='left'
                 placeholder='Password'
@@ -607,7 +625,11 @@ class User extends Component {
                 defaultValue={(values && values.password) ? values.password : '' }
                 />
               {errors.password && touched.password && errors.password}
+                <Divider />
               <Input
+                fluid
+                transparent
+                inverted 
                 label="Password again"
                 icon='lock'
                 iconposition='left'
@@ -620,8 +642,8 @@ class User extends Component {
                 defaultValue={(values && values.password2) ? values.password2 : '' }
                 />
               {errors.password2 && touched.password2 && errors.password2}
-              <Divider horizontal>...</Divider>
-              <Button onClick={handleSubmit} color='violet' fluid size='large' type="submit" disabled={isSubmitting}>
+              <Divider />
+              <Button onClick={handleSubmit} primary floated='right' size='large' type="submit" disabled={isSubmitting}>
                 {(this.state.userEdit.mode === 'create') ? 'Create' : 'Update'}
               </Button>
             </Form>
@@ -642,15 +664,15 @@ class User extends Component {
   }
 render() {
     return (
-     <Container className="main" columns='equal'>
-        <Dimmer.Dimmable as={Segment} className="view" blurring dimmed={this.state.loading}>
+     <Container className="main user" columns='equal'>
+        <Dimmer.Dimmable inverted as={Segment} className="view" blurring dimmed={this.state.loading}>
           <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
           <Loader active={this.state.loading} ><FormattedMessage id="app.user.loading" defaultMessage={`Get user info`}/></Loader>
             <Header as={Segment} vertical size='medium'>
                 {(this.state.userEdit.mode === 'create') ? <FormattedMessage id="app.user.create" defaultMessage={`Create user`}/> : <FormattedMessage id="app.user.edit" defaultMessage={`Edit user`}/> }
             </Header>
             <UsersSteps uid={this.state.userEdit.uid} step={this.state.step} state={this.state}/>
-            <Segment>
+            <Segment className="content" inverted>
                 {(this.state.step === 'User') ? this.editForm() : ''}
                 {(this.state.step === 'Password') ? this.editPasswd() : ''}
                 {(this.state.step === 'Preferences') ? this.editPrefs() : ''}
