@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Card, Segment, Header } from 'semantic-ui-react';
+import { Container, Segment, Header } from 'semantic-ui-react';
 import Auth from '../module/Auth';
 import { injectIntl, FormattedMessage } from 'react-intl';
 

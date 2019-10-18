@@ -633,7 +633,6 @@ class User extends Component {
                 label="Password again"
                 icon='lock'
                 iconposition='left'
-                fluid
                 placeholder='Repeat Password'
                 type="password"
                 name="password2"

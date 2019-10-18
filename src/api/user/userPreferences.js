@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {
   Segment,
-  Label,
   Divider,
   Dimmer,
   Loader,

@@ -10,7 +10,6 @@ import {
   Icon,
   Modal,
   Image,
-  Container,
   Placeholder,
   Segment,
     Divider,
