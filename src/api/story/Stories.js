@@ -101,15 +101,10 @@ class Stories extends Component {
           <Header as={Segment} vertical size='medium'>
             {<FormattedMessage id="app.user.create" defaultMessage={`Stories`}/>}
             <Link to="/stories/0">
-            <Button color='grey' animated='vertical' size='large' floated='right' >
-                  <Button.Content hidden>
-                      <FormattedMessage id="app.story.stories.addstory"  defaultMessage={`Add Story`}/>
-                  </Button.Content>
-                  <Button.Content visible>
-                    <Icon name='book' />
-                  </Button.Content>
-                </Button>
-                </Link>
+            <Button primary size='large' icon floated='right' >
+                <Icon name='plus' />
+            </Button>                  
+            </Link>
               </Header>
               <Table inverted stripped="true" selectable sortable>
                 <Table.Header className='slide-out' >

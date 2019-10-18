@@ -380,14 +380,14 @@ class Story extends Component {
   EditCred = () => {
 
     return (
-      <Segment  className="view credits">
+      <Segment inverted className="view credits">
         <Editor
          editorState={this.state.creditState}
          wrapperClassName="demo-wrapper"
          editorClassName="demo-editor"
          onEditorStateChange={this.onCreditStateChange}
        />
-        <Button onClick={this.handleSubmitCredit} color='violet'  size='large' type="submit" >
+        <Button onClick={this.handleSubmitCredit} primary floated='right' size='large' type="submit" >
           {(this.state.mode === 'create') ? 'Create' : 'Update'}
         </Button>
       </Segment>
@@ -451,16 +451,20 @@ class Story extends Component {
           isSubmitting,
           /* and other goodies */
         }) => (
-          <Form size='large' onSubmit={this.handleSubmit}>
-
+          <Form inverted size='large' onSubmit={this.handleSubmit}>
                  <select size='small' label='Choose your artist:' name="artist" type="select" defaultValue={this.state.artist} onChange={this.handleChange}>
                   <option key={0} disabled hidden value=''></option>
                   {this.state.artistOptions.map(options => <option key={options.key} value={options.value} >{options.text}</option>)}
                 </select>
                 <Divider/>
                 <Input
-                  label='Title'
-                  placeholder='Title'
+                fluid
+                transparent
+                inverted
+                label={<FormattedMessage id="app.story.title" defaultMessage={'Title'}/>}
+                icon='pencil alternate'
+                iconposition='right'
+                  placeholder={<FormattedMessage id="app.story.title" defaultMessage={'Title'}/>}
                   autoFocus={true}
                   type="text"
                   name="title"
@@ -471,8 +475,13 @@ class Story extends Component {
                 {errors.title && touched.title && errors.title}
                 <Divider/>
                 <Input
-                  label='State'
-                  placeholder='State'
+                fluid
+                transparent
+                inverted
+                label={<FormattedMessage id="app.story.state" defaultMessage={'State'}/>}
+                icon='point'
+                iconposition='right'
+                  placeholder={<FormattedMessage id="app.story.state" defaultMessage={'State'}/>}
                   type="text"
                   name="state"
                   onChange={handleChange}
@@ -482,8 +491,12 @@ class Story extends Component {
                 {errors.state && touched.state && errors.state}
                 <Divider/>
                 <Input
-                  label='City'
-                  placeholder='City'
+                fluid
+                transparent
+                inverted
+                label={<FormattedMessage id="app.story.city" defaultMessage={'City'}/>}
+                icon='point'
+                iconposition='right'
                   type="text"
                   name="city"
                   color="teal"
@@ -492,6 +505,7 @@ class Story extends Component {
                   defaultValue={values.city}
                   />
                 {errors.city && touched.city && errors.city}
+                <Divider  />
                 <Checkbox
                   label='Active'
                   placeholder=''
@@ -505,12 +519,12 @@ class Story extends Component {
                   />
                 {errors.active && touched.active && errors.active}
                 <Divider  />
-                <Button onClick={handleSubmit} floated='right' size='large' type="submit" disabled={isSubmitting}>
+                <Button onClick={handleSubmit} floated='right' primary size='large' type="submit" disabled={isSubmitting}>
                   {(this.state.mode === 'create') ? 'Create' : 'Update'}
                 </Button>
                 {(this.state.mode === 'update') ? (
                   <div>
-                    <Button onClick={this.show} color='red' floated='left' size='large' type="submit" disabled={isSubmitting}>
+                    <Button onClick={this.show} color='red' basic floated='left' size='large' type="submit" disabled={isSubmitting}>
                       <FormattedMessage id="app.story.delete" defaultMessage={`Delete Story`}/>
                     </Button>
                     <Confirm
@@ -537,7 +551,7 @@ class Story extends Component {
   render() {
     return (
       <Container fluid className="main">
-        <Dimmer.Dimmable as={Segment} inverted className="view" blurring dimmed={this.state.loading}>
+        <Dimmer.Dimmable as={Segment} inverted className="view " blurring dimmed={this.state.loading}>
           <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
           <Loader active={this.state.loading} >Get story info</Loader>
             <Header as={Segment} vertical size='medium'>
