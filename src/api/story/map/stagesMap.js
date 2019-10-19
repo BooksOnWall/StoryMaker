@@ -214,7 +214,7 @@ class stagesMap extends Component {
             <MapGL
               {...viewport}
               width="inherit"
-              height="68.2vh"
+              height="70.6vh"
               mapStyle={this.state.mapStyle}
               clickRadius={2}
               onClick={this.onClick}

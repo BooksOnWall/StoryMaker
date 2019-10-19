@@ -18,7 +18,7 @@ class storySteps extends Component {
           index: 0,
           name: 'Story',
           desc: 'things',
-          icon: 'star',
+          icon: 'book',
           title: 'Story',
           as: 'Link',
           to: '/stories/' + this.props.sid
@@ -27,7 +27,7 @@ class storySteps extends Component {
           index: 1,
           name: 'Sinopsys',
           desc: 'of the story',
-          icon: 'sun',
+          icon: 'file alternate outline',
           title: 'Sinopsys',
           as: 'Link',
           to: '/stories/' + this.props.sid + '/sinopsys'
@@ -54,7 +54,7 @@ class storySteps extends Component {
         index: 4,
         name: 'Credits',
         desc: 'of the story',
-        icon: 'credit card',
+        icon: 'file text',
         title: 'Credits',
         as: 'Link',
         to: '/stories/' + this.props.sid + '/credits'

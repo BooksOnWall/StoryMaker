@@ -387,6 +387,7 @@ class Story extends Component {
          editorClassName="demo-editor"
          onEditorStateChange={this.onCreditStateChange}
        />
+        <Divider />
         <Button onClick={this.handleSubmitCredit} primary floated='right' size='large' type="submit" >
           {(this.state.mode === 'create') ? 'Create' : 'Update'}
         </Button>
@@ -409,7 +410,7 @@ class Story extends Component {
            onEditorStateChange={this.onSinoStateChange}
          />
         <Divider/>
-        <Button onClick={this.handleSubmitSino} floated='right' secondary size='large' type="submit" >
+        <Button onClick={this.handleSubmitSino} floated='right' primary size='large' type="submit" >
           {(this.state.mode === 'create') ? 'Create' : 'Update'}
         </Button>
       </Segment>

@@ -138,7 +138,6 @@ padding: 1em
 .container {
   flex-direction: column;
   font-family: sans-serif;
-    overflow: scroll !important;
 }
 .slidemenu {
   text-align: left!important;
@@ -430,7 +429,7 @@ width: 100%;
 .ui.segment.view.story, #StepsContent.ui.segment.view {padding: 0 !important; }
 .ui.segment.view.story, #StepsContent.ui.segment{ padding: 0 !important; margin: 0 !important}
 .ui.segment.stagesMap{ padding: 0 !important}
-.ui.segment.stages { padding: 0 2em 1em; max-height: 68.2vh; overflow: scroll}
+.ui.segment.stages { padding: 0 2em 1em; max-height: 70.6vh; overflow: scroll}
 .ui.buttons{ padding: 0 0 1em}
 .ui.table{margin: 0 !important; border-radius: 0 !important; padding: 0 !important}
 .ui.table:first-child{margin-top: 0 !important; }
@@ -456,6 +455,11 @@ input[type="color"] {
 .ui .label.labelLayer{ text-transform: uppercase; background: transparent; color:#fff }
 .ui .segment.parametersMap{ padding: 0}
 
+.mapboxgl-popup-close-button{ top: 5px; }
+.mapboxgl-popup-content{ padding: 0}
+.mapboxgl-popup-content .ui.card{margin: 0 }
+.mapboxgl-popup-content .header{margin: 10px 0}
+
 .ui .right.floated{ float: right}
 .ui .left.floated{ float: left}
 
@@ -464,7 +468,7 @@ input[type="color"] {
 .ui.segment.view, .ui.segment.main-board, .ui.segment.blurring.dimmable, .ui.segment .StagesNav{ padding: 0 !important; margin:0 !important}
 .ui.segment .StagesNav .ui.buttons{ margin: 0 5px}
 .ui.segment .StagesNav {background: transparent}
-.ui.segment.sinopsys{padding: 2em !important; background:; }
+.ui.segment.sinopsys, .ui.segment.credits {padding: 3em !important; background:; }
 .ui.segment.content, .ui.segment.story{ padding:3em !important; margin:0}
 .ui.segment.main-board .segment.stageProfile{box-shadow: inset 0px 0px 10px rgba(0,0,0,0.9);}
 .ui.segment.single{ max-height: 23vh !important}
@@ -491,7 +495,8 @@ input[type="color"] {
 .ui.user .ui.avatar {width: 6em; height: 6em}
 .ui.main .segments {background: transparent !important}
 
-
+.ui.progress:last-child{margin: 0.3em 0em !important;}
+.ui.progress.indicating .progress{ margin-left: 15px; right: -0.2em !important;}
 .button.primary, .primary { 
     background: rgb(200,49,21) !important;
     background: linear-gradient(270deg, rgba(200,49,21,1) 0%, rgba(253,29,29,1) 26%, rgba(255,164,0,1) 94%) !important;}

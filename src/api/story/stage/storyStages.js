@@ -487,7 +487,7 @@ class storyStages extends Component {
             <Segment inverted>
                 <Button  primary onClick={this.handleCreate}><Icon name="google wallet" /><FormattedMessage id="app.stage.storystage.addstage" defaultMessage={`Add Stage`} /></Button>
                 <Button.Group floated='right'>
-                  <Button negative loading={this.state.importLoading} onClick={() => this.fileInputRef.current.click()}><Icon name="point" />GeoJSON <FormattedMessage id="app.stage.storystage.import" defaultMessage={`import`} /></Button>
+                  <Button basic color='teal' loading={this.state.importLoading} onClick={() => this.fileInputRef.current.click()}><Icon name="cloud upload" /><FormattedMessage id="app.stage.storystage.import" defaultMessage={`import`} /></Button>
                     <input
                       id='importfile'
                       name="files"
@@ -507,8 +507,7 @@ class storyStages extends Component {
                      onCancel={this.close}
                      onConfirm={this.close}
                    />
-                  <Button.Or />
-                  <Button positive loading={this.state.exportLoading} onClick={this.exportOpen} ><Icon name="external square alternate" /> GeoJSON <FormattedMessage id="app.stage.storystage.export" defaultMessage={`export`} /></Button>
+                  <Button basic color='blue'  loading={this.state.exportLoading} onClick={this.exportOpen} ><Icon name="cloud download" /><FormattedMessage id="app.stage.storystage.export" defaultMessage={`export`} /></Button>
                     <Confirm
                         key='export'
                         basic
@@ -525,7 +524,7 @@ class storyStages extends Component {
 
             <Segment.Group horizontal  clearing="true" >
 
-              <Segment style={{width: '30vw' }} className="stagesMap">
+              <Segment style={{width: '35vw' }} className="stagesMap">
                 {(this.state.location)
                   ? <StagesMap goToStage={this.goToStage} stages={this.state.stages} location={this.state.location} sid={this.state.sid} state={this.state}/>
                   : <Placeholder>
@@ -534,7 +533,7 @@ class storyStages extends Component {
                 }
               </Segment>
 
-              <Segment  className="stages" >
+              <Segment className="stages" >
                 <ReactDragListView {...this.dragProps}>
                   <Table inverted compact sortable  selectable>
                     <Table.Header className='slide-out'>
