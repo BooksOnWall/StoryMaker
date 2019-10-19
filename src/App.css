@@ -237,9 +237,12 @@ div.DraftEditor-root {
 .ui.segment.pushable, .ui.segment.main{ background: transparent !important}
 .ui.main.container {
   padding: 0 !important;
-  max-width: 94vw !important;
+  max-width: 94.5vw !important;
   margin: 0 0 0 80px !important;
+width: 100%;
 }
+.ui.main.container {}
+
 .ui.visible.slide.along.sidebar.bwSidebar,.ui.slide.along.sidebar.bwSidebar {
   background: rgba(0,0,0,.87) none no-repeat;
   min-height: 100vh;
@@ -436,20 +439,28 @@ div.DraftEditor-root {
 .ui.label.labelLayer {}
 
 input[type="color"] {
-	opacity: 1;
-	width: 32px;
-	height: 32px;
-	border: none;
-    padding: 0px !important;
-    margin-top: 0px
 }
+.ui.label.labelLayer.inverted{ background: transparent}
+
 .public-DraftEditor-content{ margin: 2em 0; }
 .ui.segment.main-board  .segment.board{padding: .6em}
 .ui.segment.main-board  .segment.board .segment .droppable{box-shadow: inset 0px 0px 10px rgba(0,0,0,0.9) !important; border:0; }
 .ui.segment{ box-shadow: auto ; border: 0 !important; border-radius: 0 !important; background: #e2e2e2; padding: 0 }
+
+.ui .colorSelector input[type='checkbox']{
+    width: 20px;
+    height: 20px;
+    margin: 2px 0 0 0;
+}
+.ui .colorSelector{ margin: 5px 0}
+.ui .label.labelLayer{ text-transform: uppercase; background: transparent; color:#fff }
+.ui .segment.parametersMap{ padding: 0}
+
+.ui .right.floated{ float: right}
+.ui .left.floated{ float: left}
+
 .ui.segment.main{ padding: 0 !important; }
 .ui.segment.pushable, .ui.segment.main{ background: transparent !important; margin: 0}
-.ui.main.container { padding: 0 !important; max-width: 94vw !important; margin: 0 0 0 80px !important; width: 100%;}
 .ui.segment.view, .ui.segment.main-board, .ui.segment.blurring.dimmable, .ui.segment .StagesNav{ padding: 0 !important; margin:0 !important}
 .ui.segment .StagesNav .ui.buttons{ margin: 0 5px}
 .ui.segment .StagesNav {background: transparent}
@@ -481,7 +492,9 @@ input[type="color"] {
 .ui.main .segments {background: transparent !important}
 
 
-.button.primary { 
-background-color: #a40606;
-background-image: linear-gradient(315deg, #a40606 0%, #d98324 74%)!important;}
+.button.primary, .primary { 
+    background: rgb(200,49,21) !important;
+    background: linear-gradient(270deg, rgba(200,49,21,1) 0%, rgba(253,29,29,1) 26%, rgba(255,164,0,1) 94%) !important;}
 .button.primary:hover { background-position: right !important;} 
+
+.ui.segment.stylingMap{padding: 0}

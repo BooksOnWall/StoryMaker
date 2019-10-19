@@ -4,6 +4,7 @@ import {
   Dimmer,
   Loader,
   Button,
+Divider,
 } from 'semantic-ui-react';
 import {  FormattedMessage } from 'react-intl';
 import MapGL from 'react-map-gl';
@@ -157,13 +158,14 @@ class storyMap extends Component {
             <Segment  className="view map" >
               <MapGL
                 {...viewport}
-                width="94vw"
-                height="78vh"
+                width="94.5vw"
+                height="79.3vh"
                 mapStyle={mapStyle}
                 onViewportChange={this.onViewportChange}
                 mapboxApiAccessToken={MapboxAccessToken}
               >
-                <Button loading={this.state.saveMapLoading} onClick={this.saveMapPrefs} primary>Save Map Preferences</Button>
+                <Segment className='mapPref' inverted style={{ width: '19vw', height: '79.3vh', float: 'left'}}>
+
                 {(this.state.colors)
                   ? <StylePanel
                     colors={this.state.colors}
@@ -174,7 +176,10 @@ class storyMap extends Component {
                   />
 
                   : ''}
-
+                <Divider />
+                <Button fluid loading={this.state.saveMapLoading} onClick={this.saveMapPrefs} primary>
+                <FormattedMessage id="app.story.map.savemappref" defaultMessage={`Save Map Preferences`}/></Button>
+                </Segment>
               </MapGL>
           </Segment>
         </Dimmer.Dimmable>

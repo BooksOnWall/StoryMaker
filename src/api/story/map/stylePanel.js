@@ -4,6 +4,7 @@ import MAP_STYLE from './map-style-basic-v8.json';
 import { Slider } from "react-semantic-ui-range";
 import {
   Label,
+    Divider,
   Segment
 } from 'semantic-ui-react';
 const defaultMapStyle = fromJS(MAP_STYLE);
@@ -118,15 +119,17 @@ export default class StyleControls extends PureComponent {
     const {visibility, color} = this.state;
 
     return (
-      <div key={name} className="input">
-            <input
+      <div key={name} className="input colorSelector">
+            <span><input
+                className="right floated"
               type="color"
               value={color[name]}
               disabled={!visibility[name]}
               onChange={this._onColorChange.bind(this, name)}
-            />
-            <Label className="labelLayer">{name}</Label>
-            <input
+            /></span>
+            <Label className="labelLayer inverted">{name}</Label>
+            <input 
+              className="left floated"
               type="Checkbox"
               checked={visibility[name]}
               onChange={this._onVisibilityChange.bind(this, name)}
@@ -139,17 +142,17 @@ export default class StyleControls extends PureComponent {
     //const Container = this.props.containerComponent || defaultContainer;
 
     return (
-      <Segment className="stylingMap" style={{ width: '20vw', height: 'auto', float: 'right'}} inverted color="black">
+   <Segment inverted className="stylingMap" inverted>
         <h3>Map Styling</h3>
-        <hr />
+        <Divider />
         {categories.map(name => this._renderLayerControl(name))}
-        <hr />
-        <Label>Zoom: {this.props.viewport.zoom.toFixed(2)}</Label>  <Slider name="zoom" value={this.props.viewport.zoom} color="red" settings={this.state.zsettings} />
-        <br/>
-        <Label>Pitch: {this.props.viewport.pitch.toFixed(2)}</Label> <Slider name="pitch" value={this.props.viewport.pitch} color="blue" settings={this.state.psettings}/>
-        <br/>
-        <Label>Bearing: {this.props.viewport.bearing.toFixed(2)}</Label> <Slider name="bearing" value={this.props.viewport.bearing} color="green" settings={this.state.bsettings} />
-      </Segment>
+        <Divider />
+        <Segment inverted className="parametersMap">   
+        <Label className="labelLayer inverted">Zoom: {this.props.viewport.zoom.toFixed(2)}</Label>  <Slider inverted name="zoom" value={this.props.viewport.zoom} primary settings={this.state.zsettings} />
+        <Label className="labelLayer inverted">Pitch: {this.props.viewport.pitch.toFixed(2)}</Label> <Slider inverted name="pitch" value={this.props.viewport.pitch} primary settings={this.state.psettings}/>
+        <Label className="labelLayer inverted">Bearing: {this.props.viewport.bearing.toFixed(2)}</Label> <Slider inverted name="bearing" value={this.props.viewport.bearing} primary settings={this.state.bsettings} />
+    </Segment>  
+    </Segment>
     );
   }
 }
