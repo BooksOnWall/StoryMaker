@@ -70,11 +70,12 @@ class storySteps extends Component {
   }
   handleSteps = (e, to) => {
     // get if we are in Stories pages or in Stage pages
-    e.preventDefault();
+    //e.preventDefault();
 
     let step = (e.target.name) ? e.target.name : null;
     if (step) this.props.setSteps({step: step});
-    if(to)  this.props.history.push(to);
+    console.log(step);
+    //this.props.history.push(to);
   }
   render() {
 
@@ -83,6 +84,7 @@ class storySteps extends Component {
       <Step.Group fluid className="inverted">
         {this.state.steps.map(step => (
           <Step
+          name={step.name}
           key={step.index}
           active={this.props.state.step === step.name}
           disabled={this.state.sid === parseInt(0) }

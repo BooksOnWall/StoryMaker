@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { withRouter } from 'react-router-dom';
 import {
   Segment,
   Divider,
@@ -25,7 +25,6 @@ import htmlToDraft from 'html-to-draftjs';
 import sanitizeHtml from 'sanitize-html';
 // maps
 import StoryMap from './map/storyMap';
-import StoryLocation from './map/storyLocation';
 //Stages
 import StoryStages from './stage/storyStages';
 
@@ -558,7 +557,7 @@ class Story extends Component {
             <Header as={Segment} vertical size='medium'>
                 {(this.state.mode === 'create') ? <FormattedMessage id="app.story.create" defaultMessage={`Create Story`}/> : <FormattedMessage id="app.story.edit" defaultMessage={`Edit Story`}/> }
             </Header>
-        <StorySteps sid={this.state.sid} step={this.state.step} history={this.props.history} setSteps={this.setSteps} state={this.state} location={this.props.location} />
+            <StorySteps sid={this.state.sid} step={this.state.step}  setSteps={this.setSteps} state={this.state} location={this.props.location} />
               <Segment id='StepsContent' inverted>
                 {(this.state.step === 'Story') ? this.EditForm() : '' }
                 {(this.state.step === 'Sinopsys') ? this.EditSino() : '' }
@@ -575,4 +574,4 @@ class Story extends Component {
     );
   }
 }
-export default Story;
+export default withRouter(Story);
