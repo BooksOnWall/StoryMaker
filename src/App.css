@@ -53,6 +53,15 @@ video {
   background-color: #EEEEEE;
   border-right: 1px dotted;
 }
+.rdw-editor-toolbar {
+  background: transparent none no-repeat;
+  border: none;
+}
+.rdw-option-wrapper, .rdw-dropdown-selectedtext, .rdw-dropdown-optionwrapper, .rdw-dropdownoption-default,  .rdw-dropdownoption-active  {
+  color: #FFF;
+  background: #990000;
+  border: none;
+}
 .ui.card, .ui.card .content, .ui.card .content  .react-card-flip {
   background-color: transparent !important;
   border: 0 !important;
@@ -64,7 +73,7 @@ video {
   padding-top: 0;
   padding-bottom: 0;
 }
-.ui.header.segment{  
+.ui.header.segment{
   margin: 0 !important;
   padding: 31px !important;
   width:100%;
@@ -496,9 +505,9 @@ input[type="color"] {
 
 .ui.progress:last-child{margin: 0.3em 0em !important;}
 .ui.progress.indicating .progress{ margin-left: 15px; right: -0.2em !important;}
-.button.primary, .primary { 
+.button.primary, .primary {
     background: rgb(200,49,21) !important;
     background: linear-gradient(270deg, rgba(200,49,21,1) 0%, rgba(253,29,29,1) 26%, rgba(255,164,0,1) 94%) !important;}
-.button.primary:hover { background-position: right !important;} 
+.button.primary:hover { background-position: right !important;}
 
 .ui.segment.stylingMap{padding: 0}
