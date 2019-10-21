@@ -3,6 +3,7 @@ import Auth from '../module/Auth';
 import {
   Container,
   Segment,
+    Divider,
 } from 'semantic-ui-react';
 
 
@@ -24,14 +25,19 @@ class Dashboard extends Component {
   }
   render() {
     return(
-      <Container className="view" fluid>
+      <Container className="main" fluid>
+        <Segment inverted className="view">
         <Segment.Group>
-          <Segment className='slide-out'>Content1</Segment>
-          <Segment className='slide-out'>Content2</Segment>
-          <Segment className='slide-out'>Content3</Segment>
-          <Segment className='slide-out'>Content4</Segment>
+          <Segment inverted className='slide-out'>Content1</Segment>
+        <Divider />
+          <Segment inverted className='slide-out'>Content2</Segment>
+        <Divider />
+          <Segment inverted className='slide-out'>Content3</Segment>
+        <Divider />
+          <Segment inverted className='slide-out'>Content4</Segment>
         </Segment.Group>
-      </Container>
+       </Segment>
+    </Container>
     );
   }
 }
