@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import {
   Step,
+  Icon,
 } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
@@ -73,24 +74,23 @@ class storySteps extends Component {
   render() {
     console.log(typeof(this.state.sid));
     return (
+      
       <Step.Group fluid className="inverted">
         {this.state.steps.map(step => (
-
-          <Step
-            key={step.index}
-            icon={step.icon}
-            active = {this.props.state.step === step.name}
-            disabled = {this.state.sid === parseInt(0) }
-            name={step.name}
-            onClick={this.handleSteps}
-            as={Link}
-            to={step.to}
-            title= {step.title}
-            description={this.state.sid}
-            // {defineMessages({stepstitle: { id: 'app.story.storySteps.steps.title', defaultMessage: [step.title] }})}
-
-           // description={<FormattedMessage id="app.story.storySteps.edit"  defaultMessage={step.desc} />}
-          />
+          <Step  
+        key={step.index}
+        active={this.props.state.step === step.name}
+        disabled={this.state.sid === parseInt(0) }
+         onClick={this.handleSteps}
+        as={Link}
+        to={step.to}
+        >
+      <Icon name={step.icon} />
+      <Step.Content>
+        <Step.Title>{step.title}</Step.Title>
+        <Step.Description>{step.name}</Step.Description>
+      </Step.Content>
+    </Step>
         ))}
       </Step.Group>
     );
