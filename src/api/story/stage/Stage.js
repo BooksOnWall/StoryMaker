@@ -1394,7 +1394,7 @@ class stage extends Component {
 
             <Form fluid>
               <TextArea
-                rows={6}
+                rows={4}
                 id="StageDesc"
                 className="desc-edit"
                 name="description"

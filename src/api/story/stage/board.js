@@ -194,7 +194,7 @@ class DragDrop extends Component {
     return (
     <Segment className="StagesNav">
         <Button.Group>
-        <Button disabled basic color='blue' onClick={e => this.show('import')} ><Icon name="cloud upload" /> <FormattedMessage id="app.story.board.import" defaultMessage={`Import`}/></Button>
+        <Button disabled basic compact color='blue' onClick={e => this.show('import')} ><Icon name="cloud upload" /> <FormattedMessage id="app.story.board.import" defaultMessage={`Import`}/></Button>
           <Confirm
             open={this.state.import}
             cancelButton='Never mind'
@@ -204,7 +204,7 @@ class DragDrop extends Component {
             onCancel={e => this.handleCancel('import')}
             onConfirm={e => this.handleConfirm('import')}
           />
-        <Button basic color='teal' loading={this.props.state.exportLoading} onClick={e => this.show('export')}><Icon name="cloud download" /> <FormattedMessage id="app.story.board.export" defaultMessage={`Export`}/></Button>
+        <Button basic compact color='teal' loading={this.props.state.exportLoading} onClick={e => this.show('export')}><Icon name="cloud download" /> <FormattedMessage id="app.story.board.export" defaultMessage={`Export`}/></Button>
           <Confirm
             open={this.state.export}
             cancelButton='Never mind'
@@ -216,7 +216,7 @@ class DragDrop extends Component {
           />
       </Button.Group>
     <Button.Group>
-        <Button disabled basic color='grey' onClick={e => this.show('reset')} ><Icon name="erase" /><FormattedMessage id="app.story.board.reset" defaultMessage={`Reset`}/></Button>
+        <Button disabled basic compact color='grey' onClick={e => this.show('reset')} ><Icon name="erase" /><FormattedMessage id="app.story.board.reset" defaultMessage={`Reset`}/></Button>
           <Confirm
             open={this.state.reset}
             cancelButton='Never mind'
@@ -226,7 +226,7 @@ class DragDrop extends Component {
             onCancel={e => this.handleCancel('reset')}
             onConfirm={e => this.handleConfirm('reset')}
           />
-        <Button disabled basic color='red' onClick={e => this.show('destroy')} ><Icon name="bomb" /> <FormattedMessage id="app.story.board.destroy" defaultMessage={`Destroy`}/></Button>
+        <Button disabled basic compact color='red' onClick={e => this.show('destroy')} ><Icon name="bomb" /> <FormattedMessage id="app.story.board.destroy" defaultMessage={`Destroy`}/></Button>
           <Confirm
             open={this.state.destroy}
             cancelButton='Never mind'
@@ -240,7 +240,7 @@ class DragDrop extends Component {
         <Divider />
       <Button.Group>
         {(this.props.state.prev)
-          ? <Button disabled as={Link} to={this.props.state.prev}  animated primary floated="left">
+          ? <Button disabled compact as={Link} to={this.props.state.prev}  animated primary floated="left">
             <Button.Content  ><FormattedMessage id="app.story.board.preview" defaultMessage={`Preview`}/></Button.Content>
             <Button.Content hidden>
               <Icon name='arrow left' />
@@ -249,8 +249,8 @@ class DragDrop extends Component {
           : ''
         }
         {(this.props.state.next)
-          ? <Button disabled as={Link} to={this.props.state.next}  animated primary floated="right">
-            <Button.Content  ><FormattedMessage id="app.story.board.next" defaultMessage={`Next`}/></Button.Content>
+          ? <Button compact disabled as={Link} to={this.props.state.next}  animated primary floated="right">
+            <Button.Content><FormattedMessage id="app.story.board.next" defaultMessage={`Next`}/></Button.Content>
             <Button.Content hidden>
               <Icon name='arrow right' />
             </Button.Content>
@@ -453,21 +453,21 @@ class DragDrop extends Component {
                   <Sidebar.Pusher>
                     <Segment className="main-board">
                             <Segment className='stageProfile' inverted style={{minHeight: '18vh'}}>
-                              <Grid  columns={4} >
-                                <Grid.Column  width={2} onDragOver={(e)=>this.props.onDragOver(e)}
+                              <Grid columns={4} >
+                                <Grid.Column mobile={8} tablet={4} className='stagePhoto' computer={2} onDragOver={(e)=>this.props.onDragOver(e)}
                                     onDrop={(e)=>this.props.onDrop(e, "photo")}>
                                     {(tasks.photo.length > 0) ? tasks.photo : <Image  src='https://react.semantic-ui.com/images/avatar/large/matthew.png' wrapped  /> }
                                 </Grid.Column>
-                                <Grid.Column >
-                                  {this.props.setStageDescription()}
-                                </Grid.Column>
-                                <Grid.Column className="single" verticalAlign='middle'>
+                                <Grid.Column mobile={16} tablet={8} computer={3} className="single" verticalAlign='middle'>
                                     <Header inverted as='h4'>{this.props.stage.name}</Header>
                                     <Button circular primary floated='left' icon='edit' onClick={(e) => this.props.toggleSideBar(e, 'Stage', 'bottom')} className="task-header "></Button>
                                     <Button circular floated='left' icon='picture' onClick={(e) => this.props.toggleSideBar(e, 'Images', 'bottom')} className="task-header "></Button>
                                     <Button circular floated='left' icon='map pin' onClick={(e) => this.props.toggleSideBar(e, 'Geo', 'bottom')}  className="task-header"></Button> {tasks.location}
                                 </Grid.Column>
-                                <Grid.Column verticalAlign='middle' textAlign='right' >
+                                <Grid.Column mobile={16} tablet={8} computer={5} >
+                                  {this.props.setStageDescription()}
+                                </Grid.Column>
+                                <Grid.Column  textAlign='right' mobile={16} tablet={8} computer={5} >
                                     {(this.props.stages) ? this.StagesNav(this.props.stages, this.props.stage) : null}
                                 </Grid.Column>
                             </Grid>

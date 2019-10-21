@@ -42,9 +42,9 @@ video {
 .ui.vertical.inverted.menu .menu .item {
   padding: 1.6em;
 }
-.ui.labeled.icon.menu .item
+.ui.labeled.icon.menu .item{}
+
 .container-drag {
-  text-align: center;
   height: 'inherit';
 }
 
@@ -154,11 +154,9 @@ div.DraftEditor-root {
   margin:auto;
   box-shadow: 0px 0px 6px 1px rgba(0,0,0,0.5);
   min-height: 49vh;
-  overflow-y: scroll;
   padding: 20px 5px;
   font-size: 18px;
   font-family: 'calibri', sans-serif;
-    overflow: scroll;
 }
 .dropzone {
   flex: 1;
@@ -209,7 +207,7 @@ div.DraftEditor-root {
       background: rgb(4,22,42);
 }
 .ui.segment.stageProfile.inverted .grid .two.wide.column {
-  width: 250px !important;
+  width: 215px !important;
 }
 .menu .item.logout{ position: fixed !important; bottom: 0px; display: block; width: 100%}
 .menu .item.users{ position: fixed !important; bottom: 0; display: block; width: 100%; bottom: 80px !important; border-left: 0; border-bottom: 1px #333 solid; border-top: 1px #333 solid !important;  }
@@ -429,7 +427,7 @@ width: 100%;
 .ui.segment.view.story, #StepsContent.ui.segment.view {padding: 0 !important; }
 .ui.segment.view.story, #StepsContent.ui.segment{ padding: 0 !important; margin: 0 !important}
 .ui.segment.stagesMap{ padding: 0 !important}
-.ui.segment.stages { padding: 0 2em 1em; max-height: 70.6vh; overflow: scroll}
+.ui.segment.stages { padding: 0 2em 1em; max-height: 70.6vh;}
 .ui.buttons{ padding: 0 0 1em}
 .ui.table{margin: 0 !important; border-radius: 0 !important; padding: 0 !important}
 .ui.table:first-child{margin-top: 0 !important; }
@@ -466,14 +464,13 @@ input[type="color"] {
 .ui.segment.main{ padding: 0 !important; }
 .ui.segment.pushable, .ui.segment.main{ background: transparent !important; margin: 0}
 .ui.segment.view, .ui.segment.main-board, .ui.segment.blurring.dimmable, .ui.segment .StagesNav{ padding: 0 !important; margin:0 !important}
-.ui.segment .StagesNav .ui.buttons{ margin: 0 5px}
+.ui.segment .StagesNav .ui.buttons{ margin: 3px}
 .ui.segment .StagesNav {background: transparent}
-.ui.segment.sinopsys, .ui.segment.credits {padding: 3em !important; background:; }
-.ui.segment.content, .ui.segment.story{ padding:3em !important; margin:0}
+.ui.segment.content, .ui.segment.story, .ui.segment.sinopsys, .ui.segment.credits {padding: 3em !important; margin:0}
 .ui.segment.main-board .segment.stageProfile{box-shadow: inset 0px 0px 10px rgba(0,0,0,0.9);}
 .ui.segment.single{ max-height: 23vh !important}
 .ui.segment.main-board .segment ui.column.grid .ui.image, .ui.segment.main-board
-.segment .ui.column.grid .segment.droppable, .ui.segment.main-board .segment .column.grid .ui.image img{ max-height: 17vh !important}
+.segment .ui.column.grid .segment.droppable, .ui.segment.main-board .segment .column.grid .ui.image img{ max-height: 19vh !important}
 .ui.segment.main-board .segment{margin: 0}
 .ui.horizontal .segment{ background: transparent !important; }
 .ui.inverted.segment.stages{ padding: 0 !important; margin: 0 !important }
@@ -488,10 +485,12 @@ input[type="color"] {
 .ui.card.inverted .content img{ border-radius: 2px}
 .ui.card.inverted .header, .ui.card.inverted .description, .ui.card.inverted .meta{color: #fff !important; padding:0px 10px}
 
-.ui.main.artist .ui.form input, .ui.main.user .ui.form input, .ui.segments .input, .ui.segments .button{ margin-left: 10px}
+.ui.main.artist .ui.form input, .ui.main.user .ui.form input, .ui.segments .input, .ui.segments .button, .ui.main .ui.form .input.labeled input{ margin-left: 10px}
+
+.segment .stagePhoto{ text-align: center}
 
 .ui.main .ui.form .ui.labeled.input.inverted > span, .ui.labeled.input > .label{color: #fff; background: #222 !important; padding: 10px; font-weight: 600}
-.ui.main .ui.form  .checkbox.inverted label{ color: #fff}
+.ui.main .ui.form  .checkbox.inverted .label, .ui.main .ui.form .input.labeled input{ color: #fff}
 .ui.user .ui.avatar {width: 6em; height: 6em}
 .ui.main .segments {background: transparent !important}
 
