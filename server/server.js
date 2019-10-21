@@ -284,7 +284,7 @@ const deleteArtist = async (aid) => {
   return response;
 };
 // stories db requests
-const getAllStories = async () => await Stories.findAll();
+const getAllStories = async () => await Stories.findAll({ raw: true });
 const createStory = async ({ title, state, city, sinopsys, credits, artist, active }) => {
   try {
     let res = await Stories.create({ title, state, city, sinopsys, credits, artist, active });
@@ -346,6 +346,7 @@ const getUserPreferences = async ({id}) => {
 // stories db requests
 const getAllStages = async (sid) => {
   return await Stages.findAll({
+    raw: true,
     order: [['stageOrder', 'ASC']],
     where: {sid : sid },
   });
@@ -377,7 +378,7 @@ const createStage = async ({ sid , name, photo, adress, description, images, pic
   try {
     let rank = await getNextOrderFromStory(sid);
     rank = (rank) ? rank : 1;
-    console.log(rank);
+    //console.log(rank);
     stageOrder = (!stageOrder) ? parseInt(rank) : stageOrder;
     let res = await Stages.create({ sid , name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry });
     const ssid = res.get('id');
@@ -462,7 +463,7 @@ const getStage = async obj => {
   });
 };
 const storyCheckPreflight =  (obj) => {
-    console.log(obj);
+    //console.log(obj);
     let log = [];
     let check = {};
     check = (obj.title ) ? {sid: obj.id, category: 'title', condition: 'Title must be filled' , check: true} : {sid: obj.id, category: 'title', error: obj.title, condition: 'Title cannot be empty' , check: false};
@@ -1255,28 +1256,27 @@ app.get('/stories', function(req, res) {
     if(stories && stories.length > 0) {
       let sts = [];
       stories.map((story, index) => {
-        story = story.get({plain: true});
+
+        //story = story.get({plain: true});
         let win = 0;
         let err = 0;
         let total = 0;
         getAllStages(story.id).then(stages => {
           if(stages && stages.length > 0) {
-            stages = stages.map(stage => {return  stage.get({plain: true}) });
-            console.log(stages);
-            story['stages'] = stages;
             let preflight = storyCheckPreflight(story);
-            //console.log('Preflight',preflight);
             preflight.map(log => (log.check === true) ? win ++ : err ++);
             total = win + err;
             story["progress"] = parseInt((win / total) * 100 );
-            console.log(story.progress);
+            //console.log(story.progress);
             story["preflight"] = preflight;
+            story['stages'] = stages;
           }
           sts.push(story);
         });
-        console.log()
+        //console.log(story);
         return story
       });
+      //console.log(stories);
       return res.json({ stories: stories, msg: 'Stories listed'});
     } else {
       // no results
@@ -1345,7 +1345,7 @@ app.get('/stories/:storyId/stages', function(req, res) {
   let sid = req.params.storyId;
   getAllStages(sid).then(stages => {
     stages = stages.map((stage) => {
-      stage = stage.get({plain: true});
+      //stage = stage.get({plain: true});
       let preflight = checkPreFlight(stage);
       let win = 0;
       let err = 0;
