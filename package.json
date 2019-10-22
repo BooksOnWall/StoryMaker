@@ -47,7 +47,7 @@
   },
   "scripts": {
     "start": "craco start",
-    "build": "craco build",
+    "build": "craco --max_old_space_size=4096  build",
     "test": "craco test",
     "eject": "craco eject",
     "extract:messages": "extract-messages --locales=es,pt,en --output src/i18n/locales/ 'src/**/*.js'"

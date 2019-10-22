@@ -70,7 +70,7 @@ app.use(passport.initialize());
 // cors integration
 var allowedOrigins = ['*',
       'https://localhost:3000',
-      'https://bow.animaespacio.org',
+      'https://create.booksonwall.art',
       'http://localhost:3000'];
 
 app.use(cors({
