@@ -1387,7 +1387,7 @@ class stage extends Component {
     <ReactCardFlip id="stageDesc" style={{backgroundColor: 'transparent', height: 'auto', width: '100%'}}  isFlipped={this.state.descLock} flipDirection="vertical">
           <Card className="desc"  fluid key="front">
             <Form fluid>
-            <Button  circular primary floated='right' icon='edit' onClick={this.toggleLock} />
+
             {this.state.stage.description}
             </Form>
           </Card>
@@ -1517,6 +1517,7 @@ class stage extends Component {
               uploadObjects={this.uploadObjects}
               setStageObjects={this.setStageObjects}
               onChangeObjectsHandler={this.onChangeObjectsHandler}
+              toggleLock = {this.toggleLock}
               toggleSideBar = {this.toggleSideBar}
               stageImages={this.state.stageImages}
               stagePictures={this.state.stagePictures}
