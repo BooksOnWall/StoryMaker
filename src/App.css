@@ -57,7 +57,7 @@ video {
   background: transparent none no-repeat;
   border: none;
 }
-.rdw-option-wrapper, .rdw-dropdown-selectedtext, .rdw-dropdown-optionwrapper, .rdw-dropdownoption-default,  .rdw-dropdownoption-active  {
+.rdw-option-wrapper,.rdw-embedded-modal,.rdw-image-modal,.rdw-emoji-modal, .rdw-colorpicker-modal-style-label, .rdw-link-modal,  .rdw-dropdown-selectedtext, .rdw-dropdown-optionwrapper, .rdw-dropdownoption-default,  .rdw-dropdownoption-active  {
   color: #FFF;
   background: #990000;
   border: none;
