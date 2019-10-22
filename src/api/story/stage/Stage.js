@@ -106,6 +106,7 @@ class stage extends Component {
           onPictureMatch: null,
           onZoneLeave: null,
           stageOrder: null,
+          percent: null,
           type: 'Point',
           geometry: {
             "type": "Point",

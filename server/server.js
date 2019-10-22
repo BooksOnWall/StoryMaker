@@ -463,19 +463,18 @@ const getStage = async obj => {
   });
 };
 const storyCheckPreflight =  (obj) => {
-    //console.log(obj);
+
     let log = [];
     let check = {};
     check = (obj.title ) ? {sid: obj.id, category: 'title', condition: 'Title must be filled' , check: true} : {sid: obj.id, category: 'title', error: obj.title, condition: 'Title cannot be empty' , check: false};
     log.push(check);
-    let stages = obj.stages;
+    //console.log('stages', obj.stages);
+    let stages = (obj.stages) ? obj.stages : null;
     if(stages) {
       //preflight stages
       stages.map(stage => {
         if(stage.dataValues) {
-          stage = stage.get({
-            plain: true
-          });
+          stage = stage.get({ raw: true });
         }
         let logs = checkPreFlight(stage);
         // console.log('stage',stage);
@@ -1254,29 +1253,24 @@ app.delete('/artists/:artistId', function(req, res, next) {
 app.get('/stories', function(req, res) {
   getAllStories().then((stories) => {
     if(stories && stories.length > 0) {
-      let sts = [];
       stories.map((story, index) => {
-
-        //story = story.get({plain: true});
         let win = 0;
         let err = 0;
         let total = 0;
-        getAllStages(story.id).then(stages => {
-          if(stages && stages.length > 0) {
-            let preflight = storyCheckPreflight(story);
-            preflight.map(log => (log.check === true) ? win ++ : err ++);
-            total = win + err;
-            story["progress"] = parseInt((win / total) * 100 );
-            //console.log(story.progress);
-            story["preflight"] = preflight;
-            story['stages'] = stages;
-          }
-          sts.push(story);
+        getAllStages(story.id).then(res =>  {
+          story["stages"] = res ;
+          let preflight = storyCheckPreflight(story);
+          preflight.map(log => (log.check === true) ? win++ : err++);
+          total = win + err;
+          story["percent"] = parseInt((win / total) * 100 );
+          //console.log(story.percent);
+          story["preflight"] = preflight;
+        //  console.log('res',res);
+          return res;
         });
-        //console.log(story);
         return story
       });
-      //console.log(stories);
+    //  console.log('stories',stories);
       return res.json({ stories: stories, msg: 'Stories listed'});
     } else {
       // no results
@@ -1345,18 +1339,16 @@ app.get('/stories/:storyId/stages', function(req, res) {
   let sid = req.params.storyId;
   getAllStages(sid).then(stages => {
     stages = stages.map((stage) => {
+
       //stage = stage.get({plain: true});
       let preflight = checkPreFlight(stage);
       let win = 0;
       let err = 0;
-      preflight.map((log) => {
-        (log.check === false) ? err++ : win++ ;
-        return log;
-      });
-      stage['progress'] = (win / (win + err) * 100).toFixed(0);
+      preflight.map((log) => (log.check === false) ? err++ : win++ );
+      stage["percent"] = (win / (win + err) * 100).toFixed(0);
       return stage;
-    })
-    res.json(stages)
+    });
+    res.json(stages);
   });
 });
 app.patch('/stories/:storyId/stages', function(req, res) {
@@ -1637,9 +1629,7 @@ app.post('/stories/:storyId/stages/:stageId/preflight', function(req, res, next)
   // get stage
   getStage({id: ssid}).then(stage => {
     // perform preflight check
-    let log = checkPreFlight(stage.get({
-      plain: true
-    }));
+    let log = checkPreFlight(stage.get({ raw: true }));
     if(log) res.json({preflight: log , msg: 'preflight done'})
 
   });

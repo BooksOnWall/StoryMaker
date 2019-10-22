@@ -103,7 +103,7 @@ class Stories extends Component {
             <Link to="/stories/0">
             <Button primary size='large' icon floated='right' >
                 <Icon name='plus' />
-            </Button>                  
+            </Button>
             </Link>
               </Header>
               <Table inverted stripped="true" selectable sortable>
@@ -158,14 +158,14 @@ class Stories extends Component {
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                  {_.map(data, ({ id, title, artist, state, city, createdAt, updatedAt, progress }) => (
+                  {_.map(data, ({ id, title, artist, state, city, createdAt, updatedAt, percent }) => (
                     <Table.Row className='slide-out'  key={id} onClick={() => this.tableRowClickFunc({id})}>
                       <Table.Cell>{id}</Table.Cell>
                       <Table.Cell>{title}</Table.Cell>
                       <Table.Cell>{artist}</Table.Cell>
                       <Table.Cell>{state}</Table.Cell>
                       <Table.Cell>{city}</Table.Cell>
-                      <Table.Cell><Progress  percent={progress}  progress active indicating inverted /></Table.Cell>
+                      <Table.Cell><Progress  percent={percent}  progress active indicating inverted /></Table.Cell>
                       <Table.Cell>{Moment(createdAt).format('LL')}</Table.Cell>
                       <Table.Cell>{Moment(updatedAt).format('LL')}</Table.Cell>
 
