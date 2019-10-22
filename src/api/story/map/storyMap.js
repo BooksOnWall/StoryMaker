@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import {
   Segment,
   Dimmer,
   Loader,
   Button,
-Divider,
+  Divider,
 } from 'semantic-ui-react';
+
 import {  FormattedMessage } from 'react-intl';
 import MapGL from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import StylePanel from './stylePanel';
 import MAP_STYLE from './map-style-basic-v8.json';
-
+import StylePanel from './stylePanel';
 let MapboxAccessToken = process.env.REACT_APP_MAT;
 // Set bounds toMontevideo
 var bounds = [
@@ -64,6 +65,7 @@ class storyMap extends Component {
   async componentDidMount() {
     // check if user is logged in on refresh
     try {
+      await this.setState({loading: true});
       await this.state.toggleAuthenticateStatus;
       await this.getMapPreferences();
       //await this.setState({loading: true});
@@ -83,11 +85,14 @@ class storyMap extends Component {
       })
       .then(response => {
         if (response && !response.ok) { throw new Error(response.statusText);}
+
         return response.json();
       })
       .then(data => {
-        console.log(data);
-          if(data) {
+          this.setState({loading: false});
+          console.log(data);
+          if(data && data.map) {
+
             const map  = JSON.parse(data.map);
             const colors = {};
             map.style.layers.map((layer) => {
@@ -101,6 +106,7 @@ class storyMap extends Component {
             this.setState({colors: colors, mapStyle: map.style, viewport: map.viewport});
           } else {
             console.log('No Data received from the server');
+            return this.saveMapPrefs();
           }
       })
       .catch((error) => {
@@ -130,7 +136,7 @@ class storyMap extends Component {
       .then(data => {
           if(data) {
             this.setState({saveMapLoading: false});
-
+            this.getMapPreferences();
           } else {
             console.log('No Data received from the server');
           }
@@ -186,4 +192,4 @@ class storyMap extends Component {
     );
   }
 }
-export default storyMap;
+export default withRouter(storyMap);

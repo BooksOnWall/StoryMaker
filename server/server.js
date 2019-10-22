@@ -1392,6 +1392,9 @@ app.get('/stories/:storyId/map', function(req, res, next) {
       if (err) return res.json({error:err, msg:'Error reading '+mapPath+fileName})
       return res.json({map: data, msg: 'map received'});
     });
+  } else {
+    // map preference json file does not exist
+    return res.json({ error: 'Map json preferences does not exist' , msg: 'Map json preferences does not exist'});
   }
 });
 app.post('/stories/:storyId/stages/0', function(req, res, next) {
