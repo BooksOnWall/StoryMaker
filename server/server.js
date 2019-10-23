@@ -371,12 +371,21 @@ const patchStory = async ({ sid, title, artist, state, city, sinopsys, credits, 
   );
 }
 const deleteStory = async (sid) => {
-  let res = await Stories.destroy({
-    where: {id : sid}
+  try {
+    await Stages.destroy({
+      where: {sid : sid}
     });
-  //delete story directory
-  rimraf.sync("./public/stories/"+sid);
-  return res;
+    let res = await Stories.destroy({
+      where: {id : sid}
+      });
+    //delete story directory
+    rimraf.sync("./public/stories/"+sid);
+    return res;
+  } catch(e) {
+    console.log(e.message);
+  }
+
+
 };
 
 const patchUserPrefs = async ({ uid, pref, pvalue }) => {
