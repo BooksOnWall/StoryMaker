@@ -158,11 +158,11 @@ class Stories extends Component {
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                  {_.map(data, ({ id, title, artist, state, city, createdAt, updatedAt, percent }) => (
+                  {_.map(data, ({ id, title, artist, state, city, createdAt, updatedAt, percent, aa }) => (
                     <Table.Row className='slide-out'  key={id} onClick={() => this.tableRowClickFunc({id})}>
                       <Table.Cell>{id}</Table.Cell>
                       <Table.Cell>{title}</Table.Cell>
-                      <Table.Cell>{artist}</Table.Cell>
+                      <Table.Cell>{aa.name}</Table.Cell>
                       <Table.Cell>{state}</Table.Cell>
                       <Table.Cell>{city}</Table.Cell>
                       <Table.Cell><Progress  percent={percent}  progress active indicating inverted /></Table.Cell>

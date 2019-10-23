@@ -3,6 +3,10 @@ module.exports.stages = {
   sid: {
     type: Sequelize.INTEGER,
     allowNull: false,
+    references: {
+        model: 'stories',
+        key: 'id'
+    },
   },
   name: {
     type: Sequelize.STRING,

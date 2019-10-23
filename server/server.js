@@ -169,6 +169,17 @@ Users.sync()
 
 // create Artists model
 const Artists = sequelize.define('artists', artistsList.artists);
+// create Stories model
+const Stories = sequelize.define('stories', storiesList.stories);
+// create Stages model
+const Stages = sequelize.define('stages', stagesList.stages);
+
+Stories.belongsTo(Artists, { as:'aa', foreignKey: 'artist', targetKey: 'id' });
+Artists.hasMany(Stories, { as: 'aa', foreignKey: 'artist', sourceKey: 'id'});
+
+Stages.belongsTo(Stories, { foreignKey: 'sid', targetKey: 'id' });
+Stories.hasMany(Stages, { foreignKey: 'sid', sourceKey: 'id'});
+
 // create table with artist model
 Artists.sync()
  .then(() => {
@@ -178,31 +189,28 @@ Artists.sync()
        fs.mkdirSync(dir, 0o744);
        console.log('Artists directory created successfully')
    }
+   // create table with stories model
+   Stories.sync()
+    .then(() => {
+      console.log('Stories table created successfully');
+      var dir = __dirname + '/public/stories';
+      if (!fs.existsSync(dir)) {
+          fs.mkdirSync(dir, 0o744);
+          console.log('Stories directory created successfully')
+      }
+      // create table with artist model
+      Stages.sync()
+       .then(() => {
+         console.log('Stages table created successfully');
+       })
+       .catch(err => console.log('oooh,error creating database Stages , did you enter wrong database credentials?', err));
+    })
+    .catch(err => console.log('oooh, error creating database Stories ,did you enter wrong database credentials?', err));
  })
- .catch(err => console.log('oooh,error creating database Artists , did you enter wrong database credentials?'));
- // create Stories model
- const Stories = sequelize.define('stories', storiesList.stories);
- // create table with stories model
- Stories.sync()
-  .then(() => {
-    console.log('Stories table created successfully');
-    var dir = __dirname + '/public/stories';
-    if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir, 0o744);
-        console.log('Stories directory created successfully')
-    }
-  })
-  .catch(err => console.log('oooh, error creating database Stories ,did you enter wrong database credentials?'));
+ .catch(err => console.log('oooh,error creating database Artists , did you enter wrong database credentials?', err));
 
-// create Stages model
-const Stages = sequelize.define('stages', stagesList.stages);
-// create table with artist model
-Stages.sync()
- .then(() => {
-   console.log('Stages table created successfully');
 
- })
- .catch(err => console.log('oooh,error creating database Stages , did you enter wrong database credentials?'));
+
 // create some helper functions to work on the database
 const createUser = async ({ name, email, hash, active }) => {
   let password = hash;
@@ -284,7 +292,41 @@ const deleteArtist = async (aid) => {
   return response;
 };
 // stories db requests
-const getAllStories = async () => await Stories.findAll({ raw: true });
+//const getAllStories = async () => await Stories.findAll({ raw: true });
+const getStories = async () => {
+  try  {
+    return await Stories.findAll({
+      include: [
+        {as: 'aa', model: Artists},
+        {as: 'stages', model: Stages}
+      ],
+      nested: true })
+      .then(stories => {
+        if(stories && stories.length > 0) {
+          stories.map((story, index) => {
+            let win = 0;
+            let err = 0;
+            let total = 0;
+            let stages = (story.stages) ? story.stages : null;
+            //stages = stages.map(stage => stage.get({raw: true}));
+            story = story.get({raw: true});
+            story["stages"] = stages ;
+            let preflight = storyCheckPreflight(story);
+            preflight.map(log => (log.check === true) ? win++ : err++);
+            total = win + err;
+            story["percent"] = parseInt((win / total) * 100 );
+            //console.log(story.percent);
+            //story["preflight"] = preflight;
+            console.log(story);
+            return story
+          });
+        return stories;
+      }});
+  } catch(e) {
+    console.log(e.message);
+  }
+}
+
 const createStory = async ({ title, state, city, sinopsys, credits, artist, active }) => {
   try {
     let res = await Stories.create({ title, state, city, sinopsys, credits, artist, active });
@@ -1250,35 +1292,16 @@ app.delete('/artists/:artistId', function(req, res, next) {
   );
 });
 // Stories URI requests
-app.get('/stories', function(req, res) {
-  getAllStories().then((stories) => {
-    if(stories && stories.length > 0) {
-      stories.map((story, index) => {
-        let win = 0;
-        let err = 0;
-        let total = 0;
-        getAllStages(story.id).then(res =>  {
-          story["stages"] = res ;
-          let preflight = storyCheckPreflight(story);
-          preflight.map(log => (log.check === true) ? win++ : err++);
-          total = win + err;
-          story["percent"] = parseInt((win / total) * 100 );
-          //console.log(story.percent);
-          story["preflight"] = preflight;
-        //  console.log('res',res);
-          return res;
-        });
-        return story
-      });
-    //  console.log('stories',stories);
-      return res.json({ stories: stories, msg: 'Stories listed'});
-    } else {
-      // no results
-      return res.json({ stories: stories, msg: 'Stories empty'});
-    }
-  }).catch(e => {
+app.get('/stories', async (req, res, next) => {
+  // getStories
+  // func linked with artist and stages
+  //
+  try {
+    let stories = await getStories();
+    return res.json({ stories: stories, msg: 'Stories listed'});
+  } catch(e) {
     console.log(e.message);
-  });
+  }
 });
 app.post('/stories/0', function(req, res, next) {
   const { title, state, city, sinopsys, credits, artist, active } = req.body;

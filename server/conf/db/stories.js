@@ -25,7 +25,20 @@ module.exports.stories = {
   },
   artist: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    allowNull: false,
+    references: {
+        model: 'artists',
+        key: 'id',
+    }
+  },
+  tessellate: {
+    type: Sequelize.INTEGER,
+    allowNull: true,
+    defaultValue: -1
+  },
+  geometry: {
+    type: Sequelize.GEOMETRY,
+    allowNull: true
   },
   active: {
     type: Sequelize.BOOLEAN,
