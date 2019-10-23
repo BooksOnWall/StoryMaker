@@ -315,9 +315,6 @@ const getStories = async () => {
             preflight.map(log => (log.check === true) ? win++ : err++);
             total = win + err;
             story["percent"] = parseInt((win / total) * 100 );
-            //console.log(story.percent);
-            //story["preflight"] = preflight;
-            console.log(story);
             return story
           });
         return stories;
@@ -354,9 +351,19 @@ const createStory = async ({ title, state, city, sinopsys, credits, artist, acti
   }
 }
 const getStory = async obj => {
-  return await Stories.findOne({
-    where: obj,
-  });
+  try {
+    return await Stories.findOne(
+      { where: obj,
+        include: [
+        {as: 'aa', model: Artists},
+        {as: 'stages', model: Stages}
+      ],
+      nested: true}
+    );
+  } catch(e) {
+    console.log(e.message);
+  }
+
 };
 const patchStory = async ({ sid, title, artist, state, city, sinopsys, credits, active }) => {
   return await Stories.update({ title, artist, state, city, sinopsys, credits, active },
@@ -1312,7 +1319,7 @@ app.post('/stories/0', function(req, res, next) {
 });
 app.get('/stories/:storyId', (req, res) => {
   let sid = req.params.storyId;
-  getStory({id: sid}).then(user => res.json(user));
+  getStory({id: sid}).then(story => res.json({story: story, msg: 'get story success'}));
 });
 app.patch('/stories/:storyId', function(req, res, next) {
   const { title, artist, state, city, sinopsys, credits, active } = req.body;
