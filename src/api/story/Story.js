@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { withRouter } from 'react-router-dom';
 import {
   Segment,
   Divider,
@@ -25,7 +25,6 @@ import htmlToDraft from 'html-to-draftjs';
 import sanitizeHtml from 'sanitize-html';
 // maps
 import StoryMap from './map/storyMap';
-import StoryLocation from './map/storyLocation';
 //Stages
 import StoryStages from './stage/storyStages';
 
@@ -54,6 +53,7 @@ class Story extends Component {
       data: null,
       sinoState: EditorState.createEmpty(),
       sinopsys: '',
+      stages: null,
       editorState: EditorState.createEmpty(),
       step: (this.props.step) ? this.props.step : 'Story',
       artist: parseInt(1),
@@ -302,25 +302,27 @@ class Story extends Component {
       })
       .then(data => {
           if(data) {
+            let story = data.story;
+            console.log(story.stages);
 
-            data.sinopsys = (data.sinopsys) ? sanitizeHtml(data.sinopsys) : '<span>&nbsp</span>';
-            data.credits = (data.credits) ? sanitizeHtml(data.credits) : '<span>&nbsp</span>';
+            story.sinopsys = (story.sinopsys) ? sanitizeHtml(story.sinopsys) : '<span>&nbsp</span>';
+            story.credits = (story.credits) ? sanitizeHtml(story.credits) : '<span>&nbsp</span>';
 
-            const sinoContentState = ContentState.createFromBlockArray(htmlToDraft(data.sinopsys));
+            const sinoContentState = ContentState.createFromBlockArray(htmlToDraft(story.sinopsys));
             const sinoState = EditorState.createWithContent(sinoContentState);
 
-            const creditContentState = ContentState.createFromBlockArray(htmlToDraft(data.credits));
+            const creditContentState = ContentState.createFromBlockArray(htmlToDraft(story.credits));
             const creditState = EditorState.createWithContent(creditContentState);
 
             this.setState({sinoState: sinoState});
-            this.setState({sinopsys: data.sinopsys});
+            this.setState({sinopsys: story.sinopsys});
             this.setState({creditState: creditState});
-            this.setState({credits: data.credits});
-
-            this.setState({sid: data.id, title: data.title, artist: data.artist});
+            this.setState({credits: story.credits});
+            this.setState({stages: story.stages});
+            this.setState({sid: story.id, title: story.title, artist: story.artist});
             this.setState({initialSValues: data});
             this.setState({loading: false});
-            return data;
+            return story;
           } else {
             console.log('No Data received from the server');
           }
@@ -558,7 +560,7 @@ class Story extends Component {
             <Header as={Segment} vertical size='medium'>
                 {(this.state.mode === 'create') ? <FormattedMessage id="app.story.create" defaultMessage={`Create Story`}/> : <FormattedMessage id="app.story.edit" defaultMessage={`Edit Story`}/> }
             </Header>
-        <StorySteps sid={this.state.sid} step={this.state.step} history={this.props.history} setSteps={this.setSteps} state={this.state} location={this.props.location} />
+            <StorySteps sid={this.state.sid} step={this.state.step}  setSteps={this.setSteps} state={this.state} location={this.props.location} />
               <Segment id='StepsContent' inverted>
                 {(this.state.step === 'Story') ? this.EditForm() : '' }
                 {(this.state.step === 'Sinopsys') ? this.EditSino() : '' }
@@ -575,4 +577,4 @@ class Story extends Component {
     );
   }
 }
-export default Story;
+export default withRouter(Story);

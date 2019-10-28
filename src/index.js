@@ -40,7 +40,7 @@ console.log(language);
 
 ReactDOM.render(
 <IntlProvider key={ i18nConfig.locale } locale={ i18nConfig.locale }  messages={ i18nConfig.messages }>
-    <BrowserRouter >
+    <BrowserRouter forceRefresh={true}>
       <UserProvider>
         <LocaleProvider>
           <ThemeProvider>

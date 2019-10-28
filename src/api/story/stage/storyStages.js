@@ -130,6 +130,7 @@ class storyStages extends Component {
     })
     .then(data => {
         if(data) {
+          console.log(data);
           this.setState({stages: data, loading: false});
           this.setState({location: data[0].geometry.coordinates});
           return data;
@@ -556,11 +557,11 @@ class storyStages extends Component {
                       </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                      {_.map(this.state.stages, ({ id, name, type, description , stageOrder, updatedAt, rank, progress }) => (
+                      {_.map(this.state.stages, ({ id, name, type, description , stageOrder, updatedAt, rank, percent }) => (
                         <Table.Row className='slide-out' key={id} onClick={() => this.tableRowClickFunc({id})}>
                           <Table.Cell>{stageOrder}</Table.Cell>
                           <Table.Cell>{name}</Table.Cell>
-                          <Table.Cell><Progress percent={progress} progress active indicating inverted /></Table.Cell>
+                          <Table.Cell><Progress percent={percent} progress active indicating inverted /></Table.Cell>
                           <Table.Cell>{type}</Table.Cell>
                           <Table.Cell>{<a className="drag-handle" href="void(0)"><Icon name='sort' /></a>}</Table.Cell>
                         </Table.Row>

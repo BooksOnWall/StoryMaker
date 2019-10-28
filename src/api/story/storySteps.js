@@ -4,12 +4,17 @@ import {
   Step,
   Icon,
 } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 class storySteps extends Component {
   constructor(props) {
     super(props);
+    let protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
+    let domain = protocol + '://' + process.env.REACT_APP_SERVER_HOST;
+    let server = domain + ':'+ process.env.REACT_APP_SERVER_PORT+'/';
+
     this.state = {
+      server: server,
       sid: this.props.sid,
       mapPath: (this.props.active === 'Map') ? window.location.reload : this.props.sid + '/map',
       stagesPath: (this.props.active === 'Stages') ? window.location.reload : this.props.sid + '/stages',
@@ -63,37 +68,39 @@ class storySteps extends Component {
     };
     this.handleSteps = this.handleSteps.bind(this);
   }
-  handleSteps = (e) => {
+  handleSteps = (e, to) => {
     // get if we are in Stories pages or in Stage pages
     //e.preventDefault();
+
     let step = (e.target.name) ? e.target.name : null;
-    let url = (e.target.href) ? e.target.href : null;
     if (step) this.props.setSteps({step: step});
-    //this.props.history.push(url);
+    console.log(step);
+    //this.props.history.push(to);
   }
   render() {
-    console.log(typeof(this.state.sid));
+
     return (
-      
+
       <Step.Group fluid className="inverted">
         {this.state.steps.map(step => (
-          <Step  
-        key={step.index}
-        active={this.props.state.step === step.name}
-        disabled={this.state.sid === parseInt(0) }
-         onClick={this.handleSteps}
-        as={Link}
-        to={step.to}
-        >
-      <Icon name={step.icon} />
-      <Step.Content>
-        <Step.Title>{step.title}</Step.Title>
-        <Step.Description>{step.name}</Step.Description>
-      </Step.Content>
-    </Step>
+          <Step
+          name={step.name}
+          key={step.index}
+          active={this.props.state.step === step.name}
+          disabled={this.state.sid === parseInt(0) }
+          onClick={e => this.handleSteps(e, step.to)}
+          as={Link}
+          to={step.to}
+          >
+          <Icon name={step.icon} />
+          <Step.Content>
+          <Step.Title>{step.title}</Step.Title>
+
+          </Step.Content>
+          </Step>
         ))}
       </Step.Group>
     );
   }
 }
-export default storySteps;
+export default withRouter(storySteps);

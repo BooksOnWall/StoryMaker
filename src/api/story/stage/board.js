@@ -460,6 +460,7 @@ class DragDrop extends Component {
                                 </Grid.Column>
                                 <Grid.Column mobile={16} tablet={8} computer={3} className="single" verticalAlign='middle'>
                                     <Header inverted as='h4'>{this.props.stage.name}</Header>
+                                    <Button  circular primary floated='right' icon='edit' onClick={this.props.toggleLock} />
                                     <Button circular primary floated='left' icon='edit' onClick={(e) => this.props.toggleSideBar(e, 'Stage', 'bottom')} className="task-header "></Button>
                                     <Button circular floated='left' icon='picture' onClick={(e) => this.props.toggleSideBar(e, 'Images', 'bottom')} className="task-header "></Button>
                                     <Button circular floated='left' icon='map pin' onClick={(e) => this.props.toggleSideBar(e, 'Geo', 'bottom')}  className="task-header"></Button> {tasks.location}

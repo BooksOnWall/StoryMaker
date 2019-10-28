@@ -70,7 +70,7 @@ app.use(passport.initialize());
 // cors integration
 var allowedOrigins = ['*',
       'https://localhost:3000',
-      'https://bow.animaespacio.org',
+      'https://create.booksonwall.art',
       'http://localhost:3000'];
 
 app.use(cors({
@@ -169,6 +169,17 @@ Users.sync()
 
 // create Artists model
 const Artists = sequelize.define('artists', artistsList.artists);
+// create Stories model
+const Stories = sequelize.define('stories', storiesList.stories);
+// create Stages model
+const Stages = sequelize.define('stages', stagesList.stages);
+
+Stories.belongsTo(Artists, { as:'aa', foreignKey: 'artist', targetKey: 'id' });
+Artists.hasMany(Stories, { as: 'aa', foreignKey: 'artist', sourceKey: 'id'});
+
+Stages.belongsTo(Stories, { foreignKey: 'sid', targetKey: 'id' });
+Stories.hasMany(Stages, { foreignKey: 'sid', sourceKey: 'id'});
+
 // create table with artist model
 Artists.sync()
  .then(() => {
@@ -178,31 +189,28 @@ Artists.sync()
        fs.mkdirSync(dir, 0o744);
        console.log('Artists directory created successfully')
    }
+   // create table with stories model
+   Stories.sync()
+    .then(() => {
+      console.log('Stories table created successfully');
+      var dir = __dirname + '/public/stories';
+      if (!fs.existsSync(dir)) {
+          fs.mkdirSync(dir, 0o744);
+          console.log('Stories directory created successfully')
+      }
+      // create table with artist model
+      Stages.sync()
+       .then(() => {
+         console.log('Stages table created successfully');
+       })
+       .catch(err => console.log('oooh,error creating database Stages , did you enter wrong database credentials?', err));
+    })
+    .catch(err => console.log('oooh, error creating database Stories ,did you enter wrong database credentials?', err));
  })
- .catch(err => console.log('oooh,error creating database Artists , did you enter wrong database credentials?'));
- // create Stories model
- const Stories = sequelize.define('stories', storiesList.stories);
- // create table with stories model
- Stories.sync()
-  .then(() => {
-    console.log('Stories table created successfully');
-    var dir = __dirname + '/public/stories';
-    if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir, 0o744);
-        console.log('Stories directory created successfully')
-    }
-  })
-  .catch(err => console.log('oooh, error creating database Stories ,did you enter wrong database credentials?'));
+ .catch(err => console.log('oooh,error creating database Artists , did you enter wrong database credentials?', err));
 
-// create Stages model
-const Stages = sequelize.define('stages', stagesList.stages);
-// create table with artist model
-Stages.sync()
- .then(() => {
-   console.log('Stages table created successfully');
 
- })
- .catch(err => console.log('oooh,error creating database Stages , did you enter wrong database credentials?'));
+
 // create some helper functions to work on the database
 const createUser = async ({ name, email, hash, active }) => {
   let password = hash;
@@ -284,7 +292,38 @@ const deleteArtist = async (aid) => {
   return response;
 };
 // stories db requests
-const getAllStories = async () => await Stories.findAll({ raw: true });
+//const getAllStories = async () => await Stories.findAll({ raw: true });
+const getStories = async () => {
+  try  {
+    return await Stories.findAll({
+      include: [
+        {as: 'aa', model: Artists},
+        {as: 'stages', model: Stages}
+      ],
+      nested: true })
+      .then(stories => {
+        if(stories && stories.length > 0) {
+          stories.map((story, index) => {
+            let win = 0;
+            let err = 0;
+            let total = 0;
+            let stages = (story.stages) ? story.stages : null;
+            //stages = stages.map(stage => stage.get({raw: true}));
+            story = story.get({raw: true});
+            story["stages"] = stages ;
+            let preflight = storyCheckPreflight(story);
+            preflight.map(log => (log.check === true) ? win++ : err++);
+            total = win + err;
+            story["percent"] = parseInt((win / total) * 100 );
+            return story
+          });
+        return stories;
+      }});
+  } catch(e) {
+    console.log(e.message);
+  }
+}
+
 const createStory = async ({ title, state, city, sinopsys, credits, artist, active }) => {
   try {
     let res = await Stories.create({ title, state, city, sinopsys, credits, artist, active });
@@ -312,9 +351,19 @@ const createStory = async ({ title, state, city, sinopsys, credits, artist, acti
   }
 }
 const getStory = async obj => {
-  return await Stories.findOne({
-    where: obj,
-  });
+  try {
+    return await Stories.findOne(
+      { where: obj,
+        include: [
+        {as: 'aa', model: Artists},
+        {as: 'stages', model: Stages}
+      ],
+      nested: true}
+    );
+  } catch(e) {
+    console.log(e.message);
+  }
+
 };
 const patchStory = async ({ sid, title, artist, state, city, sinopsys, credits, active }) => {
   return await Stories.update({ title, artist, state, city, sinopsys, credits, active },
@@ -322,12 +371,21 @@ const patchStory = async ({ sid, title, artist, state, city, sinopsys, credits, 
   );
 }
 const deleteStory = async (sid) => {
-  let res = await Stories.destroy({
-    where: {id : sid}
+  try {
+    await Stages.destroy({
+      where: {sid : sid}
     });
-  //delete story directory
-  rimraf.sync("./public/stories/"+sid);
-  return res;
+    let res = await Stories.destroy({
+      where: {id : sid}
+      });
+    //delete story directory
+    rimraf.sync("./public/stories/"+sid);
+    return res;
+  } catch(e) {
+    console.log(e.message);
+  }
+
+
 };
 
 const patchUserPrefs = async ({ uid, pref, pvalue }) => {
@@ -463,19 +521,18 @@ const getStage = async obj => {
   });
 };
 const storyCheckPreflight =  (obj) => {
-    //console.log(obj);
+
     let log = [];
     let check = {};
     check = (obj.title ) ? {sid: obj.id, category: 'title', condition: 'Title must be filled' , check: true} : {sid: obj.id, category: 'title', error: obj.title, condition: 'Title cannot be empty' , check: false};
     log.push(check);
-    let stages = obj.stages;
+    //console.log('stages', obj.stages);
+    let stages = (obj.stages) ? obj.stages : null;
     if(stages) {
       //preflight stages
       stages.map(stage => {
         if(stage.dataValues) {
-          stage = stage.get({
-            plain: true
-          });
+          stage = stage.get({ raw: true });
         }
         let logs = checkPreFlight(stage);
         // console.log('stage',stage);
@@ -1251,40 +1308,16 @@ app.delete('/artists/:artistId', function(req, res, next) {
   );
 });
 // Stories URI requests
-app.get('/stories', function(req, res) {
-  getAllStories().then((stories) => {
-    if(stories && stories.length > 0) {
-      let sts = [];
-      stories.map((story, index) => {
-
-        //story = story.get({plain: true});
-        let win = 0;
-        let err = 0;
-        let total = 0;
-        getAllStages(story.id).then(stages => {
-          if(stages && stages.length > 0) {
-            let preflight = storyCheckPreflight(story);
-            preflight.map(log => (log.check === true) ? win ++ : err ++);
-            total = win + err;
-            story["progress"] = parseInt((win / total) * 100 );
-            //console.log(story.progress);
-            story["preflight"] = preflight;
-            story['stages'] = stages;
-          }
-          sts.push(story);
-        });
-        //console.log(story);
-        return story
-      });
-      //console.log(stories);
-      return res.json({ stories: stories, msg: 'Stories listed'});
-    } else {
-      // no results
-      return res.json({ stories: stories, msg: 'Stories empty'});
-    }
-  }).catch(e => {
+app.get('/stories', async (req, res, next) => {
+  // getStories
+  // func linked with artist and stages
+  //
+  try {
+    let stories = await getStories();
+    return res.json({ stories: stories, msg: 'Stories listed'});
+  } catch(e) {
     console.log(e.message);
-  });
+  }
 });
 app.post('/stories/0', function(req, res, next) {
   const { title, state, city, sinopsys, credits, artist, active } = req.body;
@@ -1295,7 +1328,7 @@ app.post('/stories/0', function(req, res, next) {
 });
 app.get('/stories/:storyId', (req, res) => {
   let sid = req.params.storyId;
-  getStory({id: sid}).then(user => res.json(user));
+  getStory({id: sid}).then(story => res.json({story: story, msg: 'get story success'}));
 });
 app.patch('/stories/:storyId', function(req, res, next) {
   const { title, artist, state, city, sinopsys, credits, active } = req.body;
@@ -1345,18 +1378,16 @@ app.get('/stories/:storyId/stages', function(req, res) {
   let sid = req.params.storyId;
   getAllStages(sid).then(stages => {
     stages = stages.map((stage) => {
+
       //stage = stage.get({plain: true});
       let preflight = checkPreFlight(stage);
       let win = 0;
       let err = 0;
-      preflight.map((log) => {
-        (log.check === false) ? err++ : win++ ;
-        return log;
-      });
-      stage['progress'] = (win / (win + err) * 100).toFixed(0);
+      preflight.map((log) => (log.check === false) ? err++ : win++ );
+      stage["percent"] = (win / (win + err) * 100).toFixed(0);
       return stage;
-    })
-    res.json(stages)
+    });
+    res.json(stages);
   });
 });
 app.patch('/stories/:storyId/stages', function(req, res) {
@@ -1392,6 +1423,9 @@ app.get('/stories/:storyId/map', function(req, res, next) {
       if (err) return res.json({error:err, msg:'Error reading '+mapPath+fileName})
       return res.json({map: data, msg: 'map received'});
     });
+  } else {
+    // map preference json file does not exist
+    return res.json({ error: 'Map json preferences does not exist' , msg: 'Map json preferences does not exist'});
   }
 });
 app.post('/stories/:storyId/stages/0', function(req, res, next) {
@@ -1634,9 +1668,7 @@ app.post('/stories/:storyId/stages/:stageId/preflight', function(req, res, next)
   // get stage
   getStage({id: ssid}).then(stage => {
     // perform preflight check
-    let log = checkPreFlight(stage.get({
-      plain: true
-    }));
+    let log = checkPreFlight(stage.get({ raw: true }));
     if(log) res.json({preflight: log , msg: 'preflight done'})
 
   });

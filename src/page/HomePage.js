@@ -14,7 +14,7 @@ class HomePage extends Component {
   render() {
     return (
       <Container id='home'  fluid className="main">
-      <Segment  inverted className="view" fluid>
+      <Segment  inverted className="view" >
       <Segment inverted>
         <Header as='h1' textAlign='center'
             title=<FormattedMessage id="app.home.title" defaultMessage={`Books on Wall`}/>
