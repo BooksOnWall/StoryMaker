@@ -475,7 +475,7 @@ input[type="color"] {
 .ui.horizontal .segment{ background: transparent !important; }
 .ui.inverted.segment.stages{ padding: 0 !important; margin: 0 !important }
 #StepsContent .segment, #StepsContent .segments, .ui.segment.stageCol{ margin: 0 !important; border: 0 !important}
-#StepsContent .segments .segment{ margin: 0 !important; padding: 0 !important}
+#StepsContent .segments .segment{ margin: 0 ; padding: 0 }
 .ui.segment.stageCol { border: 2px solid #222 !important}
 
 #login .ui.form input, #signup .ui.form input, #login .button, #signup button, #users .ui.form input{ margin: 5px 0 !important;}

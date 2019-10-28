@@ -129,7 +129,7 @@ class userPreferences extends Component {
   render() {
     if (this.state.theme.value === null && this.state.locale.value === null) return null;
     return (
-      <Segment inverted className='slide-out'>
+      <Segment inverted className='slide-in'>
         <Dimmer active={this.state.loading}>
           <Loader active={this.state.loading} >
             <FormattedMessage id="app.userPrefs.loading" defaultMessage={`Get users preferences`}/>
