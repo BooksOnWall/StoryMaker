@@ -37,8 +37,8 @@ const options = {
     inline: { inDropdown: true },
     list: { inDropdown: true },
     textAlign: { inDropdown: true },
-    link: { inDropdown: true },
-    history: { inDropdown: true },
+    link: { inDropdown: false },
+    history: { inDropdown: false },
 };
 
 function humanFileSize(bytes, si) {
@@ -677,9 +677,6 @@ class Artist extends Component {
         }) => (
           <Form size='large' onSubmit={this.handleSubmitBio}>
             <Editor
-              toolbarOnFocus
-              width= '80vw'
-              height= '60vh'
               ref={this.setEditor}
               initialContentState={this.state.bio}
               editorState={this.state.bioState}
@@ -688,7 +685,6 @@ class Artist extends Component {
               onEditorStateChange={this.onBioStateChange}
               toolbar={options}
               name="bio"
-              placeholder='Biographie'
               />
             <Divider/>
             <Button onClick={handleSubmitBio} floated='right' primary size='large'  type="submit" disabled={isSubmitting}>

@@ -57,15 +57,19 @@ video {
   background: transparent none no-repeat;
   border: none;
 }
-.rdw-option-wrapper,.rdw-embedded-modal,.rdw-image-modal,.rdw-emoji-modal, .rdw-colorpicker-modal-style-label, .rdw-link-modal,  .rdw-dropdown-selectedtext, .rdw-dropdown-optionwrapper, .rdw-dropdownoption-default,  .rdw-dropdownoption-active  {
-  color: #FFF;
-  background: #990000;
+.rdw-option-wrapper,.rdw-embedded-modal,.rdw-image-modal,.rdw-emoji-modal, .rdw-colorpicker-modal-style-label, .rdw-link-modal,  .rdw-dropdown-selectedtext, .rdw-dropdown-optionwrapper, .rdw-dropdownoption-default,  .rdw-dropdownoption-active, .rdw-dropdown-carettoclose, .rdw-fontfamily-placeholder, rdw-dropdown-wrapper, rdw-editor-toolbar  {
+  color: #FFF !important;
+  background: #333;
   border: none;
 }
-.rdw-option-wrapper img {
+.rdw-option-wrapper{ margin: 0 2px;}
+.rdw-dropdown-wrapper{ border: 0;  margin: 0 2px;}
+.rdw-option-wrapper img, .rdw-dropdown-selectedtext img, .rdw-dropdownoption-default img {
   -webkit-filter: invert(100%) !important; /* safari 6.0 - 9.0 */
   filter: invert(100%) !important;
 }
+.rdw-option-wrapper svg, .rdw-dropdownoption-default svg {
+  color: #fff! important}
 .ui.card, .ui.card .content, .ui.card .content  .react-card-flip {
   background-color: transparent !important;
   border: 0 !important;
@@ -512,6 +516,7 @@ input[type="color"] {
 .button.primary, .primary {
     background: rgb(200,49,21) !important;
     background: linear-gradient(270deg, rgba(200,49,21,1) 0%, rgba(253,29,29,1) 26%, rgba(255,164,0,1) 94%) !important;}
+
 .button.primary:hover { background-position: right !important;}
 
 .ui.segment.stylingMap{padding: 0}
