@@ -209,6 +209,7 @@ class DragDrop extends Component {
             open={this.state.export}
             cancelButton='Never mind'
             confirmButton="Let's do it"
+            className="exportMessage"
             header="Export this stage"
             content="Export will create an archive file with all files and geoJSON data, the kind of archive that you can easily import when you need it !"
             onCancel={e => this.handleCancel('export')}

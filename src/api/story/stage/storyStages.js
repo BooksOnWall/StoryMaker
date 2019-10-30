@@ -275,7 +275,7 @@ class storyStages extends Component {
       return (
           items.map((log, index) => (log.category === category && log.ssid === ssid) ? (
             <Message key={log.category+index}  icon color={(log.check) ? 'green' : 'red'}>
-            {(log.check) ? <Icon name='check' /> : <Icon name='bug' /> }
+            {(log.check) ? <Icon name='check' /> : <Icon name='exclamation circle' /> }
             {(log.src) ? <Image   size="small" src={log.src}/> : ''}
             <Message.Content>
               <Message.Header>{log.condition}</Message.Header>
@@ -410,7 +410,7 @@ class storyStages extends Component {
 
     let err = (error > 0) ? <Label color="red" horizontal><Icon disabled name='exclamation circle' /> {error}</Label>: '';
     let sucess = (win > 0) ? <Label color="green" horizontal><Icon disabled name='check circle' /> {win}</Label>: '';
-    let name = (typeof(stage) === 'number') ? <Header inverted as='h3' >Story : {(this.state.story) ? this.state.story.title : ''}</Header> : <Header inverted as='h3'>{stage.name} <Icon name='dropdown' /></Header> ;
+    let name = (typeof(stage) === 'number') ? <Header inverted as='h4' >Story : {(this.state.story) ? this.state.story.title : ''}</Header> : <Header inverted as='h4'>{stage.name} <Icon name='dropdown' /></Header> ;
     let progress = <Progress percent={percent} progress active indicating inverted />;
     return (
     <Grid inverted verticalAlign='middle' columns='equal'>
@@ -438,15 +438,15 @@ class storyStages extends Component {
     }
     total = win + error;
     let percent = (win === 0) ? 0 : parseInt((win / total) * 100);
-    let err = (error > 0) ? <Label color="red" >Error [{error}]</Label>: '';
-    let sucess = (win > 0) ? <Label color="green" >Success [{win}]</Label>: '';
-    let progress = <Progress percent={percent}   progress active indicating inverted />;
+    let err = (error > 0) ? <Label color="red" ><Icon disabled name='exclamation circle' /> Error {error}</Label>: '';
+    let sucess = (win > 0) ? <Label color="green" ><Icon disabled name='check circle' /> Success {win}</Label>: '';
+    let progress = <Progress percent={percent}  progress active indicating inverted />;
     return (        
     <Grid inverted verticalAlign='middle' columns='equal'>
     <Grid.Column width={5}>
       {sucess}{err}
     </Grid.Column>
-    <Grid.Column>
+    <Grid.Column width={11}>
       {progress}
     </Grid.Column>
     </Grid>
@@ -459,7 +459,7 @@ class storyStages extends Component {
     return (
       <Segment inverted className="preflight" >
         {this.storyStats(this.state.story, this.state.preflight)}
-        <Header textAlign='center'>Story : {(this.state.story) ? this.state.story.title : ''} Prefligh Check </Header><Divider/>
+        <Header as='h3'  className='storyTitle' >Story : {(this.state.story) ? this.state.story.title : ''} <span className='right' > Prefligh Check <Icon name="tasks" /> </span> </Header>
         <Accordion inverted>
           <Accordion.Title active={activeIndex === -1} index={-1}  onClick={this.handleStageClick}>{this.stageStats(this.state.sid, this.state.preflight)}</Accordion.Title><Accordion.Content className="slide-out" active={activeIndex === -1}>{this.getByStage(this.state.sid, this.state.preflight)}</Accordion.Content><Divider/>
           {(stages) ? stages.map((stage, index) => <Segment key={index} style={{margin: 0, padding: 0}} inverted ><Accordion.Title active={activeIndex === index} index={index} key={index} onClick={this.handleStageClick}>{this.stageStats(stage, this.state.preflight)}</Accordion.Title><Accordion.Content className="slide-out" active={activeIndex === index}>{this.getByStage(stage, this.state.preflight)}</Accordion.Content><Divider/></Segment>) : ''}

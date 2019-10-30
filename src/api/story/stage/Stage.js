@@ -1462,22 +1462,24 @@ class stage extends Component {
       return (
         <Container className="main" fluid>
         <Segment inverted className="view" >
-          <Modal
+          <Modal inverted className='preflight'
             open={this.state.preflightModal}
             onClose={this.handleExport}
             basic
             size='small'
             >
-            <Header icon='browser' content='Preflight Check ' />
-            <Progress size="big" percent={this.percentPreflight(this.state.preflightLog)} attached='top' progress active indicating inverted />
+            
+            <Header inverted icon='tasks' content='Preflight Check ' />
+            <Segment inverted>
+            <Segment inverted><Progress size="big" percent={this.percentPreflight(this.state.preflightLog)} progress active indicating inverted size='medium' /></Segment>
             <Modal.Content>
               <h3>Below a check before exporting.</h3>
               <LogReport logs={this.state.preflightLog}/>
             </Modal.Content>
-            <Progress size="big"  percent={this.percentPreflight(this.state.preflightLog)} attached='bottom' progress active indicating inverted />
+            </Segment>
             <Modal.Actions>
-              <Button color='red' onClick={this.handleExport} inverted><Icon name='checkmark' /> Back </Button>
-              <Button color='green' onClick={this.handleDownload} loading={this.state.downloadLoading} inverted><Icon name='cloud download' /> Download Stage </Button>
+              <Button color='red' basic onClick={this.handleExport}><Icon name='triangle left' /> Back </Button>
+              <Button basic color='green' onClick={this.handleDownload} loading={this.state.downloadLoading}><Icon name='cloud download' /> Download Stage </Button>
             </Modal.Actions>
             </Modal>
           <Dimmer.Dimmable inverted as={Segment} blurring dimmed={this.state.loading}>

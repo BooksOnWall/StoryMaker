@@ -106,7 +106,7 @@ class logReport extends Component  {
        <Tab
          key="preflight"
          renderActiveOnly={false}
-         menu={{ color: 'orange', inverted: true, attached: false, borderless: true, tabular: false , fluid: false, vertical: true }}
+         menu={{ color: 'black', inverted: true, attached: false, borderless: true, tabular: false , fluid: false, vertical: true }}
          menuPosition='right'
          panes={this.state.tabs}
        />

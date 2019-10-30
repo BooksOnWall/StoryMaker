@@ -525,14 +525,24 @@ input[type="color"] {
 
 .ui.segment.stylingMap{padding: 0}
 
-.ui.small.modal > .header:not(.ui) { background: #0B0C0D !important}
-.ui.segment.preflight{margin: 0}
+.ui.small.modal > .header:not(.ui) { background: #0B0C0D !important; }
+.ui.segment.preflight{margin: 0; padding-bottom: 0}
 .ui.segment.preflight .column.two{ padding: 1rem 0rem !important}
-.ui.segment.preflight .divider{margin: 0 !important}
+.ui.segment.preflight .divider{margin: 0 -1em !important;}
 .ui.segment.preflight .label i{margin: 0em 0.1em 0em 0em}
 .ui.segment.preflight .ui.horizontal.labels .label, .ui.horizontal.label{ margin: 0em 0.2em 0em 0em !important}
 .ui.segment.preflight .ui.bottom.attached.segment.active.tab{padding: 0 !important; background: transparent}
 .ui.segment.preflight .slide-out .ui.grid{ background: #111; margin-top: -8px !important}
-.ui.segment.preflight .ui.red.message, .ui.segment.preflight .ui.green.message{ background-color: transparent !important}
-.ui.segment.preflight .ui.message .content{ color: white }
-.ui.segment.preflight .ui.message .list{ margin: 0; }
+.ui.preflight .grid{ margin-top: 10px}
+.ui.preflight .ui.red.message, .ui.preflight .ui.green.message{ background-color: transparent !important}
+.ui.preflight .ui.message .content{ color: white }
+.ui.preflight .ui.message .list{ margin: 0; }
+.ui.preflight .storyTitle, .ui.small.modal.preflight .header{ margin: .6em -.8em 0; padding: 1em;background: #0B0C0D }
+.ui.small.modal.preflight .header{margin: 0;}
+.ui.segment.preflight .actions, .ui.modal.preflight .content .ui.grid, .ui.modal.preflight .content .ui.grid .segment{ background: #0B0C0D !important}
+.ui.small.modal.preflight .segment{ margin: 0}
+.ui.segment.preflight .header span.right{ float: right; color: #666}
+.ui.preflight .ui.red.message .header{ padding: 0; margin: 0}
+.exportMessage, .exportMessage div{ background: #1B1C1D !important; color:#fff}
+.exportMessage div.header{ color: #fff !important}
+
