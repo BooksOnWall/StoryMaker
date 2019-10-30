@@ -15,7 +15,9 @@ import {
   Dimmer,
   Progress,
   Accordion,
-  Icon
+  Icon,
+  Divider,
+    Grid
 } from 'semantic-ui-react';
 
 import ReactDragListView  from 'react-drag-listview';
@@ -406,12 +408,22 @@ class storyStages extends Component {
     total = win + error;
     let percent = (win === 0) ? 0 : parseInt((win / total) * 100);
 
-    let err = (error > 0) ? <Button basic size="tiny"  color="red" >Error [{error}]</Button>: '';
-    let sucess = (win > 0) ? <Button basic size="tiny"  color="green" >Success [{win}]</Button>: '';
-    let name = (typeof(stage) === 'number') ? <Button style={{width: '30%'}} basic size="tiny"  color="brown" >Story : {(this.state.story) ? this.state.story.title : ''}</Button> : <Button style={{width: '50%'}} basic size="tiny"  color="brown" >{stage.name}</Button> ;
-    let progress = <Progress style={{ width: '40%'}}  percent={percent}   progress active indicating inverted />;
+    let err = (error > 0) ? <Label color="red" horizontal><Icon disabled name='exclamation circle' /> {error}</Label>: '';
+    let sucess = (win > 0) ? <Label color="green" horizontal><Icon disabled name='check circle' /> {win}</Label>: '';
+    let name = (typeof(stage) === 'number') ? <Header inverted as='h3' >Story : {(this.state.story) ? this.state.story.title : ''}</Header> : <Header inverted as='h3'>{stage.name} <Icon name='dropdown' /></Header> ;
+    let progress = <Progress percent={percent} progress active indicating inverted />;
     return (
-      <Button.Group fluid>{name}{sucess}{err}{progress}</Button.Group>
+    <Grid inverted verticalAlign='middle' columns='equal'>
+    <Grid.Column width={8} vertical>
+      {name}
+    </Grid.Column>
+    <Grid.Column width={2}>
+      {sucess}{err}
+    </Grid.Column>
+    <Grid.Column>
+      {progress}
+    </Grid.Column>
+  </Grid>
     );
   }
   storyStats = (story, logs) => {
@@ -426,23 +438,31 @@ class storyStages extends Component {
     }
     total = win + error;
     let percent = (win === 0) ? 0 : parseInt((win / total) * 100);
-    let err = (error > 0) ? <Button size="tiny" basic  color="red" >Error [{error}]</Button>: '';
-    let sucess = (win > 0) ? <Button size="tiny" basic  color="green" >Success [{win}]</Button>: '';
-    let progress = <Progress style={{width: '60%'}}  size='large' percent={percent}   progress active indicating inverted />;
-    return (
-      <Button.Group fluid>{sucess}{err}{progress}</Button.Group>
+    let err = (error > 0) ? <Label color="red" >Error [{error}]</Label>: '';
+    let sucess = (win > 0) ? <Label color="green" >Success [{win}]</Label>: '';
+    let progress = <Progress percent={percent}   progress active indicating inverted />;
+    return (        
+    <Grid inverted verticalAlign='middle' columns='equal'>
+    <Grid.Column width={5}>
+      {sucess}{err}
+    </Grid.Column>
+    <Grid.Column>
+      {progress}
+    </Grid.Column>
+    </Grid>
+    
     );
   }
   ExportPreview = (log) => {
     let stages = this.state.stages;
     const { activeIndex } = this.state;
     return (
-      <Segment inverted >
+      <Segment inverted className="preflight" >
         {this.storyStats(this.state.story, this.state.preflight)}
-        <Header>Story : {(this.state.story) ? this.state.story.title : ''} Prefligh Check </Header>
-        <Accordion className="preflight"  inverted>
-          <Accordion.Title active={activeIndex === -1} index={-1}  onClick={this.handleStageClick}>{this.stageStats(this.state.sid, this.state.preflight)}</Accordion.Title><Accordion.Content className="slide-out" active={activeIndex === -1}>{this.getByStage(this.state.sid, this.state.preflight)}</Accordion.Content>
-          {(stages) ? stages.map((stage, index) => <Segment key={index} style={{margin: 0, padding: 0}} inverted ><Accordion.Title active={activeIndex === index} index={index} key={index} onClick={this.handleStageClick}>{this.stageStats(stage, this.state.preflight)}</Accordion.Title><Accordion.Content className="slide-out" active={activeIndex === index}>{this.getByStage(stage, this.state.preflight)}</Accordion.Content></Segment>) : ''}
+        <Header textAlign='center'>Story : {(this.state.story) ? this.state.story.title : ''} Prefligh Check </Header><Divider/>
+        <Accordion inverted>
+          <Accordion.Title active={activeIndex === -1} index={-1}  onClick={this.handleStageClick}>{this.stageStats(this.state.sid, this.state.preflight)}</Accordion.Title><Accordion.Content className="slide-out" active={activeIndex === -1}>{this.getByStage(this.state.sid, this.state.preflight)}</Accordion.Content><Divider/>
+          {(stages) ? stages.map((stage, index) => <Segment key={index} style={{margin: 0, padding: 0}} inverted ><Accordion.Title active={activeIndex === index} index={index} key={index} onClick={this.handleStageClick}>{this.stageStats(stage, this.state.preflight)}</Accordion.Title><Accordion.Content className="slide-out" active={activeIndex === index}>{this.getByStage(stage, this.state.preflight)}</Accordion.Content><Divider/></Segment>) : ''}
         </Accordion>
       </Segment>
     );
@@ -470,7 +490,7 @@ class storyStages extends Component {
         <Table.Body>
           {(features) ?
             features.map(feature  => (
-              <Table.Row className='slide-out'  key={feature.properties.Name}>
+              <Table.Row className='slide-out' key={feature.properties.Name}>
                 <Table.Cell>{feature.properties.Name}</Table.Cell>
                 <Table.Cell>{feature.geometry.type}</Table.Cell>
                 <Table.Cell>{feature.geometry.coordinates}</Table.Cell>
@@ -536,7 +556,7 @@ class storyStages extends Component {
 
               <Segment className="stages" >
                 <ReactDragListView {...this.dragProps}>
-                  <Table inverted compact sortable  selectable>
+                  <Table inverted compact sortable selectable padded striped>
                     <Table.Header className='slide-out'>
                       <Table.Row>
                         <Table.HeaderCell   >
@@ -563,7 +583,7 @@ class storyStages extends Component {
                           <Table.Cell>{name}</Table.Cell>
                           <Table.Cell><Progress percent={percent} progress active indicating inverted /></Table.Cell>
                           <Table.Cell>{type}</Table.Cell>
-                          <Table.Cell>{<a className="drag-handle" href="void(0)"><Icon name='sort' /></a>}</Table.Cell>
+                          <Table.Cell>{<a className="drag-handle" href="void(0)"><Icon name='sort'inverted color='black' /></a>}</Table.Cell>
                         </Table.Row>
                         ))}
                     </Table.Body>

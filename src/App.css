@@ -175,6 +175,10 @@ div.DraftEditor-root {
   font-size: 18px;
   font-family: 'calibri', sans-serif;
 }
+.ui.stages .inverted.table tr td{ text-align: center}
+
+.ui.stages .inverted.table thead{top: 0;  }
+.ui.stages .inverted.table thead th{position: relative; }
 .dropzone {
   flex: 1;
   display: flex;
@@ -444,7 +448,7 @@ width: 100%;
 .ui.segment.view.story, #StepsContent.ui.segment.view {padding: 0 !important; }
 .ui.segment.view.story, #StepsContent.ui.segment{ padding: 0 !important; margin: 0 !important}
 .ui.segment.stagesMap{ padding: 0 !important}
-.ui.segment.stages { padding: 0 2em 1em; max-height: 70.6vh;}
+.ui.segment.stages { padding: 0 2em 1em; max-height: 70.6vh; overflow: scroll}
 .ui.buttons{ padding: 0 0 1em}
 .ui.table{margin: 0 !important; border-radius: 0 !important; padding: 0 !important}
 .ui.table:first-child{margin-top: 0 !important; }
@@ -512,7 +516,7 @@ input[type="color"] {
 .ui.main .segments {background: transparent !important}
 
 .ui.progress:last-child{margin: 0.3em 0em !important;}
-.ui.progress.indicating .progress{ margin-left: 15px; right: -0.2em !important;}
+.ui.progress.indicating .progress{ right: 0.2em !important; }
 .button.primary, .primary {
     background: rgb(200,49,21) !important;
     background: linear-gradient(270deg, rgba(200,49,21,1) 0%, rgba(253,29,29,1) 26%, rgba(255,164,0,1) 94%) !important;}
@@ -520,3 +524,15 @@ input[type="color"] {
 .button.primary:hover { background-position: right !important;}
 
 .ui.segment.stylingMap{padding: 0}
+
+.ui.small.modal > .header:not(.ui) { background: #0B0C0D !important}
+.ui.segment.preflight{margin: 0}
+.ui.segment.preflight .column.two{ padding: 1rem 0rem !important}
+.ui.segment.preflight .divider{margin: 0 !important}
+.ui.segment.preflight .label i{margin: 0em 0.1em 0em 0em}
+.ui.segment.preflight .ui.horizontal.labels .label, .ui.horizontal.label{ margin: 0em 0.2em 0em 0em !important}
+.ui.segment.preflight .ui.bottom.attached.segment.active.tab{padding: 0 !important; background: transparent}
+.ui.segment.preflight .slide-out .ui.grid{ background: #111; margin-top: -8px !important}
+.ui.segment.preflight .ui.red.message, .ui.segment.preflight .ui.green.message{ background-color: transparent !important}
+.ui.segment.preflight .ui.message .content{ color: white }
+.ui.segment.preflight .ui.message .list{ margin: 0; }
