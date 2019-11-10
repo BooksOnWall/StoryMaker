@@ -12,7 +12,7 @@ import {
   Dimmer,
   Loader,
     Header,
-    Dropdown,
+    Icon,
 } from 'semantic-ui-react';
 import {  FormattedMessage } from 'react-intl';
 import { Formik } from 'formik';
@@ -455,10 +455,11 @@ class Story extends Component {
           isSubmitting,
           /* and other goodies */
         }) => (
-          <Form inverted size='large' onSubmit={this.handleSubmit}>
-                 <select 
+          <Form inverted flex size='large' onSubmit={this.handleSubmit}>
+                <Segment inverted>
+                <span className='label small'>Choose artist/autor: </span><br/>
+                <select 
                 size='small' 
-                label='Choose your artist:' 
                 name="artist" 
                 type="select" 
                 defaultValue={this.state.artist} 
@@ -467,6 +468,7 @@ class Story extends Component {
                   <option key={0} disabled hidden value=''></option>
                   {this.state.artistOptions.map(options => <option key={options.key} value={options.value} >{options.text}</option>)}
                 </select>
+                </Segment>
                 <Divider/>
                 <Input
                 fluid

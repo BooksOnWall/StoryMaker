@@ -20,6 +20,7 @@ import {
   List,
   Dimmer,
   Loader,
+    Divider,
 } from 'semantic-ui-react';
 import {  FormattedMessage } from 'react-intl';
 import { Formik } from 'formik';
@@ -1117,10 +1118,12 @@ class stage extends Component {
               isSubmitting,
               /* and other goodies */
             }) => (
-
-              <Form  onSubmit={this.handleSubmit}>
+              <Form inverted onSubmit={this.handleSubmit}>
+                <Segment inverted>
                 <Input
                   fluid
+                  transparent
+                  inverted
                   placeholder='Name'
                   label='Name'
                   autoFocus={true}
@@ -1131,9 +1134,11 @@ class stage extends Component {
                   defaultValue={values.name}
                   />
                 {errors.name && touched.name && errors.name}
-
-                <Input
+                <Divider />
+                  <Input
                   fluid
+                  transparent
+                  inverted
                   placeholder='calle, barrio, ciudad, pays'
                   label='Adress'
                   type="text"
@@ -1143,9 +1148,11 @@ class stage extends Component {
                   defaultValue={values.adress}
                   />
                 {errors.adress && touched.adress && errors.adress}
-
-                <Input
+                <Divider />
+                  <Input
                   fluid
+                  transparent
+                  inverted
                   label='Stage Location'
                   placeholder='Stage Location'
                   type="text"
@@ -1155,8 +1162,11 @@ class stage extends Component {
                   value={JSON.stringify(this.state.stage.stageLocation)}
                   />
                 {errors.stagelocation && touched.stagelocation && errors.stagelocation}
-
-                <Label>Stage type</Label><Select
+                <Divider />
+                <Label size='large' className='label'>Stage type</Label>
+                <Select
+                  transparent
+                  inverted
                   placeholder='Stage type'
                   label='Stage type'
                   type="select"
@@ -1168,7 +1178,7 @@ class stage extends Component {
                   />
                 {errors.stagetype && touched.stagetype && errors.stagetype}
 
-                <Button onClick={handleSubmit} floated='right'color='violet'  size='large' type="submit" disabled={isSubmitting}>
+                <Button onClick={handleSubmit} floated='right' primary  size='large' type="submit" disabled={isSubmitting}>
                   {(this.state.mode === 'create') ? 'Create' : 'Update'}
                 </Button>
                 {(this.state.mode === 'update') ? (
@@ -1185,6 +1195,7 @@ class stage extends Component {
                       />
                   </div>
                 ) : '' }
+                </Segment>
               </Form>
             )}
           </Formik>
