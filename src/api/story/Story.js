@@ -48,7 +48,7 @@ class Story extends Component {
       sid: (!this.props.match.params.id) ? (0) : parseInt(this.props.match.params.id),
       mode: (parseInt(this.props.match.params.id) === 0) ? ('create') : ('update'),
       name: null,
-      stages: '/stories/' + this.props.match.params.id + '/stages',
+      stagesURL: '/stories/' + this.props.match.params.id + '/stages',
       map:  '/stories/' + this.props.match.params.id + '/map',
       loading: null,
       data: null,

@@ -925,6 +925,11 @@ if(hasbot) {
   bot.command('answer', sayYoMiddleware, (ctx) => {
     return ctx.reply('*42*', Extra.markdown());
   });
+  bot.command('build',(ctx) => {
+    ctx.reply('*Executing build script ...*', Extra.markdown());
+
+    
+  });
   let startLog = false;
 
   bot.command('logs',(ctx) => {
@@ -1381,10 +1386,12 @@ app.get('/stories/:storyId/stages', function(req, res) {
 
       //stage = stage.get({plain: true});
       let preflight = checkPreFlight(stage);
-      let win = 0;
-      let err = 0;
-      preflight.map((log) => (log.check === false) ? err++ : win++ );
-      stage["percent"] = (win / (win + err) * 100).toFixed(0);
+      if(preflight) {
+        let win = 0;
+        let err = 0;
+        preflight.map((log) => (log.check === false) ? err++ : win++ );
+        stage["percent"] = (win / (win + err) * 100).toFixed(0);
+      }
       return stage;
     });
     res.json(stages);
