@@ -928,18 +928,15 @@ if(hasbot) {
     return ctx.reply('*42*', Extra.markdown());
   });
   bot.command('build',(ctx) => {
+    const util = require('util');
+    const exec = util.promisify(require('child_process').exec);
 
-    const exec = require('child_process').exec;
-    const myShellScript = exec('sh ../build.sh');
-    myShellScript.stdout.on('data', (data)=>{
-        ctx.reply('*Executing build script ...*', Extra.markdown());
-        ctx.reply(data, Extra.markdown());
-        // do whatever you want here with data
-    });
-    myShellScript.stderr.on('data', (data)=>{
-        ctx.reply(data, Extra.markdown());
-    });
-
+    async function build() {
+      const { stdout, stderr } = await exec('ls');
+      ctx.reply(stdout, Extra.markdown());
+      ctx.reply(stderr, Extra.markdown());
+    }
+    build();
   });
   let startLog = false;
 
