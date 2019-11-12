@@ -31,7 +31,7 @@ function StageVideos(props) {
 
   return (
 
-      <Segment className="container">
+      <Segment inverted >
         <div {...getRootProps({className: 'dropzone'})} > 
           <input  id="stageVideos" name="files" onChange={props.onChangeVideosHandler} ref={ref => this.fileInput = ref} {...getInputProps()} />
             <p>{<FormattedMessage id="app.story.stage.stagevideos.files"  defaultMessage={"Drag and drop some files here, or click to select files"} />}</p>

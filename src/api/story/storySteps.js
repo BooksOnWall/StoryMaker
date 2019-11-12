@@ -81,7 +81,7 @@ class storySteps extends Component {
 
     return (
 
-      <Step.Group fluid className="inverted">
+      <Step.Group fluid className="inverted " size='mini'>
         {this.state.steps.map(step => (
           <Step
           name={step.name}

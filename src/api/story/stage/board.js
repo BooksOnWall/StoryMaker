@@ -12,7 +12,6 @@ import {
   Button,
   Grid,
   Header,
-  Divider,
 } from 'semantic-ui-react';
 import {  FormattedMessage } from 'react-intl';
 import { Link , withRouter} from 'react-router-dom';
@@ -69,7 +68,6 @@ const ObjectsPreview = (props) => {
             return <Image
               name={e.name}
               wrapped
-              style={{margin: '1em'}}
               size="mini"
               id={index}
               key={"file_"+index}
@@ -87,19 +85,17 @@ const ObjectsPreview = (props) => {
         case 'Videos':
         items = objects.map(function(e,index){
 
-            return   <Segment
+            return   <Segment 
               inverted
               stacked
               name={'video_'+ index}
               color="green"
               key={'video_'+ index}
-              style={{minHeight: '360px'}}
+              style={{minHeight: '80px', maxWidth: '192px'}}
               onDragStart = {(e) => props.onDragStart(e, e.name)}
               draggable
               className="draggable"
               >
-
-
               <ReactPlayer
                 playsinline={false}
                 playing={false}
@@ -171,10 +167,10 @@ class DragDrop extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      animation: 'overlay',
-      direction: 'right',
-      animation2: 'push',
-      direction2: 'bottom',
+      animation: 'push',
+      direction: 'bottom',
+      animation2: 'overlay',
+      direction2: 'right',
       selectedIndex: null,
       loading: null,
       col2DefaultSize: { width: '30%', height: 'inherit'},
@@ -193,8 +189,10 @@ class DragDrop extends Component {
    StagesNav = () => {
     return (
     <Segment className="StagesNav">
-        <Button.Group>
-        <Button disabled basic compact color='blue' onClick={e => this.show('import')} ><Icon name="cloud upload" /> <FormattedMessage id="app.story.board.import" defaultMessage={`Import`}/></Button>
+        <Button.Group inverted basic>
+        <Button primary basic floated='left' onClick={(e) => this.props.toggleSideBar(e, 'Stage', 'bottom')} className="task-header ">
+        <Icon name="edit" /> <FormattedMessage id="app.story.board.edit" defaultMessage={`Edit`}/></Button>
+        <Button disabled basic compact onClick={e => this.show('import')} ><Icon name="cloud upload" /> <FormattedMessage id="app.story.board.import" defaultMessage={`Import`}/></Button>
           <Confirm
             open={this.state.import}
             cancelButton='Never mind'
@@ -204,7 +202,7 @@ class DragDrop extends Component {
             onCancel={e => this.handleCancel('import')}
             onConfirm={e => this.handleConfirm('import')}
           />
-        <Button basic compact color='teal' loading={this.props.state.exportLoading} onClick={e => this.show('export')}><Icon name="cloud download" /> <FormattedMessage id="app.story.board.export" defaultMessage={`Export`}/></Button>
+        <Button basic compact loading={this.props.state.exportLoading} onClick={e => this.show('export')}><Icon name="cloud download" /> <FormattedMessage id="app.story.board.export" defaultMessage={`Export`}/></Button>
           <Confirm
             open={this.state.export}
             cancelButton='Never mind'
@@ -215,9 +213,7 @@ class DragDrop extends Component {
             onCancel={e => this.handleCancel('export')}
             onConfirm={e => this.handleConfirm('export')}
           />
-      </Button.Group>
-    <Button.Group>
-        <Button disabled basic compact color='grey' onClick={e => this.show('reset')} ><Icon name="erase" /><FormattedMessage id="app.story.board.reset" defaultMessage={`Reset`}/></Button>
+        <Button disabled basic compact onClick={e => this.show('reset')} ><Icon name="erase" /><FormattedMessage id="app.story.board.reset" defaultMessage={`Reset`}/></Button>
           <Confirm
             open={this.state.reset}
             cancelButton='Never mind'
@@ -227,7 +223,7 @@ class DragDrop extends Component {
             onCancel={e => this.handleCancel('reset')}
             onConfirm={e => this.handleConfirm('reset')}
           />
-        <Button disabled basic compact color='red' onClick={e => this.show('destroy')} ><Icon name="bomb" /> <FormattedMessage id="app.story.board.destroy" defaultMessage={`Destroy`}/></Button>
+        <Button disabled basic compact onClick={e => this.show('destroy')} ><Icon name="bomb" /> <FormattedMessage id="app.story.board.destroy" defaultMessage={`Destroy`}/></Button>
           <Confirm
             open={this.state.destroy}
             cancelButton='Never mind'
@@ -238,8 +234,8 @@ class DragDrop extends Component {
             onConfirm={e => this.handleConfirm('destroy')}
           />
         </Button.Group>
-        <Divider />
-      <Button.Group>
+        <br /><br />
+      <Button.Group className="navStage">
         {(this.props.state.prev)
           ? <Button disabled compact as={Link} to={this.props.state.prev}  animated primary floated="left">
             <Button.Content  ><FormattedMessage id="app.story.board.preview" defaultMessage={`Preview`}/></Button.Content>
@@ -292,7 +288,7 @@ class DragDrop extends Component {
   render() {
     let tasks = this.props.renderTasks();
      return (
-       <Dimmer.Dimmable as={Segment} blurring dimmed={this.state.loading}>
+       <Dimmer.Dimmable inverted as={Segment} blurring dimmed={this.state.loading}>
           <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
             <div className="container-drag">
               <Sidebar.Pushable as={Segment} >
@@ -305,15 +301,13 @@ class DragDrop extends Component {
                   onHide={this.props.handleTopSidebarHide}
                   visible={this.props.topSidebarVisible}
                   width='very wide'
-                  style={{maxHeight: '30vh'}}
+                  style={{maxHeight: '100vh'}}
                   >
-                  <Segment.Group  style={{height: 'auto', width: 'inherit'}}>
+                  <Segment.Group  horizontal style={{height: 'auto', width: 'inherit'}}>
                     <Segment inverted >
-                      <Button.Group >
+                      <Button.Group fluid>
                         <Button name="Stage" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Stage') ? true : false } ><FormattedMessage id="app.story.board.stage" defaultMessage={`Stage`}/></Button>
-                        <Button.Or text='or' />
                         <Button name="Geo" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Geo') ? true : false }>Geo</Button>
-                        <Button.Or text='or' />
                         <Button name="Images" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Images') ? true : false }><FormattedMessage id="app.story.board.images" defaultMessage={`Images`}/></Button>
                       </Button.Group>
                     </Segment>
@@ -346,7 +340,7 @@ class DragDrop extends Component {
                         </Segment> ) : ''}
                         {(this.props.stageStep === 'Geo') ? (
                           <StageMap
-                            height="18vh"
+                            height="70vh"
                             sid={this.props.state.sid}
                             setStageLocation={this.props.setStageLocation}
                             stageLocation={this.props.stage.stageLocation}
@@ -361,53 +355,59 @@ class DragDrop extends Component {
                     animation={this.state.animation}
                     direction={this.state.direction}
                     vertical
-                    style={{padding: 0}}
+                    style={{padding: 0, maxHeight: '40vh'}}
                     dimmed={this.state.dimmed}
                     onHide={this.props.handleSidebarHide}
                     target={this.segmentRef}
                     width='very wide'
                     visible={this.props.sidebarVisible}
-                    >
-
-                    <Button.Group>
-                      <Button name="Pictures" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Pictures') ? true : false }><FormattedMessage id="app.story.board.pictures" defaultMessage={`Pictures`}/></Button>
-                      <Button.Or text='or' />
-                      <Button name="Videos" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Videos') ? true : false }>Videos</Button>
-                      <Button.Or text='or' />
-                      <Button name="Audios" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Audios') ? true : false }>Audios</Button>
-                    </Button.Group>
-
-                    <Segment inverted >
-                      {(this.props.stageStep === 'Pictures') ? (
-                        <Segment inverted
-                          className="pictures"
-                          onDragOver={(e)=>this.props.onDragOver(e)}
-                          onDrop={(e)=>{this.props.onDrop(e, "pictures")}}>
-                          <Label inverted="true" color="violet" className="task-header"><FormattedMessage id="app.story.board.pictures" defaultMessage={`Pictures`}/></Label>
-                          {tasks.pictures}
-
-                          <ObjectsPreview
-                            objType="Pictures"
-                            picturesLoading={this.props.picturesLoading}
-                            uploadObjects={this.props.uploadObjects}
-                            state={this.props.state}
-                            name="stagePictures"
-                            objValues={this.props.stagePictures}
-                            />
-                          <StagePictures
-                            className="pictures"
-                            onChangeObjectHandler={this.props.onChangeObjectHandler}
-                            setStageObjects={this.props.setStageObjects}/>
+                    >                    
+                    <Segment.Group horizontal  >
+                        <Segment inverted style={{maxWidth: '18vh'}}>   
+                            <Button.Group inverted vertical>
+                              <Button name="Pictures" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Pictures') ? true : false }><FormattedMessage id="app.story.board.pictures" defaultMessage={`Pictures`}/></Button>
+                              <Button name="Videos" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Videos') ? true : false }>Videos</Button>
+                              <Button name="Audios" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Audios') ? true : false }>Audios</Button>
+                            </Button.Group>
                         </Segment>
+                        <Segment inverted  style={{minWidth: '82vh', padding:0}}>
+                          {(this.props.stageStep === 'Pictures') ? (
+                            
+                           <Segment.Group inverted horizontal
+                              className="pictures"
+                              onDragOver={(e)=>this.props.onDragOver(e)}
+                              onDrop={(e)=>{this.props.onDrop(e, "pictures")}}>
+
+                              <Segment className='files' style={{ minWidth: '55vw'}}>
+                                {tasks.pictures}
+                              </Segment>
+
+                              <Segment>
+                                <ObjectsPreview
+                                objType="Pictures"
+                                picturesLoading={this.props.picturesLoading}
+                                uploadObjects={this.props.uploadObjects}
+                                state={this.props.state}
+                                name="stagePictures"
+                                objValues={this.props.stagePictures}
+                                />
+                              <StagePictures
+                                className="pictures"
+                                onChangeObjectHandler={this.props.onChangeObjectHandler}
+                                setStageObjects={this.props.setStageObjects}/>
+                            </Segment>
+
+                        </Segment.Group>
                       ) : ''}
                       {(this.props.stageStep === 'Videos') ? (
-                        <Segment inverted
+                        <Segment.Group inverted horizontal
                           className="videos"
                           onDragOver={(e)=>this.props.onDragOver(e)}
                           onDrop={(e)=>{this.props.onDrop(e, "videos")}}>
-                          <Label inverted="true" color="violet" className="task-header">Videos</Label>
+                        <Segment className='files' style={{ minWidth: '55vw'}}>
                           {tasks.videos}
-
+                          </Segment>
+                          <Segment>                          
                           <StageVideos
                             className="videos"
                             onChangeObjectHandler={this.props.onChangeObjectHandler}
@@ -422,15 +422,17 @@ class DragDrop extends Component {
                             objValues={this.props.stageVideos}
                             />
                         </Segment>
+                      </Segment.Group>
                       ) : ''}
                       {(this.props.stageStep === 'Audios') ? (
-                        <Segment inverted
+                        <Segment.Group inverted horizontal
                           className="audios"
                           onDragOver={(e)=>this.props.onDragOver(e)}
                           onDrop={(e)=>{this.props.onDrop(e, "audios")}}>
-                          <Label inverted="true" color="violet" className="task-header">Audios</Label>
+                        <Segment className='files' style={{ minWidth: '55vw'}}>
                           {tasks.audios}
-
+                        </Segment>
+                        <Segment>
                           <ObjectsPreview
                             objType="Audios"
                             audiosLoading={this.props.audiosLoading}
@@ -444,47 +446,44 @@ class DragDrop extends Component {
                             onChangeObjectHandler={this.props.onChangeObjectHandler}
                             setStageObjects={this.props.setStageObjects}
                             />
-
                         </Segment>
+                      </Segment.Group>
                       ) : ''}
                     </Segment>
-
-
+                    </Segment.Group>
                   </Sidebar>
+
                   <Sidebar.Pusher>
-                    <Segment className="main-board">
+                        
+                        <Segment className="main-board">
                             <Segment className='stageProfile' inverted style={{minHeight: '18vh'}}>
-                              <Grid columns={4} >
-                                <Grid.Column mobile={8} tablet={4} className='stagePhoto' computer={2} onDragOver={(e)=>this.props.onDragOver(e)}
+                              <Grid columns={3}>
+                                <Grid.Column mobile={16} tablet={4} computer={2} className='stagePhoto' onDragOver={(e)=>this.props.onDragOver(e)}
                                     onDrop={(e)=>this.props.onDrop(e, "photo")}>
-                                    {(tasks.photo.length > 0) ? tasks.photo : <Image  src='https://react.semantic-ui.com/images/avatar/large/matthew.png' wrapped  /> }
+                                    {(tasks.photo.length > 0) ? tasks.photo : <Image src='https://react.semantic-ui.com/images/avatar/large/matthew.png' wrapped  /> }
                                 </Grid.Column>
-                                <Grid.Column mobile={16} tablet={8} computer={3} className="single" verticalAlign='middle'>
+                                <Grid.Column mobile={16} tablet={8} computer={6}>
                                     <Header inverted as='h4'>{this.props.stage.name}</Header>
-                                    <Button  circular primary floated='right' icon='edit' onClick={this.props.toggleLock} />
-                                    <Button circular primary floated='left' icon='edit' onClick={(e) => this.props.toggleSideBar(e, 'Stage', 'bottom')} className="task-header "></Button>
-                                    <Button circular floated='left' icon='picture' onClick={(e) => this.props.toggleSideBar(e, 'Images', 'bottom')} className="task-header "></Button>
-                                    <Button circular floated='left' icon='map pin' onClick={(e) => this.props.toggleSideBar(e, 'Geo', 'bottom')}  className="task-header"></Button> {tasks.location}
+                                    {this.props.setStageDescription()} <br /> 
+                                    <Button circular primary floated='left' icon='edit' onClick={this.props.toggleLock} />
                                 </Grid.Column>
-                                <Grid.Column mobile={16} tablet={8} computer={5} >
-                                  {this.props.setStageDescription()}
-                                </Grid.Column>
-                                <Grid.Column  textAlign='right' mobile={16} tablet={8} computer={5} >
+                                <Grid.Column textAlign='right' mobile={16} tablet={8} computer={8}>
                                     {(this.props.stages) ? this.StagesNav(this.props.stages, this.props.stage) : null}
                                 </Grid.Column>
                             </Grid>
-                        </Segment>
+                           </Segment>
+
                         <Ref innerRef={this.segmentRef}>
-                        <Segment inverted className="board" style={{minHeight: '58vh'}} fluid="true">
+                        <Segment inverted className="board" style={{minHeight: '65.8vh'}} fluid="true">
                           <Resizable
                             style={resizeStyle}
                             defaultSize={this.state.col2DefaultSize}
                             >
                             <Segment inverted className="stageCol">
+                                <Button size='small' primary onClick={(e) => this.props.toggleSideBar(e, 'Audios', 'right')} className="task-header"><FormattedMessage id="app.story.board.onzoneenter" defaultMessage={`On Zone Enter`}/></Button>
                               <div className="droppable"
                                 onDragOver={(e)=>this.props.onDragOver(e)}
                                 onDrop={(e)=>this.props.onDrop(e, "onZoneEnter")}>
-                                <Button primary onClick={(e) => this.props.toggleSideBar(e, 'Audios', 'right')} className="task-header"><FormattedMessage id="app.story.board.onzoneenter" defaultMessage={`On Zone Enter`}/></Button>
                                 {tasks.onZoneEnter}
                               </div>
                             </Segment>
@@ -494,10 +493,10 @@ class DragDrop extends Component {
                             defaultSize={this.state.col3DefaultSize}
                             >
                             <Segment inverted className="stageCol">
+                                <Button size='small' primary onClick={(e) => this.props.toggleSideBar(e, 'Videos', 'right')} className="task-header"><FormattedMessage id="app.story.board.onpicturematch" defaultMessage={`On Picture Match`}/></Button>
                               <div className="droppable"
                                 onDragOver={(e)=>this.props.onDragOver(e)}
                                 onDrop={(e)=>this.props.onDrop(e, "onPictureMatch")}>
-                                <Button primary onClick={(e) => this.props.toggleSideBar(e, 'Videos', 'right')} className="task-header"><FormattedMessage id="app.story.board.onpicturematch" defaultMessage={`On Picture Match`}/></Button>
                                 {tasks.onPictureMatch}
                               </div>
                             </Segment>
@@ -507,11 +506,10 @@ class DragDrop extends Component {
                             defaultSize={this.state.col4DefaultSize}
                             >
                             <Segment inverted className="stageCol">
-                              <div className="droppable"
+                                <Button size='small' primary onClick={(e) => this.props.toggleSideBar(e, 'Audios', 'right')} className="task-header"><FormattedMessage id="app.story.board.onzoneleave" defaultMessage={`On Zone Leave`}/>
+                                </Button>                              <div className="droppable"
                                 onDragOver={(e)=>this.props.onDragOver(e)}
                                 onDrop={(e)=>this.props.onDrop(e, "onZoneLeave")}>
-                                <Button primary onClick={(e) => this.props.toggleSideBar(e, 'Audios', 'right')} className="task-header"><FormattedMessage id="app.story.board.onzoneleave" defaultMessage={`On Zone Leave`}/>
-                                </Button>
                                 {tasks.onZoneLeave}
                               </div>
                             </Segment>

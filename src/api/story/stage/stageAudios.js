@@ -32,7 +32,7 @@ function StageAudios(props) {
 
   return (
 
-      <Segment className="container">
+      <Segment inverted>
         <div {...getRootProps({className: 'dropzone'})}>
           <input  id='stageAudios' name='files' onChange={props.onChangeAudiosHandler} ref={ref => this.fileInput = ref} {...getInputProps()} />
             <p>{<FormattedMessage id="app.story.stage.stageaudios.files"  defaultMessage={"Drag and drop some files here, or click to select files"} />}</p>

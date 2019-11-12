@@ -517,13 +517,12 @@ class stage extends Component {
           tasks[t.category].push(
             <Segment
               inverted
-              color="yellow"
               name={'image_'+index}
               key={'img_'+index}
               onDragStart = {(e) => this.onDragStart(e, t.name)}
               draggable
               className="draggable image"
-              style={{height: 'auto', width: 'inherit'}}
+              style={{height: 'auto', width: 'inherit', padding:0}}
               >
               <Dimmer.Dimmable as={Segment} blurring dimmed={t.loading}>
                 <Dimmer active={t.loading} onClickOutside={this.handleHide} />
@@ -537,8 +536,8 @@ class stage extends Component {
                         src={t.src}
                         />
                       <Label inverted="true" color="violet" >
-                        <Icon className="button" size="mini" floated="left"  name="edit" onClick={(e) => this.handleCardClick(e,t)} />
-                        <Icon className="button" size="mini" floated="right" name="delete"  onClick={(e) => this.handleObjectDeleteConfirm(e,t)} />
+                        <Icon className="button" floated="left"  name="edit" onClick={(e) => this.handleCardClick(e,t)} />
+                        <Icon className="button" floated="right" name="trash alternate"  onClick={(e) => this.handleObjectDeleteConfirm(e,t)} />
                         <Confirm
                           content='Are you sure you want to delete this ??? '
                           open={t.confirm}
@@ -597,8 +596,8 @@ class stage extends Component {
                     key={t.name}
                     />
                   <Label inverted="true" color="violet" >
-                    <Icon className="button" size="mini" floated="left"  name="edit" onClick={(e) => this.handleCardClick(e,t)} />
-                    <Icon className="button" size="mini" floated="right" name="delete"  onClick={(e) => this.handleObjectDeleteConfirm(e,t)} />
+                    <Icon className="button" floated="left"  name="edit" onClick={(e) => this.handleCardClick(e,t)} />
+                    <Icon className="button" floated="right" name="trash alternate"  onClick={(e) => this.handleObjectDeleteConfirm(e,t)} />
                     <Confirm
                       content='Are you sure you want to delete this ??? '
                       open={t.confirm}
@@ -639,7 +638,6 @@ class stage extends Component {
             <Segment
               inverted
               name={t.name}
-              color="purple"
               key={index}
               onDragStart = {(e) => this.onDragStart(e, t.name)}
               draggable
@@ -650,8 +648,8 @@ class stage extends Component {
               <ReactCardFlip style={{height: 'auto', backgroundColor: 'transparent' , width: 'inherit'}} isFlipped={t.isFlipped} flipDirection="vertical">
                 <Card  color='blue' className="fluid" key="front" style={{ backgroundColor: 'transparent' }}>
                   <Label inverted="true" color="violet">
-                    <Icon className="button" size="mini" floated="left"  name="edit" onClick={(e) => this.handleCardClick(e,t)} />
-                    <Icon className="button" size="mini" floated="right" name="delete"  onClick={(e) => this.handleObjectDeleteConfirm(e,t)} />
+                    <Icon className="button" floated="left"  name="edit" onClick={(e) => this.handleCardClick(e,t)} />
+                    <Icon className="button" floated="right" name="trash alternate"  onClick={(e) => this.handleObjectDeleteConfirm(e,t)} />
                       <Confirm
                         content='Are you sure you want to delete this ??? '
                         open={t.confirm}
@@ -703,7 +701,6 @@ class stage extends Component {
           tasks[t.category].push(
             <Segment
               inverted
-              color="teal"
               name={'video_'+index}
               key={'video'+index}
               style={{height: 'auto', width: 'inherit'}}
@@ -744,9 +741,9 @@ class stage extends Component {
                     url={t.src}
                     />
 
-                  <Label inverted="true" color="violet" >
-                    <Icon className="button" size="mini" floated="left"  name="edit" onClick={(e) => this.handleCardClick(e,t)} />
-                    <Icon className="button" size="mini" floated="right" name="delete"  onClick={(e) => this.handleObjectDeleteConfirm(e,t)} />
+                  <Label inverted="true" >
+                    <Icon className="button" floated="left"  name="edit" onClick={(e) => this.handleCardClick(e,t)} />
+                    <Icon className="button" floated="right" name="trash alternate"  onClick={(e) => this.handleObjectDeleteConfirm(e,t)} />
                     <Confirm
                       content='Are you sure you want to delete this ??? '
                       open={t.confirm}
@@ -1122,7 +1119,6 @@ class stage extends Component {
                 <Segment inverted>
                 <Input
                   fluid
-                  transparent
                   inverted
                   placeholder='Name'
                   label='Name'
@@ -1137,7 +1133,6 @@ class stage extends Component {
                 <Divider />
                   <Input
                   fluid
-                  transparent
                   inverted
                   placeholder='calle, barrio, ciudad, pays'
                   label='Adress'
@@ -1397,8 +1392,7 @@ class stage extends Component {
   setStageDescription = () => (
     <ReactCardFlip id="stageDesc" style={{backgroundColor: 'transparent', height: 'auto', width: '100%'}}  isFlipped={this.state.descLock} flipDirection="vertical">
           <Card className="desc"  fluid key="front">
-            <Form fluid>
-
+            <Form>
             {this.state.stage.description}
             </Form>
           </Card>
@@ -1406,7 +1400,7 @@ class stage extends Component {
 
             <Form fluid>
               <TextArea
-                rows={4}
+                rows={2}
                 id="StageDesc"
                 className="desc-edit"
                 name="description"
@@ -1471,7 +1465,7 @@ class stage extends Component {
   }
   render() {
       return (
-        <Container className="main" fluid>
+        <Container className="main stageBoard" fluid>
         <Segment inverted className="view" >
           <Modal inverted className='preflight'
             open={this.state.preflightModal}

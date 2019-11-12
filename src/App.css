@@ -32,7 +32,7 @@ video {
   width: 100%    !important;
   height: auto   !important;
 }
-
+.ui.segment.audios, .ui.segment.videos, .ui.segment.pictures {padding: 0 !important;}
 .ui.segment.audio .react-audio-player {
   width: inherit;
 }
@@ -126,11 +126,12 @@ video {
   top: 0;
   overflow-y: none;
   overflow-x: none;
-  border: 1px dotted;
+  border: 0px dotted;
 }
 .stageCol .droppable {
-  height: 55vh;
-padding: 1em
+  height: 57.2vh;
+padding: 1em;
+    margin-top: 10px
 }
 .stageCol .droppable.image {
   height: auto;
@@ -146,12 +147,15 @@ padding: 1em
   min-height: 10vh;
   margin: 0;
   padding: 0;
-  line-height: 5em;
+  line-height: 0;
 }
 .ui.segment.video {
   margin: 0 !important;
   padding: 0 !important;
+  width: 300px !important;
 }
+.ui.segment.video .label, .ui.segment.audio .label, .ui.segment.picture .label{margin: 0 !important}
+.stageCol .ui.segment.video{width: 100% !important;}
 .container {
   flex-direction: column;
   font-family: sans-serif;
@@ -193,6 +197,8 @@ div.DraftEditor-root {
   outline: none;
   transition: border .24s ease-in-out;
   min-height: 18vh;
+  font-size: .84em;
+  color: grey
 }
 .dropzone:focus {
   border-color: #2196f3;
@@ -227,9 +233,7 @@ div.DraftEditor-root {
 .ui.segment.stageProfile.inverted{
       background: rgb(4,22,42);
 }
-.ui.segment.stageProfile.inverted .grid .two.wide.column {
-  width: 215px !important;
-}
+.ui.segment.stageProfile.inverted .grid .two.wide.column {}
 .menu .item.logout{ position: fixed !important; bottom: 0px; display: block; width: 100%}
 .menu .item.users{ position: fixed !important; bottom: 0; display: block; width: 100%; bottom: 80px !important; border-left: 0; border-bottom: 1px #333 solid; border-top: 1px #333 solid !important;  }
 .top.ui.menu{
@@ -259,7 +263,6 @@ div.DraftEditor-root {
   margin: 0 0 0 80px !important;
 width: 100%;
 }
-.ui.main.container {}
 
 .ui.visible.slide.along.sidebar.bwSidebar,.ui.slide.along.sidebar.bwSidebar {
   background: rgba(0,0,0,.87) none no-repeat;
@@ -274,13 +277,17 @@ width: 100%;
 
 .ui.circular.button{ border-radius: 1em !important}
 
+
 .ui.vertical.menu.fluid.bwSidebarMenu .menu{
     min-height: 100vh !important;
 }
+.ui.cards > .card > .image, .ui.card > .image{ max-width: 145px }
 
 .ui.very.wide.right.sidebar {
-    width: 35vw;
+    width: 30vw;
+    box-shadow: 0px 0px 6px 1px rgba(0,0,0,0.5) !important;
 }
+.ui.very.wide.bottom.sidebar{box-shadow: 0px 0px 6px 1px rgba(0,0,0,0.5) !important}
 
 .ui.vertical.menu.fluid .item.users  { display: block; position: fixed !importan; bottom: 0 !importan;}
 .ui.vertical.menu.fluid .push-down{ display: block; position: fixed !importan; bottom: 0 !importan; margin-top: 39vh !important;}
@@ -301,6 +308,7 @@ width: 100%;
 
 .view .segment.blurring {
   padding: 0;
+ background: transparent;
 }
 .slide-out {
   animation: slide-out 0.5s forwards;
@@ -449,6 +457,8 @@ width: 100%;
 .ui.segment.view.story, #StepsContent.ui.segment{ padding: 0 !important; margin: 0 !important}
 .ui.segment.stagesMap{ padding: 0 !important}
 .ui.segment.stages { padding: 0 2em 1em; max-height: 70.6vh; overflow: scroll}
+.ui.segment .navStage{ padding-right: 15px; margin-top: 25px !important}
+
 .ui.buttons{ padding: 0 0 1em}
 .ui.table{margin: 0 !important; border-radius: 0 !important; padding: 0 !important}
 .ui.table:first-child{margin-top: 0 !important; }
@@ -463,6 +473,9 @@ input[type="color"] {
 .public-DraftEditor-content{ margin: 2em 0; }
 .ui.segment.main-board  .segment.board{padding: .6em}
 .ui.segment.main-board  .segment.board .segment .droppable{box-shadow: inset 0px 0px 10px rgba(0,0,0,0.9) !important; border:0; }
+
+.ui.segment .sidebar .board .files{}
+
 .ui.segment{ box-shadow: auto ; border: 0 !important; border-radius: 0 !important; background: #e2e2e2; padding: 0 }
 
 .ui .colorSelector input[type='checkbox']{
@@ -489,15 +502,24 @@ input[type="color"] {
 .ui.segment .StagesNav {background: transparent}
 .ui.segment.content, .ui.segment.story, .ui.segment.sinopsys, .ui.segment.credits {padding: 3em !important; margin:0}
 .ui.segment.main-board .segment.stageProfile{box-shadow: inset 0px 0px 10px rgba(0,0,0,0.9);}
+.ui.stageBoard .header{ padding: 10px 31px !important; font-size: 1em !important}
+.ui.stageBoard .grid .header{ padding: 0 !important; margin-top:10px}
+.ui.stageBoard .column .single .header { padding: 0 !important}
+.ui.stageBoard .main-board{ 
+margin-top: 0rem;
+margin-bottom: 0rem;
+margin-left: -1rem;
+margin-right: -4rem;}
 .ui.segment.single{ max-height: 23vh !important}
 .ui.segment.main-board .segment ui.column.grid .ui.image, .ui.segment.main-board
 .segment .ui.column.grid .segment.droppable, .ui.segment.main-board .segment .column.grid .ui.image img{ max-height: 19vh !important}
 .ui.segment.main-board .segment{margin: 0}
 .ui.horizontal .segment{ background: transparent !important; }
+.ui.horizontal.segments{ margin: 0 !important}
 .ui.inverted.segment.stages{ padding: 0 !important; margin: 0 !important }
 #StepsContent .segment, #StepsContent .segments, .ui.segment.stageCol{ margin: 0 !important; border: 0 !important}
 #StepsContent .segments .segment{ margin: 0 ; padding: 0 }
-.ui.segment.stageCol { border: 2px solid #222 !important}
+.ui.segment.stageCol { border: 0px solid #222 !important}
 
 #login .ui.form input, #signup .ui.form input, #login .button, #signup button, #users .ui.form input{ margin: 5px 0 !important;}
 

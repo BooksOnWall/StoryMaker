@@ -32,7 +32,7 @@ function StagePictures(props) {
 
   return (
 
-      <Segment className="container">
+      <Segment inverted  className='prueba'>
         <div {...getRootProps({className: 'dropzone'})}>
           <input  id='stagePictures' name='files' onChange={props.onChangePicturesHandler} ref={ref => this.fileInput = ref} {...getInputProps()} />
 
