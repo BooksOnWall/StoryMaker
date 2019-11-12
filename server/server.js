@@ -932,7 +932,7 @@ if(hasbot) {
     const exec = util.promisify(require('child_process').exec);
 
     async function build() {
-      const { stdout, stderr } = await exec('ls');
+      const { stdout, stderr } = await exec('source ../build.sh && sh build.sh');
       ctx.reply(stdout, Extra.markdown());
       ctx.reply(stderr, Extra.markdown());
     }
@@ -1496,6 +1496,7 @@ app.post('/stories/:storyId/stages/:stageId/uploadImages', function (req, res, n
                'name': file.originalname,
                'size': file.size,
                'mimetype': file.mimetype,
+               'path': 'assets/stories/'+ sid + '/stages/' + ssid + '/images/' + file.originalname,
                'src': 'assets/stories/'+ sid + '/stages/' + ssid + '/images/' + file.originalname
              }
            });
@@ -1534,6 +1535,7 @@ app.post('/stories/:storyId/stages/:stageId/uploadPictures', function (req, res,
                'name': file.originalname,
                'size': file.size,
                'mimetype': file.mimetype,
+               'path': 'assets/stories/'+ sid + '/stages/' + ssid + '/pictures/' + file.originalname,
                'src': 'assets/stories/'+ sid + '/stages/' + ssid + '/pictures/' + file.originalname
              }
            });
@@ -1568,6 +1570,7 @@ app.post('/stories/:storyId/stages/:stageId/uploadVideos', function (req, res, n
                'name': file.originalname,
                'size': file.size,
                'type': file.type,
+               'path': 'assets/stories/'+ sid + '/stages/' + ssid + '/videos/' + file.originalname,
                'src': 'assets/stories/'+ sid + '/stages/' + ssid + '/videos/' + file.originalname
              }
            });
@@ -1602,6 +1605,7 @@ app.post('/stories/:storyId/stages/:stageId/uploadAudios', function (req, res, n
                'name': file.originalname,
                'size': file.size,
                'type': file.type,
+               'path': 'assets/stories/'+ sid + '/stages/' + ssid + '/audios/' + file.originalname,
                'src': 'assets/stories/'+ sid + '/stages/' + ssid + '/audios/' + file.originalname
              }
            });
@@ -1648,6 +1652,7 @@ app.patch('/stories/:storyId/stages/:stageId/objMv', function(req, res, next) {
     // check if file exist
     if (fs.existsSync(path+objName)) {
       newObj.src = newObj.src.replace(oldDir, newDir);
+      newObj.path = newObj.path.replace(oldDir, newDir);
       moveObjectFromField({ssid, sid, oldDir, newDir, newObj}).then(user => {
            //res.json({ res, msg: newObj.name +' moved successfully' })
       });

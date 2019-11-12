@@ -811,6 +811,7 @@ class stage extends Component {
             category:"images",
             confirm: false,
             loading: false,
+            path: img.path,
             src: server + img.src
           };
           imageArray.push(json);
@@ -829,6 +830,7 @@ class stage extends Component {
             confirm: false,
             loading: false,
             isFlipped: false,
+            path: img.path,
             src: server + img.src
           };
           picturesArray.push(json);
@@ -849,6 +851,7 @@ class stage extends Component {
             loading: false,
             loop: false,
             size: vid.size,
+            path: vid.path,
             src: server + vid.src
           };
           videosArray.push(json);
@@ -869,6 +872,7 @@ class stage extends Component {
             autoplay: false,
             isFlipped: false,
             size: a.size,
+            path: a.path,
             src: server + a.src
           };
           audiosArray.push(json);
@@ -1473,10 +1477,10 @@ class stage extends Component {
             basic
             size='small'
             >
-            
+
             <Header inverted icon='tasks' content='Preflight Check ' />
             <Segment inverted>
-            <Segment inverted><Progress size="big" percent={this.percentPreflight(this.state.preflightLog)} progress active indicating inverted size='medium' /></Segment>
+            <Segment inverted><Progress  percent={this.percentPreflight(this.state.preflightLog)} progress active indicating inverted size='medium' /></Segment>
             <Modal.Content>
               <h3>Below a check before exporting.</h3>
               <LogReport logs={this.state.preflightLog}/>
