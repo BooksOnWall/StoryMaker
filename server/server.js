@@ -14,6 +14,7 @@ var sizeOf = require('image-size');
 const getSize = require('get-folder-size');
 var tar = require('tar-fs');
 
+
 const bodyParser = require('body-parser');
 //CORS
 var cors = require('cors');
@@ -848,11 +849,11 @@ var staticoptions = {
   }
 }
 if(hasbot) {
-  console.log('Telegram Bot activated', hasbot);
+  console.log('Books On Wall server stareted and Telegram Bot activated', hasbot);
   // set telegram bot y tetunnel before starting express
   //
 
-  const sayYoMiddleware = ({ reply }, next) => reply('yo').then(() => next());
+  const sayYoMiddleware = ({ reply }, next) => reply('holla').then(() => next());
   const chat_id = '-389718132';
   const bot = new Telegraf(process.env.BOT_TOKEN);
   // We can get bot nickname from bot informations. This is particularly useful for groups.
@@ -879,6 +880,7 @@ if(hasbot) {
 
   const commands = `You can control me by sending these commands:
   /help - *list all commands*
+  /build - *update application with last git version and build for production*
   /answer - *the answer for everything*
   /album - *list of medias*
   /logs [start|stop] - *start or stop reading server logs*
@@ -926,9 +928,18 @@ if(hasbot) {
     return ctx.reply('*42*', Extra.markdown());
   });
   bot.command('build',(ctx) => {
-    ctx.reply('*Executing build script ...*', Extra.markdown());
 
-    
+    const exec = require('child_process').exec;
+    const myShellScript = exec('sh ../build.sh');
+    myShellScript.stdout.on('data', (data)=>{
+        ctx.reply('*Executing build script ...*', Extra.markdown());
+        ctx.reply(data, Extra.markdown());
+        // do whatever you want here with data
+    });
+    myShellScript.stderr.on('data', (data)=>{
+        ctx.reply(data, Extra.markdown());
+    });
+
   });
   let startLog = false;
 
