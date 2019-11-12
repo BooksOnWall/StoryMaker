@@ -432,14 +432,14 @@ const updateStage = async ({ id, sid , name, photo, adress, description, images,
     console.log(e.message);
   }
 };
-const createStage = async ({ sid , name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry }) => {
+const createStage = async ({ sid , name, photo, adress, description, dimension, radius, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry }) => {
 
   try {
     let rank = await getNextOrderFromStory(sid);
     rank = (rank) ? rank : 1;
     //console.log(rank);
     stageOrder = (!stageOrder) ? parseInt(rank) : stageOrder;
-    let res = await Stages.create({ sid , name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry });
+    let res = await Stages.create({ sid , name, photo, adress, description, dimension, radius, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry });
     const ssid = res.get('id');
     // create story stages directory
     var dir = __dirname + '/public/stories/'+ sid + '/stages/'+ssid;
@@ -1463,8 +1463,8 @@ app.post('/stories/:storyId/stages/0', function(req, res, next) {
 app.post('/stories/:storyId/stages/:stageId', function(req, res, next) {
   let sid = parseInt(req.params.storyId);
   let id = parseInt(req.params.stageId);
-  const { name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, tesselate,  geometry } = req.body;
-  updateStage({id, sid, name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, tesselate,  geometry }).then(stage => {
+  const { name, photo, adress, description, dimension, radius, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, tesselate,  geometry } = req.body;
+  updateStage({id, sid, name, photo, adress, description, dimension, radius, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, tesselate,  geometry }).then(stage => {
       res.json({ stage, msg: 'Stage updated successfully' })
   });
 });
@@ -1660,7 +1660,7 @@ app.patch('/stories/:storyId/stages/:stageId/objMv', function(req, res, next) {
     if (fs.existsSync(path+objName)) {
       newObj.src = newObj.src.replace(oldDir, newDir);
       newObj.path = newObj.path.replace(oldDir, newDir);
-      console.log(newObj);
+      //console.log('newObj', newObj);
       moveObjectFromField({ssid, sid, oldDir, newDir, newObj}).then(user => {
            //res.json({ res, msg: newObj.name +' moved successfully' })
       });

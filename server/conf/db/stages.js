@@ -26,6 +26,14 @@ module.exports.stages = {
     type: Sequelize.TEXT,
     allowNull: true,
   },
+  dimension: {
+    type: Sequelize.TEXT,
+    allowNull: true,
+  },
+  radius: {
+    type: Sequelize.TEXT,
+    allowNull: true,
+  },
   images: {
     type: Sequelize.JSON,
     allowNull: true,

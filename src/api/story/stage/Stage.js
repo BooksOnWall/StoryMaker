@@ -101,6 +101,8 @@ class stage extends Component {
           images: null,
           pictures: null,
           description: null,
+          dimension: null,
+          radius: null,
           videos: null,
           audios: null,
           onZoneEnter: null,
@@ -394,6 +396,8 @@ class stage extends Component {
       ssid: this.state.stage.ssid,
       name: this.state.stage.name,
       adress: this.state.stage.adress,
+      dimension: this.state.stage.dimension,
+      radius: this.state.stage.radius,
       photo: this.state.stage.photo,
       images: this.state.stage.images,
       pictures: this.state.stage.pictures,
@@ -799,7 +803,6 @@ class stage extends Component {
 
     if(list) {
       let tasks = this.state.tasks;
-      let server = this.state.server;
       switch(cat) {
         case 'Images':
         let imageArray =[];
@@ -922,6 +925,8 @@ class stage extends Component {
         sid: this.state.stage.sid,
         name: this.state.stage.name,
         adress: this.state.stage.adress,
+        dimension: this.state.stage.dimension,
+        radius: this.state.stage.radius,
         images: this.state.stage.images,
         pictures: this.state.stage.pictures,
         videos: this.state.stage.videos,
@@ -971,6 +976,8 @@ class stage extends Component {
           ssid: this.state.stage.ssid,
           name: this.state.stage.name,
           adress:this.state.stage.adress,
+          dimension: this.state.stage.dimension,
+          radius: this.state.stage.radius,
           photo: this.state.stage.photo,
           images: this.state.stage.images,
           pictures: this.state.stage.pictures,
@@ -1016,6 +1023,8 @@ class stage extends Component {
         name: (e.target.name === 'name') ? e.target.value : this.state.stage.name,
         adress: (e.target.name === 'adress') ? e.target.value : this.state.stage.adress,
         description: (e.target.name === 'description') ? e.target.value : this.state.stage.description,
+        dimension: (e.target.name === 'dimension') ? e.target.value : this.state.stage.dimension,
+        radius: (e.target.name === 'radius') ? e.target.value : this.state.stage.radius,
         photo: this.state.stage.photo,
         images: this.state.stage.images,
         pictures: this.state.stage.pictures,
@@ -1048,6 +1057,8 @@ class stage extends Component {
           ssid: this.state.stage.ssid,
           name: this.state.stage.name,
           adress:this.state.stage.adress,
+          dimension: this.state.stage.dimension,
+          radius: this.state.stage.radius,
           photo: this.state.stage.photo,
           images: this.state.stage.images,
           pictures: this.state.stage.pictures,
@@ -1145,6 +1156,32 @@ class stage extends Component {
                   defaultValue={values.adress}
                   />
                 {errors.adress && touched.adress && errors.adress}
+                <Divider />
+                  <Input
+                  fluid
+                  inverted
+                  placeholder='en meter ex: 1.5x2.5'
+                  label='Dimension'
+                  type="text"
+                  name="dimension"
+                  onChange={e => this.handleChange(e)}
+                  onBlur={e => handleBlur}
+                  defaultValue={values.dimension}
+                  />
+                {errors.dimension && touched.dimension && errors.dimension}
+                <Divider />
+                  <Input
+                  fluid
+                  inverted
+                  placeholder='en meter ex: 50'
+                  label='Radius'
+                  type="text"
+                  name="radius"
+                  onChange={e => this.handleChange(e)}
+                  onBlur={e => handleBlur}
+                  defaultValue={values.radius}
+                  />
+                {errors.radius && touched.radius && errors.radius}
                 <Divider />
                   <Input
                   fluid
