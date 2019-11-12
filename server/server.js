@@ -28,7 +28,7 @@ const host = process.env.SERVER_HOST;
 const protocol = process.env.SERVER_PROTOCOL;
 const port = process.env.SERVER_PORT;
 const hasbot = JSON.parse(process.env.BOT_ACTIVE);
-
+const serverUrl = protocol + '://'+ host + ':' + port +'/';
 // get mysql connection & credentials parameters
 let config = require('./conf/mysql');
 
@@ -576,9 +576,10 @@ const checkPreFlight =  (obj) => {
     // check photo
     if(obj.photo && obj.photo.length > 0 && obj.photo[0].src) {
       let src = obj.photo[0].src;
+      let objectpath = obj.photo[0].path;
       check = (obj.photo && obj.photo.length === 1) ? {ssid: obj.id, category: 'photo', condition: 'There can be only one photo' , check: true} : {ssid: obj.id, category: 'photo', src: src, condition: 'There can be only one photo' , check: false};
       log.push(check);
-      let path = (obj.photo[0]) ? './public/' + src.replace(url,'') : null;
+      let path = (obj.photo[0]) ? './public/' + objectpath : null;
       // check photo dimension
       let photoDimensions = (path) ?  sizeOf(path) : null;
       check = (photoDimensions && photoDimensions.width === photoDimensions.height) ? {ssid: obj.id, category: 'photo', condition: 'Photo must be square' , check: true} : {ssid: obj.id, category: 'photo', condition: 'Photo must be square' , check: false, src: src, path: path, error:  obj.name + ' Photo is:' + photoDimensions.width + ' x ' + photoDimensions.height};
@@ -598,7 +599,7 @@ const checkPreFlight =  (obj) => {
       if(pictures) {
         let picsDim=[];
          pictures.map(pic => {
-          let path = './public/'+pic.image.src.replace('assets/','');
+          let path = './public/'+pic.image.path;
           let src = pic.image.src;
           let picDimensions = sizeOf(path);
           picDimensions.name = pic.image.name;
@@ -794,7 +795,15 @@ const moveObjectFromField = async ({ssid, sid, oldDir, newDir, newObj}) => {
       return list;
     });
     // update removed array with database
+    // doublecheck that list has been cleaned after the drag
+    console.log('name',objName);
+    list = (list) ? list.filter(function (lobj) {
+      console.log('lobj.name', lobj.name)
+       return lobj.name !== objName;
+    }) : null ;
     list = (list && list.length > 0 ) ? list : null;
+    console.log('list', list);
+    console.log('new list', newList);
     let field = oldDir;
     let fieldValue = list;
     //update db with the object removed from category
@@ -1492,13 +1501,13 @@ app.post('/stories/:storyId/stages/:stageId/uploadImages', function (req, res, n
          req.files.forEach( function(file) {
 
            images.push({
-             'image': {
+               'category': 'images',
                'name': file.originalname,
                'size': file.size,
+               'type': 'image',
                'mimetype': file.mimetype,
                'path': 'assets/stories/'+ sid + '/stages/' + ssid + '/images/' + file.originalname,
-               'src': 'assets/stories/'+ sid + '/stages/' + ssid + '/images/' + file.originalname
-             }
+               'src': serverUrl + 'assets/stories/'+ sid + '/stages/' + ssid + '/images/' + file.originalname
            });
           });
         updateFieldFromStage({ssid: ssid, sid: sid, field: 'images', fieldValue: images}).then((stage) => {
@@ -1531,13 +1540,13 @@ app.post('/stories/:storyId/stages/:stageId/uploadPictures', function (req, res,
          req.files.forEach( function(file) {
 
            images.push({
-             'image': {
+               'category': 'pictures',
                'name': file.originalname,
                'size': file.size,
+               'type': 'picture',
                'mimetype': file.mimetype,
                'path': 'assets/stories/'+ sid + '/stages/' + ssid + '/pictures/' + file.originalname,
-               'src': 'assets/stories/'+ sid + '/stages/' + ssid + '/pictures/' + file.originalname
-             }
+               'src': serverUrl + 'assets/stories/'+ sid + '/stages/' + ssid + '/pictures/' + file.originalname
            });
           });
         updateFieldFromStage({ssid: ssid, sid: sid, field: 'pictures', fieldValue: images}).then(stage =>
@@ -1566,13 +1575,12 @@ app.post('/stories/:storyId/stages/:stageId/uploadVideos', function (req, res, n
         let videos=[];
          req.files.forEach( function(file) {
            videos.push({
-             'video': {
                'name': file.originalname,
+               'category': 'videos',
                'size': file.size,
-               'type': file.type,
+               'type': 'video',
                'path': 'assets/stories/'+ sid + '/stages/' + ssid + '/videos/' + file.originalname,
-               'src': 'assets/stories/'+ sid + '/stages/' + ssid + '/videos/' + file.originalname
-             }
+               'src': serverUrl + 'assets/stories/'+ sid + '/stages/' + ssid + '/videos/' + file.originalname
            });
           });
         updateFieldFromStage({ssid: ssid, sid: sid, field: 'videos', fieldValue: videos}).then(stage =>
@@ -1601,13 +1609,12 @@ app.post('/stories/:storyId/stages/:stageId/uploadAudios', function (req, res, n
         let audios=[];
          req.files.forEach( function(file) {
            audios.push({
-             'audio': {
                'name': file.originalname,
+               'category': 'audios',
                'size': file.size,
-               'type': file.type,
+               'type': 'audio',
                'path': 'assets/stories/'+ sid + '/stages/' + ssid + '/audios/' + file.originalname,
-               'src': 'assets/stories/'+ sid + '/stages/' + ssid + '/audios/' + file.originalname
-             }
+               'src': serverUrl + 'assets/stories/'+ sid + '/stages/' + ssid + '/audios/' + file.originalname
            });
           });
         updateFieldFromStage({ssid: ssid, sid: sid, field: 'audios', fieldValue: audios}).then(stage =>
@@ -1653,6 +1660,7 @@ app.patch('/stories/:storyId/stages/:stageId/objMv', function(req, res, next) {
     if (fs.existsSync(path+objName)) {
       newObj.src = newObj.src.replace(oldDir, newDir);
       newObj.path = newObj.path.replace(oldDir, newDir);
+      console.log(newObj);
       moveObjectFromField({ssid, sid, oldDir, newDir, newObj}).then(user => {
            //res.json({ res, msg: newObj.name +' moved successfully' })
       });

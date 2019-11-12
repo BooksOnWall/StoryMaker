@@ -316,6 +316,7 @@ class stage extends Component {
   onDrop = async (ev, cat) => {
     // move object from category
     try {
+      console.log('drop');
       let id = ev.dataTransfer.getData("id");
       let obj ={};
       let newObj={};
@@ -360,6 +361,7 @@ class stage extends Component {
                 task.loading = !task.loading;
                 //return new path
                 task.src = data.obj.src;
+                task.path = data.obj.path;
               }
               return task;
             });
@@ -367,7 +369,7 @@ class stage extends Component {
                 ...this.state,
                 tasks
             });
-
+            console.log('drag terminated');
           }
         })
         .catch((error) => {
@@ -802,17 +804,16 @@ class stage extends Component {
         case 'Images':
         let imageArray =[];
         list.forEach(function(image) {
-          let img = image.image;
           let json = {
-            name: img.name,
-            type: "image",
-            size: img.size,
+            name: image.name,
+            type: image.type,
+            size: image.size,
             isFlipped: false,
-            category:"images",
+            category: image.category,
             confirm: false,
             loading: false,
-            path: img.path,
-            src: server + img.src
+            path: image.path,
+            src: image.src
           };
           imageArray.push(json);
         });
@@ -821,17 +822,16 @@ class stage extends Component {
         case 'Pictures':
         let picturesArray =[];
         list.forEach(function(image) {
-          let img = image.image;
           let json = {
-            name: img.name,
-            type: "image",
-            category:"pictures",
-            size: img.size,
+            name: image.name,
+            type: image.type,
+            category: image.category,
+            size: image.size,
             confirm: false,
             loading: false,
             isFlipped: false,
-            path: img.path,
-            src: server + img.src
+            path: image.path,
+            src: image.src
           };
           picturesArray.push(json);
         });
@@ -840,19 +840,18 @@ class stage extends Component {
         case 'Videos':
         let videosArray =[];
         list.forEach(function(video) {
-          let vid = video.video;
           let json = {
-            name: vid.name,
-            type: "video",
-            category:"videos",
+            name: video.name,
+            type: video.type,
+            category: video.category,
             isFlipped: false,
             autoplay: false,
             confirm: false,
             loading: false,
             loop: false,
-            size: vid.size,
-            path: vid.path,
-            src: server + vid.src
+            size: video.size,
+            path: video.path,
+            src: video.src
           };
           videosArray.push(json);
         });
@@ -861,19 +860,18 @@ class stage extends Component {
         case 'Audios':
         let audiosArray =[];
         list.forEach(function(audio) {
-          let a = audio.audio;
           let json = {
-            name: a.name,
-            type: "audio",
-            category:"audios",
+            name: audio.name,
+            type: audio.type,
+            category:audio.category,
             confirm: false,
             loading: false,
             loop: false,
             autoplay: false,
             isFlipped: false,
-            size: a.size,
-            path: a.path,
-            src: server + a.src
+            size: audio.size,
+            path: audio.path,
+            src: audio.src
           };
           audiosArray.push(json);
         });
