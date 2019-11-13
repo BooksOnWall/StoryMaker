@@ -576,11 +576,11 @@ const checkPreFlight =  (obj) => {
     if(obj.photo && obj.photo.length > 0 && obj.photo[0].src) {
       let src = obj.photo[0].src;
       let objectpath =(obj.photo[0]) ? obj.photo[0].path.substring(7) : null;
-      console.log('objectpath',objectpath);
+
       check = (obj.photo && obj.photo.length === 1) ? {ssid: obj.id, category: 'photo', condition: 'There can be only one photo' , check: true} : {ssid: obj.id, category: 'photo', src: src, condition: 'There can be only one photo' , check: false};
       log.push(check);
       let path = (obj.photo[0] && objectpath ) ? __dirname +'/public/' + objectpath : null;
-      console.log('path',path);
+
       if(path) {
         // check photo dimension
         let photoDimensions = (path) ?  sizeOf(path) : null;
@@ -601,12 +601,14 @@ const checkPreFlight =  (obj) => {
     // check picture dimensions
     let pictures = (obj.pictures) ? obj.pictures : null ;
       if(pictures) {
+        pictures = (typeof(pictures) === 'string') ? JSON.parse(pictures) : pictures;
         let picsDim=[];
          pictures.map(pic => {
-          let path = './public/'+pic.image.path.substring(7);
-          let src = pic.image.src;
+
+          let path = './public/'+pic.path.substring(7);
+          let src = pic.src;
           let picDimensions = sizeOf(path);
-          picDimensions.name = pic.image.name;
+          picDimensions.name = pic.name;
           picDimensions.path = path;
           picDimensions.src = src;
           picDimensions.Oversize =  (picDimensions.width <= 2000 && picDimensions.height <= 2000) ? false :true;
@@ -660,6 +662,7 @@ const checkPreFlight =  (obj) => {
     //console.log('pictures', pics);
     // onPictureMatch
     if(obj.onPictureMatch) {
+      obj.onPictureMatch = (typeof(obj.onPictureMatch) === 'string') ? JSON.parse(obj.onPictureMatch) : obj.onPictureMatch;
       check = (obj.onPictureMatch[0] && obj.onPictureMatch[0].type === 'video') ? {ssid: obj.id, category: 'onPictureMatch', condition: 'File must be a video' , check: true} : {ssid: obj.id, category: 'onPictureMatch', condition: 'There must be one video' , check: false, error: 'No video'};
       log.push(check);
     } else {
