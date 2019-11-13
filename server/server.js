@@ -568,7 +568,6 @@ const checkPreFlight =  (obj) => {
   // OnPictureMatch / Audio 1 Minimun / Codec Mp3 / Max size 5mb
   // OnZoneLeave / Audio 1 Minimun / Codec Mp3 / Max size 5mb / Loop
 
-  let url = protocol+ '://'+host+':'+port+'/assets/';
   let log = [];
   //console.log(obj);
   let check = {};
@@ -576,10 +575,12 @@ const checkPreFlight =  (obj) => {
     // check photo
     if(obj.photo && obj.photo.length > 0 && obj.photo[0].src) {
       let src = obj.photo[0].src;
-      let objectpath = obj.photo[0].path;
+      let objectpath = obj.photo[0].path.substring(7);
+      console.log('objectpath',objectpath);
       check = (obj.photo && obj.photo.length === 1) ? {ssid: obj.id, category: 'photo', condition: 'There can be only one photo' , check: true} : {ssid: obj.id, category: 'photo', src: src, condition: 'There can be only one photo' , check: false};
       log.push(check);
-      let path = (obj.photo[0]) ? './public/' + objectpath : null;
+      let path = (obj.photo[0]) ? __dirname +'/public/' + objectpath : null;
+      console.log('path',path);
       // check photo dimension
       let photoDimensions = (path) ?  sizeOf(path) : null;
       check = (photoDimensions && photoDimensions.width === photoDimensions.height) ? {ssid: obj.id, category: 'photo', condition: 'Photo must be square' , check: true} : {ssid: obj.id, category: 'photo', condition: 'Photo must be square' , check: false, src: src, path: path, error:  obj.name + ' Photo is:' + photoDimensions.width + ' x ' + photoDimensions.height};
@@ -599,7 +600,7 @@ const checkPreFlight =  (obj) => {
       if(pictures) {
         let picsDim=[];
          pictures.map(pic => {
-          let path = './public/'+pic.image.path;
+          let path = './public/'+pic.image.path.substring(7);
           let src = pic.image.src;
           let picDimensions = sizeOf(path);
           picDimensions.name = pic.image.name;
