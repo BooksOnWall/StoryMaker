@@ -74,7 +74,8 @@ video {
   background-color: transparent !important;
   border: 0 !important;
 }
-.ui.card.desc {
+#stageDesc .desc {
+  background-color: transparent!imoprtant;
   box-shadow: none !important;
 }
 .accordion .title, .accordion .title button {
@@ -129,13 +130,15 @@ video {
   border: 0px dotted;
 }
 .stageCol .droppable {
-  height: 57.2vh;
+  height: 56.5vh;
 padding: 1em;
     margin-top: 10px
 }
 .stageCol .droppable.image {
   height: auto;
 }
+.droppable .label{font-size: 6px}
+.photo .label.label{ margin: 0 !important}
 .ui.card .droppable.single {
   width: 'inherit';
   padding: 0;
@@ -149,6 +152,11 @@ padding: 1em;
   padding: 0;
   line-height: 0;
 }
+.main.board .draggable.photo {width:100px !important}
+.draggable.image , .draggable.audio , .draggable.picture , .draggable.video { box-shadow: 1px 1px 6px 1px rgba(0,0,0,0.5) !important;}
+.draggable.image .icon, .draggable.audio .icon, .draggable.picture .icon, .draggable.video .icon{ margin: 0 !important}
+.draggable.pictures{ width: 140px !important; margin: 5px !important}
+
 .ui.segment.video {
   margin: 0 !important;
   padding: 0 !important;
@@ -207,9 +215,7 @@ div.DraftEditor-root {
 .dropzone.disabled {
   opacity: 0.6;
 }
-.dropzone {
-  height : 15vh;
-}
+
 .ui.button.right.floated{display: inherit !important; margin-left: auto !important; }
 
 @keyframes App-logo-spin {
@@ -281,13 +287,15 @@ width: 100%;
 .ui.vertical.menu.fluid.bwSidebarMenu .menu{
     min-height: 100vh !important;
 }
-.ui.cards > .card > .image, .ui.card > .image{ max-width: 145px }
+.ui.cards > .card > .image, .ui.card > .image{  }
 
 .ui.very.wide.right.sidebar {
-    width: 30vw;
+    width: 25vw;
     box-shadow: 0px 0px 6px 1px rgba(0,0,0,0.5) !important;
 }
 .ui.very.wide.bottom.sidebar{box-shadow: 0px 0px 6px 1px rgba(0,0,0,0.5) !important}
+
+.stageBoard .menu.sidebar .divider{margin: 1em auto !important;}
 
 .ui.vertical.menu.fluid .item.users  { display: block; position: fixed !importan; bottom: 0 !importan;}
 .ui.vertical.menu.fluid .push-down{ display: block; position: fixed !importan; bottom: 0 !importan; margin-top: 39vh !important;}
@@ -472,7 +480,7 @@ input[type="color"] {
 
 .public-DraftEditor-content{ margin: 2em 0; }
 .ui.segment.main-board  .segment.board{padding: .6em}
-.ui.segment.main-board  .segment.board .segment .droppable{box-shadow: inset 0px 0px 10px rgba(0,0,0,0.9) !important; border:0; }
+.ui.segment.main-board  .segment.board .segment .droppable{box-shadow: inset 0px 0px 5px rgba(0,0,0,0.9) !important; border:0; background: #111  }
 
 .ui.segment .sidebar .board .files{}
 
@@ -548,7 +556,10 @@ margin-right: -4rem;}
     background: url() no-repeat right white;
 }
 
-.segment .stagePhoto{ text-align: center}
+.segment .stagePhoto{ text-align: center; width: 100px !important; min-height: 100px !important;}
+
+.segment .ui.column.grid .segment.droppable, .ui.segment.main-board .segment .column.grid .ui.image img{ height: 100px; width: 100px; padding: 0}
+
 
 .ui.main .ui.form .ui.labeled.input.inverted > span, .ui.labeled.input > .label, .ui .inverted .label.label{color: #fff; background: #222 !important; padding: 10px; font-weight: 600}
 .ui.main .ui.form  .checkbox.inverted .label, .ui.main .ui.form .input.labeled input{ color: #fff}

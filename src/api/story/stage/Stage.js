@@ -521,23 +521,25 @@ class stage extends Component {
               key={'img_'+index}
               onDragStart = {(e) => this.onDragStart(e, t.name)}
               draggable
-              className="draggable image"
-              style={{height: 'auto', width: 'inherit', padding:0}}
+              className={'draggable image ' + t.category}
+              style={{height: 'auto', padding:0, margin:0}}
               >
               <Dimmer.Dimmable as={Segment} blurring dimmed={t.loading}>
                 <Dimmer active={t.loading} onClickOutside={this.handleHide} />
-                  <ReactCardFlip style={{height: 'auto', width: 'inherit'}} isFlipped={t.isFlipped} flipDirection="horizontal">
+                  <ReactCardFlip style={{height: 'auto', width: '100px'}} isFlipped={t.isFlipped} flipDirection="horizontal">
                     <Card className="fluid" key="front">
                       <Image
                         wrapped={(t.category ==='Images') ? true : null}
+                        className={t.category}
                         size={(t.category ==='Images') ? 'small': null}
                         name={t.name}
                         key={t.name}
                         src={t.src}
+                        style={{padding:0, margin:0}}
                         />
                       <Label inverted="true" color="violet" >
-                        <Icon className="button" floated="left"  name="edit" onClick={(e) => this.handleCardClick(e,t)} />
-                        <Icon className="button" floated="right" name="trash alternate"  onClick={(e) => this.handleObjectDeleteConfirm(e,t)} />
+                        <Icon className="button left floated" floated="left" name="edit" onClick={(e) => this.handleCardClick(e,t)} />
+                        <Icon className="button right floated" floated="right" name="trash alternate"  onClick={(e) => this.handleObjectDeleteConfirm(e,t)} />
                         <Confirm
                           content='Are you sure you want to delete this ??? '
                           open={t.confirm}
@@ -580,7 +582,7 @@ class stage extends Component {
               color="blue"
               name={'picture_'+index}
               key={'pic_'+index}
-              style={{height: 'auto', width: 'inherit'}}
+              style={{height: 'auto', width: '160px', padding:'.5em'}}
               onDragStart = {(e) => this.onDragStart(e, t.name)}
               draggable
               className="draggable picture"
@@ -596,8 +598,8 @@ class stage extends Component {
                     key={t.name}
                     />
                   <Label inverted="true" color="violet" >
-                    <Icon className="button" floated="left"  name="edit" onClick={(e) => this.handleCardClick(e,t)} />
-                    <Icon className="button" floated="right" name="trash alternate"  onClick={(e) => this.handleObjectDeleteConfirm(e,t)} />
+                    <Icon className="button left floated" floated="left"  name="edit" onClick={(e) => this.handleCardClick(e,t)} />
+                    <Icon className="button right floated" floated="right" name="trash alternate"  onClick={(e) => this.handleObjectDeleteConfirm(e,t)} />
                     <Confirm
                       content='Are you sure you want to delete this ??? '
                       open={t.confirm}
@@ -612,7 +614,7 @@ class stage extends Component {
                 <Card fluid key="back">
                   <Form style={{textAlign: 'left'}}>
                       <Button primary onClick={(e) => this.handleCardClick(e,t)}><Icon name="arrow left" /> Back</Button>
-                    <Label.Group color='blue' style={{padding: '2em'}}>
+                    <Label.Group inverted style={{padding: '2em'}}>
                       <Label as='a'>
                         Name:
                         <Label.Detail>{t.name}</Label.Detail>
@@ -648,17 +650,7 @@ class stage extends Component {
               <ReactCardFlip style={{height: 'auto', backgroundColor: 'transparent' , width: 'inherit'}} isFlipped={t.isFlipped} flipDirection="vertical">
                 <Card  color='blue' className="fluid" key="front" style={{ backgroundColor: 'transparent' }}>
                   <Label inverted="true" color="violet">
-                    <Icon className="button" floated="left"  name="edit" onClick={(e) => this.handleCardClick(e,t)} />
-                    <Icon className="button" floated="right" name="trash alternate"  onClick={(e) => this.handleObjectDeleteConfirm(e,t)} />
-                      <Confirm
-                        content='Are you sure you want to delete this ??? '
-                        open={t.confirm}
-                        cancelButton='Never mind'
-                        confirmButton="Yes ! let's destroy it !"
-                        onCancel={(e) => this.handleObjectDeleteCancel(e,t)}
-                        onConfirm={(e) => this.handleObjectDelete(e, t)}
-                      />
-                    {t.name}: {humanFileSize(t.size)}
+                    {t.name} <span className="right floated">{humanFileSize(t.size)}</span>
                   </Label>
                   <ReactAudioPlayer
                     src={t.src}
@@ -666,6 +658,18 @@ class stage extends Component {
                     loop={t.loop}
                     controls
                     />
+                    <Label>
+                    <Icon className="button left floated" floated="left"  name="edit" onClick={(e) => this.handleCardClick(e,t)} />
+                    <Icon className="button right floated" floated="right" name="trash alternate"  onClick={(e) => this.handleObjectDeleteConfirm(e,t)} />
+                      <Confirm
+                        content='Are you sure you want to delete this ??? '
+                        open={t.confirm}
+                        cancelButton='Never mind'
+                        confirmButton="Yes ! let's destroy it !"
+                        onCancel={(e) => this.handleObjectDeleteCancel(e,t)}
+                        onConfirm={(e) => this.handleObjectDelete(e, t)}
+                      />                    
+                    </Label>
                 </Card>
                 <Card color='blue' fluid key="back" >
                   <Form style={{textAlign: 'left'}}>
@@ -712,7 +716,10 @@ class stage extends Component {
                 <Dimmer active={t.loading} onClickOutside={this.handleHide} />
                 <ReactCardFlip style={{height: 'auto', backgroundColor: 'transparent' , width: 'inherit'}} isFlipped={t.isFlipped} flipDirection="vertical">
                   <Card className="fluid" style={{ backgroundColor: 'transparent' }} key="front">
-                    <ReactPlayer
+                  <Label inverted="true" color="violet" fluid>
+                    {t.name} <span className="right floated">{humanFileSize(t.size)}</span>
+                  </Label>                    
+                      <ReactPlayer
                       playsinline={true}
                       playing={t.autoplay}
                       preload="true"
@@ -742,8 +749,8 @@ class stage extends Component {
                     />
 
                   <Label inverted="true" >
-                    <Icon className="button" floated="left"  name="edit" onClick={(e) => this.handleCardClick(e,t)} />
-                    <Icon className="button" floated="right" name="trash alternate"  onClick={(e) => this.handleObjectDeleteConfirm(e,t)} />
+                    <Icon className="button left floated" floated="left"  name="edit" onClick={(e) => this.handleCardClick(e,t)} />
+                    <Icon className="button right floated" floated="right" name="trash alternate"  onClick={(e) => this.handleObjectDeleteConfirm(e,t)} />
                     <Confirm
                       content='Are you sure you want to delete this ??? '
                       open={t.confirm}
@@ -1116,10 +1123,11 @@ class stage extends Component {
               /* and other goodies */
             }) => (
               <Form inverted onSubmit={this.handleSubmit}>
-                <Segment inverted>
+                <Segment inverted style={{marginTop:'15px'}}>
                 <Input
                   fluid
                   inverted
+                  transparent          
                   placeholder='Name'
                   label='Name'
                   autoFocus={true}
@@ -1134,6 +1142,7 @@ class stage extends Component {
                   <Input
                   fluid
                   inverted
+                  transparent
                   placeholder='calle, barrio, ciudad, pays'
                   label='Adress'
                   type="text"
@@ -1172,13 +1181,13 @@ class stage extends Component {
                   defaultValue={values.type}
                   />
                 {errors.stagetype && touched.stagetype && errors.stagetype}
-
+                <Divider />
                 <Button onClick={handleSubmit} floated='right' primary  size='large' type="submit" disabled={isSubmitting}>
                   {(this.state.mode === 'create') ? 'Create' : 'Update'}
                 </Button>
                 {(this.state.mode === 'update') ? (
                   <div>
-                    <Button onClick={this.stageDeleteShow} color='red'  size='large' type="submit" disabled={isSubmitting}>
+                    <Button onClick={this.stageDeleteShow} color='red' floated='left' size='large' type="submit" disabled={isSubmitting}>
                       <FormattedMessage id="app.story.stage.delete" defaultMessage={`Delete stage`}/>
                     </Button>
                     <Confirm
@@ -1391,14 +1400,14 @@ class stage extends Component {
 
   setStageDescription = () => (
     <ReactCardFlip id="stageDesc" style={{backgroundColor: 'transparent', height: 'auto', width: '100%'}}  isFlipped={this.state.descLock} flipDirection="vertical">
-          <Card className="desc"  fluid key="front">
+          <Container className="desc" inverted fluid key="front" style={{ padding:0 }}>
             <Form>
             {this.state.stage.description}
             </Form>
-          </Card>
-          <Card className="desc"  fluid key="back">
+          </Container>
+          <Container className="desc transparent" inverted fluid key="back" style={{ padding:0 }}>
 
-            <Form fluid>
+            <Form fluid style={{display: 'inherit', width: '100%' }}>
               <TextArea
                 rows={2}
                 id="StageDesc"
@@ -1406,10 +1415,11 @@ class stage extends Component {
                 name="description"
                 placeholder='Description'
                 defaultValue={this.state.stage.description}
+                style={{width: '100%'}}
               />
-            <Button loading={this.state.saveDescLoading} circular icon="save" primary onClick={this.updateStageDescription} />
+             <Icon className="button left floated" floated="left" name="save outline"  onClick={this.updateStageDescription}  />
           </Form>
-          </Card>
+          </Container>
         </ReactCardFlip>)
   handleStageStep = (e) => this.setState({stageStep: e.target.name})
   handleExport = () => {

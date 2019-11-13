@@ -291,7 +291,7 @@ class DragDrop extends Component {
        <Dimmer.Dimmable inverted as={Segment} blurring dimmed={this.state.loading}>
           <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
             <div className="container-drag">
-              <Sidebar.Pushable as={Segment} >
+              <Sidebar.Pushable as={Segment} inverted>
                 <Sidebar
                   as={Menu}
                   animation={this.state.animation2}
@@ -301,27 +301,23 @@ class DragDrop extends Component {
                   onHide={this.props.handleTopSidebarHide}
                   visible={this.props.topSidebarVisible}
                   width='very wide'
-                  style={{maxHeight: '100vh'}}
+                  style={{}}
                   >
-                  <Segment.Group  horizontal style={{height: 'auto', width: 'inherit'}}>
-                    <Segment inverted >
-                      <Button.Group fluid>
+
+
+                    <Segment inverted style={{width:"100%"}}>
+                      <Button.Group inverted fluid>
                         <Button name="Stage" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Stage') ? true : false } ><FormattedMessage id="app.story.board.stage" defaultMessage={`Stage`}/></Button>
                         <Button name="Geo" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Geo') ? true : false }>Geo</Button>
                         <Button name="Images" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Images') ? true : false }><FormattedMessage id="app.story.board.images" defaultMessage={`Images`}/></Button>
                       </Button.Group>
-                    </Segment>
-
-                    <Segment>
-
                       {(this.props.stageStep === 'Stage') ? this.props.editStage() : ''}
                       {(this.props.stageStep === 'Images') ? (
-                        <Segment stacked>
-                          <Segment
+                        <Segment stacked inverted>
+                          <Segment  style={{width:"100%", padding:0}}
                             className="images"
                             onDragOver={(e)=>this.props.onDragOver(e)}
                             onDrop={(e)=>{this.props.onDrop(e, "images")}}>
-                            <Button className="task-header"><FormattedMessage id="app.story.board.images" defaultMessage={`Images`}/></Button>
                             {tasks.images}
                           </Segment>
                           <ObjectsPreview
@@ -344,10 +340,10 @@ class DragDrop extends Component {
                             sid={this.props.state.sid}
                             setStageLocation={this.props.setStageLocation}
                             stageLocation={this.props.stage.stageLocation}
+                            style={{width:"100%", padding:0}}
                             />
                         ) : ''}
                       </Segment>
-                    </Segment.Group>
 
                   </Sidebar>
                   <Sidebar inverted
@@ -355,7 +351,7 @@ class DragDrop extends Component {
                     animation={this.state.animation}
                     direction={this.state.direction}
                     vertical
-                    style={{padding: 0, maxHeight: '40vh'}}
+                    style={{padding: 0, maxHeight: '50vh'}}
                     dimmed={this.state.dimmed}
                     onHide={this.props.handleSidebarHide}
                     target={this.segmentRef}
@@ -363,7 +359,7 @@ class DragDrop extends Component {
                     visible={this.props.sidebarVisible}
                     >                    
                     <Segment.Group horizontal  >
-                        <Segment inverted style={{maxWidth: '18vh'}}>   
+                        <Segment inverted fluid style={{maxWidth: '20vh'}}>   
                             <Button.Group inverted vertical>
                               <Button name="Pictures" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Pictures') ? true : false }><FormattedMessage id="app.story.board.pictures" defaultMessage={`Pictures`}/></Button>
                               <Button name="Videos" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Videos') ? true : false }>Videos</Button>
@@ -458,14 +454,16 @@ class DragDrop extends Component {
                         <Segment className="main-board">
                             <Segment className='stageProfile' inverted style={{minHeight: '18vh'}}>
                               <Grid columns={3}>
-                                <Grid.Column mobile={16} tablet={4} computer={2} className='stagePhoto' onDragOver={(e)=>this.props.onDragOver(e)}
+                                <Grid.Column mobile={16} tablet={4} computer={2} className='stagePhoto'>
+                                    <Segment style={{padding:'0', background: 'transparent'}} onDragOver={(e)=>this.props.onDragOver(e)}
                                     onDrop={(e)=>this.props.onDrop(e, "photo")}>
                                     {(tasks.photo.length > 0) ? tasks.photo : <Image src='https://react.semantic-ui.com/images/avatar/large/matthew.png' wrapped  /> }
+                                    </Segment>
                                 </Grid.Column>
                                 <Grid.Column mobile={16} tablet={8} computer={6}>
                                     <Header inverted as='h4'>{this.props.stage.name}</Header>
-                                    {this.props.setStageDescription()} <br /> 
-                                    <Button circular primary floated='left' icon='edit' onClick={this.props.toggleLock} />
+                                    {this.props.setStageDescription()} 
+                                    <Icon className="button left floated" floated="left" name="edit outline"  onClick={this.props.toggleLock}  />
                                 </Grid.Column>
                                 <Grid.Column textAlign='right' mobile={16} tablet={8} computer={8}>
                                     {(this.props.stages) ? this.StagesNav(this.props.stages, this.props.stage) : null}
@@ -474,7 +472,7 @@ class DragDrop extends Component {
                            </Segment>
 
                         <Ref innerRef={this.segmentRef}>
-                        <Segment inverted className="board" style={{minHeight: '65.8vh'}} fluid="true">
+                        <Segment inverted className="board" style={{minHeight: '65.2vh'}} fluid="true">
                           <Resizable
                             style={resizeStyle}
                             defaultSize={this.state.col2DefaultSize}

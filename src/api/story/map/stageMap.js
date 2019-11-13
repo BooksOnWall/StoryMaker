@@ -183,7 +183,7 @@ handleOnResult = event => {
   render() {
     const {mapStyle, viewport, searchResultLayer, interactiveLayerIds,  loading} = this.state;
     return (
-      <Segment  className="stageMap" >
+      <Segment  className="stageMap" style={{padding:0}} >
         <Dimmer.Dimmable as={Segment} blurring dimmed={this.state.loading}>
           <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
             <Loader active={loading} >Get map info</Loader>
