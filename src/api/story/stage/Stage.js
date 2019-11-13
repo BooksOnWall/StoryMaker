@@ -601,6 +601,7 @@ class stage extends Component {
                     wrapped={(t.category === 'Pictures') ? true : null}
                     size={(t.category === 'Pictures') ? 'mini': null}
                     name={t.name}
+                    src={t.src}
                     key={t.name}
                     />
                   <Label inverted="true" color="violet" >
@@ -674,7 +675,7 @@ class stage extends Component {
                         confirmButton="Yes ! let's destroy it !"
                         onCancel={(e) => this.handleObjectDeleteCancel(e,t)}
                         onConfirm={(e) => this.handleObjectDelete(e, t)}
-                      />                    
+                      />
                     </Label>
                 </Card>
                 <Card color='blue' fluid key="back" >
@@ -724,7 +725,7 @@ class stage extends Component {
                   <Card className="fluid" style={{ backgroundColor: 'transparent' }} key="front">
                   <Label inverted="true" color="violet" fluid>
                     {t.name} <span className="right floated">{humanFileSize(t.size)}</span>
-                  </Label>                    
+                  </Label>
                       <ReactPlayer
                       playsinline={true}
                       playing={t.autoplay}
@@ -1140,7 +1141,7 @@ class stage extends Component {
                 <Input
                   fluid
                   inverted
-                  transparent          
+                  transparent
                   placeholder='Name'
                   label='Name'
                   autoFocus={true}
