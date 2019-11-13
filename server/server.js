@@ -947,7 +947,7 @@ if(hasbot) {
     const exec = util.promisify(require('child_process').exec);
 
     async function build() {
-      const { stdout, stderr } = await exec('source ../build.sh && sh build.sh');
+      const { stdout, stderr } = await exec('sh /home/rootstudio/web/create.booksonwall.art/Bowbo/build.sh');
       ctx.reply(stdout, Extra.markdown());
       ctx.reply(stderr, Extra.markdown());
     }
