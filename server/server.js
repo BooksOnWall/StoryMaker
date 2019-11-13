@@ -575,20 +575,23 @@ const checkPreFlight =  (obj) => {
     // check photo
     if(obj.photo && obj.photo.length > 0 && obj.photo[0].src) {
       let src = obj.photo[0].src;
-      let objectpath = obj.photo[0].path.substring(7);
+      let objectpath =(obj.photo[0]) ? obj.photo[0].path.substring(7) : null;
       console.log('objectpath',objectpath);
       check = (obj.photo && obj.photo.length === 1) ? {ssid: obj.id, category: 'photo', condition: 'There can be only one photo' , check: true} : {ssid: obj.id, category: 'photo', src: src, condition: 'There can be only one photo' , check: false};
       log.push(check);
-      let path = (obj.photo[0]) ? __dirname +'/public/' + objectpath : null;
+      let path = (obj.photo[0] && objectpath ) ? __dirname +'/public/' + objectpath : null;
       console.log('path',path);
-      // check photo dimension
-      let photoDimensions = (path) ?  sizeOf(path) : null;
-      check = (photoDimensions && photoDimensions.width === photoDimensions.height) ? {ssid: obj.id, category: 'photo', condition: 'Photo must be square' , check: true} : {ssid: obj.id, category: 'photo', condition: 'Photo must be square' , check: false, src: src, path: path, error:  obj.name + ' Photo is:' + photoDimensions.width + ' x ' + photoDimensions.height};
-      log.push(check);
-      check = (photoDimensions && photoDimensions.width <= 640 && photoDimensions.height <= 640) ? {ssid: obj.id, category: 'photo', condition: 'Photo dimension cannot be more than 640x640' , check: true} : {ssid: obj.id, category: 'photo', condition: 'Photo dimension cannot be more than 640x640  ' , check: false,  src: src, path: path, error:  obj.name + ' Photo is:' + photoDimensions.width + ' x ' + photoDimensions.height};
-      log.push(check);
-      check = (obj.photo && obj.photo[0].size < 100000  ) ? {ssid: obj.id, category: 'photo', condition: 'Photo cannot be more than 100kb' , check: true} : {ssid: obj.id, category: 'photo', condition: 'Photo cannot be more than 100kb' , check: false,  src: src, path: path,error:  obj.name + ' file weight don\'t match  ' + obj.photo[0].size};
-      log.push(check);
+      if(path) {
+        // check photo dimension
+        let photoDimensions = (path) ?  sizeOf(path) : null;
+        check = (photoDimensions && photoDimensions.width === photoDimensions.height) ? {ssid: obj.id, category: 'photo', condition: 'Photo must be square' , check: true} : {ssid: obj.id, category: 'photo', condition: 'Photo must be square' , check: false, src: src, path: path, error:  obj.name + ' Photo is:' + photoDimensions.width + ' x ' + photoDimensions.height};
+        log.push(check);
+        check = (photoDimensions && photoDimensions.width <= 640 && photoDimensions.height <= 640) ? {ssid: obj.id, category: 'photo', condition: 'Photo dimension cannot be more than 640x640' , check: true} : {ssid: obj.id, category: 'photo', condition: 'Photo dimension cannot be more than 640x640  ' , check: false,  src: src, path: path, error:  obj.name + ' Photo is:' + photoDimensions.width + ' x ' + photoDimensions.height};
+        log.push(check);
+        check = (obj.photo && obj.photo[0].size < 100000  ) ? {ssid: obj.id, category: 'photo', condition: 'Photo cannot be more than 100kb' , check: true} : {ssid: obj.id, category: 'photo', condition: 'Photo cannot be more than 100kb' , check: false,  src: src, path: path,error:  obj.name + ' file weight don\'t match  ' + obj.photo[0].size};
+        log.push(check);
+      }
+
     } else {
       // error
       check = {ssid: obj.id, category: 'photo', condition: 'Photo must exist' , check: false,   error:  'Empty: No Photo'};
@@ -635,7 +638,9 @@ const checkPreFlight =  (obj) => {
     }
     // onZoneEnter
     if(obj.onZoneEnter && obj.onZoneEnter.length > 0 ) {
+      obj.onZoneEnter = (typeof(obj.onZoneEnter) === 'string') ? JSON.parse(obj.onZoneEnter) : obj.onZoneEnter;
       console.log('onZoneEnter',obj.onZoneEnter);
+      console.log('typeof', typeof(obj.onZoneEnter));
       check = (obj.onZoneEnter.length > 0) ? {ssid: obj.id, category: 'onZoneEnter', condition: 'OnZoneEnter cannot be empty.' , check: true} : {ssid: obj.id, category: 'onZoneEnter', condition: 'OnZoneEnter cannot be empty' , check: false,  error: 'zone is empty' };
       // audios
       let audios = (obj.onZoneEnter && obj.onZoneEnter.length > 0) ? obj.onZoneEnter.find((el, index) => {
