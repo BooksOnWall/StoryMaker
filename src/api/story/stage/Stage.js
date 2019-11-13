@@ -101,6 +101,8 @@ class stage extends Component {
           images: null,
           pictures: null,
           description: null,
+          dimension: null,
+          radius: null,
           videos: null,
           audios: null,
           onZoneEnter: null,
@@ -316,6 +318,7 @@ class stage extends Component {
   onDrop = async (ev, cat) => {
     // move object from category
     try {
+      console.log('drop');
       let id = ev.dataTransfer.getData("id");
       let obj ={};
       let newObj={};
@@ -360,6 +363,7 @@ class stage extends Component {
                 task.loading = !task.loading;
                 //return new path
                 task.src = data.obj.src;
+                task.path = data.obj.path;
               }
               return task;
             });
@@ -367,7 +371,7 @@ class stage extends Component {
                 ...this.state,
                 tasks
             });
-
+            console.log('drag terminated');
           }
         })
         .catch((error) => {
@@ -392,6 +396,8 @@ class stage extends Component {
       ssid: this.state.stage.ssid,
       name: this.state.stage.name,
       adress: this.state.stage.adress,
+      dimension: this.state.stage.dimension,
+      radius: this.state.stage.radius,
       photo: this.state.stage.photo,
       images: this.state.stage.images,
       pictures: this.state.stage.pictures,
@@ -804,21 +810,20 @@ class stage extends Component {
 
     if(list) {
       let tasks = this.state.tasks;
-      let server = this.state.server;
       switch(cat) {
         case 'Images':
         let imageArray =[];
         list.forEach(function(image) {
-          let img = image.image;
           let json = {
-            name: img.name,
-            type: "image",
-            size: img.size,
+            name: image.name,
+            type: image.type,
+            size: image.size,
             isFlipped: false,
-            category:"images",
+            category: image.category,
             confirm: false,
             loading: false,
-            src: server + img.src
+            path: image.path,
+            src: image.src
           };
           imageArray.push(json);
         });
@@ -827,16 +832,16 @@ class stage extends Component {
         case 'Pictures':
         let picturesArray =[];
         list.forEach(function(image) {
-          let img = image.image;
           let json = {
-            name: img.name,
-            type: "image",
-            category:"pictures",
-            size: img.size,
+            name: image.name,
+            type: image.type,
+            category: image.category,
+            size: image.size,
             confirm: false,
             loading: false,
             isFlipped: false,
-            src: server + img.src
+            path: image.path,
+            src: image.src
           };
           picturesArray.push(json);
         });
@@ -845,18 +850,18 @@ class stage extends Component {
         case 'Videos':
         let videosArray =[];
         list.forEach(function(video) {
-          let vid = video.video;
           let json = {
-            name: vid.name,
-            type: "video",
-            category:"videos",
+            name: video.name,
+            type: video.type,
+            category: video.category,
             isFlipped: false,
             autoplay: false,
             confirm: false,
             loading: false,
             loop: false,
-            size: vid.size,
-            src: server + vid.src
+            size: video.size,
+            path: video.path,
+            src: video.src
           };
           videosArray.push(json);
         });
@@ -865,18 +870,18 @@ class stage extends Component {
         case 'Audios':
         let audiosArray =[];
         list.forEach(function(audio) {
-          let a = audio.audio;
           let json = {
-            name: a.name,
-            type: "audio",
-            category:"audios",
+            name: audio.name,
+            type: audio.type,
+            category:audio.category,
             confirm: false,
             loading: false,
             loop: false,
             autoplay: false,
             isFlipped: false,
-            size: a.size,
-            src: server + a.src
+            size: audio.size,
+            path: audio.path,
+            src: audio.src
           };
           audiosArray.push(json);
         });
@@ -927,6 +932,8 @@ class stage extends Component {
         sid: this.state.stage.sid,
         name: this.state.stage.name,
         adress: this.state.stage.adress,
+        dimension: this.state.stage.dimension,
+        radius: this.state.stage.radius,
         images: this.state.stage.images,
         pictures: this.state.stage.pictures,
         videos: this.state.stage.videos,
@@ -976,6 +983,8 @@ class stage extends Component {
           ssid: this.state.stage.ssid,
           name: this.state.stage.name,
           adress:this.state.stage.adress,
+          dimension: this.state.stage.dimension,
+          radius: this.state.stage.radius,
           photo: this.state.stage.photo,
           images: this.state.stage.images,
           pictures: this.state.stage.pictures,
@@ -1021,6 +1030,8 @@ class stage extends Component {
         name: (e.target.name === 'name') ? e.target.value : this.state.stage.name,
         adress: (e.target.name === 'adress') ? e.target.value : this.state.stage.adress,
         description: (e.target.name === 'description') ? e.target.value : this.state.stage.description,
+        dimension: (e.target.name === 'dimension') ? e.target.value : this.state.stage.dimension,
+        radius: (e.target.name === 'radius') ? e.target.value : this.state.stage.radius,
         photo: this.state.stage.photo,
         images: this.state.stage.images,
         pictures: this.state.stage.pictures,
@@ -1053,6 +1064,8 @@ class stage extends Component {
           ssid: this.state.stage.ssid,
           name: this.state.stage.name,
           adress:this.state.stage.adress,
+          dimension: this.state.stage.dimension,
+          radius: this.state.stage.radius,
           photo: this.state.stage.photo,
           images: this.state.stage.images,
           pictures: this.state.stage.pictures,
@@ -1152,6 +1165,32 @@ class stage extends Component {
                   defaultValue={values.adress}
                   />
                 {errors.adress && touched.adress && errors.adress}
+                <Divider />
+                  <Input
+                  fluid
+                  inverted
+                  placeholder='en meter ex: 1.5x2.5'
+                  label='Dimension'
+                  type="text"
+                  name="dimension"
+                  onChange={e => this.handleChange(e)}
+                  onBlur={e => handleBlur}
+                  defaultValue={values.dimension}
+                  />
+                {errors.dimension && touched.dimension && errors.dimension}
+                <Divider />
+                  <Input
+                  fluid
+                  inverted
+                  placeholder='en meter ex: 50'
+                  label='Radius'
+                  type="text"
+                  name="radius"
+                  onChange={e => this.handleChange(e)}
+                  onBlur={e => handleBlur}
+                  defaultValue={values.radius}
+                  />
+                {errors.radius && touched.radius && errors.radius}
                 <Divider />
                   <Input
                   fluid
@@ -1483,10 +1522,10 @@ class stage extends Component {
             basic
             size='small'
             >
-            
+
             <Header inverted icon='tasks' content='Preflight Check ' />
             <Segment inverted>
-            <Segment inverted><Progress size="big" percent={this.percentPreflight(this.state.preflightLog)} progress active indicating inverted size='medium' /></Segment>
+            <Segment inverted><Progress  percent={this.percentPreflight(this.state.preflightLog)} progress active indicating inverted size='medium' /></Segment>
             <Modal.Content>
               <h3>Below a check before exporting.</h3>
               <LogReport logs={this.state.preflightLog}/>

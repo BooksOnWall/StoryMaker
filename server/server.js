@@ -14,6 +14,7 @@ var sizeOf = require('image-size');
 const getSize = require('get-folder-size');
 var tar = require('tar-fs');
 
+
 const bodyParser = require('body-parser');
 //CORS
 var cors = require('cors');
@@ -27,7 +28,7 @@ const host = process.env.SERVER_HOST;
 const protocol = process.env.SERVER_PROTOCOL;
 const port = process.env.SERVER_PORT;
 const hasbot = JSON.parse(process.env.BOT_ACTIVE);
-
+const serverUrl = protocol + '://'+ host + ':' + port +'/';
 // get mysql connection & credentials parameters
 let config = require('./conf/mysql');
 
@@ -431,14 +432,14 @@ const updateStage = async ({ id, sid , name, photo, adress, description, images,
     console.log(e.message);
   }
 };
-const createStage = async ({ sid , name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry }) => {
+const createStage = async ({ sid , name, photo, adress, description, dimension, radius, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry }) => {
 
   try {
     let rank = await getNextOrderFromStory(sid);
     rank = (rank) ? rank : 1;
     //console.log(rank);
     stageOrder = (!stageOrder) ? parseInt(rank) : stageOrder;
-    let res = await Stages.create({ sid , name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry });
+    let res = await Stages.create({ sid , name, photo, adress, description, dimension, radius, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry });
     const ssid = res.get('id');
     // create story stages directory
     var dir = __dirname + '/public/stories/'+ sid + '/stages/'+ssid;
@@ -575,9 +576,10 @@ const checkPreFlight =  (obj) => {
     // check photo
     if(obj.photo && obj.photo.length > 0 && obj.photo[0].src) {
       let src = obj.photo[0].src;
+      let objectpath = obj.photo[0].path;
       check = (obj.photo && obj.photo.length === 1) ? {ssid: obj.id, category: 'photo', condition: 'There can be only one photo' , check: true} : {ssid: obj.id, category: 'photo', src: src, condition: 'There can be only one photo' , check: false};
       log.push(check);
-      let path = (obj.photo[0]) ? './public/' + src.replace(url,'') : null;
+      let path = (obj.photo[0]) ? './public/' + objectpath : null;
       // check photo dimension
       let photoDimensions = (path) ?  sizeOf(path) : null;
       check = (photoDimensions && photoDimensions.width === photoDimensions.height) ? {ssid: obj.id, category: 'photo', condition: 'Photo must be square' , check: true} : {ssid: obj.id, category: 'photo', condition: 'Photo must be square' , check: false, src: src, path: path, error:  obj.name + ' Photo is:' + photoDimensions.width + ' x ' + photoDimensions.height};
@@ -597,7 +599,7 @@ const checkPreFlight =  (obj) => {
       if(pictures) {
         let picsDim=[];
          pictures.map(pic => {
-          let path = './public/'+pic.image.src.replace('assets/','');
+          let path = './public/'+pic.image.path;
           let src = pic.image.src;
           let picDimensions = sizeOf(path);
           picDimensions.name = pic.image.name;
@@ -793,7 +795,15 @@ const moveObjectFromField = async ({ssid, sid, oldDir, newDir, newObj}) => {
       return list;
     });
     // update removed array with database
+    // doublecheck that list has been cleaned after the drag
+    console.log('name',objName);
+    list = (list) ? list.filter(function (lobj) {
+      console.log('lobj.name', lobj.name)
+       return lobj.name !== objName;
+    }) : null ;
     list = (list && list.length > 0 ) ? list : null;
+    console.log('list', list);
+    console.log('new list', newList);
     let field = oldDir;
     let fieldValue = list;
     //update db with the object removed from category
@@ -848,11 +858,11 @@ var staticoptions = {
   }
 }
 if(hasbot) {
-  console.log('Telegram Bot activated', hasbot);
+  console.log('Books On Wall server stareted and Telegram Bot activated', hasbot);
   // set telegram bot y tetunnel before starting express
   //
 
-  const sayYoMiddleware = ({ reply }, next) => reply('yo').then(() => next());
+  const sayYoMiddleware = ({ reply }, next) => reply('holla').then(() => next());
   const chat_id = '-389718132';
   const bot = new Telegraf(process.env.BOT_TOKEN);
   // We can get bot nickname from bot informations. This is particularly useful for groups.
@@ -879,6 +889,7 @@ if(hasbot) {
 
   const commands = `You can control me by sending these commands:
   /help - *list all commands*
+  /build - *update application with last git version and build for production*
   /answer - *the answer for everything*
   /album - *list of medias*
   /logs [start|stop] - *start or stop reading server logs*
@@ -924,6 +935,17 @@ if(hasbot) {
   // Command handling
   bot.command('answer', sayYoMiddleware, (ctx) => {
     return ctx.reply('*42*', Extra.markdown());
+  });
+  bot.command('build',(ctx) => {
+    const util = require('util');
+    const exec = util.promisify(require('child_process').exec);
+
+    async function build() {
+      const { stdout, stderr } = await exec('source ../build.sh && sh build.sh');
+      ctx.reply(stdout, Extra.markdown());
+      ctx.reply(stderr, Extra.markdown());
+    }
+    build();
   });
   let startLog = false;
 
@@ -1381,10 +1403,12 @@ app.get('/stories/:storyId/stages', function(req, res) {
 
       //stage = stage.get({plain: true});
       let preflight = checkPreFlight(stage);
-      let win = 0;
-      let err = 0;
-      preflight.map((log) => (log.check === false) ? err++ : win++ );
-      stage["percent"] = (win / (win + err) * 100).toFixed(0);
+      if(preflight) {
+        let win = 0;
+        let err = 0;
+        preflight.map((log) => (log.check === false) ? err++ : win++ );
+        stage["percent"] = (win / (win + err) * 100).toFixed(0);
+      }
       return stage;
     });
     res.json(stages);
@@ -1439,8 +1463,8 @@ app.post('/stories/:storyId/stages/0', function(req, res, next) {
 app.post('/stories/:storyId/stages/:stageId', function(req, res, next) {
   let sid = parseInt(req.params.storyId);
   let id = parseInt(req.params.stageId);
-  const { name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, tesselate,  geometry } = req.body;
-  updateStage({id, sid, name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, tesselate,  geometry }).then(stage => {
+  const { name, photo, adress, description, dimension, radius, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, tesselate,  geometry } = req.body;
+  updateStage({id, sid, name, photo, adress, description, dimension, radius, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, tesselate,  geometry }).then(stage => {
       res.json({ stage, msg: 'Stage updated successfully' })
   });
 });
@@ -1477,12 +1501,13 @@ app.post('/stories/:storyId/stages/:stageId/uploadImages', function (req, res, n
          req.files.forEach( function(file) {
 
            images.push({
-             'image': {
+               'category': 'images',
                'name': file.originalname,
                'size': file.size,
+               'type': 'image',
                'mimetype': file.mimetype,
-               'src': 'assets/stories/'+ sid + '/stages/' + ssid + '/images/' + file.originalname
-             }
+               'path': 'assets/stories/'+ sid + '/stages/' + ssid + '/images/' + file.originalname,
+               'src': serverUrl + 'assets/stories/'+ sid + '/stages/' + ssid + '/images/' + file.originalname
            });
           });
         updateFieldFromStage({ssid: ssid, sid: sid, field: 'images', fieldValue: images}).then((stage) => {
@@ -1515,12 +1540,13 @@ app.post('/stories/:storyId/stages/:stageId/uploadPictures', function (req, res,
          req.files.forEach( function(file) {
 
            images.push({
-             'image': {
+               'category': 'pictures',
                'name': file.originalname,
                'size': file.size,
+               'type': 'picture',
                'mimetype': file.mimetype,
-               'src': 'assets/stories/'+ sid + '/stages/' + ssid + '/pictures/' + file.originalname
-             }
+               'path': 'assets/stories/'+ sid + '/stages/' + ssid + '/pictures/' + file.originalname,
+               'src': serverUrl + 'assets/stories/'+ sid + '/stages/' + ssid + '/pictures/' + file.originalname
            });
           });
         updateFieldFromStage({ssid: ssid, sid: sid, field: 'pictures', fieldValue: images}).then(stage =>
@@ -1549,12 +1575,12 @@ app.post('/stories/:storyId/stages/:stageId/uploadVideos', function (req, res, n
         let videos=[];
          req.files.forEach( function(file) {
            videos.push({
-             'video': {
                'name': file.originalname,
+               'category': 'videos',
                'size': file.size,
-               'type': file.type,
-               'src': 'assets/stories/'+ sid + '/stages/' + ssid + '/videos/' + file.originalname
-             }
+               'type': 'video',
+               'path': 'assets/stories/'+ sid + '/stages/' + ssid + '/videos/' + file.originalname,
+               'src': serverUrl + 'assets/stories/'+ sid + '/stages/' + ssid + '/videos/' + file.originalname
            });
           });
         updateFieldFromStage({ssid: ssid, sid: sid, field: 'videos', fieldValue: videos}).then(stage =>
@@ -1583,12 +1609,12 @@ app.post('/stories/:storyId/stages/:stageId/uploadAudios', function (req, res, n
         let audios=[];
          req.files.forEach( function(file) {
            audios.push({
-             'audio': {
                'name': file.originalname,
+               'category': 'audios',
                'size': file.size,
-               'type': file.type,
-               'src': 'assets/stories/'+ sid + '/stages/' + ssid + '/audios/' + file.originalname
-             }
+               'type': 'audio',
+               'path': 'assets/stories/'+ sid + '/stages/' + ssid + '/audios/' + file.originalname,
+               'src': serverUrl + 'assets/stories/'+ sid + '/stages/' + ssid + '/audios/' + file.originalname
            });
           });
         updateFieldFromStage({ssid: ssid, sid: sid, field: 'audios', fieldValue: audios}).then(stage =>
@@ -1633,6 +1659,8 @@ app.patch('/stories/:storyId/stages/:stageId/objMv', function(req, res, next) {
     // check if file exist
     if (fs.existsSync(path+objName)) {
       newObj.src = newObj.src.replace(oldDir, newDir);
+      newObj.path = newObj.path.replace(oldDir, newDir);
+      //console.log('newObj', newObj);
       moveObjectFromField({ssid, sid, oldDir, newDir, newObj}).then(user => {
            //res.json({ res, msg: newObj.name +' moved successfully' })
       });
