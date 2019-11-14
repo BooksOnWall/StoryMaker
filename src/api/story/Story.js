@@ -326,6 +326,7 @@ class Story extends Component {
             this.setState({sinopsys: story.sinopsys});
             this.setState({creditState: creditState});
             this.setState({credits: story.credits});
+            this.setState({state: story.state, city: story.city});
             this.setState({stages: story.stages});
             this.setState({tesselate: story.tesselate});
             this.setState({geometry: story.geometry});
