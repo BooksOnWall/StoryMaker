@@ -42,7 +42,7 @@ class Story extends Component {
       server: server,
       stories: server + 'stories',
       artists: server + 'artists',
-      initialSValues:  (!this.props.match.params.id) ?{ artist: 1, title: '', state: '', city: '', sinopsys: '' , credits: '', active: true} : this.getStory,
+      initialSValues:  (!this.props.match.params.id) ?{ artist: 1, title: '', state: '', city: '', sinopsys: '' , credits: '', tesselate: -1, geometry: null, active: true} : this.getStory,
       artistOptions: [],
       sid: (!this.props.match.params.id) ? (0) : parseInt(this.props.match.params.id),
       mode: (parseInt(this.props.match.params.id) === 0) ? ('create') : ('update'),
@@ -51,6 +51,9 @@ class Story extends Component {
       map:  '/stories/' + this.props.match.params.id + '/map',
       loading: null,
       data: null,
+      title: '',
+      state: '',
+      city: '',
       sinoState: EditorState.createEmpty(),
       sinopsys: '',
       tesselate: null,
@@ -229,6 +232,8 @@ class Story extends Component {
           title: this.state.title,
           state:this.state.state,
           city: this.state.city,
+          tesselate: this.state.tesselate,
+          geometry: this.state.geometry,
           sinopsys: (this.state.sinopsys) ? sanitizeHtml(this.state.sinopsys) : '' ,
           credits: (this.state.credits) ? sanitizeHtml(this.state.credits) : '' ,
           artist:parseInt(this.state.artist),
@@ -262,15 +267,15 @@ class Story extends Component {
         method: 'PATCH',
         headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json', charset:'utf-8' },
         body:JSON.stringify({
-          title: this.state.initialSValues.title,
-          state:this.state.initialSValues.state,
-          city: this.state.initialSValues.city,
+          title: this.state.title,
+          state:this.state.state,
+          city: this.state.city,
           tesselate: this.state.tesselate,
           geometry: this.state.geometry,
           sinopsys: sanitizeHtml(this.state.sinopsys),
           credits: sanitizeHtml(this.state.credits),
-          artist:parseInt(this.state.initialSValues.artist),
-          active: parseInt(this.state.initialSValues.active),
+          artist:parseInt(this.state.artist),
+          active: parseInt(this.state.active),
         })
       })
       .then(response => {
@@ -459,7 +464,7 @@ class Story extends Component {
           isSubmitting,
           /* and other goodies */
         }) => (
-          <Form inverted flex size='large' onSubmit={this.handleSubmit}>
+          <Form inverted  size='large' onSubmit={this.handleSubmit}>
                 <Segment inverted>
                 <span className='label small'>Choose artist/autor: </span><br/>
                 <select
@@ -487,7 +492,7 @@ class Story extends Component {
                   name="title"
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  defaultValue={values.title}
+                  defaultValue={this.state.title}
                   />
                 {errors.title && touched.title && errors.title}
                 <Divider/>
@@ -503,7 +508,7 @@ class Story extends Component {
                   name="state"
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  defaultValue={values.state}
+                  defaultValue={this.state.state}
                   />
                 {errors.state && touched.state && errors.state}
                 <Divider/>
@@ -519,7 +524,7 @@ class Story extends Component {
                   color="teal"
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  defaultValue={values.city}
+                  defaultValue={this.state.city}
                   />
                 {errors.city && touched.city && errors.city}
                 <Divider  />
@@ -531,7 +536,7 @@ class Story extends Component {
                   defaultChecked= {values.checked}
                   onChange = {(e, { checked }) => handleChange(checked)}
                   onBlur = {handleBlur}
-                  defaultValue={(values.active === true) ? 1 : 0 }
+                  defaultValue={(this.state.active === true) ? 1 : 0 }
                   toggle
                   />
                 {errors.active && touched.active && errors.active}
