@@ -1019,6 +1019,54 @@ class stage extends Component {
       console.log(e.message);
     }
   }
+  updateStage = async (values) => {
+    try {
+      await fetch(this.state.stagesURI +'/'+ this.state.ssid, {
+        method: 'post',
+        credentials: 'same-origin',
+        headers: {'Access-Control-Allow-Origin': '*',  'Content-Type':'application/json'},
+        body:JSON.stringify({
+          id: this.state.stage.id,
+          sid: this.state.stage.sid,
+          ssid: this.state.stage.ssid,
+          name: this.state.stage.name,
+          adress:this.state.stage.adress,
+          dimension: this.state.stage.dimension,
+          radius: this.state.stage.radius,
+          photo: this.state.stage.photo,
+          images: this.state.stage.images,
+          pictures: this.state.stage.pictures,
+          videos: this.state.stage.videos,
+          audios: this.state.stage.audios,
+          onZoneEnter: this.state.stage.onZoneEnter,
+          onPictureMatch: this.state.stage.onPictureMatch,
+          onZoneLeave: this.state.stage.onZoneLeave,
+          type: this.state.stage.type,
+          stageOrder: this.state.stage.stageOrder,
+          description: this.state.stage.description,
+          geometry: this.state.stage.geometry,
+          stageLocation: this.state.stage.stageLocation
+        })
+      })
+      .then(response => {
+        if (response && !response.ok) { throw new Error(response.statusText);}
+        return response.json();
+      })
+      .then(data => {
+          if(data) {
+            // redirect to user edit page
+            this.setState({topSidebarVisible: false});
+            this.props.history.push('/stories/' + this.state.sid + '/stages/'+this.state.ssid );
+          }
+      })
+      .catch((error) => {
+        // Your error is here!
+        console.log(error)
+      });
+    } catch(e) {
+      console.log(e.message);
+    }
+  }
   handleBlur = () =>  true;
   handleChange = (e) => {
     console.log(e.target.name);
@@ -1113,7 +1161,7 @@ class stage extends Component {
             }}
             onSubmit={(values, { setSubmitting }) => {
               if(this.state.mode === 'update') {
-                //    this.updateStage(values);
+                this.updateStage(values);
               } else {
                 this.createStage(values);
               }
@@ -1310,6 +1358,8 @@ class stage extends Component {
                     sid: this.state.stage.sid,
                     name: this.state.stage.name,
                     adress: this.state.stage.adress,
+                    dimension: this.state.stage.dimension,
+                    radius: this.state.stage.radius,
                     pictures: (objType === 'Pictures') ? sobjects : this.state.stage.pictures ,
                     images: (objType === 'Images') ? sobjects : this.state.stage.images,
                     videos: (objType === 'Videos') ? sobjects : this.state.stage.videos,
@@ -1398,6 +1448,8 @@ class stage extends Component {
                 sid: data.sid,
                 name: data.name,
                 adress: data.adress,
+                dimension: data.dimension,
+                radius: data.radius,
                 photo: data.photo,
                 pictures: data.pictures,
                 images: data.images,

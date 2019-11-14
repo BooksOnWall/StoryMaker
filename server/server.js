@@ -421,10 +421,10 @@ const reindexStage = async ({sid, stage}) => {
     { where: {sid : sid , id: stage.id}
   });
 }
-const updateStage = async ({ id, sid , name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry }) => {
+const updateStage = async ({ id, sid , name, photo, adress, description, dimension, radius, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry }) => {
   try {
     return   await Stages.update(
-      { sid , name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry },
+      { sid , name, photo, adress, description, dimension, radius, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry },
       { where: { id: id } }
     );
 
@@ -641,8 +641,6 @@ const checkPreFlight =  (obj) => {
     // onZoneEnter
     if(obj.onZoneEnter && obj.onZoneEnter.length > 0 ) {
       obj.onZoneEnter = (typeof(obj.onZoneEnter) === 'string') ? JSON.parse(obj.onZoneEnter) : obj.onZoneEnter;
-      console.log('onZoneEnter',obj.onZoneEnter);
-      console.log('typeof', typeof(obj.onZoneEnter));
       check = (obj.onZoneEnter.length > 0) ? {ssid: obj.id, category: 'onZoneEnter', condition: 'OnZoneEnter cannot be empty.' , check: true} : {ssid: obj.id, category: 'onZoneEnter', condition: 'OnZoneEnter cannot be empty' , check: false,  error: 'zone is empty' };
       // audios
       let audios = (obj.onZoneEnter && obj.onZoneEnter.length > 0) ? obj.onZoneEnter.find((el, index) => {
@@ -805,14 +803,8 @@ const moveObjectFromField = async ({ssid, sid, oldDir, newDir, newObj}) => {
     });
     // update removed array with database
     // doublecheck that list has been cleaned after the drag
-    console.log('name',objName);
-    list = (list) ? list.filter(function (lobj) {
-      console.log('lobj.name', lobj.name)
-       return lobj.name !== objName;
-    }) : null ;
+
     list = (list && list.length > 0 ) ? list : null;
-    console.log('list', list);
-    console.log('new list', newList);
     let field = oldDir;
     let fieldValue = list;
     //update db with the object removed from category
