@@ -366,8 +366,8 @@ const getStory = async obj => {
   }
 
 };
-const patchStory = async ({ sid, title, artist, state, city, sinopsys, credits, active }) => {
-  return await Stories.update({ title, artist, state, city, sinopsys, credits, active },
+const patchStory = async ({ sid, title, artist, state, city, sinopsys, credits, tesselate, geometry, active }) => {
+  return await Stories.update({ title, artist, state, city, sinopsys, credits,tesselate, geometry, active },
     { where: {id : sid}}
   );
 }
@@ -1708,9 +1708,11 @@ app.post('/stories/:storyId/preflight', function(req, res, next) {
   //console.log('stages:', stages);
   getStory({id: sid}).then(story => {
     //story[dataValues].stages ='toto' ;
+
     let st = story.get({
       plain: true
     });
+
     getAllStages(sid).then(stages => {
       st['stages'] = stages;
       // write json file
@@ -1732,6 +1734,7 @@ app.post('/stories/:storyId/preflight', function(req, res, next) {
       }
       // story preflight
       let preflight= storyCheckPreflight(st);
+
       res.json({story: st , preflight: preflight, msg: 'Story preflight ok'});
     });
   });

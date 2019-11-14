@@ -11,8 +11,7 @@ import {
   Confirm,
   Dimmer,
   Loader,
-    Header,
-    Icon,
+  Header,
 } from 'semantic-ui-react';
 import {  FormattedMessage } from 'react-intl';
 import { Formik } from 'formik';
@@ -54,6 +53,8 @@ class Story extends Component {
       data: null,
       sinoState: EditorState.createEmpty(),
       sinopsys: '',
+      tesselate: null,
+      geometry: null,
       stages: null,
       editorState: EditorState.createEmpty(),
       step: (this.props.step) ? this.props.step : 'Story',
@@ -264,6 +265,8 @@ class Story extends Component {
           title: this.state.initialSValues.title,
           state:this.state.initialSValues.state,
           city: this.state.initialSValues.city,
+          tesselate: this.state.tesselate,
+          geometry: this.state.geometry,
           sinopsys: sanitizeHtml(this.state.sinopsys),
           credits: sanitizeHtml(this.state.credits),
           artist:parseInt(this.state.initialSValues.artist),
@@ -304,7 +307,6 @@ class Story extends Component {
       .then(data => {
           if(data) {
             let story = data.story;
-            console.log(story.stages);
 
             story.sinopsys = (story.sinopsys) ? sanitizeHtml(story.sinopsys) : '<span>&nbsp</span>';
             story.credits = (story.credits) ? sanitizeHtml(story.credits) : '<span>&nbsp</span>';
@@ -320,8 +322,10 @@ class Story extends Component {
             this.setState({creditState: creditState});
             this.setState({credits: story.credits});
             this.setState({stages: story.stages});
+            this.setState({tesselate: story.tesselate});
+            this.setState({geometry: story.geometry});
             this.setState({sid: story.id, title: story.title, artist: story.artist});
-            this.setState({initialSValues: data});
+            this.setState({initialSValues: story});
             this.setState({loading: false});
             return story;
           } else {
@@ -458,11 +462,11 @@ class Story extends Component {
           <Form inverted flex size='large' onSubmit={this.handleSubmit}>
                 <Segment inverted>
                 <span className='label small'>Choose artist/autor: </span><br/>
-                <select 
-                size='small' 
-                name="artist" 
-                type="select" 
-                defaultValue={this.state.artist} 
+                <select
+                size='small'
+                name="artist"
+                type="select"
+                defaultValue={this.state.artist}
                 onChange={this.handleChange}
                 >
                   <option key={0} disabled hidden value=''></option>
