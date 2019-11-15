@@ -891,6 +891,7 @@ if(hasbot) {
 
   const commands = `You can control me by sending these commands:
   /help - *list all commands*
+  /server - [start|stop|restart] - *start or stop or restart server*
   /build - *update application with last git version and build for production*
   /answer - *the answer for everything*
   /album - *list of medias*
@@ -943,11 +944,24 @@ if(hasbot) {
     const exec = util.promisify(require('child_process').exec);
 
     async function build() {
-      const { stdout, stderr } = await exec('sh /home/rootstudio/web/create.booksonwall.art/BowBo/build.sh');
+      const { stdout, stderr } = await exec('source /home/rootstudio/web/create.booksonwall.art/BowBo/build.sh && sh /home/rootstudio/web/create.booksonwall.art/BowBo/build.sh ');
       ctx.reply(stdout, Extra.markdown());
       ctx.reply(stderr, Extra.markdown());
     }
     build();
+  });
+  bot.command('server',(ctx) => {
+    const util = require('util');
+    const exec = util.promisify(require('child_process').exec);
+    let str =  ctx.message.text;
+    if(!str.split(' ')[1]) return ctx.reply('/server required an argument to complete , use /server start or /server stop or /server restart instead', Extra.markdown());
+
+    async function serv() {
+      const { stdout, stderr } = await exec('source /etc/init.d/bow && sh /etc/init.d/bow '+ str);
+      ctx.reply(stdout, Extra.markdown());
+      ctx.reply(stderr, Extra.markdown());
+    }
+    serv();
   });
   let startLog = false;
 
