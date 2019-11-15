@@ -951,6 +951,7 @@ if(hasbot) {
   });
   bot.hears('hi', (ctx) => ctx.reply('Hey there'));
   bot.hears('hola', (ctx) => ctx.reply('Hola !'));
+  bot.hears('Hola', (ctx) => ctx.reply('Hola !'));
   // Command handling
   bot.command('answer', sayYoMiddleware, (ctx) => {
     return ctx.reply('*42*', Extra.markdown());
