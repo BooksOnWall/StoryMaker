@@ -1,6 +1,6 @@
 {
   "name": "BooksOnWall",
-  "version": "0.8.0",
+  "version": "0.9.5",
   "private": true,
   "author": "Tom Bouillut",
   "Contributors": "Cristobal Severin",
@@ -47,7 +47,7 @@
   },
   "scripts": {
     "start": "craco start",
-    "build": "craco --max_old_space_size=4096  build",
+    "build": "craco --max_old_space_size=8192  build",
     "test": "craco test",
     "eject": "craco eject",
     "extract:messages": "extract-messages --locales=es,pt,en --output src/i18n/locales/ 'src/**/*.js'"
