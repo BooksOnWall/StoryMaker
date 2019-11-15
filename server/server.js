@@ -949,15 +949,17 @@ if(hasbot) {
     return ctx.reply('*42*', Extra.markdown());
   });
   bot.command('build',(ctx) => {
-    const util = require('util');
-    const exec = util.promisify(require('child_process').exec);
-
-    async function build() {
-      const { stdout, stderr } = await exec('sh build.sh');
-      ctx.reply(stdout, Extra.markdown());
-      ctx.reply(stderr, Extra.markdown());
-    }
-    build();
+    const { exec } = require('child_process');
+    exec('sh build.sh', (err, stdout, stderr) => {
+      if (err) {
+        //some err occurred
+        console.error(err)
+      } else {
+       // the *entire* stdout and stderr (buffered)
+       ctx.reply(stdout, Extra.markdown());
+       ctx.reply(stderr, Extra.markdown());
+      }
+    });
   });
   bot.command('server',(ctx) => {
     const util = require('util');
