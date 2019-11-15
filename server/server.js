@@ -1117,6 +1117,7 @@ app.get('/assets/stories/:storyId/stages/:stageId/:category/:name', function (re
   if (fs.existsSync(path+fileName)) {
     res.sendFile(fileName, options, function (err) {
       if (err) {
+        console.log(err);
         next(err)
       } else {
         console.log('Sent:', fileName)
