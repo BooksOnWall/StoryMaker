@@ -956,7 +956,7 @@ if(hasbot) {
   });
   bot.command('build',(ctx) => {
     const exec = require('child_process').exec;
-    exec.env["craco"] = "./node_modules/@craco/craco/index";
+    // exec.env["craco"] = "./node_modules/@craco/craco/index";
     const myShellScript = exec('sh build.sh');
     myShellScript.stdout.on('data', (data)=>{
       ctx.reply(data, Extra.markdown());
