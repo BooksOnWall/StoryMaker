@@ -890,6 +890,15 @@ if(hasbot) {
   bot.start((ctx) => ctx.reply('Welcome'));
 
   const commands = `You can control me by sending these commands:
+  *From the channel*
+  /help @booksOnWallBot - *list all commands*
+  /server - [start|stop|restart] @booksOnWallBot  - *start or stop or restart server*
+  /build @booksOnWallBot - *update application with last git version and build for production*
+  /answer @booksOnWallBot - *the answer for everything*
+  /album @booksOnWallBot - *list of medias*
+  /logs [start|stop] @booksOnWallBot - *start or stop reading server logs*
+  /errors [start|stop] @booksOnWallBot - *idem but just with errors*
+  *In Private chat*
   /help - *list all commands*
   /server - [start|stop|restart] - *start or stop or restart server*
   /build - *update application with last git version and build for production*
