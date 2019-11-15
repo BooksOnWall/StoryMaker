@@ -953,7 +953,7 @@ if(hasbot) {
     const exec = util.promisify(require('child_process').exec);
 
     async function build() {
-      const { stdout, stderr } = await exec('sh ../build.sh');
+      const { stdout, stderr } = await exec('sh build.sh');
       ctx.reply(stdout, Extra.markdown());
       ctx.reply(stderr, Extra.markdown());
     }
