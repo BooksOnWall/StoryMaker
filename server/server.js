@@ -27,6 +27,7 @@ const host = process.env.SERVER_HOST;
 
 const protocol = process.env.SERVER_PROTOCOL;
 const port = process.env.SERVER_PORT;
+//proxy port  usefull if you use an web proxy to run your server on one port and make it accessible on another , set correct src path url on upload/download files
 const proxy = process.env.PROXY_PORT;
 const hasbot = JSON.parse(process.env.BOT_ACTIVE);
 const serverUrl = protocol + '://'+ host + ':' + proxy +'/';
