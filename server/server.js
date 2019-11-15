@@ -955,7 +955,7 @@ if(hasbot) {
     const exec = util.promisify(require('child_process').exec);
     let str =  ctx.message.text;
     if(!str.split(' ')[1]) return ctx.reply('/server required an argument to complete , use /server start or /server stop or /server restart instead', Extra.markdown());
-
+    str = str.substring(8);
     async function serv() {
       const { stdout, stderr } = await exec('sh /etc/init.d/bow '+ str);
       ctx.reply(stdout, Extra.markdown());
