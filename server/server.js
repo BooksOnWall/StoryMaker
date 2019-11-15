@@ -27,8 +27,9 @@ const host = process.env.SERVER_HOST;
 
 const protocol = process.env.SERVER_PROTOCOL;
 const port = process.env.SERVER_PORT;
+const proxy = process.env.PROXY_PORT;
 const hasbot = JSON.parse(process.env.BOT_ACTIVE);
-const serverUrl = protocol + '://'+ host + ':' + port +'/';
+const serverUrl = protocol + '://'+ host + ':' + proxy +'/';
 // get mysql connection & credentials parameters
 let config = require('./conf/mysql');
 
@@ -942,7 +943,7 @@ if(hasbot) {
     const exec = util.promisify(require('child_process').exec);
 
     async function build() {
-      const { stdout, stderr } = await exec('sh /home/rootstudio/web/create.booksonwall.art/Bowbo/build.sh');
+      const { stdout, stderr } = await exec('sh /home/rootstudio/web/create.booksonwall.art/BowBo/build.sh');
       ctx.reply(stdout, Extra.markdown());
       ctx.reply(stderr, Extra.markdown());
     }
