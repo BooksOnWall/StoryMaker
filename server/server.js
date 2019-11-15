@@ -944,7 +944,7 @@ if(hasbot) {
     const exec = util.promisify(require('child_process').exec);
 
     async function build() {
-      const { stdout, stderr } = await exec('source /home/rootstudio/web/create.booksonwall.art/BowBo/build.sh && sh /home/rootstudio/web/create.booksonwall.art/BowBo/build.sh ');
+      const { stdout, stderr } = await exec('sh ../build.sh');
       ctx.reply(stdout, Extra.markdown());
       ctx.reply(stderr, Extra.markdown());
     }
@@ -957,7 +957,7 @@ if(hasbot) {
     if(!str.split(' ')[1]) return ctx.reply('/server required an argument to complete , use /server start or /server stop or /server restart instead', Extra.markdown());
 
     async function serv() {
-      const { stdout, stderr } = await exec('source /etc/init.d/bow && sh /etc/init.d/bow '+ str);
+      const { stdout, stderr } = await exec('sh /etc/init.d/bow '+ str);
       ctx.reply(stdout, Extra.markdown());
       ctx.reply(stderr, Extra.markdown());
     }
