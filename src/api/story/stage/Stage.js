@@ -1257,7 +1257,7 @@ class stage extends Component {
                   />
                 {errors.stagelocation && touched.stagelocation && errors.stagelocation}
                 <Divider />
-                <Label size='large' className='label'>Stage type</Label>
+                <Label size='large' className='label inverted' fluid >Stage type</Label>
                 <Select
                   fluid
                   inverted
