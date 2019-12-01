@@ -408,8 +408,8 @@ class storyStages extends Component {
     total = win + error;
     let percent = (win === 0) ? 0 : parseInt((win / total) * 100);
 
-    let err = (error > 0) ? <Label color="red" horizontal><Icon disabled name='exclamation circle' /> {error}</Label>: '';
-    let sucess = (win > 0) ? <Label color="green" horizontal><Icon disabled name='check circle' /> {win}</Label>: '';
+    let err = (error > 0) ? <Label className="inverted" horizontal><Icon  name='exclamation circle' color="red"  /> {error}</Label>: '';
+    let sucess = (win > 0) ? <Label className="inverted"   horizontal><Icon name='check circle' color="green" /> {win}</Label>: '';
     let name = (typeof(stage) === 'number') ? <Header inverted as='h4' >Story : {(this.state.story) ? this.state.story.title : ''}</Header> : <Header inverted as='h4'>{stage.name} <Icon name='dropdown' /></Header> ;
     let progress = <Progress percent={percent} progress active indicating inverted />;
     return (

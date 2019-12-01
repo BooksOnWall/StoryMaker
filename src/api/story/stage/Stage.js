@@ -1218,6 +1218,7 @@ class stage extends Component {
                   <Input
                   fluid
                   inverted
+                  transparent
                   placeholder='en meter ex: 1.5x2.5'
                   label='Dimension'
                   type="text"
@@ -1231,6 +1232,7 @@ class stage extends Component {
                   <Input
                   fluid
                   inverted
+                  transparent
                   placeholder='en meter ex: 50'
                   label='Radius'
                   type="text"
@@ -1243,8 +1245,8 @@ class stage extends Component {
                 <Divider />
                   <Input
                   fluid
-                  transparent
                   inverted
+                  transparent
                   label='Stage Location'
                   placeholder='Stage Location'
                   type="text"
@@ -1257,8 +1259,9 @@ class stage extends Component {
                 <Divider />
                 <Label size='large' className='label'>Stage type</Label>
                 <Select
-                  transparent
+                  fluid
                   inverted
+                  transparent
                   placeholder='Stage type'
                   label='Stage type'
                   type="select"

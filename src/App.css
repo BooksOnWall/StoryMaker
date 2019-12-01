@@ -259,7 +259,10 @@ div.DraftEditor-root {
     background: linear-gradient(172deg, rgba(200,49,21,1) 0%, rgba(253,29,29,1) 26%, rgba(255,164,0,1) 94%) !important;
 }
 .top.ui.menu .item { padding: 3px !important;}
-.menu .button.hamburger{ padding: 9px !important; margin: 10px auto !important; border: 0 !important;}
+
+.menu .ui.inverted.button.hamburger{ padding: 9px !important; margin: 10px auto !important; border: 0 !important; box-shadow: 0px 0px 0px 1px #891600 inset !important; color: #891600 !important;}
+
+.menu .ui.inverted.button.hamburger:hover{ background:transparent ;color: #440000 !important; box-shadow: 0px 0px 0px 1px #891600 inset !important;}
 .top.ui.menu.button::after{ border: 0 !important}
 .ui.segment.main{ padding: 0 !important; }
 .ui.segment.pushable, .ui.segment.main{ background: transparent !important}
@@ -402,7 +405,7 @@ width: 100%;
 }
 .menu a span {   text-transform: uppercase; font-size: 10px; font-weight: bold}
 .menu a.active{
-    background: #000 !important;
+    background: #333 !important;
 }
 @media screen and (max-width: 768px) {
   .menu a {
@@ -455,12 +458,13 @@ width: 100%;
 .ui.icon.header{ }
 .ui.fluid.steps, .ui.steps .step:first-child, .ui.steps .step:first-child, .ui.steps .step:last-child{border-radius: 0 !important; margin: 0 !important}
 .ui.fluid.steps.inverted{border-color: #222 !important}
-.ui.fluid.steps.inverted .step{ background: #1f1f1f  !important; color: #f1f1f1 !important; border-color: #333}
+.ui.fluid.steps.inverted .step{ background: #1f1f1f  !important; color: #666 !important; border-color: #333}
 .ui.steps.inverted .step.active{ background: #111 !important;}
 .ui.steps.inverted .step.active::after, .ui.steps .step::after{ background: #111 !important; border-color: #333}
+.ui.steps .step.active .title{ color:#fff !important}
 .ui.steps.inverted .step::after{ background: #1f1f1f !important; border-color: #333}
 .ui.fluid.steps.inverted .step:hover, .ui.fluid.steps .step:hover  {text-decoration: none}
-.ui.fluid.steps.inverted .icon{ color: #f1f1f1 !important}
+.ui.fluid.steps.inverted .icon{ color: #444 !important}
 .ui.segment.view.story, #StepsContent.ui.segment.view {padding: 0 !important; }
 .ui.segment.view.story, #StepsContent.ui.segment{ padding: 0 !important; margin: 0 !important}
 .ui.segment.stagesMap{ padding: 0 !important}
@@ -561,7 +565,8 @@ margin-right: -4rem;}
 .segment .ui.column.grid .segment.droppable, .ui.segment.main-board .segment .column.grid .ui.image img{ height: 100px; width: 100px; padding: 0}
 
 
-.ui.main .ui.form .ui.labeled.input.inverted > span, .ui.labeled.input > .label, .ui .inverted .label.label{color: #fff; background: #222 !important; padding: 10px; font-weight: 600}
+.ui.main .ui.form .ui.labeled.input.inverted > span, .ui.labeled.input > .label, .ui .inverted .label.label{color: #fff; padding: 10px; font-weight: 600}
+.ui.main .ui.form .ui.labeled.input.inverted > span, .ui.labeled.input > .label, .ui .inverted .label.label.inverted{background: #222 !important; }
 .ui.main .ui.form  .checkbox.inverted .label, .ui.main .ui.form .input.labeled input{ color: #fff}
 .ui.user .ui.avatar {width: 6em; height: 6em}
 .ui.main .segments {background: transparent !important}
@@ -584,7 +589,7 @@ margin-right: -4rem;}
 .ui.segment.preflight .ui.horizontal.labels .label, .ui.horizontal.label{ margin: 0em 0.2em 0em 0em !important}
 .ui.segment.preflight .ui.bottom.attached.segment.active.tab{padding: 0 !important; background: transparent}
 .ui.segment.preflight .slide-out .ui.grid{ background: #111; margin-top: -8px !important}
-.ui.preflight .grid{ margin-top: 10px}
+.ui.preflight .grid{ margin: 0 -1rem 0px;}
 .ui.preflight .ui.red.message, .ui.preflight .ui.green.message{ background-color: transparent !important}
 .ui.preflight .ui.message .content{ color: white }
 .ui.preflight .ui.message .list{ margin: 0; }
