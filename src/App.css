@@ -530,7 +530,8 @@ margin-right: -4rem;}
 .ui.horizontal.segments{ margin: 0 !important}
 .ui.inverted.segment.stages{ padding: 0 !important; margin: 0 !important }
 #StepsContent .segment, #StepsContent .segments, .ui.segment.stageCol{ margin: 0 !important; border: 0 !important}
-#StepsContent .segments .segment{ margin: 0 ; padding: 0 }
+#StepsContent .segments .segment{ margin: 0 ;}
+#StepsContent .segments.horizontal .segment{ padding: 0}
 .ui.segment.stageCol { border: 0px solid #222 !important}
 
 #login .ui.form input, #signup .ui.form input, #login .button, #signup button, #users .ui.form input{ margin: 5px 0 !important;}
