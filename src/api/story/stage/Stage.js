@@ -543,7 +543,7 @@ class stage extends Component {
                         src={t.src}
                         style={{padding:0, margin:0}}
                         />
-                      <Label inverted="true" color="violet" >
+                      <Label className="inverted">
                         <Icon className="button left floated" floated="left" name="edit" onClick={(e) => this.handleCardClick(e,t)} />
                         <Icon className="button right floated" floated="right" name="trash alternate"  onClick={(e) => this.handleObjectDeleteConfirm(e,t)} />
                         <Confirm
@@ -561,15 +561,15 @@ class stage extends Component {
                       <Form style={{textAlign: 'left'}}>
                         <Button fluid primary onClick={(e) => this.handleCardClick(e,t)}><Icon name="arrow left" /> Back</Button>
                         <Label.Group color='blue' style={{padding: '2em'}}>
-                          <Label >
+                          <Label  className="inverted">
                             Name:
                             <Label.Detail>{t.name}</Label.Detail>
                           </Label>
-                          <Label >
+                          <Label  className="inverted">
                             Size:
                             <Label.Detail>{humanFileSize(t.size)}</Label.Detail>
                           </Label>
-                          <Label >Url:
+                          <Label  className="inverted">Url:
                             <Label.Detail><Button href={t.src}>Source</Button></Label.Detail>
                           </Label>
                         </Label.Group>
@@ -604,7 +604,7 @@ class stage extends Component {
                     src={t.src}
                     key={t.name}
                     />
-                  <Label inverted="true" color="violet" >
+                  <Label  className="inverted">
                     <Icon className="button left floated" floated="left"  name="edit" onClick={(e) => this.handleCardClick(e,t)} />
                     <Icon className="button right floated" floated="right" name="trash alternate"  onClick={(e) => this.handleObjectDeleteConfirm(e,t)} />
                     <Confirm
@@ -622,15 +622,15 @@ class stage extends Component {
                   <Form style={{textAlign: 'left'}}>
                       <Button primary onClick={(e) => this.handleCardClick(e,t)}><Icon name="arrow left" /> Back</Button>
                     <Label.Group inverted style={{padding: '2em'}}>
-                      <Label as='a'>
+                      <Label as='a'  className="inverted">
                         Name:
                         <Label.Detail>{t.name}</Label.Detail>
                       </Label>
-                      <Label as='a'>
+                      <Label as='a'  className="inverted">
                         Size:
                         <Label.Detail>{humanFileSize(t.size)}</Label.Detail>
                       </Label>
-                      <Label as='a'>Url:
+                      <Label as='a'  className="inverted">Url:
                         <Label.Detail><Button href={t.src}>Source</Button></Label.Detail>
                       </Label>
                     </Label.Group>
@@ -656,7 +656,7 @@ class stage extends Component {
                 <Dimmer active={t.loading} onClickOutside={this.handleHide} />
               <ReactCardFlip style={{height: 'auto', backgroundColor: 'transparent' , width: 'inherit'}} isFlipped={t.isFlipped} flipDirection="vertical">
                 <Card  color='blue' className="fluid" key="front" style={{ backgroundColor: 'transparent' }}>
-                  <Label inverted="true" color="violet">
+                  <Label  className="inverted">
                     {t.name} <span className="right floated">{humanFileSize(t.size)}</span>
                   </Label>
                   <ReactAudioPlayer
@@ -665,7 +665,7 @@ class stage extends Component {
                     loop={t.loop}
                     controls
                     />
-                    <Label>
+                    <Label  className="inverted">
                     <Icon className="button left floated" floated="left"  name="edit" onClick={(e) => this.handleCardClick(e,t)} />
                     <Icon className="button right floated" floated="right" name="trash alternate"  onClick={(e) => this.handleObjectDeleteConfirm(e,t)} />
                       <Confirm
@@ -682,15 +682,15 @@ class stage extends Component {
                   <Form style={{textAlign: 'left'}}>
                     <Button fluid primary onClick={(e) => this.handleCardClick(e,t)}><Icon name="arrow left" /> Back</Button>
                     <Label.Group color='blue' style={{padding: '2em'}}>
-                      <Label >
+                      <Label  className="inverted">
                         Name:
                         <Label.Detail>{t.name}</Label.Detail>
                       </Label>
-                      <Label >
+                      <Label  className="inverted">
                         Size:
                         <Label.Detail>{humanFileSize(t.size)}</Label.Detail>
                       </Label>
-                      <Label >Url:
+                      <Label  className="inverted">Url:
                         <Label.Detail><Button href={t.src}>Source</Button></Label.Detail>
                       </Label>
                       <Checkbox
@@ -723,7 +723,7 @@ class stage extends Component {
                 <Dimmer active={t.loading} onClickOutside={this.handleHide} />
                 <ReactCardFlip style={{height: 'auto', backgroundColor: 'transparent' , width: 'inherit'}} isFlipped={t.isFlipped} flipDirection="vertical">
                   <Card className="fluid" style={{ backgroundColor: 'transparent' }} key="front">
-                  <Label inverted="true" color="violet" fluid>
+                  <Label  className="inverted" fluid>
                     {t.name} <span className="right floated">{humanFileSize(t.size)}</span>
                   </Label>
                       <ReactPlayer
@@ -755,7 +755,7 @@ class stage extends Component {
                     url={t.src}
                     />
 
-                  <Label inverted="true" >
+                  <Label  className="inverted" >
                     <Icon className="button left floated" floated="left"  name="edit" onClick={(e) => this.handleCardClick(e,t)} />
                     <Icon className="button right floated" floated="right" name="trash alternate"  onClick={(e) => this.handleObjectDeleteConfirm(e,t)} />
                     <Confirm
@@ -771,16 +771,16 @@ class stage extends Component {
                 <Card fluid key="back" >
                   <Form style={{textAlign: 'left'}}>
                     <Button fluid primary onClick={(e) => this.handleCardClick(e,t)}><Icon name="arrow left" /> Back</Button>
-                    <Label.Group color='blue' style={{padding: '2em'}}>
-                      <Label >
+                    <Label.Group style={{padding: '2em'}}>
+                      <Label  className="inverted">
                         Name:
                         <Label.Detail>{t.name}</Label.Detail>
                       </Label>
-                      <Label >
+                      <Label  className="inverted">
                         Size:
                         <Label.Detail>{humanFileSize(t.size)}</Label.Detail>
                       </Label>
-                      <Label >Url:
+                      <Label  className="inverted">Url:
                         <Label.Detail><Button href={t.src}>Source</Button></Label.Detail>
                       </Label>
                       <Checkbox label="Use as a loop"

@@ -137,7 +137,7 @@ padding: 1em;
 .stageCol .droppable.image {
   height: auto;
 }
-.droppable .label{font-size: 6px}
+.droppable .label{font-size: 9px}
 .photo .label.label{ margin: 0 !important}
 .ui.card .droppable.single {
   width: 'inherit';
