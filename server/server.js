@@ -601,10 +601,10 @@ const checkPreFlight =  (obj) => {
       log.push(check);
     }
     // check stage dimension
-    check = {ssid: obj.id, category: 'dimension', condition: 'Dimension must be filled' , check: false,   error:  'Empty: No Dimension'};
+    check = (obj.dimension && obj.dimension.length !== 0) ? {ssid: obj.id, category: 'dimension', condition: 'Dimension must be filled' , check: true} : {ssid: obj.id, category: 'dimension', condition: 'Dimension must be filled' , check: false,   error:  'Empty: No Dimension'};
     log.push(check);
     // check stage radius
-    check = {ssid: obj.id, category: 'radius', condition: 'Radius must be filled' , check: false,   error:  'Empty: No Radius'};
+    check =  (obj.radius && obj.radius.length !== 0) ? {ssid: obj.id, category: 'radius', condition: 'Radius must be filled' , check: true} : {ssid: obj.id, category: 'radius', condition: 'Radius must be filled' , check: false,   error:  'Empty: No Radius'};
     log.push(check);
     // check picture dimensions
     let pictures = (obj.pictures) ? obj.pictures : null ;
