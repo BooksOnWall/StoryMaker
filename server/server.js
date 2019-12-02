@@ -529,6 +529,7 @@ const storyCheckPreflight =  (obj) => {
     let check = {};
     check = (obj.title ) ? {sid: obj.id, category: 'title', condition: 'Title must be filled' , check: true} : {sid: obj.id, category: 'title', error: obj.title, condition: 'Title cannot be empty' , check: false};
     log.push(check);
+
     //console.log('stages', obj.stages);
     let stages = (obj.stages) ? obj.stages : null;
     if(stages) {
@@ -599,7 +600,12 @@ const checkPreFlight =  (obj) => {
       check = {ssid: obj.id, category: 'photo', condition: 'Photo must exist' , check: false,   error:  'Empty: No Photo'};
       log.push(check);
     }
-
+    // check stage dimension
+    check = {ssid: obj.id, category: 'dimension', condition: 'Dimension must be filled' , check: false,   error:  'Empty: No Dimension'};
+    log.push(check);
+    // check stage radius
+    check = {ssid: obj.id, category: 'radius', condition: 'Radius must be filled' , check: false,   error:  'Empty: No Radius'};
+    log.push(check);
     // check picture dimensions
     let pictures = (obj.pictures) ? obj.pictures : null ;
       if(pictures) {
@@ -642,13 +648,14 @@ const checkPreFlight =  (obj) => {
     }
     // onZoneEnter
     if(obj.onZoneEnter && obj.onZoneEnter.length > 0 ) {
+
       obj.onZoneEnter = (typeof(obj.onZoneEnter) === 'string') ? JSON.parse(obj.onZoneEnter) : obj.onZoneEnter;
       check = (obj.onZoneEnter.length > 0) ? {ssid: obj.id, category: 'onZoneEnter', condition: 'OnZoneEnter cannot be empty.' , check: true} : {ssid: obj.id, category: 'onZoneEnter', condition: 'OnZoneEnter cannot be empty' , check: false,  error: 'zone is empty' };
       // audios
-      let audios = (obj.onZoneEnter && obj.onZoneEnter.length > 0) ? obj.onZoneEnter.find((el, index) => {
+      let audios = (obj.onZoneEnter && obj.onZoneEnter.length > 0) ? obj.onZoneEnter.filter((el, index) => {
         return el.type === 'audio';
       }) : null;
-      //console.log('audios',audios);
+
       check = (audios) ? {ssid: obj.id, category: 'onZoneEnter', condition: 'There must be one audio' , check: true} : {ssid: obj.id, category: 'onZoneEnter', error: 'File is missing', condition: 'There must be one audio' , check: false};
       log.push(check);
       check = (audios  && audios.length < 2 ) ? {ssid: obj.id, category: 'onZoneEnter', condition: 'There can be only one audio' , check: true} : {ssid: obj.id, category: 'onZoneEnter',  error: 'More than one audio file: ['+ audios.length + ']', condition: 'There can be only one audio' , check: false};
@@ -672,9 +679,12 @@ const checkPreFlight =  (obj) => {
     // Video
     // Audio
     //onZoneLeave
-    check = (obj.onZoneLeave && obj.onZoneLeave.length > 0  ) ? {ssid: obj.id, category: 'onZoneLeave', condition: 'There must be one audio' , check: true} : {ssid: obj.id, category: 'onZoneLeave', error: 'file is missing', condition: 'There must be one audio' , check: false};
+    let laudios = (obj.onZoneLeave && obj.onZoneLeave.length > 0) ? obj.onZoneLeave.filter((el, index) => {
+      return el.type === 'audio';
+    }) : null;
+    check = (laudios) ? {ssid: obj.id, category: 'onZoneLeave', condition: 'There must be at least one audio' , check: true} : {ssid: obj.id, category: 'onZoneLeave', error: 'File is missing', condition: 'There must be at least one audio' , check: false};
     log.push(check);
-    check = (obj.onZoneLeave && obj.onZoneLeave.length > 0  && obj.onZoneLeave.length === 1 ) ? {ssid: obj.id, category: 'onZoneLeave', condition: 'There can be only one audio' , check: true} : {ssid: obj.id, category: 'onZoneLeave',  error: 'More than one audio file', condition: 'There can be only one audio' , check: false};
+    check = (laudios  && laudios.length <= 2 ) ? {ssid: obj.id, category: 'onZoneLeave', condition: 'There cannot be more than 2 audio files' , check: true} : {ssid: obj.id, category: 'onZoneLeave',  error: 'The cannot be More than 2 audio file: ['+ laudios.length + ']', condition: 'There cannot be more than 2 audios files' , check: false};
     log.push(check);
 
     // export JSON file :

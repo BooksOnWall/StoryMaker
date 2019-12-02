@@ -351,6 +351,14 @@ class storyStages extends Component {
             pane: {key: 'description', content: this.renderItems(this.state.story.id, stage.id, logs, 'description')}
           },
           {
+            menuItem: this.renderTabHeader(this.state.story.id, stage.id, logs, 'dimension'),
+            pane: {key: 'dimension', content: this.renderItems(this.state.story.id, stage.id, logs, 'dimension')}
+          },
+          {
+            menuItem: this.renderTabHeader(this.state.story.id, stage.id, logs, 'radius'),
+            pane: {key: 'radius', content: this.renderItems(this.state.story.id, stage.id, logs, 'radius')}
+          },
+          {
             menuItem: this.renderTabHeader(this.state.story.id, stage.id, logs, 'pictures'),
             pane:  {key: 'pictures', content: this.renderItems(this.state.story.id, stage.id, logs, 'pictures')}
           },
@@ -441,7 +449,7 @@ class storyStages extends Component {
     let err = (error > 0) ? <Label color="red" ><Icon disabled name='exclamation circle' /> Error {error}</Label>: '';
     let sucess = (win > 0) ? <Label color="green" ><Icon disabled name='check circle' /> Success {win}</Label>: '';
     let progress = <Progress percent={percent}  progress active indicating inverted />;
-    return (        
+    return (
     <Grid inverted verticalAlign='middle' columns='equal'>
     <Grid.Column width={5}>
       {sucess}{err}
@@ -450,7 +458,7 @@ class storyStages extends Component {
       {progress}
     </Grid.Column>
     </Grid>
-    
+
     );
   }
   ExportPreview = (log) => {

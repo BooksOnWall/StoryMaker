@@ -74,6 +74,14 @@ class logReport extends Component  {
         pane: {key: 'description', content: this.renderItems(logs, 'description')}
       },
       {
+        menuItem: this.renderTabHeader(logs, 'dimension'),
+        pane: {key: 'dimension', content: this.renderItems(logs, 'dimension')}
+      },
+      {
+        menuItem: this.renderTabHeader(logs, 'radius'),
+        pane: {key: 'radius', content: this.renderItems(logs, 'radius')}
+      },
+      {
         menuItem: this.renderTabHeader(logs, 'pictures'),
         pane:  {key: 'pictures', content: this.renderItems(logs, 'pictures')}
       },
