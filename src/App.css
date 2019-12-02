@@ -488,7 +488,7 @@ input[type="color"] {
 
 .ui.segment .sidebar .board .files{}
 
-.ui.segment{ box-shadow: auto ; border: 0 !important; border-radius: 0 !important; background: #e2e2e2; padding: 0 }
+.ui.segment{ box-shadow: auto ; border: 0 !important; border-radius: 0 !important; background: #e2e2e2;}
 
 .ui .colorSelector input[type='checkbox']{
     width: 20px;
@@ -517,7 +517,7 @@ input[type="color"] {
 .ui.stageBoard .header{ padding: 10px 31px !important; font-size: 1em !important}
 .ui.stageBoard .grid .header{ padding: 0 !important; margin-top:10px}
 .ui.stageBoard .column .single .header { padding: 0 !important}
-.ui.stageBoard .main-board{ 
+.ui.stageBoard .main-board{
 margin-top: 0rem;
 margin-bottom: 0rem;
 margin-left: -1rem;
@@ -602,4 +602,3 @@ margin-right: -4rem;}
 .ui.preflight .ui.red.message .header{ padding: 0; margin: 0}
 .exportMessage, .exportMessage div{ background: #1B1C1D !important; color:#fff}
 .exportMessage div.header{ color: #fff !important}
-
