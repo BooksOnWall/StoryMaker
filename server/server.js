@@ -1034,16 +1034,14 @@ app.get('/zip/:sid', function(req, res){
   const path = __dirname + '/public/stories/';
   getSize(path+sid, function(err, size) {
     if (err) { throw err; }
-    console.log('Folder size to compress: ',prettyBytes(size));
+    console.log('Story id: '+sid+' Folder size to compress: ',prettyBytes(size));
   });
   res.zip({
     files: [{ path: path + sid, name: sid }],
       filename: 'BooksOnWall_Story_'+ sid +'.zip'
     }).then(function(obj){
-      console.log('Zip size', prettyBytes(obj.size));
-
-      var ignoredFileArray = obj.ignored;
-      console.log('Ignored Files',ignoredFileArray);
+      console.log('Story id: '+ sid +' Zip size', prettyBytes(obj.size));
+      if (obj.ignored || obj.ignored.length !== 0) console.log('Ignored Files', obj.ignored);
     })
     .catch(function(err){
       console.log(err);	//if zip failed
