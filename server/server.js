@@ -1039,9 +1039,10 @@ app.get('/zip/:sid', function(req, res){
   res.zip({
     files: [{ path: path + sid, name: sid }],
       filename: 'BooksOnWall_Story_'+ sid +'.zip'
-    }).then(function(obj){
+    }).then(function(obj, bot, chat_id){
+      if(hasbot) { bot.telegram.sendMessage(chat_id,"New Story id: "+ sid +" downloaded: Zip size:" +prettyBytes(obj.size))}
       console.log('Story id: '+ sid +' Zip size', prettyBytes(obj.size));
-      if (obj.ignored || obj.ignored.length !== 0) console.log('Ignored Files', obj.ignored);
+      if (obj.ignored && obj.ignored.length !== 0) console.log('Ignored Files', obj.ignored);
     })
     .catch(function(err){
       console.log(err);	//if zip failed
