@@ -1038,13 +1038,13 @@ app.get('/zip/:sid', function(req, res){
   });
   res.zip({
     files: [
-      { content: 'Eported Story:'+sid,      //options can refer to [http://archiverjs.com/zip-stream/ZipStream.html#entry](http://archiverjs.com/zip-stream/ZipStream.html#entry)
+      {
         name: 'Story_'+ sid,
         mode:  0o755,
         comment: 'Exported story for BooksOnWall mobile app',
         date: new Date(),
-        type: 'file' },
-        { path: path, name: sid }    //or a folder
+        type: 'directory' },
+        { path: path + sid, name: sid }    //or a folder
       ],
       filename: 'BooksOnWall_Story_'+ sid +'.zip'
     }).then(function(obj){
