@@ -1037,15 +1037,7 @@ app.get('/zip/:sid', function(req, res){
     console.log('Folder size to compress: ',prettyBytes(size));
   });
   res.zip({
-    files: [
-      {
-        name: 'Story_'+ sid,
-        mode:  0o755,
-        comment: 'Exported story for BooksOnWall mobile app',
-        date: new Date(),
-        type: 'directory' },
-        { path: path + sid, name: sid }    //or a folder
-      ],
+    files: [{ path: path + sid, name: sid }],
       filename: 'BooksOnWall_Story_'+ sid +'.zip'
     }).then(function(obj){
       console.log('Zip size', prettyBytes(obj.size));
