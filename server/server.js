@@ -11,9 +11,10 @@ const session = require('telegraf/session');
 const { reply } = Telegraf;
 const Tail = require('nodejs-tail');
 var sizeOf = require('image-size');
-const getSize = require('get-folder-size');
+var zip = require('express-easy-zip');
 var tar = require('tar-fs');
-
+const prettyBytes = require('pretty-bytes');
+var getSize = require('get-folder-size');
 
 const bodyParser = require('body-parser');
 //CORS
@@ -70,6 +71,7 @@ const app = express();
 
 // initialize passport with express
 app.use(passport.initialize());
+app.use(zip());
 // cors integration
 var allowedOrigins = ['*',
       'https://localhost:3000',
@@ -741,7 +743,7 @@ const exportStoryTar = async (sid) => {
     let archive = __dirname +'/public/export/';
     if (!fs.existsSync(archive))  await fs.mkdirSync(archive, 0o744) ;
     if (!fs.existsSync(archive+'stories'))  await fs.mkdirSync(archive+'stories', 0o744) ;
-    let path = __dirname +'/public/stories/'+ sid  ;
+    let path = __dirname +'/public/stories/'+ sid +'/'  ;
     let ex = __dirname +'/public/export/stories/'+ sid +'/' ;;
     if (!fs.existsSync(path))  await fs.mkdirSync(path, 0o744) ;
     if (!fs.existsSync(ex))  await fs.mkdirSync(ex, 0o744) ;
@@ -962,6 +964,8 @@ if(hasbot) {
   bot.hears('hi', (ctx) => ctx.reply('Hey there'));
   bot.hears('hola', (ctx) => ctx.reply('Hola !'));
   bot.hears('Hola', (ctx) => ctx.reply('Hola !'));
+  bot.hears('Aloja!', (ctx) => ctx.reply('Aloja !'));
+  bot.hears('Ola', (ctx) => ctx.reply('Ola !'));
   // Command handling
   bot.command('answer', sayYoMiddleware, (ctx) => {
     return ctx.reply('*42*', Extra.markdown());
@@ -1025,6 +1029,34 @@ if(hasbot) {
   // End telegram conf
 }
 app.use('/assets', express.static(__dirname + 'public', staticoptions));
+app.get('/zip/:sid', function(req, res){
+  const sid = req.params.sid;
+  const path = __dirname + '/public/stories/';
+  getSize(path+sid, function(err, size) {
+    if (err) { throw err; }
+    console.log('Folder size to compress: ',prettyBytes(size));
+  });
+  res.zip({
+    files: [
+      { content: 'Eported Story:'+sid,      //options can refer to [http://archiverjs.com/zip-stream/ZipStream.html#entry](http://archiverjs.com/zip-stream/ZipStream.html#entry)
+        name: 'Story_'+ sid,
+        mode:  0o755,
+        comment: 'Exported story for BooksOnWall mobile app',
+        date: new Date(),
+        type: 'file' },
+        { path: path, name: sid }    //or a folder
+      ],
+      filename: 'BooksOnWall_Story_'+ sid +'.zip'
+    }).then(function(obj){
+      console.log('Zip size', prettyBytes(obj.size));
+
+      var ignoredFileArray = obj.ignored;
+      console.log('Ignored Files',ignoredFileArray);
+    })
+    .catch(function(err){
+      console.log(err);	//if zip failed
+    });
+});
 
 app.get('/assets/users/:userId/:name', function (req, res, next) {
   var uid = req.params.userId;
