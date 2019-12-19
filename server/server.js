@@ -1036,17 +1036,19 @@ app.get('/zip/:sid', function(req, res){
     if (err) { throw err; }
     console.log('Story id: '+sid+' Folder size to compress: ',prettyBytes(size));
   });
+  //  if(hasbot) { bot.telegram.sendMessage(chat_id,"New Story id: "+ sid + " downloaded")}
   res.zip({
     files: [{ path: path + sid, name: sid }],
       filename: 'BooksOnWall_Story_'+ sid +'.zip'
     }).then(function(obj, bot, chat_id){
-      if(hasbot) { bot.telegram.sendMessage(chat_id,"New Story id: "+ sid +" downloaded: Zip size:" +prettyBytes(obj.size))}
+
       console.log('Story id: '+ sid +' Zip size', prettyBytes(obj.size));
       if (obj.ignored && obj.ignored.length !== 0) console.log('Ignored Files', obj.ignored);
     })
     .catch(function(err){
       console.log(err);	//if zip failed
     });
+
 });
 
 app.get('/assets/users/:userId/:name', function (req, res, next) {
