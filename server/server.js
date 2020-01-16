@@ -1270,6 +1270,7 @@ app.delete('/users/:userId', function(req, res, next) {
 // register route register create the new user but set it as inactive
 app.post('/register', function(req, res, next) {
   const { name, email, password } = req.body;
+
   let hash = encrypt(password);
   createUser({ name, email, hash }).then(user =>
      res.json({ user, msg: 'account created successfully' })
@@ -1283,6 +1284,7 @@ app.post('/users/0', function(req, res, next) {
     res.json({ user, msg: 'account created successfully' })
   );
 });
+
 //login route
 app.post('/login', async function(req, res, next) {
   const { email, password } = req.body;
