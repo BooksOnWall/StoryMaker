@@ -1235,8 +1235,9 @@ app.patch('/users/:userId', function(req, res, next) {
     //update user password
     bcrypt
     .genSaltSync(saltRounds, function(err, salt) {
-   	bcrypt.hash("B4c0/\/", salt, function(err, hash) {
-          // Store hash in your password DB.// 
+   	bcrypt.hash(password, salt, function(err, hash) {
+          // Store hash in your password DB.//
+	  if(err) console.log(err);
       	  patchUserPasswd({ id, hash }).then(user =>
             res.json({ user, msg: 'password updated successfully' })
           );
@@ -1258,24 +1259,33 @@ app.post('/register', function(req, res, next) {
   var salt = bcrypt.genSaltSync(saltRounds);
   bcrypt
     .genSaltSync(saltRounds, function(err, salt) {
-   	bcrypt.hash("B4c0/\/", salt, function(err, hash) {
+   	bcrypt.hash(password, salt, function(err, hash) {
           // Store hash in your password DB.// 
-  	  createUser({ name, email, hash }).then(user =>
+	  if(err) console.log(err);
+  	  console.log('register user');
+	  createUser({ name, email, hash }).then(user =>
     	   res.json({ user, msg: 'account created successfully' })
           );
 	}); 
     });
-
   });
 // register route create new user
 app.post('/users/0', function(req, res, next) {
   const { name, email, password, active } = req.body;
+  console.log('create user: ' + name);
   var salt = bcrypt.genSaltSync(saltRounds);
-  var hash = bcrypt.hashSync(password, salt);
-  createUser({ name, email, hash, active }).then(user =>
-    res.json({ user, msg: 'account created successfully' })
-  );
-});
+  bcrypt
+    .genSaltSync(saltRounds, function(err, salt) {
+   	bcrypt.hash(password, salt, function(err, hash) {
+          // Store hash in your password DB.//
+          if(err) console.log(err);
+  	  console.log('create user: '+name);
+	  createUser({ name, email, hash, active }).then(user =>
+    	    res.json({ user, msg: 'account created successfully' })
+  	  );
+      }); 
+    });
+  });
 //login route
 app.post('/login', async function(req, res, next) {
   const { email, password } = req.body;
