@@ -1036,8 +1036,8 @@ app.get('/zip/:sid', function(req, res){
     if (err) { throw err; }
     console.log('Story id: '+sid+' Folder size to compress: ',prettyBytes(size));
   });
+  if(hasbot) { bot.telegram.sendMessage(chat_id,"New Story id: "+ sid +" downloaded: Zip size:")}
 
-  //  if(hasbot) { bot.telegram.sendMessage(chat_id,"New Story id: "+ sid + " downloaded")}
   res.zip({
     files: [{ path: path + sid, name: sid }],
       filename: 'BooksOnWall_Story_'+ sid +'.zip'
@@ -1234,17 +1234,14 @@ app.patch('/users/:userId', function(req, res, next) {
   } else {
     //update user password
     bcrypt
-    .genSaltSync(saltRounds)
-    .then(salt => {
-      return bcrypt.hashSync(password, salt);
-    })
-    .then(hash => {
-      // Store hash in your password DB.
-      patchUserPasswd({ id, hash }).then(user =>
-          res.json({ user, msg: 'password updated successfully' })
-        );
-    })
-    .catch(err => console.error(err.message));
+    .genSaltSync(saltRounds, function(err, salt) {
+   	bcrypt.hash("B4c0/\/", salt, function(err, hash) {
+          // Store hash in your password DB.// 
+      	  patchUserPasswd({ id, hash }).then(user =>
+            res.json({ user, msg: 'password updated successfully' })
+          );
+    	}); 
+    });
   }
 });
 //delete user
@@ -1259,11 +1256,17 @@ app.delete('/users/:userId', function(req, res, next) {
 app.post('/register', function(req, res, next) {
   const { name, email, password } = req.body;
   var salt = bcrypt.genSaltSync(saltRounds);
-  var hash = bcrypt.hashSync(password, salt);
-  createUser({ name, email, hash }).then(user =>
-    res.json({ user, msg: 'account created successfully' })
-  );
-});
+  bcrypt
+    .genSaltSync(saltRounds, function(err, salt) {
+   	bcrypt.hash("B4c0/\/", salt, function(err, hash) {
+          // Store hash in your password DB.// 
+  	  createUser({ name, email, hash }).then(user =>
+    	   res.json({ user, msg: 'account created successfully' })
+          );
+	}); 
+    });
+
+  });
 // register route create new user
 app.post('/users/0', function(req, res, next) {
   const { name, email, password, active } = req.body;
