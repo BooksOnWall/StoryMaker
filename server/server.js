@@ -35,9 +35,29 @@ const serverUrl = protocol + '://'+ host + ':' + proxy +'/';
 // get mysql connection & credentials parameters
 let config = require('./conf/mysql');
 
-//bcrypt
-const bcrypt = require('bcryptjs');
-const saltRounds = 10;
+//crypto https://codeforgeek.com/encrypt-and-decrypt-data-in-node-js/
+// Nodejs encryption with CTR
+const crypto = require('crypto');
+const algorithm = 'aes-256-cbc';
+const cryptokey = crypto.randomBytes(32);
+const iv = crypto.randomBytes(16);
+
+function encrypt(text) {
+ let cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(cryptokey), iv);
+ let encrypted = cipher.update(text);
+ encrypted = Buffer.concat([encrypted, cipher.final()]);
+ return { iv: iv.toString('hex'), encryptedData: encrypted.toString('hex') };
+}
+
+function decrypt(text) {
+ let iv = Buffer.from(text.iv, 'hex');
+ let encryptedText = Buffer.from(text.encryptedData, 'hex');
+ let decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(key), iv);
+ let decrypted = decipher.update(encryptedText);
+ decrypted = Buffer.concat([decrypted, decipher.final()]);
+ return decrypted.toString();
+}
+
 
 //jwt_payload & passport
 const jwt = require('jsonwebtoken');
@@ -1233,15 +1253,10 @@ app.patch('/users/:userId', function(req, res, next) {
     );
   } else {
     //update user password
-    bcrypt
-    .genSaltSync(saltRounds, function(err, salt) {
-   	bcrypt.hash("B4c0/\/", salt, function(err, hash) {
-          // Store hash in your password DB.// 
-      	  patchUserPasswd({ id, hash }).then(user =>
-            res.json({ user, msg: 'password updated successfully' })
-          );
-    	}); 
-    });
+    let hash = encrypt(password);
+    patchUserPasswd({ id, hash }).then(user =>
+      res.json({ user, msg: 'password updated successfully' })
+    );
   }
 });
 //delete user
@@ -1255,23 +1270,15 @@ app.delete('/users/:userId', function(req, res, next) {
 // register route register create the new user but set it as inactive
 app.post('/register', function(req, res, next) {
   const { name, email, password } = req.body;
-  var salt = bcrypt.genSaltSync(saltRounds);
-  bcrypt
-    .genSaltSync(saltRounds, function(err, salt) {
-   	bcrypt.hash("B4c0/\/", salt, function(err, hash) {
-          // Store hash in your password DB.// 
-  	  createUser({ name, email, hash }).then(user =>
-    	   res.json({ user, msg: 'account created successfully' })
-          );
-	}); 
-    });
-
-  });
+  let hash = encrypt(password);
+  createUser({ name, email, hash }).then(user =>
+     res.json({ user, msg: 'account created successfully' })
+  );
+});
 // register route create new user
 app.post('/users/0', function(req, res, next) {
   const { name, email, password, active } = req.body;
-  var salt = bcrypt.genSaltSync(saltRounds);
-  var hash = bcrypt.hashSync(password, salt);
+  let hash = encrypt(password);
   createUser({ name, email, hash, active }).then(user =>
     res.json({ user, msg: 'account created successfully' })
   );
@@ -1287,32 +1294,27 @@ app.post('/login', async function(req, res, next) {
       }
       let hash = user.password;
       if(hash) {
-        bcrypt
-          .compare(password, hash)
-          .then(match => {
-            if(match) {
-             // Passwords match
-             // from now on we'll identify the user by the id and the id is the
-             // only personalized value that goes into our token
-             let payload = { id: user.id };
-             let token = jwt.sign(payload, jwtOptions.secretOrKey);
-             let name = user.name;
-             let uid = user.id;
-             getUserPreferences({id: user.id}).then(users => res.json({
-               msg: 'ok',
-               token: token,
-               id: uid,
-               name: name,
-               prefs: users
-             }));
-            } else {
-             // Passwords don't match
-               res.status(401).json({ msg: 'Password is incorrect' });
-            }
-          })
-          .catch(err => console.error(err.message));
+        if (hash === encrypt(password)) {
+          // Passwords match
+          // from now on we'll identify the user by the id and the id is the
+          // only personalized value that goes into our token
+          let payload = { id: user.id };
+          let token = jwt.sign(payload, jwtOptions.secretOrKey);
+          let name = user.name;
+          let uid = user.id;
+          getUserPreferences({id: user.id}).then(users => res.json({
+            msg: 'ok',
+            token: token,
+            id: uid,
+            name: name,
+            prefs: users
+          }));
+        } else {
+          // Passwords don't match
+            res.status(401).json({ msg: 'Password is incorrect' });
+        }
       }
-    }catch(e) {
+    } catch(e) {
       console.log(e);
     }
   }
