@@ -12,7 +12,7 @@
     "strong-pm",
     "express"
   ],
-  "author": "Tom Bouillut, Diego Strasser",
+  "author": "Tom Bouillut",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -39,5 +39,8 @@
     "shelljs": "^0.8.3",
     "tar-fs": "^2.0.0",
     "telegraf": "^3.32.0"
+  },
+  "devDependencies": {
+    "npm-check-updates": "^4.0.1"
   }
 }
