@@ -43,6 +43,7 @@ const cryptokey = crypto.randomBytes(32);
 const iv = crypto.randomBytes(16);
 
 function encrypt(text) {
+  console.log(text);
  let cipher = crypto.createCipheriv(algorithm, Buffer.from(cryptokey), iv);
  let encrypted = cipher.update(text);
  encrypted = Buffer.concat([encrypted, cipher.final()]);
@@ -1253,7 +1254,7 @@ app.patch('/users/:userId', function(req, res, next) {
     );
   } else {
     //update user password
-    let hash = encrypt(password);
+    let hash = JSON.stringify(encrypt(password));
     patchUserPasswd({ id, hash }).then(user =>
       res.json({ user, msg: 'password updated successfully' })
     );
@@ -1270,8 +1271,9 @@ app.delete('/users/:userId', function(req, res, next) {
 // register route register create the new user but set it as inactive
 app.post('/register', function(req, res, next) {
   const { name, email, password } = req.body;
-
-  let hash = encrypt(password);
+  console.log(password);
+  console.log(typeof(password));
+  let hash = JSON.stringify(encrypt(password));
   createUser({ name, email, hash }).then(user =>
      res.json({ user, msg: 'account created successfully' })
   );
@@ -1279,7 +1281,7 @@ app.post('/register', function(req, res, next) {
 // register route create new user
 app.post('/users/0', function(req, res, next) {
   const { name, email, password, active } = req.body;
-  let hash = encrypt(password);
+  let hash = JSON.stringify(encrypt(password));
   createUser({ name, email, hash, active }).then(user =>
     res.json({ user, msg: 'account created successfully' })
   );
@@ -1296,7 +1298,7 @@ app.post('/login', async function(req, res, next) {
       }
       let hash = user.password;
       if(hash) {
-        if (decrypt(hash) === password) {
+        if (decrypt(JSON.parse(hash)) === password) {
           // Passwords match
           // from now on we'll identify the user by the id and the id is the
           // only personalized value that goes into our token
