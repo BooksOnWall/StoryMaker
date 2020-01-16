@@ -43,7 +43,7 @@ const cryptokey = crypto.randomBytes(32);
 const iv = crypto.randomBytes(16);
 
 function encrypt(text) {
- let cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(cryptokey), iv);
+ let cipher = crypto.createCipheriv(algorithm, Buffer.from(cryptokey), iv);
  let encrypted = cipher.update(text);
  encrypted = Buffer.concat([encrypted, cipher.final()]);
  return { iv: iv.toString('hex'), encryptedData: encrypted.toString('hex') };
@@ -52,7 +52,7 @@ function encrypt(text) {
 function decrypt(text) {
  let iv = Buffer.from(text.iv, 'hex');
  let encryptedText = Buffer.from(text.encryptedData, 'hex');
- let decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(key), iv);
+ let decipher = crypto.createDecipheriv(algorithm, Buffer.from(cryptokey), iv);
  let decrypted = decipher.update(encryptedText);
  decrypted = Buffer.concat([decrypted, decipher.final()]);
  return decrypted.toString();
@@ -1296,7 +1296,7 @@ app.post('/login', async function(req, res, next) {
       }
       let hash = user.password;
       if(hash) {
-        if (hash === encrypt(password)) {
+        if (decrypt(hash) === password) {
           // Passwords match
           // from now on we'll identify the user by the id and the id is the
           // only personalized value that goes into our token
