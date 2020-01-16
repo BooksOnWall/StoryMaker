@@ -37,28 +37,35 @@ let config = require('./conf/mysql');
 
 //crypto https://codeforgeek.com/encrypt-and-decrypt-data-in-node-js/
 // Nodejs encryption with CTR
-const crypto = require('crypto');
-const algorithm = 'aes-256-cbc';
-const cryptokey = crypto.randomBytes(32);
-const iv = crypto.randomBytes(16);
+// check if server and nodejs support crypto https://nodejs.org/api/crypto.html
 
+  var crypto = require('crypto');
+  const algorithm = 'aes-256-cbc';
+  if(process.env.CRYPTO_KEY && process.env.IV) {
+    const privatekey = crypto.randomBytes(32);
+    const iv = crypto.randomBytes(16);
+  } else {
+    console.log("Error: no crypto key found in server .env file");
+    console.log("Server Authentication cannot function properly without");
+    console.log("Add in your .env file 2 vars:");
+    console.log("CRYPTO_KEY=" + crypto.randomBytes(32));
+    console.log("IV=" + crypto.randomBytes(16));
+  };
+  const privatekey = crypto.randomBytes(32);
+  const iv = crypto.randomBytes(16);
+  console.log(iv);
 function encrypt(text) {
-  console.log(text);
- let cipher = crypto.createCipheriv(algorithm, Buffer.from(cryptokey), iv);
- let encrypted = cipher.update(text);
- encrypted = Buffer.concat([encrypted, cipher.final()]);
- return { iv: iv.toString('hex'), encryptedData: encrypted.toString('hex') };
+  var cryptokey = crypto.createCipheriv(algorithm,privatekey,iv);
+  var hash = cryptokey.update(text, 'utf8', 'hex')
+  hash += cryptokey.final('hex');
+  return hash;
 }
-
-function decrypt(text) {
- let iv = Buffer.from(text.iv, 'hex');
- let encryptedText = Buffer.from(text.encryptedData, 'hex');
- let decipher = crypto.createDecipheriv(algorithm, Buffer.from(cryptokey), iv);
- let decrypted = decipher.update(encryptedText);
- decrypted = Buffer.concat([decrypted, decipher.final()]);
- return decrypted.toString();
+function decrypt(hash) {
+  var cryptokey = crypto.createDecipheriv(algorithm,privatekey,iv);
+  var text = cryptokey.update(hash, 'hex', 'utf8')
+  text += cryptokey.final('utf8');
+  return text;
 }
-
 
 //jwt_payload & passport
 const jwt = require('jsonwebtoken');
@@ -84,10 +91,6 @@ let strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
 });
 // use the strategy
 passport.use(strategy);
-
-
-
-
 const app = express();
 
 // initialize passport with express
@@ -410,8 +413,6 @@ const deleteStory = async (sid) => {
   } catch(e) {
     console.log(e.message);
   }
-
-
 };
 
 const patchUserPrefs = async ({ uid, pref, pvalue }) => {
@@ -1254,7 +1255,7 @@ app.patch('/users/:userId', function(req, res, next) {
     );
   } else {
     //update user password
-    let hash = JSON.stringify(encrypt(password));
+    let hash = encrypt(password);
     patchUserPasswd({ id, hash }).then(user =>
       res.json({ user, msg: 'password updated successfully' })
     );
@@ -1271,12 +1272,11 @@ app.delete('/users/:userId', function(req, res, next) {
 // register route register create the new user but set it as inactive
 app.post('/register', function(req, res, next) {
   const { name, email, password } = req.body;
-  console.log(password);
-  console.log(typeof(password));
-  let hash = JSON.stringify(encrypt(password));
-  createUser({ name, email, hash }).then(user =>
-     res.json({ user, msg: 'account created successfully' })
-  );
+  let hash = encrypt(password);
+
+   createUser({ name, email, hash }).then(user =>
+      res.json({ user, msg: 'account created successfully' })
+ );
 });
 // register route create new user
 app.post('/users/0', function(req, res, next) {
@@ -1297,8 +1297,9 @@ app.post('/login', async function(req, res, next) {
         res.status(401).json({ message: 'No such user found' });
       }
       let hash = user.password;
+      console.log('login db::hash', hash);
       if(hash) {
-        if (decrypt(JSON.parse(hash)) === password) {
+        if (decrypt(hash) === password ) {
           // Passwords match
           // from now on we'll identify the user by the id and the id is the
           // only personalized value that goes into our token
