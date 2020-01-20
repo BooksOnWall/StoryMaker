@@ -39,32 +39,23 @@ let config = require('./conf/mysql');
 // Nodejs encryption with CTR
 // check if server and nodejs support crypto https://nodejs.org/api/crypto.html
 
-  var crypto = require('crypto');
-  const algorithm = 'aes-256-cbc';
-  if(process.env.CRYPTO_KEY && process.env.IV) {
-    const privatekey = crypto.randomBytes(32);
-    const iv = crypto.randomBytes(16);
-  } else {
-    console.log("Error: no crypto key found in server .env file");
-    console.log("Server Authentication cannot function properly without");
-    console.log("Add in your .env file 2 vars:");
-    console.log("CRYPTO_KEY=" + crypto.randomBytes(32));
-    console.log("IV=" + crypto.randomBytes(16));
-  };
-  const privatekey = crypto.randomBytes(32);
-  const iv = crypto.randomBytes(16);
-  console.log(iv);
+var crypto = require('crypto');
+var privatekey = process.env.CRYPTO_KEY;
 function encrypt(text) {
-  var cryptokey = crypto.createCipheriv(algorithm,privatekey,iv);
-  var hash = cryptokey.update(text, 'utf8', 'hex')
-  hash += cryptokey.final('hex');
+  const salt = crypto.randomBytes(16).toString('hex');
+  const hash = crypto.pbkdf2Sync(password, salt, 2048, 32, 'sha512').toString('hex');
+  return [salt, hash].join('$');
+}
+function decrypt(hash, original) {
+  const salt = original.split('$')[0];
+  hash = crypto.pbkdf2Sync(hash, salt, 2048, 32, 'sha512').toString('hex');
   return hash;
 }
-function decrypt(hash) {
-  var cryptokey = crypto.createDecipheriv(algorithm,privatekey,iv);
-  var text = cryptokey.update(hash, 'hex', 'utf8')
-  text += cryptokey.final('utf8');
-  return text;
+function compare(hash, password) {
+  const originalHash = password.split('$')[1];
+  const salt = hash.split('$')[0];
+  hash = crypto.pbkdf2Sync(hash, salt, 2048, 32, 'sha512').toString('hex');
+  return hash === originalHash;
 }
 
 //jwt_payload & passport
@@ -1273,7 +1264,6 @@ app.delete('/users/:userId', function(req, res, next) {
 app.post('/register', function(req, res, next) {
   const { name, email, password } = req.body;
   let hash = encrypt(password);
-
    createUser({ name, email, hash }).then(user =>
       res.json({ user, msg: 'account created successfully' })
  );
@@ -1281,7 +1271,7 @@ app.post('/register', function(req, res, next) {
 // register route create new user
 app.post('/users/0', function(req, res, next) {
   const { name, email, password, active } = req.body;
-  let hash = JSON.stringify(encrypt(password));
+  let hash = encrypt(password);
   createUser({ name, email, hash, active }).then(user =>
     res.json({ user, msg: 'account created successfully' })
   );
@@ -1299,7 +1289,7 @@ app.post('/login', async function(req, res, next) {
       let hash = user.password;
       console.log('login db::hash', hash);
       if(hash) {
-        if (decrypt(hash) === password ) {
+        if (compare(hash, password)) {
           // Passwords match
           // from now on we'll identify the user by the id and the id is the
           // only personalized value that goes into our token
