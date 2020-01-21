@@ -43,12 +43,13 @@ var crypto = require('crypto');
 var privatekey = process.env.CRYPTO_KEY;
 function encrypt(text) {
   const salt = crypto.randomBytes(16).toString('hex');
-  const hash = crypto.pbkdf2Sync(password, salt, 2048, 32, 'sha512').toString('hex');
+  const hash = crypto.pbkdf2Sync(text, salt, 2048, 32, 'sha512').toString('hex');
   return [salt, hash].join('$');
 }
 function decrypt(hash, original) {
   const salt = original.split('$')[0];
   hash = crypto.pbkdf2Sync(hash, salt, 2048, 32, 'sha512').toString('hex');
+  console.log('decrypted',hash);
   return hash;
 }
 function compare(hash, password) {
@@ -1288,8 +1289,9 @@ app.post('/login', async function(req, res, next) {
       }
       let hash = user.password;
       console.log('login db::hash', hash);
+
       if(hash) {
-        if (compare(hash, password)) {
+        if (decrypt(password,hash) === password) {
           // Passwords match
           // from now on we'll identify the user by the id and the id is the
           // only personalized value that goes into our token
