@@ -261,10 +261,8 @@ const patchUser = async ({ id, name, email, active }) => {
     { where: {id : id}}
   );
 }
-const patchUserPasswd = async ({ id, password }) => {
-  return await Users.update({ id, password },
-    { where: {id : id}}
-  );
+const patchUserPasswd = async ({ id, hash }) => {
+  return await Users.update({ password: hash },{ where: {id : id}});
 }
 const getAllUsers = async () => {
   return await Users.findAll();
@@ -1257,9 +1255,11 @@ app.patch('/users/:userId', function(req, res, next) {
   } else {
     //update user password
     let hash = encrypt(password);
-    patchUserPasswd({ id, hash }).then(user =>
-      res.json({ user, msg: 'password updated successfully' })
-    );
+    console.log('new_hash:'+hash);
+    patchUserPasswd({ id, hash }).then(user => {
+      console.log("user passwd patched");
+      return res.json({ user, msg: 'password updated successfully' });
+    });
   }
 });
 //delete user
