@@ -41,20 +41,29 @@ let config = require('./conf/mysql');
 
 var crypto = require('crypto');
 var privatekey = process.env.CRYPTO_KEY;
+const salt = (privatekey) ? privatekey : crypto.randomBytes(16).toString('hex');
+//adding salt to .env at first use
+if(!privatekey) {
+  const fs = require('fs');
+
+  fs.writeFile(".env", "CRYPTO_KEY="+salt, function(err) {
+      if(err) {
+          return console.log(err);
+      }
+      console.log("The key was saved!");
+  });
+}
 function encrypt(text) {
-  const salt = crypto.randomBytes(16).toString('hex');
   const hash = crypto.pbkdf2Sync(text, salt, 2048, 32, 'sha512').toString('hex');
   return [salt, hash].join('$');
 }
-function decrypt(hash, original) {
-  const salt = original.split('$')[0];
+function decrypt(hash) {
   hash = crypto.pbkdf2Sync(hash, salt, 2048, 32, 'sha512').toString('hex');
   console.log('decrypted',hash);
   return hash;
 }
 function compare(hash, password) {
   const originalHash = password.split('$')[1];
-  const salt = hash.split('$')[0];
   hash = crypto.pbkdf2Sync(hash, salt, 2048, 32, 'sha512').toString('hex');
   return hash === originalHash;
 }
@@ -1288,10 +1297,10 @@ app.post('/login', async function(req, res, next) {
         res.status(401).json({ message: 'No such user found' });
       }
       let hash = user.password;
-      console.log('login db::hash', hash);
-
+      //let's hash the password
+      const hashPassword = encrypt(password);
       if(hash) {
-        if (decrypt(password,hash) === password) {
+        if (hash === hashPassword) {
           // Passwords match
           // from now on we'll identify the user by the id and the id is the
           // only personalized value that goes into our token
