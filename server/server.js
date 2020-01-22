@@ -1058,7 +1058,7 @@ app.get('/zip/:sid', function(req, res){
     if (err) { throw err; }
     console.log('Story id: '+sid+' Folder size to compress: ',prettyBytes(size));
   });
-  if(hasbot) { bot.telegram.sendMessage(chat_id,"New Story id: "+ sid +" downloaded: Zip size:")}
+  //if(hasbot) { bot.telegram.sendMessage(chat_id,"New Story id: "+ sid +" downloaded: Zip size:")}
 
   res.zip({
     files: [{ path: path + sid, name: sid }],
