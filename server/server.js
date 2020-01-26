@@ -506,36 +506,42 @@ const getNextOrderFromStory = async (sid) => {
   return rank;
 }
 const importStages = async (sid, geojson) => {
-  Stages.destroy({
-    where: {sid: sid},
-    truncate: true
-  });
+  console.log("ImportGeoJson in stage:", sid);
+  //console.log("geojson", geojson);
   //deleteAllStages(sid);
   // delete also folders
   //
-  if (geojson) {
+  if (geojson && sid) {
+    // delete stages with sid === sid
+    sid = parseInt(sid);
+    Stages.destroy({
+      where: {sid: sid}
+    }).then(result => { console.log("Stages destroyed for stage id:", sid) });
     geojson.map((feature, index ) => {
-      let properties = feature.properties;
-      let name = properties.Name;
-      let photo= ''; // need to be added once the geojson export is done
-      let adress=''; // need to be added once the geojson export is done
-      let description = properties.description;
-      let images = null; // need to be added once the geojson export is done
-      let pictures = null; // need to be added once the geojson export is done
-      let videos = null; // need to be added once the geojson export is done
-      let audios = null; // need to be added once the geojson export is done
-      let stageOrder = index;
-      let type=feature.geometry.type;
-      let tesselate = properties.tesselate;
-      let geometry = feature.geometry;
-      let onZoneEnter = (properties.onZoneEnter) ? properties.onZoneEnter : null;
-      let onPictureMatch = (properties.onPictureMatch) ? properties.onPictureMatch : null;
-      let onZoneLeave = (properties.onZoneLeave) ? properties.onZoneLeave : null;
 
-      createStage({ sid , name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry }).then(res =>
-        console.log('batch import create stage sucessfull')
-        //res.json({ stage, 'data': stage, msg: 'stage created successfully' })
-      );
+      if(feature.type === "Feature") {
+        console.log("Geojson feature:"+index ,feature);
+        let properties = feature.properties;
+        let name = properties.Name;
+        let photo= ''; // need to be added once the geojson export is done
+        let adress=''; // need to be added once the geojson export is done
+        let description = properties.description;
+        let images = null; // need to be added once the geojson export is done
+        let pictures = null; // need to be added once the geojson export is done
+        let videos = null; // need to be added once the geojson export is done
+        let audios = null; // need to be added once the geojson export is done
+        let stageOrder = index;
+        let type=feature.geometry.type;
+        let tesselate = properties.tesselate;
+        let geometry = feature.geometry;
+        let onZoneEnter = (properties.onZoneEnter) ? properties.onZoneEnter : null;
+        let onPictureMatch = (properties.onPictureMatch) ? properties.onPictureMatch : null;
+        let onZoneLeave = (properties.onZoneLeave) ? properties.onZoneLeave : null;
+        createStage({ sid , name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, stageOrder, tesselate, geometry }).then(res =>
+          console.log('batch import create stage sucessfull', res.get())
+          //res.json({ stage, 'data': stage, msg: 'stage created successfully' })
+        );
+      }
       return ('toto')
     });
   }
@@ -1472,8 +1478,17 @@ app.post('/stories/:storyId/import', function(req, res) {
             'utf8');
             geojson = JSON.parse(geojson);
             geojson = geojson.features;
-            let stages = importStages(sid,geojson);
-          return res.json({ user: sid, stages: stages, msg: 'geojson imported  successfully' })
+            // inspect geojson to verify format is
+            console.log("Record Stages Import for stage", sid);
+            if(sid && geojson) {
+              let stages = importStages(sid,geojson);
+              return res.json({ stages: stages, msg: 'geojson imported  successfully' });
+            } else {
+              console.log("oups something went wrong in geojson", sid+":"+geojson);
+              return res.json({ msg: 'geojson story '+sid+' imported failed' });
+
+            }
+
         }
     });
 });
