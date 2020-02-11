@@ -447,10 +447,10 @@ const reindexStage = async ({sid, stage}) => {
     { where: {sid : sid , id: stage.id}
   });
 }
-const updateStage = async ({ id, sid , name, photo, adress, description, dimension, radius, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, scene_type, stageOrder, tesselate, geometry }) => {
+const updateStage = async ({ id, sid , name, photo, adress, description, dimension, radius, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, scene_type, scene_options, stageOrder, tesselate, geometry }) => {
   try {
     return   await Stages.update(
-      { sid , name, photo, adress, description, dimension, radius, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, scene_type, stageOrder, tesselate, geometry },
+      { sid , name, photo, adress, description, dimension, radius, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, scene_type, scene_options, stageOrder, tesselate, geometry },
       { where: { id: id } }
     );
 
@@ -458,14 +458,14 @@ const updateStage = async ({ id, sid , name, photo, adress, description, dimensi
     console.log(e.message);
   }
 };
-const createStage = async ({ sid , name, photo, adress, description, dimension, radius, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, scene_type, stageOrder, tesselate, geometry }) => {
+const createStage = async ({ sid , name, photo, adress, description, dimension, radius, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, scene_type, scene_options, stageOrder, tesselate, geometry }) => {
 
   try {
     let rank = await getNextOrderFromStory(sid);
     rank = (rank) ? rank : 1;
     //console.log(rank);
     stageOrder = (!stageOrder) ? parseInt(rank) : stageOrder;
-    let res = await Stages.create({ sid , name, photo, adress, description, dimension, radius, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, scene_type, stageOrder, tesselate, geometry });
+    let res = await Stages.create({ sid , name, photo, adress, description, dimension, radius, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, scene_type, scene_options, stageOrder, tesselate, geometry });
     const ssid = res.get('id');
     // create story stages directory
     var dir = __dirname + '/public/stories/'+ sid + '/stages/'+ssid;
@@ -533,12 +533,13 @@ const importStages = async (sid, geojson) => {
         let stageOrder = index;
         let type=feature.geometry.type;
         let scene_type=0;
+        let scene_options=null;
         let tesselate = properties.tesselate;
         let geometry = feature.geometry;
         let onZoneEnter = (properties.onZoneEnter) ? properties.onZoneEnter : null;
         let onPictureMatch = (properties.onPictureMatch) ? properties.onPictureMatch : null;
         let onZoneLeave = (properties.onZoneLeave) ? properties.onZoneLeave : null;
-        createStage({ sid , name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, scene_type, stageOrder, tesselate, geometry }).then(res =>
+        createStage({ sid , name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, scene_type, scene_options, stageOrder, tesselate, geometry }).then(res =>
           console.log('batch import create stage sucessfull', res.get())
           //res.json({ stage, 'data': stage, msg: 'stage created successfully' })
         );
@@ -1550,9 +1551,9 @@ app.get('/stories/:storyId/map', function(req, res, next) {
   }
 });
 app.post('/stories/:storyId/stages/0', function(req, res, next) {
-  const { sid, name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, scene_type, tesselate,  geometry } = req.body;
+  const { sid, name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, scene_type,scene_options, tesselate,  geometry } = req.body;
   const stageOrder = null;
-  createStage({ sid , name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, scene_type, stageOrder, tesselate, geometry  }).then((stage) => {
+  createStage({ sid , name, photo, adress, description, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, scene_type, scene_options, stageOrder, tesselate, geometry  }).then((stage) => {
     //if(hasbot) { bot.telegram.sendMessage(chat_id,"New stage created: " + name + ','+ adress);}
     return res.json({ stage, 'data': stage, msg: 'stage created successfully' })
   });
@@ -1560,8 +1561,8 @@ app.post('/stories/:storyId/stages/0', function(req, res, next) {
 app.post('/stories/:storyId/stages/:stageId', function(req, res, next) {
   let sid = parseInt(req.params.storyId);
   let id = parseInt(req.params.stageId);
-  const { name, photo, adress, description, dimension, radius, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, scene_type, tesselate,  geometry } = req.body;
-  updateStage({id, sid, name, photo, adress, description, dimension, radius, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type,scene_type, tesselate,  geometry }).then(stage => {
+  const { name, photo, adress, description, dimension, radius, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, scene_type, scene_options, tesselate,  geometry } = req.body;
+  updateStage({id, sid, name, photo, adress, description, dimension, radius, images, pictures, videos, audios, onZoneEnter, onPictureMatch, onZoneLeave, type, scene_type, scene_options, tesselate,  geometry }).then(stage => {
       res.json({ stage, msg: 'Stage updated successfully' })
   });
 });
