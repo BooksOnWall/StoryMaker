@@ -26,7 +26,6 @@ import {  FormattedMessage } from 'react-intl';
 import { Formik } from 'formik';
 import StorySteps from '../storySteps';
 import StageBoard from './board';
-import ReactHtmlParser from 'react-html-parser';
 import ReactPlayer  from 'react-player';
 import ReactAudioPlayer from 'react-audio-player';
 import ReactCardFlip from 'react-card-flip';
@@ -37,7 +36,12 @@ const stageOptions = [
   { key: 'Point', value: 'Point', text: 'Geo Point' },
   { key: 'Linestring', value: 'Linestring', text: 'Line String' }
 ];
-
+const sceneOptions = [
+  { key: 0, value: 0, text: 'Video inside Picture' },
+  { key: 1, value: 1, text: 'Video aside anchored picture' },
+  { key: 2, value: 2, text: 'Video aside anchored with multiple pictures' },
+  { key: 3, value: 3, text: 'Portal' }
+];
 
 function humanFileSize(bytes, si) {
     var thresh = si ? 1000 : 1024;
@@ -111,6 +115,7 @@ class stage extends Component {
           stageOrder: null,
           percent: null,
           type: 'Point',
+          scene_type: 0,
           geometry: {
             "type": "Point",
             "coordinates": [-56.1670182, -34.9022229  ]
@@ -995,6 +1000,7 @@ class stage extends Component {
           onPictureMatch: this.state.stage.onPictureMatch,
           onZoneLeave: this.state.stage.onZoneLeave,
           type: this.state.stage.type,
+          scene_type: this.state.stage.scene_type,
           stageOrder: this.state.stage.stageOrder,
           description: this.state.stage.description,
           geometry: this.state.stage.geometry,
@@ -1042,6 +1048,7 @@ class stage extends Component {
           onPictureMatch: this.state.stage.onPictureMatch,
           onZoneLeave: this.state.stage.onZoneLeave,
           type: this.state.stage.type,
+          scene_type: this.state.stage.scene_type,
           stageOrder: this.state.stage.stageOrder,
           description: this.state.stage.description,
           geometry: this.state.stage.geometry,
@@ -1068,9 +1075,7 @@ class stage extends Component {
     }
   }
   handleBlur = () =>  true;
-  handleChange = (e) => {
-    console.log(e.target.name);
-    console.log(e.target.value);
+  handleChange = (e, value, name) => {
     this.setState({
       stage: {
         id: this.state.stage.id,
@@ -1090,7 +1095,8 @@ class stage extends Component {
         onZoneEnter: this.state.stage.onZoneEnter,
         onPictureMatch: this.state.stage.onPictureMatch,
         onZoneLeave: this.state.stage.onZoneLeave,
-        type: (e.target.name && e.target.name === 'type') ? e.target.value : this.state.stage.type,
+        type: (value && name === 'type') ? value : this.state.stage.type,
+        scene_type: (value && name === 'scene_type') ? value : this.state.stage.scene_type,
         geometry: this.state.stage.geometry,
         stageLocation: (e.target.name === 'stageLocation') ? e.target.value : this.state.stage.stageLocation
       }
@@ -1124,6 +1130,7 @@ class stage extends Component {
           onPictureMatch: this.state.stage.onPictureMatch,
           onZoneLeave: this.state.stage.onZoneLeave,
           type: this.state.stage.type,
+          scene_type: this.state.stage.scene_type,
           description: desc,
           geometry: this.state.stage.geometry,
           stageLocation: this.state.stage.stageLocation
@@ -1209,7 +1216,7 @@ class stage extends Component {
                   label='Adress'
                   type="text"
                   name="adress"
-                  onChange={e => this.handleChange(e)}
+                  onChange={e  => this.handleChange(e)}
                   onBlur={e => handleBlur}
                   defaultValue={values.adress}
                   />
@@ -1266,12 +1273,28 @@ class stage extends Component {
                   label='Stage type'
                   type="select"
                   name="type"
-                  onChange={e => this.handleChange(e)}
+                  onChange={(e, {value}) => this.handleChange(e, value, 'type')}
                   onBlur={e => handleBlur}
                   options={stageOptions}
                   defaultValue={values.type}
                   />
                 {errors.stagetype && touched.stagetype && errors.stagetype}
+                <Divider />
+                <Label size='large' className='label inverted' fluid >Ar Scene type</Label>
+                <Select
+                  fluid
+                  inverted
+                  transparent
+                  placeholder='Ar Scene type'
+                  label='Ar Scene type'
+                  type="select"
+                  name="scene_type"
+                  onChange={(e, {value}) => this.handleChange(e, value, 'scene_type')}
+                  onBlur={e => handleBlur}
+                  options={sceneOptions}
+                  defaultValue={values.scene_type}
+                  />
+                {errors.scene_type && touched.scene_type && errors.scene_type}
                 <Divider />
                 <Button onClick={handleSubmit} floated='right' primary  size='large' type="submit" disabled={isSubmitting}>
                   {(this.state.mode === 'create') ? 'Create' : 'Update'}
@@ -1372,6 +1395,7 @@ class stage extends Component {
                     onPictureMatch: this.state.stage.onPictureMatch,
                     onZoneLeave: this.state.stage.onZoneLeave,
                     type: this.state.stage.type,
+                    scene_type: this.state.stage.scene_type,
                     description: this.state.stage.description,
                     geometry: this.state.stage.geometry,
                     stageLocation: Array.from(this.state.stage.geometry.coordinates)
@@ -1462,6 +1486,7 @@ class stage extends Component {
                 onPictureMatch: data.onPictureMatch,
                 onZoneLeave: data.onZoneLeave,
                 type: data.type,
+                scene_type: data.scene_type,
                 description: data.description,
                 geometry: data.geometry,
                 stageLocation: Array.from(data.geometry.coordinates)

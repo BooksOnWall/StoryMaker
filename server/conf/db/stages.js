@@ -73,6 +73,10 @@ module.exports.stages = {
     type: Sequelize.STRING,
     allowNull: false,
   },
+  scene_type: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
   stageOrder: {
     type: Sequelize.INTEGER,
     allowNull: true
