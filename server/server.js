@@ -394,8 +394,8 @@ const getStory = async obj => {
   }
 
 };
-const patchStory = async ({ sid, title, artist, state, city, sinopsys, credits, tesselate, geometry, active }) => {
-  return await Stories.update({ title, artist, state, city, sinopsys, credits,tesselate, geometry, active },
+const patchStory = async ({ sid, title, artist, state, city, sinopsys, credits, design_options, tesselate, geometry, active }) => {
+  return await Stories.update({ title, artist, state, city, sinopsys, credits, design_options, tesselate, geometry, active },
     { where: {id : sid}}
   );
 }

@@ -31,6 +31,11 @@ module.exports.stories = {
         key: 'id',
     }
   },
+  design_options:  {
+    type: Sequelize.JSON,
+    allowNull: true,
+    defaultValue: null
+  },
   tessellate: {
     type: Sequelize.INTEGER,
     allowNull: true,
