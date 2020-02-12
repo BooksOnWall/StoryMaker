@@ -363,6 +363,8 @@ const createStory = async ({ title, state, city, sinopsys, credits, artist, acti
     if (!fs.existsSync(dir)) { fs.mkdirSync(dir, 0o744); }
     var sdir = __dirname + '/public/stories/' + sid + '/stages';
     if (!fs.existsSync(sdir)) { fs.mkdirSync(sdir, 0o744); }
+    var ddir = __dirname + '/public/stories/' + sid + '/design';
+    if (!fs.existsSync(ddir)) { fs.mkdirSync(ddir, 0o744); }
     var idir = __dirname + '/public/stories/' + sid + '/import';
     if (!fs.existsSync(idir)) { fs.mkdirSync(idir, 0o744); }
 
