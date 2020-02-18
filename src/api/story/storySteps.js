@@ -52,7 +52,7 @@ class storySteps extends Component {
          name: 'Map',
          desc: 'of the story',
          icon: 'map',
-         title: 'Map',
+         title: 'Design',
          as: 'Link',
          to: '/stories/' + this.props.sid + '/Map'
        },
