@@ -123,7 +123,9 @@ class storyMap extends Component {
       activeIndex: 0,
       saveThemeLoading: false,
       setBannerImages: this.setBannerImages,
+      bannerDropZoneDisplay: 'block',
       setGalleryImages: this.setGalleryImages,
+      galleryDropZoneDisplay: 'block',
       setViewport: this.setViewport,
     }
   };
@@ -250,25 +252,29 @@ class storyMap extends Component {
       console.log(e.message);
     }
   }
-  setBannerImages = (files) => this.setState({theme : {
-    banner: {files} ,
-    font1: this.state.theme.font1,
-    font2: this.state.theme.font2,
-    font3: this.state.theme.font3,
-    gallery: this.state.theme.gallery,
-    color1: this.state.theme.color1,
-    color2: this.state.theme.color2,
-    color3: this.state.theme.color3
+  setBannerImages = (files) => this.setState({
+    bannerDropZoneDisplay: 'none',
+    theme : {
+      banner: {files} ,
+      font1: this.state.theme.font1,
+      font2: this.state.theme.font2,
+      font3: this.state.theme.font3,
+      gallery: this.state.theme.gallery,
+      color1: this.state.theme.color1,
+      color2: this.state.theme.color2,
+      color3: this.state.theme.color3
   }})
-  setGalleryImages = (files) => this.setState({theme : {
-    banner: this.state.theme.banner,
-    font1: this.state.theme.font1,
-    font2: this.state.theme.font2,
-    font3: this.state.theme.font3,
-    gallery: {files},
-    color1: this.state.theme.color1,
-    color2: this.state.theme.color2,
-    color3: this.state.theme.color3
+  setGalleryImages = (files) => this.setState({
+    galleryDropZoneDisplay: 'none',
+    theme : {
+      banner: this.state.theme.banner,
+      font1: this.state.theme.font1,
+      font2: this.state.theme.font2,
+      font3: this.state.theme.font3,
+      gallery: {files},
+      color1: this.state.theme.color1,
+      color2: this.state.theme.color2,
+      color3: this.state.theme.color3
   }})
   editBanner(values) {
     return (

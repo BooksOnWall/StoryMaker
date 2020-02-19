@@ -75,7 +75,7 @@ function BannerPreviews(props) {
   return (
     <Segment style={{margin:0, padding: 0}} inverted>
 
-      <div {...getRootProps({className: 'dropzone banner'})} style={{ dropzone: {maxHeight: 100 }}}>
+      <div {...getRootProps({className: 'dropzone banner'})} style={{ display: props.state.bannerDropZoneDisplay}}>
         <input  id='themeBannerFiles' name='files' onChange={props.state.onChangeHandler} ref={ref => this.fileInput = ref} {...getInputProps()} />
       </div>
       <aside style={thumbsContainer}>

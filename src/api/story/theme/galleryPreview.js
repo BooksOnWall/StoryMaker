@@ -76,7 +76,7 @@ function GalleryPreviews(props) {
   return (
     <Segment  style={{margin:0, padding: 0}} inverted>
      <Divider />
-      <div {...getRootProps({className: 'dropzone gallery'})}>
+      <div {...getRootProps({className: 'dropzone gallery'})} style={{display: props.state.galleryDropZoneDisplay}}>
         <input  id='themeGalleryFiles' name='files' onChange={props.state.onChangeHandler} ref={ref => this.fileInput = ref} {...getInputProps()} />
       </div>
       <aside style={thumbsContainer}>
