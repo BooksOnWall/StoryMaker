@@ -211,11 +211,19 @@ div.DraftEditor-root {
 .dropzone:focus {
   border-color: #2196f3;
 }
-
 .dropzone.disabled {
   opacity: 0.6;
 }
-
+.banner, .banner.dropzone {
+  height: 100px !important;
+  min-height: 100px;
+  margin: 0;
+}
+.gallery, .gallery.dropzone {
+  height: 100px !important;
+  min-height: 100px;
+  margin: 0;
+}
 .ui.button.right.floated{display: inherit !important; margin-left: auto !important; }
 
 @keyframes App-logo-spin {
