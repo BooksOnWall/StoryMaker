@@ -59,7 +59,6 @@ function encrypt(text) {
 }
 function decrypt(hash) {
   hash = crypto.pbkdf2Sync(hash, salt, 2048, 32, 'sha512').toString('hex');
-  console.log('decrypted',hash);
   return hash;
 }
 function compare(hash, password) {
@@ -395,6 +394,12 @@ const getStory = async obj => {
     console.log(e.message);
   }
 
+};
+const updateFieldFromStory = async ({ sid, field, fieldValue }) => {
+  return await Stories.update(
+    { [field]: fieldValue},
+    { where: {id : sid }}
+  );
 };
 const patchStory = async ({ sid, title, artist, state, city, sinopsys, credits, design_options, tesselate, geometry, active }) => {
   return await Stories.update({ title, artist, state, city, sinopsys, credits, design_options, tesselate, geometry, active },
@@ -1535,6 +1540,24 @@ app.post('/stories/:storyId/map', function(req, res, next) {
   fs.writeFile(mapPath+fileName, JSON.stringify(prefs), 'utf8', function(err) {
     if (err) return res.json({msg: 'error map  not saved' , error: err});
     return res.json({msg: 'map saved'});
+  });
+});
+app.post('/stories/:storyId/theme', function(req, res, next) {
+  const { design_options } = req.body;
+  const sid = req.params.storyId;
+  const themePath = __dirname + '/public/stories/'+sid+'/';
+  const fileName = 'theme.json';
+
+  if (fs.existsSync(themePath+fileName)) {
+    //file already exist remove it :
+   rimraf.sync(themePath+fileName);
+  }
+  fs.writeFile(themePath+fileName, JSON.stringify(design_options), 'utf8', function(err) {
+    if (err) return res.json({msg: 'error theme  not saved' , error: err});
+    // store theme in db
+    updateFieldFromStory({sid: sid, field: 'design_options', fieldValue: design_options}).then((story) => {
+      return res.json({  msg: 'Theme Story updated and saved successfully' })
+    });
   });
 });
 app.get('/stories/:storyId/map', function(req, res, next) {
