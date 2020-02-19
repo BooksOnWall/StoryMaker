@@ -54,8 +54,11 @@ class storyMap extends Component {
         pitch: 60  // pitch in degrees
       },
       theme: {
-        font: 'Arial',
+        font1: 'Arial',
+        font2: 'Arial',
+        font3: 'Arial',
         banner: 'banner10.png',
+        gallery: [],
         color1: '#FFDDFF',
         color2: '#DD00FF',
         color3: '#00FFFF'
@@ -217,17 +220,39 @@ class storyMap extends Component {
             /* and other goodies */
           }) => (
             <Form inverted  size='large' onSubmit={this.handleSubmit}>
-              <span className='label small'>Choose Font: </span><br/>
+              <span className='label small'>Font 1: </span><br/>
               <select
               size='small'
               name="font"
               type="select"
-              defaultValue={this.state.theme.font}
+              defaultValue={this.state.theme.font1}
               onChange={this.handleChange}
               >
                 <option key={0} disabled hidden value=''></option>
               </select>
               <Divider/>
+                <span className='label small'>Font 2 : </span><br/>
+                <select
+                size='small'
+                name="font2"
+                type="select"
+                defaultValue={this.state.theme.font2}
+                onChange={this.handleChange}
+                >
+                  <option key={0} disabled hidden value=''></option>
+                </select>
+                <Divider/>
+                  <span className='label small'>Font 3: </span><br/>
+                  <select
+                  size='small'
+                  name="font3"
+                  type="select"
+                  defaultValue={this.state.theme.font3}
+                  onChange={this.handleChange}
+                  >
+                    <option key={0} disabled hidden value=''></option>
+                  </select>
+                  <Divider/>
               <Input
               fluid
               transparent
@@ -243,6 +268,21 @@ class storyMap extends Component {
               onBlur={handleBlur}
               defaultValue={this.state.theme.banner}
                 />
+                <Input
+                fluid
+                transparent
+                inverted
+                label={<FormattedMessage id="app.story.gallery" defaultMessage={'Gallery'}/>}
+                icon='pencil alternate'
+                iconposition='right'
+                placeholder={<FormattedMessage id="app.story.gallery" defaultMessage={'Gallery'}/>}
+                autoFocus={true}
+                type="text"
+                name="gallery"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                defaultValue={this.state.theme.gallery}
+                  />
               {errors.title && touched.title && errors.title}
               <Divider/>
               <Input
