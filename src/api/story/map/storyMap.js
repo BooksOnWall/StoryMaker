@@ -4,10 +4,13 @@ import {
   Segment,
   Dimmer,
   Loader,
+  Tab,
+  Form,
+  Input,
   Button,
   Divider,
 } from 'semantic-ui-react';
-
+import { Formik } from 'formik';
 import {  FormattedMessage } from 'react-intl';
 import MapGL from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -49,6 +52,13 @@ class storyMap extends Component {
         zoom: 13,
         bearing: -60, // bearing in degrees
         pitch: 60  // pitch in degrees
+      },
+      theme: {
+        font: 'Arial',
+        banner: 'banner10.png',
+        color1: '#FFDDFF',
+        color2: '#DD00FF',
+        color3: '#00FFFF'
       },
       setViewport: this.setViewport,
     }
@@ -153,10 +163,159 @@ class storyMap extends Component {
   }
   onViewportChange = viewport => this.setState({viewport});
   onStyleChange = mapStyle => this.setState({mapStyle});
+  mapPrefs = () => {
+    if (this.state.colors) {
+      return (
+        <Tab.Pane attached={false} inverted>
+          <StylePanel
+            colors={this.state.colors}
+            setViewport={this.setViewport}
+            viewport={this.state.viewport}
+            containerComponent={this.props.containerComponent}
+            onChange={this.onStyleChange}
+          />
+          <Divider />
+          <Button fluid loading={this.state.saveMapLoading} onClick={this.saveMapPrefs} primary>
+          <FormattedMessage id="app.story.map.savemappref" defaultMessage={`Save Map Preferences`}/></Button>
+        </Tab.Pane>
+      )
+    }
+  }
+  themePrefs = () => {
+    return (
+      <Tab.Pane attached={false} inverted>
+        <Formik
+          enableReinitialize={true}
+          initialValues={this.state.initialTheme}
+          validate={values => {
+            let errors = {};
+            return errors;
+          }}
+          onSubmit={(values, { setSubmitting }) => {
+            if(this.state.mode === 'update') {
+              this.updateTheme(values);
+            } else {
+              this.createTheme(values);
+            }
 
+            setTimeout(() => {
+              //alert(JSON.stringify(values, null, 2));
+
+              setSubmitting(false);
+            }, 400);
+          }}
+          >
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            handleDelete,
+            isSubmitting,
+            /* and other goodies */
+          }) => (
+            <Form inverted  size='large' onSubmit={this.handleSubmit}>
+              <span className='label small'>Choose Font: </span><br/>
+              <select
+              size='small'
+              name="font"
+              type="select"
+              defaultValue={this.state.theme.font}
+              onChange={this.handleChange}
+              >
+                <option key={0} disabled hidden value=''></option>
+              </select>
+              <Divider/>
+              <Input
+              fluid
+              transparent
+              inverted
+              label={<FormattedMessage id="app.story.banner" defaultMessage={'Banner'}/>}
+              icon='pencil alternate'
+              iconposition='right'
+              placeholder={<FormattedMessage id="app.story.banner" defaultMessage={'Banner'}/>}
+              autoFocus={true}
+              type="text"
+              name="banner"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              defaultValue={this.state.theme.banner}
+                />
+              {errors.title && touched.title && errors.title}
+              <Divider/>
+              <Input
+              fluid
+              transparent
+              inverted
+              label={<FormattedMessage id="app.story.color1" defaultMessage={'Color 1'}/>}
+              icon='point'
+              iconposition='right'
+              placeholder={<FormattedMessage id="app.story.color1" defaultMessage={'Color 1'}/>}
+              type="text"
+              name="color1"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              defaultValue={this.state.theme.color1}
+                />
+              {errors.color1 && touched.color1 && errors.color1}
+              <Divider/>
+              <Input
+              fluid
+              transparent
+              inverted
+              label={<FormattedMessage id="app.story.color2" defaultMessage={'Color 2'}/>}
+              icon='point'
+              iconposition='right'
+              placeholder={<FormattedMessage id="app.story.color2" defaultMessage={'Color 2'}/>}
+              type="text"
+              name="color2"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              defaultValue={this.state.theme.color2}
+                />
+              {errors.color2 && touched.color2 && errors.color2}
+              <Divider/>
+              <Input
+              fluid
+              transparent
+              inverted
+              label={<FormattedMessage id="app.story.color3" defaultMessage={'Color 3'}/>}
+              icon='point'
+              iconposition='right'
+              placeholder={<FormattedMessage id="app.story.color3" defaultMessage={'Color 3'}/>}
+              type="text"
+              name="color3"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              defaultValue={this.state.theme.color3}
+                />
+              {errors.color3 && touched.color3 && errors.color3}
+              <Divider/>
+
+          </Form>
+        )}
+      </Formik>
+        <Divider />
+        <Button fluid loading={this.state.saveThemeLoading} onClick={this.saveTheme} primary>
+        <FormattedMessage id="app.story.map.savetheme" defaultMessage={`Save Theme`}/></Button>
+      </Tab.Pane>
+    )
+  }
   render() {
 
     const {viewport, mapStyle, loading} = this.state;
+    const panes = [
+      {
+        menuItem: 'Theme',
+        render: () => this.themePrefs(),
+      },
+      {
+        menuItem: 'Map',
+        render: () => this.mapPrefs(),
+      }
+    ];
     return (
       <Dimmer.Dimmable as={Segment} blurring dimmed={loading}>
           <Dimmer active={loading} onClickOutside={this.handleHide} />
@@ -171,20 +330,7 @@ class storyMap extends Component {
                 mapboxApiAccessToken={MapboxAccessToken}
               >
                 <Segment className='mapPref' inverted style={{ width: '19vw', height: '79.3vh', float: 'left'}}>
-
-                {(this.state.colors)
-                  ? <StylePanel
-                    colors={this.state.colors}
-                    setViewport={this.setViewport}
-                    viewport={this.state.viewport}
-                    containerComponent={this.props.containerComponent}
-                    onChange={this.onStyleChange}
-                  />
-
-                  : ''}
-                <Divider />
-                <Button fluid loading={this.state.saveMapLoading} onClick={this.saveMapPrefs} primary>
-                <FormattedMessage id="app.story.map.savemappref" defaultMessage={`Save Map Preferences`}/></Button>
+                   <Tab inverted menu={{ inverted: true, pointing: true }} panes={panes} />
                 </Segment>
               </MapGL>
           </Segment>

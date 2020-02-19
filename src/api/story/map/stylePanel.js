@@ -6,7 +6,6 @@ import { Slider } from "react-semantic-ui-range";
 import {
   Label,
   Divider,
-  Tab,
   Segment
 } from 'semantic-ui-react';
 const defaultMapStyle = fromJS(MAP_STYLE);
@@ -82,20 +81,6 @@ export default class StyleControls extends PureComponent {
   componentDidMount() {
     this._updateMapStyle(this.state);
   }
-  mapEdit = () => {
-    return (
-      <Tab.Pane attached={false}>
-        <Divider />
-        {categories.map(name => this._renderLayerControl(name))}
-        <Divider />
-        <Segment inverted className="parametersMap">
-        <Label className="labelLayer inverted">Zoom: {this.props.viewport.zoom.toFixed(2)}</Label>  <Slider inverted name="zoom" value={this.props.viewport.zoom} primary settings={this.state.zsettings} />
-        <Label className="labelLayer inverted">Pitch: {this.props.viewport.pitch.toFixed(2)}</Label> <Slider inverted name="pitch" value={this.props.viewport.pitch} primary settings={this.state.psettings}/>
-        <Label className="labelLayer inverted">Bearing: {this.props.viewport.bearing.toFixed(2)}</Label> <Slider inverted name="bearing" value={this.props.viewport.bearing} primary settings={this.state.bsettings} />
-        </Segment>
-      </Tab.Pane>
-    )
-  }
   _onColorChange(name, event) {
     const color = {...this.state.color, [name]: event.target.value};
     this.setState({color});
@@ -155,19 +140,17 @@ export default class StyleControls extends PureComponent {
 
   render() {
     //const Container = this.props.containerComponent || defaultContainer;
-    const panes = [
-      {
-        menuItem: 'Map',
-        render: () => this.mapEdit(),
-      },
-      {
-        menuItem: 'Story design',
-        render: () => <Tab.Pane attached={false}>Tab 2 Content</Tab.Pane>,
-      }
-    ]
+
     return (
    <Segment inverted className="stylingMap" inverted>
-     <Tab menu={{ pointing: true }} panes={panes} />
+     <Divider />
+     {categories.map(name => this._renderLayerControl(name))}
+     <Divider />
+     <Segment inverted className="parametersMap">
+     <Label className="labelLayer inverted">Zoom: {this.props.viewport.zoom.toFixed(2)}</Label>  <Slider inverted name="zoom" value={this.props.viewport.zoom} primary settings={this.state.zsettings} />
+     <Label className="labelLayer inverted">Pitch: {this.props.viewport.pitch.toFixed(2)}</Label> <Slider inverted name="pitch" value={this.props.viewport.pitch} primary settings={this.state.psettings}/>
+     <Label className="labelLayer inverted">Bearing: {this.props.viewport.bearing.toFixed(2)}</Label> <Slider inverted name="bearing" value={this.props.viewport.bearing} primary settings={this.state.bsettings} />
+     </Segment>
     </Segment>
     );
   }
