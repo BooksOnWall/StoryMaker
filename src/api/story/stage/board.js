@@ -85,7 +85,7 @@ const ObjectsPreview = (props) => {
         case 'Videos':
         items = objects.map(function(e,index){
 
-            return   <Segment 
+            return   <Segment
               inverted
               stacked
               name={'video_'+ index}
@@ -162,7 +162,13 @@ const ObjectsPreview = (props) => {
     return items;
   }
 };
-
+const picturesContainer = {
+  display: 'flex',
+  flexDirection: 'row',
+  flexWrap: 'wrap',
+  minWidth: '55vw',
+  marginTop: 0
+};
 class DragDrop extends Component {
   constructor(props) {
     super(props);
@@ -357,9 +363,9 @@ class DragDrop extends Component {
                     target={this.segmentRef}
                     width='very wide'
                     visible={this.props.sidebarVisible}
-                    >                    
+                    >
                     <Segment.Group horizontal  >
-                        <Segment inverted fluid style={{maxWidth: '20vh'}}>   
+                        <Segment inverted fluid style={{maxWidth: '20vh'}}>
                             <Button.Group inverted vertical>
                               <Button name="Pictures" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Pictures') ? true : false }><FormattedMessage id="app.story.board.pictures" defaultMessage={`Pictures`}/></Button>
                               <Button name="Videos" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Videos') ? true : false }>Videos</Button>
@@ -368,13 +374,13 @@ class DragDrop extends Component {
                         </Segment>
                         <Segment inverted  style={{minWidth: '82vh', padding:0}}>
                           {(this.props.stageStep === 'Pictures') ? (
-                            
+
                            <Segment.Group inverted horizontal
                               className="pictures"
                               onDragOver={(e)=>this.props.onDragOver(e)}
                               onDrop={(e)=>{this.props.onDrop(e, "pictures")}}>
 
-                              <Segment className='files' style={{ minWidth: '55vw'}}>
+                              <Segment className='files' style={picturesContainer}>
                                 {tasks.pictures}
                               </Segment>
 
@@ -403,7 +409,7 @@ class DragDrop extends Component {
                         <Segment className='files' style={{ minWidth: '55vw'}}>
                           {tasks.videos}
                           </Segment>
-                          <Segment>                          
+                          <Segment>
                           <StageVideos
                             className="videos"
                             onChangeObjectHandler={this.props.onChangeObjectHandler}
@@ -450,7 +456,7 @@ class DragDrop extends Component {
                   </Sidebar>
 
                   <Sidebar.Pusher>
-                        
+
                         <Segment className="main-board">
                             <Segment className='stageProfile' inverted style={{minHeight: '18vh'}}>
                               <Grid columns={3}>
@@ -462,7 +468,7 @@ class DragDrop extends Component {
                                 </Grid.Column>
                                 <Grid.Column mobile={16} tablet={8} computer={6}>
                                     <Header inverted as='h4'>{this.props.stage.name}</Header>
-                                    {this.props.setStageDescription()} 
+                                    {this.props.setStageDescription()}
                                     <Icon className="button left floated" floated="left" name="edit outline"  onClick={this.props.toggleLock}  />
                                 </Grid.Column>
                                 <Grid.Column textAlign='right' mobile={16} tablet={8} computer={8}>
