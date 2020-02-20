@@ -11,6 +11,34 @@ body{
 #root {
   /* background-color: '#6435c9'; */
 }
+@font-face {
+  font-family: "ATypewriterForMe";
+  src: url("./fonts/ATypewriterForMe.otf") format("otf");
+}
+@font-face {
+  font-family: "BadScript-Regular";
+  src: url("./fonts/BadScript-Regular.otf") format("otf");
+}
+@font-face {
+  font-family: "OpenSansCondensed-Bold";
+  src: url("./fonts/OpenSansCondensed-Bold.otf") format("otf");
+}
+@font-face {
+  font-family: "OpenSansCondensed-Light";
+  src: url("./fonts/OpenSansCondensed-Light.otf") format("otf");
+}
+@font-face {
+  font-family: "TrashHand";
+  src: url("./fonts/TrashHand.otf") format("otf");
+}
+@font-face {
+  font-family: "Typewriterhand";
+  src: url("./fonts/Typewriterhand.otf") format("otf");
+}
+@font-face {
+  font-family: "WaitingfortheSunrise";
+  src: url("./fonts/WaitingfortheSunrise.otf") format("otf");
+}
  .App-logo {
   animation: none;
   pointer-events: none;

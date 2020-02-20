@@ -21,6 +21,7 @@ import MapGL from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MAP_STYLE from './map-style-basic-v8.json';
 import StylePanel from './stylePanel';
+import { ChromePicker } from 'react-color';
 import BannerPreviews from '../theme/bannerPreview';
 import GalleryPreviews from '../theme/galleryPreview';
 let MapboxAccessToken = process.env.REACT_APP_MAT;
@@ -126,6 +127,7 @@ class storyMap extends Component {
       bannerDropZoneDisplay: 'block',
       setGalleryImages: this.setGalleryImages,
       galleryDropZoneDisplay: 'block',
+      displayColorPicker: false,
       setViewport: this.setViewport,
     }
   };
@@ -457,7 +459,7 @@ class storyMap extends Component {
                    onChange={this.handleChange}
                    >
                    <option key={0} disabled hidden value=''></option>
-                   {this.state.fonts.map(font => <option key={font} value={font} >{font}</option>)}
+                   {this.state.fonts.map(font => <option key={font} value={font} style={{fontFamily: font}} > {font} </option>)}
                  </select>
                  <Divider/>
                  <span className='label small'>Font 2 : </span><br/>
