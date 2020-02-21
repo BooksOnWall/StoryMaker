@@ -285,18 +285,36 @@ class storyMap extends Component {
       color3: this.state.theme.color3
   }});
 }
-  setGalleryImages = (files) => this.setState({
-    galleryDropZoneDisplay: 'none',
-    theme : {
-      banner: this.state.theme.banner,
-      font1: this.state.theme.font1,
-      font2: this.state.theme.font2,
-      font3: this.state.theme.font3,
-      gallery: {files},
-      color1: this.state.theme.color1,
-      color2: this.state.theme.color2,
-      color3: this.state.theme.color3
-  }})
+  setGalleryImages = (files) => {
+    console.log(files);
+    let gimages =[];
+    if (files && files.files && files.files.length > 0) {
+      //prepare aray of image name and path for store and let the rest for updateImages
+      Array.from(files.files).forEach(file => {
+        gimages.push({
+          'image': {
+            'name': file.name,
+            'size': file.size,
+            'type': file.type,
+            'path': 'assets/stories/'+ this.props.sid + '/design/gallery/' + file.name
+          }
+        });
+       });
+    }
+    this.setState({
+      galleryDropZoneDisplay: 'none',
+      gallery: { files },
+      theme : {
+        banner: this.state.theme.banner,
+        font1: this.state.theme.font1,
+        font2: this.state.theme.font2,
+        font3: this.state.theme.font3,
+        gallery: gimages,
+        color1: this.state.theme.color1,
+        color2: this.state.theme.color2,
+        color3: this.state.theme.color3
+    }});
+  }
   editBanner(values) {
     return (
       <Formik
@@ -375,7 +393,31 @@ class storyMap extends Component {
       }
   }
   handleSubmitGallery = async (e) => {
+    this.setState({gallerySubmit: true});
 
+    let images = this.state.gallery;
+    try {
+      let formData = new FormData();
+      for(var x = 0; x < images.files.length; x++) {
+        formData.append('file', images.files[x]);
+      };
+      await fetch(this.state.galleryThemeURL, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Accept':'application/json; charset=utf-8'
+        },
+        files: JSON.stringify(images.files),
+        body: formData
+       })
+       .then(response => response.json())
+       .then(data => {
+          this.setState({gallerySubmit: false});
+       });
+    } catch(e) {
+      console.log(e);
+    }
   }
   editGallery(values) {
     return (
@@ -411,15 +453,15 @@ class storyMap extends Component {
           <Form size='large' onSubmit={this.handleSubmitGallery}>
             <div>
               <aside style={thumbsContainer}>
-                 <Card.Group itemsPerRow={5}>
-                {(this.state.images && this.state.images.length > 0) ? <Listimages mode={this.state.mode} handleImageDelete={this.handleImageDelete} handleImgDeleteOpen={this.handleImgDeleteOpen} handleModalImgDeleteClose={this.handleModalImgDeleteClose}  state={this.state} images={this.state.images} server={this.state.server}/> : ''}
+                 <Card.Group itemsPerRow={6}>
+                {(this.state.theme.gallery && this.state.theme.gallery.length > 0) ? <Listimages  handleImageDelete={this.handleImageDelete} handleImgDeleteOpen={this.handleImgDeleteOpen} handleModalImgDeleteClose={this.handleModalImgDeleteClose}  state={this.state} images={this.state.gallery} server={this.state.server}/> : ''}
                  </Card.Group>
               </aside>
 
               <GalleryPreviews state={this.state} />
             </div>
             <div>
-            <Button onClick={this.handleSubmitGallery} floated='right' primary size='large' type="submit" disabled={isSubmitting}>
+            <Button onClick={this.handleSubmitGallery} floated='right' primary size='large' type="submit" disabled={this.state.gallerySubmit} loading={this.state.gallerySubmit}>
               Update
             </Button>
             </div>

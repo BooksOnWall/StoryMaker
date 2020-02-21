@@ -1641,6 +1641,55 @@ app.post('/stories/:storyId/banner', function (req, res, next) {
         }
     });
 });
+//Uploading multiple files
+app.post('/stories/:storyId/gallery', function (req, res, next) {
+  let sid = req.params.storyId;
+  const path = './public/stories/'+sid+'/design/gallery';
+  // delete folder recursively
+  if (fs.existsSync(path)) {
+    rimraf(path, function (e) {
+      fs.mkdirSync(path, 0o744);
+    });
+  } else {
+    fs.mkdirSync(path, 0o744);
+    console.log('Stories design gallery directory created successfully')
+  }
+  // check if file exist
+
+  var storage = multer.diskStorage({
+      destination: function(req, file, cb){
+        cb(null, path );
+      },
+      filename: function (req, file, cb) {
+        cb(null, file.originalname);
+      }
+    });
+    var upload = multer({ storage : storage}).any();
+    upload(req,res,function(err) {
+      if(err) {
+        return res.end("Error uploading file." + err);
+      } else {
+        let images=[];
+         req.files.forEach( function(file) {
+
+           images.push({
+               'category': 'images',
+               'name': file.originalname,
+               'size': file.size,
+               'type': 'image',
+               'mimetype': file.mimetype,
+               'path': 'assets/stories/'+ sid + '/design/gallery/' + file.originalname,
+               'src': serverUrl + 'assets/stories/'+ sid + '/design/gallery/' + file.originalname
+           });
+          });
+        // updateGalleryThemeFromStory({sid: sid, field: 'design_options', fieldParam: 'gallery', fieldValue: images}).then((story) => {
+        //   //bot.telegram.sendMessage(chat_id,sid + " " + ssid + "Stage updated successfully");
+
+          return res.json({  images: images, msg: 'Story gallery theme updated successfully' })
+        // });
+      }
+    });
+});
 app.get('/stories/:storyId/map', function(req, res, next) {
   const sid = req.params.storyId;
   const mapPath = __dirname + '/public/stories/'+sid+'/';
