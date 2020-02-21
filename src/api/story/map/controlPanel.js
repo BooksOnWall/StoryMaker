@@ -1,74 +1,130 @@
 import React, {PureComponent} from 'react';
+import {fromJS} from 'immutable';
+import MAP_STYLE from './map-style-basic-v8.json';
+
+const defaultMapStyle = fromJS(MAP_STYLE);
+
+const categories = ['labels', 'roads', 'buildings', 'parks', 'water', 'background'];
 
 // Layer id patterns by category
 const layerSelector = {
+  background: /background/,
+  water: /water/,
   parks: /park/,
   buildings: /building/,
   roads: /bridge|road|tunnel/,
   labels: /label|place|poi/
 };
 
-const defaultContainer = ({children}) => <div className="control-panel">{children}</div>;
-
-function getLayerFilter(categories, layerId) {
-  for (const key in categories) {
-    if (categories[key] && layerSelector[key].test(layerId)) {
-      return true;
-    }
-  }
-  return false;
-}
+// Layer color class by type
+const colorClass = {
+  line: 'line-color',
+  fill: 'fill-color',
+  background: 'background-color',
+  symbol: 'text-color'
+};
 
 export default class StyleControls extends PureComponent {
-  state = {
-    categories: {
-      parks: true,
-      buildings: true,
-      roads: true,
-      labels: true
-    }
-  };
+  constructor(props) {
+    super(props);
 
-  componentDidMount() {
-    const filter = getLayerFilter.bind(null, this.state.categories);
-    this.props.onChange(filter);
+    this._defaultLayers = defaultMapStyle.get('layers');
+
+    this.state = {
+      visibility: {
+        water: true,
+        parks: true,
+        buildings: true,
+        roads: true,
+        labels: true,
+        background: true
+      },
+      color: {
+        water: '#DBE2E6',
+        parks: '#E6EAE9',
+        buildings: '#c0c0c8',
+        roads: '#ffffff',
+        labels: '#78888a',
+        background: '#EBF0F0'
+      }
+    };
   }
 
-  _onToggleLayer(name, event) {
-    const categories = {
-      ...this.state.categories,
+  componentDidMount() {
+    this._updateMapStyle(this.state);
+  }
+
+  _onColorChange(name, event) {
+    const color = {...this.state.color, [name]: event.target.value};
+    this.setState({color});
+    this._updateMapStyle({...this.state, color});
+  }
+
+  _onVisibilityChange(name, event) {
+    const visibility = {
+      ...this.state.visibility,
       [name]: event.target.checked
     };
-    this.setState({categories});
+    this.setState({visibility});
+    this._updateMapStyle({...this.state, visibility});
+  }
 
-    const filter = getLayerFilter.bind(null, categories);
-    this.props.onChange(filter);
+  _updateMapStyle({visibility, color}) {
+    const layers = this._defaultLayers
+      .filter(layer => {
+        const id = layer.get('id');
+        return categories.every(name => visibility[name] || !layerSelector[name].test(id));
+      })
+      .map(layer => {
+        const id = layer.get('id');
+        const type = layer.get('type');
+        const category = categories.find(name => layerSelector[name].test(id));
+        if (category && colorClass[type]) {
+          return layer.setIn(['paint', colorClass[type]], color[category]);
+        }
+        return layer;
+      });
+
+    this.props.onChange(defaultMapStyle.set('layers', layers));
   }
 
   _renderLayerControl(name) {
-    const {categories} = this.state;
+    const {visibility, color} = this.state;
 
     return (
       <div key={name} className="input">
         <label>{name}</label>
         <input
           type="checkbox"
-          checked={categories[name]}
-          onChange={this._onToggleLayer.bind(this, name)}
+          checked={visibility[name]}
+          onChange={this._onVisibilityChange.bind(this, name)}
+        />
+        <input
+          type="color"
+          value={color[name]}
+          disabled={!visibility[name]}
+          onChange={this._onColorChange.bind(this, name)}
         />
       </div>
     );
   }
 
   render() {
-    const Container = this.props.containerComponent || defaultContainer;
-
     return (
-      <Container>
+      <div className="control-panel">
+        <h3>Dynamic Styling</h3>
+        <p>Dynamically show/hide map layers and change color with Immutable map style.</p>
+        <div className="source-link">
+          <a
+            href="https://github.com/uber/react-map-gl/tree/5.2-release/examples/layers"
+            target="_new"
+          >
+            View Code ↗
+          </a>
+        </div>
         <hr />
-        <p>Clickable layers</p>
-        {Object.keys(layerSelector).map(name => this._renderLayerControl(name))}
-      </Container>
+        {categories.map(name => this._renderLayerControl(name))}
+      </div>
     );
   }
 }

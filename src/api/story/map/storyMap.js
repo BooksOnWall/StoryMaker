@@ -40,33 +40,34 @@ const thumbsContainer = {
 function Listimages(props) {
  console.log('props_images',props.images);
  if (!props.images || props.images.length === 0 ) return null;
- let images = (typeof(props.images) === 'string') ? JSON.parse(props.images) : props.images;
+ let images = (typeof(props.images.files) === 'string') ? JSON.parse(props.images.files) : props.images.files;
  // images = (typeof(images) === 'string') ? JSON.parse(images) : images;
  console.log('images',images);
- const build = images.map((image, index) => {
-   // switch oject structure from create to update
-   console.log('image.image', image.image);
-   return (
-     <Card key={index} className='inverted'>
-       <Card.Content>
-         <Modal inverted basic dimmer='blurring' closeIcon
-           onClose={props.handleModalImgDeleteClose}
-           size='fullscreen'
-           trigger={<Image floated='right' src={props.server + image.image.path} />} centered={true} >
-           <Modal.Content image>
-             <Image wrapped src={props.server + image.image.path} />
-           </Modal.Content>
-           <Modal.Actions>
-             <Button name={image.image.name} color='red' onClick={props.handleImageDelete} inverted>
-               <Icon name='checkmark' /> Remove
-             </Button>
-           </Modal.Actions>
-         </Modal>
-       </Card.Content>
-     </Card>
-   );
- });
- return build;
+ // const build = images.map((image, index) => {
+ //   // switch oject structure from create to update
+ //   console.log('image.image', image.image);
+ //   return (
+ //     <Card key={index} className='inverted'>
+ //       <Card.Content>
+ //         <Modal inverted basic dimmer='blurring' closeIcon
+ //           onClose={props.handleModalImgDeleteClose}
+ //           size='fullscreen'
+ //           trigger={<Image floated='right' src={props.server + image.image.path} />} centered={true} >
+ //           <Modal.Content image>
+ //             <Image wrapped src={props.server + image.image.path} />
+ //           </Modal.Content>
+ //           <Modal.Actions>
+ //             <Button name={image.image.name} color='red' onClick={props.handleImageDelete} inverted>
+ //               <Icon name='checkmark' /> Remove
+ //             </Button>
+ //           </Modal.Actions>
+ //         </Modal>
+ //       </Card.Content>
+ //     </Card>
+ //   );
+ // });
+ // return build;
+ return null
 }
 class storyMap extends Component {
   constructor(props) {
@@ -157,7 +158,9 @@ class storyMap extends Component {
     try {
       await this.setState({loading: true});
       await this.state.toggleAuthenticateStatus;
+      await this.getTheme();
       await this.getMapPreferences();
+
       //await this.setState({loading: true});
     } catch(e) {
       console.log(e.message);
@@ -165,6 +168,23 @@ class storyMap extends Component {
   }
   toggleLoading(val) {
     this.setState({loading: false});
+  }
+  getTheme = async () => {
+    try {
+      await fetch(this.state.themeURL, {
+        method: 'get',
+        headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'},
+      })
+      .then(response => {
+        if (response && !response.ok) { throw new Error(response.statusText);}
+        return response.json();
+      })
+      .then(data => {
+        console.log(data);
+      });
+    } catch(e) {
+      console.log(e.message);
+    }
   }
   getMapPreferences = async () => {
     try {
@@ -179,10 +199,10 @@ class storyMap extends Component {
       })
       .then(data => {
           this.setState({loading: false});
-          console.log(data);
+          // console.log(data);
           if(data && data.map) {
-
             const map  = JSON.parse(data.map);
+            console.log(map);
             const colors = {};
             map.style.layers.map((layer) => {
               let color = (layer.paint['background-color']) ? layer.paint['background-color'] : '';
@@ -321,52 +341,19 @@ class storyMap extends Component {
   }
   editBanner(values) {
     return (
-      <Formik
-        enableReinitialize={true}
-        initialValues={this.state.theme.banner}
-        validate={values => {
-          let errors = {};
-          values.images = document.getElementById("themeBannerFiles").files;
-          return errors;
-        }}
-        onSubmit={(values, { setSubmitting }) => {
-          values.images = document.getElementById("themeBannerFiles").files;
 
+      <div>
+        <aside style={thumbsContainer}>
+          <Image src={this.state.server + this.state.theme.banner.path} />
+        </aside>
 
-          setTimeout(() => {
-            //alert(JSON.stringify(values, null, 2));
+        <BannerPreviews state={this.state} />
 
-            setSubmitting(false);
-          }, 400);
-        }}
-        >
-        {({
-          values,
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          handleSubmitBanner,
-          isSubmitting,
-          /* and other goodies */
-        }) => (
-          <Form size='large' onSubmit={this.handleSubmitBanner}>
-            <div>
-              <aside style={thumbsContainer}>
-                <Image src={this.state.server + this.state.theme.banner.path} />
-              </aside>
-
-              <BannerPreviews state={this.state} />
-            </div>
-            <div>
-            <Button onClick={this.handleSubmitBanner} floated='right' primary size='large' type="submit" disabled={this.state.bannerSubmit} loading={this.state.bannerSubmit}>
-              Update
-            </Button>
-            <Divider />
-            </div>
-          </Form>
-        )}
-      </Formik>
+        <Button onClick={this.handleSubmitBanner} floated='right' primary size='large' type="submit" disabled={this.state.bannerSubmit} loading={this.state.bannerSubmit}>
+          Update
+        </Button>
+        <Divider />
+      </div>
     );
   }
   handleSubmitBanner = async (e) => {
@@ -427,57 +414,21 @@ class storyMap extends Component {
   onChangeGalleryHandler = event => this.setState({ gallery: event.target.files })
   editGallery(values) {
     return (
-      <Formik
-        enableReinitialize={true}
-        initialValues={this.state.theme.gallery}
-        validate={values => {
-          let errors = {};
-          values.images = document.getElementById("themeGalleryFiles").files;
-          return errors;
-        }}
-        onSubmit={(values, { setSubmitting }) => {
-          values.images = document.getElementById("themeGalleryFiles").files;
-
-
-          setTimeout(() => {
-            //alert(JSON.stringify(values, null, 2));
-
-            setSubmitting(false);
-          }, 400);
-        }}
-        >
-        {({
-          values,
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          handleSubmitGallery,
-          isSubmitting,
-          /* and other goodies */
-        }) => (
-          <Form size='large' onSubmit={this.handleSubmitGallery}>
-            <div>
-              <aside style={thumbsContainer}>
-                 <Card.Group itemsPerRow={6}>
-                {(this.state.theme.gallery && this.state.theme.gallery.length > 0) ? <Listimages  handleImageDelete={this.handleImageDelete} handleImgDeleteOpen={this.handleImgDeleteOpen} handleModalImgDeleteClose={this.handleModalImgDeleteClose}  state={this.state} images={this.state.theme.gallery} server={this.state.server}/> : ''}
-                 </Card.Group>
-              </aside>
-
-              <GalleryPreviews state={this.state} />
-            </div>
-            <div>
-            <Button onClick={this.handleSubmitGallery} floated='right' primary size='large' type="submit" disabled={this.state.gallerySubmit} loading={this.state.gallerySubmit}>
-              Update
-            </Button>
-            </div>
-          </Form>
-        )}
-      </Formik>
+      <div>
+        <aside style={thumbsContainer}>
+          <Card.Group itemsPerRow={6}>
+            {(this.state.theme.gallery && this.state.theme.gallery.length > 0) ? <Listimages  handleImageDelete={this.handleImageDelete} handleImgDeleteOpen={this.handleImgDeleteOpen} handleModalImgDeleteClose={this.handleModalImgDeleteClose}  state={this.state} images={this.state.gallery} server={this.state.server}/> : ''}
+          </Card.Group>
+        </aside>
+        <GalleryPreviews state={this.state} style={{display:this.state.galleryDropZoneDisplay}}/>
+        <Button onClick={this.handleSubmitGallery} floated='right' primary size='large' type="submit" disabled={this.state.gallerySubmit} loading={this.state.gallerySubmit} style={{display:this.state.galleryDropZoneDisplay}}>
+          Update
+        </Button>
+      </div>
     );
   }
-  onViewportChange = viewport => this.setState({viewport});
-  onStyleChange = mapStyle => this.setState({mapStyle});
+  onViewportChange = (viewport) => this.setState({viewport})
+  onStyleChange = (mapStyle) => this.setState({mapStyle})
   preview = () => {
     return (
       <Tab.Pane attached={false} inverted>
@@ -763,11 +714,6 @@ class storyMap extends Component {
                  <Divider/>
                </Accordion.Content>
              </Accordion>
-
-
-
-
-
           </Form>
         )}
       </Formik>

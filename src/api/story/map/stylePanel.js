@@ -2,10 +2,9 @@ import React, {PureComponent} from 'react';
 import {fromJS} from 'immutable';
 import MAP_STYLE from './map-style-basic-v8.json';
 import { Slider } from "react-semantic-ui-range";
-
 import {
   Label,
-  Divider,
+    Divider,
   Segment
 } from 'semantic-ui-react';
 const defaultMapStyle = fromJS(MAP_STYLE);
@@ -81,6 +80,7 @@ export default class StyleControls extends PureComponent {
   componentDidMount() {
     this._updateMapStyle(this.state);
   }
+
   _onColorChange(name, event) {
     const color = {...this.state.color, [name]: event.target.value};
     this.setState({color});
@@ -128,7 +128,7 @@ export default class StyleControls extends PureComponent {
               onChange={this._onColorChange.bind(this, name)}
             /></span>
             <Label className="labelLayer inverted">{name}</Label>
-            <input
+            <input 
               className="left floated"
               type="Checkbox"
               checked={visibility[name]}
@@ -143,14 +143,15 @@ export default class StyleControls extends PureComponent {
 
     return (
    <Segment inverted className="stylingMap" inverted>
-     <Divider />
-     {categories.map(name => this._renderLayerControl(name))}
-     <Divider />
-     <Segment inverted className="parametersMap">
-     <Label className="labelLayer inverted">Zoom: {this.props.viewport.zoom.toFixed(2)}</Label>  <Slider inverted name="zoom" value={this.props.viewport.zoom} primary settings={this.state.zsettings} />
-     <Label className="labelLayer inverted">Pitch: {this.props.viewport.pitch.toFixed(2)}</Label> <Slider inverted name="pitch" value={this.props.viewport.pitch} primary settings={this.state.psettings}/>
-     <Label className="labelLayer inverted">Bearing: {this.props.viewport.bearing.toFixed(2)}</Label> <Slider inverted name="bearing" value={this.props.viewport.bearing} primary settings={this.state.bsettings} />
-     </Segment>
+        <h3>Map Styling</h3>
+        <Divider />
+        {categories.map(name => this._renderLayerControl(name))}
+        <Divider />
+        <Segment inverted className="parametersMap">   
+        <Label className="labelLayer inverted">Zoom: {this.props.viewport.zoom.toFixed(2)}</Label>  <Slider inverted name="zoom" value={this.props.viewport.zoom} primary settings={this.state.zsettings} />
+        <Label className="labelLayer inverted">Pitch: {this.props.viewport.pitch.toFixed(2)}</Label> <Slider inverted name="pitch" value={this.props.viewport.pitch} primary settings={this.state.psettings}/>
+        <Label className="labelLayer inverted">Bearing: {this.props.viewport.bearing.toFixed(2)}</Label> <Slider inverted name="bearing" value={this.props.viewport.bearing} primary settings={this.state.bsettings} />
+    </Segment>  
     </Segment>
     );
   }
