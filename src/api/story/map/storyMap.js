@@ -180,7 +180,9 @@ class storyMap extends Component {
         return response.json();
       })
       .then(data => {
-        this.setState({theme: data.theme})
+        if(data.theme.length > 0) {
+          this.setState({theme: data.theme});
+        }
       });
     } catch(e) {
       console.log(e.message);

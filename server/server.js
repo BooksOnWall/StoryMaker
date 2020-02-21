@@ -1706,23 +1706,23 @@ app.post('/stories/:storyId/gallery', function (req, res, next) {
       if(err) {
         return res.end("Error uploading file." + err);
       } else {
-        let images=[];
-         req.files.forEach( function(file) {
-
-           images.push({
-               'category': 'images',
-               'name': file.originalname,
-               'size': file.size,
-               'type': 'image',
-               'mimetype': file.mimetype,
-               'path': 'assets/stories/'+ sid + '/design/gallery/' + file.originalname,
-               'src': serverUrl + 'assets/stories/'+ sid + '/design/gallery/' + file.originalname
-           });
-          });
+        // let images=[];
+        //  req.files.forEach( function(file) {
+        //
+        //    images.push({
+        //        'category': 'images',
+        //        'name': file.originalname,
+        //        'size': file.size,
+        //        'type': 'image',
+        //        'mimetype': file.mimetype,
+        //        'path': 'assets/stories/'+ sid + '/design/gallery/' + file.originalname,
+        //        'src': serverUrl + 'assets/stories/'+ sid + '/design/gallery/' + file.originalname
+        //    });
+        //   });
         // updateGalleryThemeFromStory({sid: sid, field: 'design_options', fieldParam: 'gallery', fieldValue: images}).then((story) => {
         //   //bot.telegram.sendMessage(chat_id,sid + " " + ssid + "Stage updated successfully");
 
-          return res.json({  images: images, msg: 'Story gallery theme updated successfully' })
+          return res.json({  msg: 'Story gallery theme updated successfully' })
         // });
       }
     });
