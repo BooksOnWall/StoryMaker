@@ -3,7 +3,6 @@ import {useDropzone} from 'react-dropzone';
 import {
   Segment,
   Image,
-Divider,
 } from 'semantic-ui-react';
 import {ToastsContainer, ToastsStore, ToastsContainerPosition} from 'react-toasts';
 const thumbsContainer = {
@@ -86,7 +85,7 @@ function GalleryPreviews(props) {
   return (
     <Segment  style={{margin:0, padding: 0}} inverted>
       <div {...getRootProps({className: 'dropzone gallery'})} style={{display: props.state.galleryDropZoneDisplay}}>
-        <input  id='themeGalleryFiles' name='files' onChange={props.state.onChangeHandler} ref={ref => this.fileInput = ref} {...getInputProps()} />
+        <input  id='themeGalleryFiles' name='files' onChange={props.state.onChangeGalleryHandler} ref={ref => this.fileInput = ref} {...getInputProps()} />
       </div>
       <aside style={thumbsContainer}>
         {thumbs}

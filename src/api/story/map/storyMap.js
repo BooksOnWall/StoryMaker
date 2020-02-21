@@ -38,13 +38,14 @@ const thumbsContainer = {
   marginTop: 16
 };
 function Listimages(props) {
-
+ console.log('props_images',props.images);
  if (!props.images || props.images.length === 0 ) return null;
  let images = (typeof(props.images) === 'string') ? JSON.parse(props.images) : props.images;
- images = (typeof(images) === 'string') ? JSON.parse(images) : images;
-
+ // images = (typeof(images) === 'string') ? JSON.parse(images) : images;
+ console.log('images',images);
  const build = images.map((image, index) => {
    // switch oject structure from create to update
+   console.log('image.image', image.image);
    return (
      <Card key={index} className='inverted'>
        <Card.Content>
@@ -125,8 +126,10 @@ class storyMap extends Component {
       activeIndex: 0,
       saveThemeLoading: false,
       setBannerImages: this.setBannerImages,
+      onChangeBannerHandler: this.onChangeBannerHandler,
       bannerDropZoneDisplay: 'block',
       setGalleryImages: this.setGalleryImages,
+      onChangeGalleryHandler: this.onChangeGalleryHandler,
       galleryDropZoneDisplay: 'block',
       displayColorPicker1: false,
       displayColorPicker2: false,
@@ -288,9 +291,9 @@ class storyMap extends Component {
   setGalleryImages = (files) => {
     console.log(files);
     let gimages =[];
-    if (files && files.files && files.files.length > 0) {
+    if (files  && files.length > 0) {
       //prepare aray of image name and path for store and let the rest for updateImages
-      Array.from(files.files).forEach(file => {
+      Array.from(files).forEach(file => {
         gimages.push({
           'image': {
             'name': file.name,
@@ -299,7 +302,7 @@ class storyMap extends Component {
             'path': 'assets/stories/'+ this.props.sid + '/design/gallery/' + file.name
           }
         });
-       });
+      });
     }
     this.setState({
       galleryDropZoneDisplay: 'none',
@@ -314,6 +317,7 @@ class storyMap extends Component {
         color2: this.state.theme.color2,
         color3: this.state.theme.color3
     }});
+    console.log(this.state.theme);
   }
   editBanner(values) {
     return (
@@ -419,11 +423,13 @@ class storyMap extends Component {
       console.log(e);
     }
   }
+  onChangeBannerHandler = event => this.setState({ banner: event.target.files })
+  onChangeGalleryHandler = event => this.setState({ gallery: event.target.files })
   editGallery(values) {
     return (
       <Formik
         enableReinitialize={true}
-        initialValues={this.state.initialAValues}
+        initialValues={this.state.theme.gallery}
         validate={values => {
           let errors = {};
           values.images = document.getElementById("themeGalleryFiles").files;
@@ -454,7 +460,7 @@ class storyMap extends Component {
             <div>
               <aside style={thumbsContainer}>
                  <Card.Group itemsPerRow={6}>
-                {(this.state.theme.gallery && this.state.theme.gallery.length > 0) ? <Listimages  handleImageDelete={this.handleImageDelete} handleImgDeleteOpen={this.handleImgDeleteOpen} handleModalImgDeleteClose={this.handleModalImgDeleteClose}  state={this.state} images={this.state.gallery} server={this.state.server}/> : ''}
+                {(this.state.theme.gallery && this.state.theme.gallery.length > 0) ? <Listimages  handleImageDelete={this.handleImageDelete} handleImgDeleteOpen={this.handleImgDeleteOpen} handleModalImgDeleteClose={this.handleModalImgDeleteClose}  state={this.state} images={this.state.theme.gallery} server={this.state.server}/> : ''}
                  </Card.Group>
               </aside>
 
