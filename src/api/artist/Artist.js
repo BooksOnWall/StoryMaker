@@ -113,7 +113,6 @@ class Artist extends Component {
       activeIndex: parseInt(1),
       selectedFile: null,
       setImages: this.setImages,
-      saveImages: this.saveArtistImages,
       initialAValues: { name: '', email: '', bio: {}, images: null},
       toggleAuthenticateStatus: this.props.childProps.toggleAuthenticateStatus,
       authenticated: this.props.childProps.authenticated,
@@ -530,7 +529,7 @@ class Artist extends Component {
             /* and other goodies */
           }) => (
             <Form size='large' onSubmit={this.handleSubmit}>
-              <Input 
+              <Input
                 fluid
                 transparent
                 inverted
@@ -577,7 +576,7 @@ class Artist extends Component {
                     onConfirm={this.handleDelete}
                     />
                 </div>
-                  
+
               ) : '' }
             </div>
             </Form>
@@ -702,10 +701,10 @@ class Artist extends Component {
       <Dimmer.Dimmable as={Segment} inverted className='view' blurring dimmed={this.state.loading}>
         <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
         <Loader active={this.state.loading} >Get artist info</Loader>
-        
+
         <Header as={Segment} vertical size='medium'>
             {(this.state.mode === 'create') ? <FormattedMessage id="app.artist.title.create" defaultMessage={`Create Artist`}/> : <FormattedMessage id="app.artist.title.edit" defaultMessage={`Edit Artist`}/> }
-        </Header>        
+        </Header>
         <ArtistSteps aid={this.state.aid} step={this.state.step} state={this.state}/>
         <Segment inverted clearing className="content">
         {(this.state.step === 'Artist') ? this.editArtist() : ''}
