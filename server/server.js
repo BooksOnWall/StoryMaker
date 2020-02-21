@@ -380,6 +380,17 @@ const createStory = async ({ title, state, city, sinopsys, credits, artist, acti
     console.log(e.message);
   }
 }
+const getStoryTheme = async obj => {
+  try {
+    return await Stories.findOne(
+      { attributes: ['design_options', 'id'],
+        where: obj}
+    );
+  } catch(e) {
+    console.log(e.message);
+  }
+
+};
 const getStory = async obj => {
   try {
     return await Stories.findOne(
@@ -405,6 +416,16 @@ const patchStory = async ({ sid, title, artist, state, city, sinopsys, credits, 
   return await Stories.update({ title, artist, state, city, sinopsys, credits, design_options, tesselate, geometry, active },
     { where: {id : sid}}
   );
+}
+const patchStoryGallery = async ({ id, name, images }) => {
+  getStoryTheme({obj:id}).then((story) => {
+    let design_options = story.dataValues.design_options;
+    let gallery = design_options.gallery;
+    console.log(gallery);
+  });
+  // await Stories.update({ design_options },
+  //   { where: {id : sid}}
+  // );
 }
 const deleteStory = async (sid) => {
   try {
@@ -1575,6 +1596,17 @@ app.patch('/stories/:storyId/stages', function(req, res) {
     return res.json({ stages, 'data': stages, msg: 'stages reindexed successfully' })
   });
 });
+app.patch('/stories/:storyId/drop', function (req, res, next) {
+  let id = req.params.storyId;
+  let name = req.body.name;
+  let images = req.body.images;
+  //delete file
+  rimraf.sync("./public/stories/" + id + "/design/gallery/" + name);
+  // update artists.Images
+  patchStoryGallery({ id, name, images }).then(story =>
+      res.json({ story, msg: 'theme gallery image removed successfully' })
+  );
+});
 app.post('/stories/:storyId/map', function(req, res, next) {
   const { prefs } = req.body;
   const sid = req.params.storyId;
@@ -1607,6 +1639,12 @@ app.post('/stories/:storyId/theme', function(req, res, next) {
     });
   });
 });
+app.get('/stories/:storyId/theme', function(req, res, next) {
+  const sid = req.params.storyId;
+  getStoryTheme({id:sid}).then((story) => {
+    return res.json({theme:story.dataValues.design_options})
+  });
+});
 //Uploading single file avatar
 app.post('/stories/:storyId/banner', function (req, res, next) {
   const sid = req.params.storyId;
@@ -1636,7 +1674,6 @@ app.post('/stories/:storyId/banner', function (req, res, next) {
           return res.end("Error uploading file." + err);
         } else {
           // update db
-
           return res.json({ story: sid, msg: 'banner uploaded  successfully' })
         }
     });

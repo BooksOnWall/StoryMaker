@@ -84,7 +84,7 @@ function BannerPreviews(props) {
 
 
   return (
-    <Segment style={{margin:0, padding: 0}} inverted>
+    <Segment style={{margin:0, padding: 0, display: props.state.bannerUploadDisplay}} inverted>
 
       <div {...getRootProps({className: 'dropzone banner'})} style={{ display: props.state.bannerDropZoneDisplay}}>
         <input  id='themeBannerFiles' name='files' onChange={props.state.onChangeHandler} ref={ref => this.fileInput = ref} {...getInputProps()} />

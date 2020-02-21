@@ -83,11 +83,11 @@ function GalleryPreviews(props) {
 
 
   return (
-    <Segment  style={{margin:0, padding: 0}} inverted>
+    <Segment inverted style={{margin:0, padding: 0, display: props.state.galleryUploadDisplay}} >
       <div {...getRootProps({className: 'dropzone gallery'})} style={{display: props.state.galleryDropZoneDisplay}}>
         <input  id='themeGalleryFiles' name='files' onChange={props.state.onChangeGalleryHandler} ref={ref => this.fileInput = ref} {...getInputProps()} />
       </div>
-      <aside style={thumbsContainer}>
+      <aside style={thumbsContainer}  >
         {thumbs}
       </aside>
     <ToastsContainer store={ToastsStore} position={ToastsContainerPosition.TOP_LEFT}/>

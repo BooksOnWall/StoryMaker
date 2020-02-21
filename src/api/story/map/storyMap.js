@@ -38,36 +38,31 @@ const thumbsContainer = {
   marginTop: 16
 };
 function Listimages(props) {
- console.log('props_images',props.images);
  if (!props.images || props.images.length === 0 ) return null;
- let images = (typeof(props.images.files) === 'string') ? JSON.parse(props.images.files) : props.images.files;
- // images = (typeof(images) === 'string') ? JSON.parse(images) : images;
- console.log('images',images);
- // const build = images.map((image, index) => {
- //   // switch oject structure from create to update
- //   console.log('image.image', image.image);
- //   return (
- //     <Card key={index} className='inverted'>
- //       <Card.Content>
- //         <Modal inverted basic dimmer='blurring' closeIcon
- //           onClose={props.handleModalImgDeleteClose}
- //           size='fullscreen'
- //           trigger={<Image floated='right' src={props.server + image.image.path} />} centered={true} >
- //           <Modal.Content image>
- //             <Image wrapped src={props.server + image.image.path} />
- //           </Modal.Content>
- //           <Modal.Actions>
- //             <Button name={image.image.name} color='red' onClick={props.handleImageDelete} inverted>
- //               <Icon name='checkmark' /> Remove
- //             </Button>
- //           </Modal.Actions>
- //         </Modal>
- //       </Card.Content>
- //     </Card>
- //   );
- // });
- // return build;
- return null
+ let images = (typeof(props.images) === 'string') ? JSON.parse(props.images) : props.images;
+ const build = images.map((image, index) => {
+   // switch oject structure from create to update
+   return (
+     <Card key={index} className='inverted'>
+       <Card.Content>
+         <Modal inverted basic dimmer='blurring' closeIcon
+           onClose={props.handleModalImgDeleteClose}
+           size='fullscreen'
+           trigger={<Image floated='right' src={props.server + image.path} />} centered={true} >
+           <Modal.Content image>
+             <Image wrapped src={props.server + image.path} />
+           </Modal.Content>
+           <Modal.Actions>
+             <Button name={image.name} color='red' onClick={props.handleImageGalleryDelete} inverted>
+               <Icon name='checkmark' /> Remove
+             </Button>
+           </Modal.Actions>
+         </Modal>
+       </Card.Content>
+     </Card>
+   );
+ });
+ return build;
 }
 class storyMap extends Component {
   constructor(props) {
@@ -81,6 +76,7 @@ class storyMap extends Component {
       sid: (!this.props.sid) ? (0) : (parseInt(this.props.sid)),
       mapURL: server+'stories/'+this.props.sid+'/map',
       themeURL: server+'stories/'+this.props.sid+'/theme',
+      dropImageGalleryURL: server+'stories/'+this.props.sid+'/drop',
       loading: null,
       mapStyle: MAP_STYLE,
       server: server,
@@ -129,9 +125,12 @@ class storyMap extends Component {
       setBannerImages: this.setBannerImages,
       onChangeBannerHandler: this.onChangeBannerHandler,
       bannerDropZoneDisplay: 'block',
+      bannerUploadDisplay: false,
       setGalleryImages: this.setGalleryImages,
       onChangeGalleryHandler: this.onChangeGalleryHandler,
+      modalImgDelete: false,
       galleryDropZoneDisplay: 'block',
+      galleryUploadDisplay: false,
       displayColorPicker1: false,
       displayColorPicker2: false,
       displayColorPicker3: false,
@@ -143,6 +142,7 @@ class storyMap extends Component {
       gallerySubmit: false,
       setViewport: this.setViewport,
     }
+    this.handleImageGalleryDelete = this.handleImageGalleryDelete.bind(this);
   };
   setViewport = (field, value ) => {
     this.setState({viewport: {
@@ -180,7 +180,7 @@ class storyMap extends Component {
         return response.json();
       })
       .then(data => {
-        console.log(data);
+        this.setState({theme: data.theme})
       });
     } catch(e) {
       console.log(e.message);
@@ -309,36 +309,12 @@ class storyMap extends Component {
   }});
 }
   setGalleryImages = (files) => {
-    console.log(files);
-    let gimages =[];
-    if (files  && files.length > 0) {
-      //prepare aray of image name and path for store and let the rest for updateImages
-      Array.from(files).forEach(file => {
-        gimages.push({
-          'image': {
-            'name': file.name,
-            'size': file.size,
-            'type': file.type,
-            'path': 'assets/stories/'+ this.props.sid + '/design/gallery/' + file.name
-          }
-        });
-      });
-    }
     this.setState({
       galleryDropZoneDisplay: 'none',
       gallery: { files },
-      theme : {
-        banner: this.state.theme.banner,
-        font1: this.state.theme.font1,
-        font2: this.state.theme.font2,
-        font3: this.state.theme.font3,
-        gallery: gimages,
-        color1: this.state.theme.color1,
-        color2: this.state.theme.color2,
-        color3: this.state.theme.color3
-    }});
-    console.log(this.state.theme);
+    });
   }
+
   editBanner(values) {
     return (
 
@@ -346,12 +322,14 @@ class storyMap extends Component {
         <aside style={thumbsContainer}>
           <Image src={this.state.server + this.state.theme.banner.path} />
         </aside>
-
-        <BannerPreviews state={this.state} />
-
-        <Button onClick={this.handleSubmitBanner} floated='right' primary size='large' type="submit" disabled={this.state.bannerSubmit} loading={this.state.bannerSubmit}>
-          Update
-        </Button>
+        {this.state.bannerUploadDisplay &&
+          <div>
+            <BannerPreviews state={this.state} />
+            <Button onClick={this.handleSubmitBanner} floated='right' primary size='large' type="submit" disabled={this.state.bannerSubmit} loading={this.state.bannerSubmit}>
+               Update
+            </Button>
+          </div>
+        }
         <Divider />
       </div>
     );
@@ -377,7 +355,9 @@ class storyMap extends Component {
          })
          .then(response => response.json())
          .then(data => {
-            this.setState({bannerSubmit: false});
+            this.setState({
+              bannerSubmit: false,
+              bannerUploadDisplay: false,});
          });
       } catch(e) {
         console.log(e.message);
@@ -404,26 +384,108 @@ class storyMap extends Component {
        })
        .then(response => response.json())
        .then(data => {
-          this.setState({gallerySubmit: false});
+         let gimages =[];
+         if (this.state.gallery.files  && this.state.gallery.files.length > 0) {
+           //prepare aray of image name and path for store and let the rest for updateImages
+           Array.from(this.state.gallery.files).forEach(file => {
+             gimages.push({
+                 'name': file.name,
+                 'size': file.size,
+                 'type': file.type,
+                 'path': 'assets/stories/'+ this.props.sid + '/design/gallery/' + file.name
+             });
+           });
+          }
+          this.setState({
+            gallerySubmit: false,
+            galleryUploadDisplay: false,
+            gallery: [],
+            theme: {
+              banner: this.state.theme.banner,
+              font1: this.state.theme.font1,
+              font2: this.state.theme.font2,
+              font3: this.state.theme.font3,
+              gallery: gimages,
+              color1: this.state.theme.color1,
+              color2: this.state.theme.color2,
+              color3: this.state.theme.color3
+            }
+          });
        });
     } catch(e) {
       console.log(e);
     }
   }
+  toggleBannerUpload = () => this.setState({bannerUploadDisplay: !this.state.bannerUploadDisplay})
+  toggleGalleryUpload = () => this.setState({galleryUploadDisplay: !this.state.galleryUploadDisplay})
   onChangeBannerHandler = event => this.setState({ banner: event.target.files })
   onChangeGalleryHandler = event => this.setState({ gallery: event.target.files })
+  handleImageGalleryDelete = (e) => {
+    console.log('delete');
+    const imgName = e.target.name;
+    let images = (typeof(this.state.theme.gallery) === 'string') ? JSON.parse(this.state.theme.gallery) : this.state.theme.gallery ;
+    images = (typeof(images) === 'string') ? JSON.parse(images): images;
+    // remove image object from images array
+    images = images.filter(function(e) {
+      return e.image.name !== imgName;
+    });
+    this.setState({
+      theme: {
+        gallery: images,
+        banner: this.state.theme.banner,
+        font1: this.state.theme.font1,
+        font2: this.state.theme.font2,
+        font3: this.state.theme.font3,
+        color1: this.state.theme.color1,
+        color2: this.state.theme.color2,
+        color3: this.state.theme.color3
+      }});
+    // delete array and file server side
+    return this.dropGalleryImage(imgName, images);
+  }
+  dropGalleryImage = async (name, images) => {
+    try {
+      await fetch(this.state.dropImageGalleryURL, {
+        method: 'PATCH',
+        credentials: 'same-origin',
+        headers: {'Access-Control-Allow-Origin': '*',  'Content-Type':'application/json'},
+        body:JSON.stringify({
+          name: name,
+          images: images,
+        })
+      })
+      .then(response => {
+        if (response && !response.ok) { throw new Error(response.statusText);}
+        return response.json();
+      })
+      .then(data => {
+          if(data) {
+            // close modal window
+            console.log(data); // to be send later in messages
+            // redirect
+            //this.props.history.push('/artists');
+          }
+      }).catch(error => console.log(error));
+    } catch(e) { console.log(e.message); }
+  }
+  handleImgDeleteOpen = () => this.setState({ modalImgDelete: true })
+  handleModalImgDeleteClose = () =>  this.setState({ modalImgDelete: false })
   editGallery(values) {
     return (
       <div>
         <aside style={thumbsContainer}>
-          <Card.Group itemsPerRow={6}>
-            {(this.state.theme.gallery && this.state.theme.gallery.length > 0) ? <Listimages  handleImageDelete={this.handleImageDelete} handleImgDeleteOpen={this.handleImgDeleteOpen} handleModalImgDeleteClose={this.handleModalImgDeleteClose}  state={this.state} images={this.state.gallery} server={this.state.server}/> : ''}
+          <Card.Group itemsPerRow={2}>
+            {(this.state.theme.gallery && this.state.theme.gallery.length > 0) ? <Listimages  handleImageDelete={this.handleImageGalleryDelete} handleImgDeleteOpen={this.handleImgDeleteOpen} handleModalImgDeleteClose={this.handleModalImgDeleteClose}  state={this.state} images={this.state.theme.gallery} server={this.state.server}/> : ''}
           </Card.Group>
         </aside>
-        <GalleryPreviews state={this.state} style={{display:this.state.galleryDropZoneDisplay}}/>
-        <Button onClick={this.handleSubmitGallery} floated='right' primary size='large' type="submit" disabled={this.state.gallerySubmit} loading={this.state.gallerySubmit} style={{display:this.state.galleryDropZoneDisplay}}>
-          Update
-        </Button>
+        {this.state.galleryUploadDisplay &&
+          <div>
+            <GalleryPreviews state={this.state} />
+            <Button onClick={this.handleSubmitGallery} floated='right' primary size='large' type="submit" disabled={this.state.gallerySubmit} loading={this.state.gallerySubmit} >
+              Update
+            </Button>
+          </div>
+        }
       </div>
     );
   }
@@ -677,7 +739,6 @@ class storyMap extends Component {
                 IMAGES
                </Accordion.Title>
                <Accordion.Content active={activeIndex === 2}>
-
                  <Input
                  fluid
                  transparent
@@ -689,10 +750,11 @@ class storyMap extends Component {
                  autoFocus={true}
                  type="text"
                  name="banner"
+                 onClick={this.toggleBannerUpload}
                  onChange={handleChange}
                  onBlur={handleBlur}
                  defaultValue={this.state.theme.banner}
-                   />
+                />
                  {this.editBanner()}
                  <Input
                    fluid
@@ -705,6 +767,7 @@ class storyMap extends Component {
                    autoFocus={true}
                    type="text"
                    name="gallery"
+                   onClick={this.toggleGalleryUpload}
                    onChange={handleChange}
                    onBlur={handleBlur}
                    defaultValue={this.state.theme.gallery}
