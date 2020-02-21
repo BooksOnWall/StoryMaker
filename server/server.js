@@ -1131,6 +1131,52 @@ app.get('/assets/artists/:artistId/:name', function (req, res, next) {
     }
   })
 });
+app.get('/assets/stories/:storyId/design/banner/:name', function (req, res, next) {
+  var sid = req.params.storyId;
+  var fileName = req.params.name;
+
+  var path = './public/stories/' + sid + '/design/banner/';
+
+  var options = {
+    root: path ,
+    dotfiles: 'deny',
+    headers: {
+      'x-timestamp': Date.now(),
+      'x-sent': true
+    }
+  }
+
+  res.sendFile(fileName, options, function (err) {
+    if (err) {
+      next(err)
+    } else {
+      console.log('Sent:', fileName)
+    }
+  })
+});
+app.get('/assets/stories/:storyId/design/gallery/:name', function (req, res, next) {
+  var sid = req.params.storyId;
+  var fileName = req.params.name;
+
+  var path = './public/stories/' + sid + '/design/gallery/';
+
+  var options = {
+    root: path ,
+    dotfiles: 'deny',
+    headers: {
+      'x-timestamp': Date.now(),
+      'x-sent': true
+    }
+  }
+
+  res.sendFile(fileName, options, function (err) {
+    if (err) {
+      next(err)
+    } else {
+      console.log('Sent:', fileName)
+    }
+  })
+});
 app.get('/assets/export/stories/:storyId/:name', function (req, res, next) {
   var sid = req.params.storyId;
   var fileName = req.params.name;
@@ -1154,6 +1200,7 @@ app.get('/assets/export/stories/:storyId/:name', function (req, res, next) {
     }
   })
 });
+
 app.get('/assets/export/stories/:storyId/stages/:name', function (req, res, next) {
   var sid = req.params.storyId;
   var fileName = req.params.name;
@@ -1559,6 +1606,40 @@ app.post('/stories/:storyId/theme', function(req, res, next) {
       return res.json({  msg: 'Theme Story updated and saved successfully' })
     });
   });
+});
+//Uploading single file avatar
+app.post('/stories/:storyId/banner', function (req, res, next) {
+  const sid = req.params.storyId;
+  const path = './public/stories/'+sid+'/design/banner';
+  const filename = 'banner'+sid+'.png';
+  console.log(filename+' upload');
+  // check if directory banner exist if not create it
+  if (!fs.existsSync(path)) {
+    fs.mkdirSync(path, 0o744);
+    console.log('Stories design banner directory created successfully')
+  }
+  // check if file exist
+  if (fs.existsSync(path+filename)) {
+    rimraf(path+filename);
+  }
+  var storage = multer.diskStorage({
+      destination: function(req, file, cb){
+        cb(null, path);
+      },
+      filename: function (req, file, cb) {
+        cb(null, filename);
+      }
+    });
+    var upload = multer({ storage : storage}).any();
+    upload(req,res,function(err) {
+        if(err) {
+          return res.end("Error uploading file." + err);
+        } else {
+          // update db
+
+          return res.json({ story: sid, msg: 'banner uploaded  successfully' })
+        }
+    });
 });
 app.get('/stories/:storyId/map', function(req, res, next) {
   const sid = req.params.storyId;

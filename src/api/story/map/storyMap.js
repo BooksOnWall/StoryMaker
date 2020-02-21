@@ -38,9 +38,11 @@ const thumbsContainer = {
   marginTop: 16
 };
 function Listimages(props) {
+
  if (!props.images || props.images.length === 0 ) return null;
  let images = (typeof(props.images) === 'string') ? JSON.parse(props.images) : props.images;
- //images = (typeof(images) === 'string') ? JSON.parse(images) : images;
+ images = (typeof(images) === 'string') ? JSON.parse(images) : images;
+
  const build = images.map((image, index) => {
    // switch oject structure from create to update
    return (
@@ -59,11 +61,6 @@ function Listimages(props) {
              </Button>
            </Modal.Actions>
          </Modal>
-       { /* <Card.Header as='h3'>{image.image.name}</Card.Header>
-         <Card.Meta>{image.image.type}</Card.Meta>
-         <Card.Description>
-           { humanFileSize(image.image.size, true)}
-         </Card.Description> */}
        </Card.Content>
      </Card>
    );
@@ -84,6 +81,7 @@ class storyMap extends Component {
       themeURL: server+'stories/'+this.props.sid+'/theme',
       loading: null,
       mapStyle: MAP_STYLE,
+      server: server,
       colors: {
         water: '#aad9f5',
         parks: '#2bedbd',
@@ -115,7 +113,10 @@ class storyMap extends Component {
         font1: 'TrashHand',
         font2: 'BadScript-Regular',
         font3: 'ATypewriterForMe',
-        banner: 'banner10.png',
+        banner: {
+          name: 'banner'+this.props.sid+'.png',
+          path: 'assets/stories/'+this.props.sid + '/design/banner/banner' + this.props.sid +'.png',
+        },
         gallery: [],
         color1: '#FFDDFF',
         color2: '#DD00FF',
@@ -127,7 +128,15 @@ class storyMap extends Component {
       bannerDropZoneDisplay: 'block',
       setGalleryImages: this.setGalleryImages,
       galleryDropZoneDisplay: 'block',
-      displayColorPicker: false,
+      displayColorPicker1: false,
+      displayColorPicker2: false,
+      displayColorPicker3: false,
+      banners: [],
+      gallery: [],
+      bannerSubmit: false,
+      bannerThemeURL: server+'stories/'+this.props.sid+'/banner',
+      galleryThemeURL: server+'stories/'+this.props.sid+'/gallery',
+      gallerySubmit: false,
       setViewport: this.setViewport,
     }
   };
@@ -254,10 +263,19 @@ class storyMap extends Component {
       console.log(e.message);
     }
   }
-  setBannerImages = (files) => this.setState({
+  setBannerImages = (files) => {
+    console.log(files);
+    const banner = {
+      name: files[0].name,
+      path: 'assets/stories/'+ this.props.sid + '/design/banner/' + files[0].path,
+      size: files[0].size,
+      type: files[0].type
+    }
+    this.setState({
     bannerDropZoneDisplay: 'none',
+    banners: { files },
     theme : {
-      banner: {files} ,
+      banner: banner ,
       font1: this.state.theme.font1,
       font2: this.state.theme.font2,
       font3: this.state.theme.font3,
@@ -265,7 +283,8 @@ class storyMap extends Component {
       color1: this.state.theme.color1,
       color2: this.state.theme.color2,
       color3: this.state.theme.color3
-  }})
+  }});
+}
   setGalleryImages = (files) => this.setState({
     galleryDropZoneDisplay: 'none',
     theme : {
@@ -282,14 +301,14 @@ class storyMap extends Component {
     return (
       <Formik
         enableReinitialize={true}
-        initialValues={this.state.initialAValues}
+        initialValues={this.state.theme.banner}
         validate={values => {
           let errors = {};
-          values.images = document.getElementById("artistFiles").files;
+          values.images = document.getElementById("themeBannerFiles").files;
           return errors;
         }}
         onSubmit={(values, { setSubmitting }) => {
-          values.images = document.getElementById("artistFiles").files;
+          values.images = document.getElementById("themeBannerFiles").files;
 
 
           setTimeout(() => {
@@ -305,29 +324,58 @@ class storyMap extends Component {
           touched,
           handleChange,
           handleBlur,
-          handleSubmitI,
+          handleSubmitBanner,
           isSubmitting,
           /* and other goodies */
         }) => (
-          <Form size='large' onSubmit={this.handleSubmitI}>
+          <Form size='large' onSubmit={this.handleSubmitBanner}>
             <div>
               <aside style={thumbsContainer}>
-                 <Card.Group itemsPerRow={5}>
-                {(this.state.images && this.state.images.length > 0) ? <Listimages mode={this.state.mode} handleImageDelete={this.handleImageDelete} handleImgDeleteOpen={this.handleImgDeleteOpen} handleModalImgDeleteClose={this.handleModalImgDeleteClose}  state={this.state} images={this.state.images} server={this.state.server}/> : ''}
-                 </Card.Group>
+                <Image src={this.state.server + this.state.theme.banner.path} />
               </aside>
 
               <BannerPreviews state={this.state} />
             </div>
             <div>
-            <Button onClick={this.handleSubmitI} floated='right' primary size='large' type="submit" disabled={isSubmitting}>
-              {(this.state.mode === 'create') ? 'Create' : 'Update'}
+            <Button onClick={this.handleSubmitBanner} floated='right' primary size='large' type="submit" disabled={this.state.bannerSubmit} loading={this.state.bannerSubmit}>
+              Update
             </Button>
+            <Divider />
             </div>
           </Form>
         )}
       </Formik>
     );
+  }
+  handleSubmitBanner = async (e) => {
+      this.setState({bannerSubmit: true});
+
+      let images = this.state.banners;
+      try {
+        let formData = new FormData();
+        for(var x = 0; x < images.files.length; x++) {
+          formData.append('file', images.files[x]);
+        };
+        await fetch(this.state.bannerThemeURL, {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Accept':'application/json; charset=utf-8'
+          },
+          file: JSON.stringify(images.files[0]),
+          body: formData
+         })
+         .then(response => response.json())
+         .then(data => {
+            this.setState({bannerSubmit: false});
+         });
+      } catch(e) {
+        console.log(e.message);
+      }
+  }
+  handleSubmitGallery = async (e) => {
+
   }
   editGallery(values) {
     return (
@@ -336,11 +384,11 @@ class storyMap extends Component {
         initialValues={this.state.initialAValues}
         validate={values => {
           let errors = {};
-          values.images = document.getElementById("artistFiles").files;
+          values.images = document.getElementById("themeGalleryFiles").files;
           return errors;
         }}
         onSubmit={(values, { setSubmitting }) => {
-          values.images = document.getElementById("artistFiles").files;
+          values.images = document.getElementById("themeGalleryFiles").files;
 
 
           setTimeout(() => {
@@ -356,11 +404,11 @@ class storyMap extends Component {
           touched,
           handleChange,
           handleBlur,
-          handleSubmitI,
+          handleSubmitGallery,
           isSubmitting,
           /* and other goodies */
         }) => (
-          <Form size='large' onSubmit={this.handleSubmitI}>
+          <Form size='large' onSubmit={this.handleSubmitGallery}>
             <div>
               <aside style={thumbsContainer}>
                  <Card.Group itemsPerRow={5}>
@@ -371,8 +419,8 @@ class storyMap extends Component {
               <GalleryPreviews state={this.state} />
             </div>
             <div>
-            <Button onClick={this.handleSubmitI} floated='right' primary size='large' type="submit" disabled={isSubmitting}>
-              {(this.state.mode === 'create') ? 'Create' : 'Update'}
+            <Button onClick={this.handleSubmitGallery} floated='right' primary size='large' type="submit" disabled={isSubmitting}>
+              Update
             </Button>
             </div>
           </Form>
@@ -382,6 +430,13 @@ class storyMap extends Component {
   }
   onViewportChange = viewport => this.setState({viewport});
   onStyleChange = mapStyle => this.setState({mapStyle});
+  preview = () => {
+    return (
+      <Tab.Pane attached={false} inverted>
+        todo's Mobile app preview
+      </Tab.Pane>
+    )
+  }
   mapPrefs = () => {
     if (this.state.colors) {
       return (
@@ -407,8 +462,58 @@ class storyMap extends Component {
 
     this.setState({ activeIndex: newIndex })
   }
+  handleFocus1 = () => this.setState({ displayColorPicker1: !this.state.displayColorPicker1 })
+  handleFocus2 = () => this.setState({ displayColorPicker2: !this.state.displayColorPicker2 })
+  handleFocus3 = () => this.setState({ displayColorPicker3: !this.state.displayColorPicker3 })
+  handleClose1 = () => this.setState({ displayColorPicker1: false })
+  handleClose2 = () => this.setState({ displayColorPicker2: false })
+  handleClose3 = () => this.setState({ displayColorPicker3: false })
+  handleColor1 = (color) => this.setState({
+    theme: {
+      banner: this.state.theme.banner,
+      font1: this.state.theme.font1,
+      font2: this.state.theme.font2,
+      font3: this.state.theme.font3,
+      gallery: this.state.theme.gallery,
+      color1: color.hex,
+      color2: this.state.theme.color2,
+      color3: this.state.theme.color3
+    }
+  })
+  handleColor2 = (color) => this.setState({ theme: {
+    banner: this.state.theme.banner,
+    font1: this.state.theme.font1,
+    font2: this.state.theme.font2,
+    font3: this.state.theme.font3,
+    gallery: this.state.theme.gallery,
+    color1: this.state.theme.color1,
+    color2:  color.hex,
+    color3: this.state.theme.color3
+  } })
+  handleColor3 = (color) => this.setState({ theme: {
+    banner: this.state.theme.banner,
+    font1: this.state.theme.font1,
+    font2: this.state.theme.font2,
+    font3: this.state.theme.font3,
+    gallery: this.state.theme.gallery,
+    color1: this.state.theme.color1,
+    color2: this.state.theme.color2,
+    color3: color.hex
+  } })
+
   themePrefs = () => {
      const { activeIndex } = this.state;
+     const popover = {
+      position: 'absolute',
+      zIndex: '2',
+    };
+    const cover = {
+      position: 'fixed',
+      top: '0px',
+      right: '0px',
+      bottom: '0px',
+      left: '0px',
+    };
     return (
       <Tab.Pane attached={false} inverted>
         <Formik
@@ -439,7 +544,7 @@ class storyMap extends Component {
             isSubmitting,
             /* and other goodies */
           }) => (
-            <Form inverted  size='large' onSubmit={this.handleSubmit}>
+            <Form inverted size='large' onSubmit={this.handleSubmit}>
               <Accordion inverted fluid>
                <Accordion.Title
                  active={activeIndex === 0}
@@ -447,7 +552,7 @@ class storyMap extends Component {
                  onClick={this.handleClick}
                >
                  <Icon name='dropdown' />
-                Font
+                FONT
                </Accordion.Title>
                <Accordion.Content active={activeIndex === 0}>
                  <span className='label small'>Font 1: </span><br/>
@@ -455,6 +560,7 @@ class storyMap extends Component {
                    size='small'
                    name="font"
                    type="select"
+                   className="fontSelect"
                    defaultValue={this.state.theme.font1}
                    onChange={this.handleChange}
                    >
@@ -493,7 +599,7 @@ class storyMap extends Component {
                  onClick={this.handleClick}
                >
                  <Icon name='dropdown' />
-                Color
+                COLOR
                </Accordion.Title>
                <Accordion.Content active={activeIndex === 1}>
                  <Input
@@ -508,9 +614,15 @@ class storyMap extends Component {
                  name="color1"
                  onChange={handleChange}
                  onBlur={handleBlur}
+                 style={{backgroundColor: this.state.theme.color1 }}
+                 onClick={this.handleFocus1}
                  defaultValue={this.state.theme.color1}
                    />
                  {errors.color1 && touched.color1 && errors.color1}
+                 { this.state.displayColorPicker1 ? <div style={ popover }>
+                    <div style={ cover } onClick={ this.handleClose1 }/>
+                    <ChromePicker color={ this.state.theme.color1 }  onChangeComplete={ this.handleColor1 }/>
+                  </div> : null }
                  <Divider/>
                  <Input
                  fluid
@@ -524,9 +636,15 @@ class storyMap extends Component {
                  name="color2"
                  onChange={handleChange}
                  onBlur={handleBlur}
+                 onClick={this.handleFocus2}
+                 style={{backgroundColor: this.state.theme.color2 }}
                  defaultValue={this.state.theme.color2}
                    />
                  {errors.color2 && touched.color2 && errors.color2}
+                 { this.state.displayColorPicker2 ? <div style={ popover }>
+                    <div style={ cover } onClick={ this.handleClose2 }/>
+                    <ChromePicker color={ this.state.theme.color2 }  onChangeComplete={ this.handleColor2 }/>
+                  </div> : null }
                  <Divider/>
                  <Input
                  fluid
@@ -540,9 +658,15 @@ class storyMap extends Component {
                  name="color3"
                  onChange={handleChange}
                  onBlur={handleBlur}
+                 onClick={this.handleFocus3}
+                 style={{backgroundColor: this.state.theme.color3 }}
                  defaultValue={this.state.theme.color3}
                    />
                  {errors.color3 && touched.color3 && errors.color3}
+                 { this.state.displayColorPicker3 ? <div style={ popover }>
+                    <div style={ cover } onClick={ this.handleClose3 }/>
+                    <ChromePicker color={ this.state.theme.color3 }  onChangeComplete={ this.handleColor3 }/>
+                  </div> : null }
                  <Divider/>
                </Accordion.Content>
                <Accordion.Title
@@ -551,7 +675,7 @@ class storyMap extends Component {
                  onClick={this.handleClick}
                >
                  <Icon name='dropdown' />
-                Images
+                IMAGES
                </Accordion.Title>
                <Accordion.Content active={activeIndex === 2}>
 
@@ -616,6 +740,10 @@ class storyMap extends Component {
       {
         menuItem: 'Map',
         render: () => this.mapPrefs(),
+      },
+      {
+        menuItem: 'View',
+        render: () => this.preview(),
       }
     ];
     return (

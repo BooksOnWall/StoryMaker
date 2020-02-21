@@ -5,7 +5,7 @@ import {
   Image,
 Divider,
 } from 'semantic-ui-react';
-
+import {ToastsContainer, ToastsStore, ToastsContainerPosition} from 'react-toasts';
 const thumbsContainer = {
   display: 'flex',
   flexDirection: 'row',
@@ -47,10 +47,20 @@ function GalleryPreviews(props) {
     minSize: 0,
     maxSize: 5242880,
     onDrop: acceptedFiles => {
-      setFiles(acceptedFiles.map(file => Object.assign(file, {
-        preview: URL.createObjectURL(file)
-      })));
-      props.state.setGalleryImages(acceptedFiles);
+      // do nothing if no files
+      if (acceptedFiles.length === 0) {
+        return;
+      } else if(acceptedFiles.length > 6){
+        // here i am checking on the number of files
+        return ToastsStore.error("No more than 6 images allowed") // here i am using react toaster to get some notifications. don't need to use it
+      } else {
+        // do what ever you want
+        setFiles(acceptedFiles.map(file => Object.assign(file, {
+          preview: URL.createObjectURL(file)
+        })));
+        props.state.setGalleryImages(acceptedFiles);
+      }
+
     }
   });
 
@@ -75,14 +85,13 @@ function GalleryPreviews(props) {
 
   return (
     <Segment  style={{margin:0, padding: 0}} inverted>
-     <Divider />
       <div {...getRootProps({className: 'dropzone gallery'})} style={{display: props.state.galleryDropZoneDisplay}}>
         <input  id='themeGalleryFiles' name='files' onChange={props.state.onChangeHandler} ref={ref => this.fileInput = ref} {...getInputProps()} />
       </div>
       <aside style={thumbsContainer}>
         {thumbs}
       </aside>
-    <Divider />
+    <ToastsContainer store={ToastsStore} position={ToastsContainerPosition.TOP_LEFT}/>
     </Segment>
   );
 }

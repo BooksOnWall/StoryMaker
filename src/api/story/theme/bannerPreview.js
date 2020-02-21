@@ -4,6 +4,7 @@ import {
   Segment,
   Image,
 } from 'semantic-ui-react';
+import {ToastsContainer, ToastsStore, ToastsContainerPosition} from 'react-toasts';
 
 const thumbsContainer = {
   display: 'flex',
@@ -42,14 +43,24 @@ function BannerPreviews(props) {
 
   const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
 
-    accept: 'image/*',
+    accept: 'image/png',
     minSize: 0,
     maxSize: 5242880,
     onDrop: acceptedFiles => {
-      setFiles(acceptedFiles.map(file => Object.assign(file, {
-        preview: URL.createObjectURL(file)
-      })));
-      props.state.setBannerImages(acceptedFiles);
+      // do nothing if no files
+      if (acceptedFiles.length === 0) {
+        return;
+      } else if(acceptedFiles.length > 1){
+        // here i am checking on the number of files
+        return ToastsStore.error("No more than one images allowed") // here i am using react toaster to get some notifications. don't need to use it
+      } else {
+        // do what ever you want
+        setFiles(acceptedFiles.map(file => Object.assign(file, {
+          preview: URL.createObjectURL(file)
+        })));
+        props.state.setBannerImages(acceptedFiles);
+      }
+
     }
   });
 
@@ -81,7 +92,7 @@ function BannerPreviews(props) {
       <aside style={thumbsContainer}>
         {thumbs}
       </aside>
-
+      <ToastsContainer store={ToastsStore} position={ToastsContainerPosition.TOP_LEFT}/>
     </Segment>
   );
 }
