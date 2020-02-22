@@ -674,7 +674,7 @@ class storyMap extends Component {
                  icon='point'
                  iconposition='right'
                  placeholder={<FormattedMessage id="app.story.color1" defaultMessage={'Color 1'}/>}
-                 type="hidden"
+                 type="text"
                  name="color1"
                  onChange={handleChange}
                  onBlur={handleBlur}
@@ -696,7 +696,7 @@ class storyMap extends Component {
                  icon='point'
                  iconposition='right'
                  placeholder={<FormattedMessage id="app.story.color2" defaultMessage={'Color 2'}/>}
-                 type="hidden"
+                 type="text"
                  name="color2"
                  onChange={handleChange}
                  onBlur={handleBlur}
