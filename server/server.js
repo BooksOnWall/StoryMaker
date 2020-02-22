@@ -1629,7 +1629,7 @@ app.post('/stories/:storyId/theme', function(req, res, next) {
   const sid = req.params.storyId;
   const themePath = __dirname + '/public/stories/'+sid+'/';
   const fileName = 'theme.json';
-
+  console.log('theme', design_options);
   if (fs.existsSync(themePath+fileName)) {
     //file already exist remove it :
    rimraf.sync(themePath+fileName);
@@ -1637,7 +1637,7 @@ app.post('/stories/:storyId/theme', function(req, res, next) {
   fs.writeFile(themePath+fileName, JSON.stringify(design_options), 'utf8', function(err) {
     if (err) return res.json({msg: 'error theme  not saved' , error: err});
     // store theme in db
-    updateFieldFromStory({sid: sid, field: 'design_options', fieldValue: design_options}).then((story) => {
+    updateFieldFromStory({sid: sid, field: 'design_options', fieldValue: JSON.stringify(design_options)}).then((story) => {
       return res.json({  msg: 'Theme Story updated and saved successfully' })
     });
   });
@@ -1709,19 +1709,18 @@ app.post('/stories/:storyId/gallery', function (req, res, next) {
       if(err) {
         return res.end("Error uploading file." + err);
       } else {
-        // let images=[];
-        //  req.files.forEach( function(file) {
-        //
-        //    images.push({
-        //        'category': 'images',
-        //        'name': file.originalname,
-        //        'size': file.size,
-        //        'type': 'image',
-        //        'mimetype': file.mimetype,
-        //        'path': 'assets/stories/'+ sid + '/design/gallery/' + file.originalname,
-        //        'src': serverUrl + 'assets/stories/'+ sid + '/design/gallery/' + file.originalname
-        //    });
-        //   });
+        let images=[];
+         req.files.forEach( function(file) {
+           console.log('file', file);
+           images.push({
+               'name': file.originalname,
+               'size': file.size,
+               'type': file.mimetype,
+               'path': 'assets/stories/'+ sid + '/design/gallery/' + file.originalname,
+               'src': serverUrl + 'assets/stories/'+ sid + '/design/gallery/' + file.originalname
+           });
+          });
+          console.log('gallery',images);
         // updateGalleryThemeFromStory({sid: sid, field: 'design_options', fieldParam: 'gallery', fieldValue: images}).then((story) => {
         //   //bot.telegram.sendMessage(chat_id,sid + " " + ssid + "Stage updated successfully");
 

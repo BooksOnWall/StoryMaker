@@ -181,7 +181,7 @@ class storyMap extends Component {
       })
       .then(data => {
         if(data.theme.length > 0) {
-          this.setState({theme: data.theme});
+          this.setState({theme: JSON.parse(data.theme)});
         }
       });
     } catch(e) {
@@ -472,6 +472,8 @@ class storyMap extends Component {
   handleImgDeleteOpen = () => this.setState({ modalImgDelete: true })
   handleModalImgDeleteClose = () =>  this.setState({ modalImgDelete: false })
   editGallery(values) {
+    console.log('length',this.state.theme.gallery.length);
+    console.log('gallery',this.state.theme.gallery);
     return (
       <div>
         <aside style={thumbsContainer}>
