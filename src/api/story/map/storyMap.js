@@ -359,7 +359,8 @@ class storyMap extends Component {
          .then(data => {
             this.setState({
               bannerSubmit: false,
-              bannerUploadDisplay: false,});
+              bannerUploadDisplay: false
+            });
          });
       } catch(e) {
         console.log(e.message);
@@ -390,7 +391,6 @@ class storyMap extends Component {
          if (this.state.gallery.files  && this.state.gallery.files.length > 0) {
            //prepare aray of image name and path for store and let the rest for updateImages
            Array.from(this.state.gallery.files).forEach(file => {
-             file.name =
              gimages.push({
                  'name': file.name,
                  'size': file.size,
@@ -408,7 +408,7 @@ class storyMap extends Component {
               font1: this.state.theme.font1,
               font2: this.state.theme.font2,
               font3: this.state.theme.font3,
-              gallery: JSON.stringify(gimages),
+              gallery: gimages,
               color1: this.state.theme.color1,
               color2: this.state.theme.color2,
               color3: this.state.theme.color3
