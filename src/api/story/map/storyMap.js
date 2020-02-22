@@ -24,6 +24,8 @@ import StylePanel from './stylePanel';
 import { ChromePicker } from 'react-color';
 import BannerPreviews from '../theme/bannerPreview';
 import GalleryPreviews from '../theme/galleryPreview';
+import StoryPreview from '../theme/storyPreview';
+
 let MapboxAccessToken = process.env.REACT_APP_MAT;
 
 // Set bounds toMontevideo
@@ -497,7 +499,7 @@ class storyMap extends Component {
   preview = () => {
     return (
       <Tab.Pane attached={false} inverted>
-        todo's Mobile app preview
+        <StoryPreview server={this.state.server} theme={this.state.theme}/>
       </Tab.Pane>
     )
   }
