@@ -174,13 +174,13 @@ Users.sync()
    console.log('User table created successfully');
    var dir_root = __dirname + '/public';
    if (!fs.existsSync(dir_root)) {
-       fs.mkdirSync(dir_root, 0o744);
+       fs.mkdirSync(dir_root, 0o755);
        console.log('Public directory created successfully')
    }
 
    var dir = __dirname + '/public/users';
    if (!fs.existsSync(dir)) {
-       fs.mkdirSync(dir, 0o744);
+       fs.mkdirSync(dir, 0o755);
        console.log('User directory created successfully')
    }
  })
@@ -216,7 +216,7 @@ Artists.sync()
    console.log('Artists table created successfully');
    var dir = __dirname + '/public/artists';
    if (!fs.existsSync(dir)) {
-       fs.mkdirSync(dir, 0o744);
+       fs.mkdirSync(dir, 0o755);
        console.log('Artists directory created successfully')
    }
    // create table with stories model
@@ -225,7 +225,7 @@ Artists.sync()
       console.log('Stories table created successfully');
       var dir = __dirname + '/public/stories';
       if (!fs.existsSync(dir)) {
-          fs.mkdirSync(dir, 0o744);
+          fs.mkdirSync(dir, 0o755);
           console.log('Stories directory created successfully')
       }
       // create table with artist model
@@ -249,7 +249,7 @@ const createUser = async ({ name, email, hash, active }) => {
     const uid = await res.get('id');
     var dir = __dirname + '/public/users/'+uid;
     if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir, 0o744);
+        fs.mkdirSync(dir, 0o755);
     }
     return res;
   } catch(e) {
@@ -291,7 +291,7 @@ const createArtist = async ({ name, email, images, description }) => {
   const aid = response.get('id');
   var dir = __dirname + '/public/artists/'+aid;
   if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, 0o744);
+      fs.mkdirSync(dir, 0o755);
   }
   return response;
 }
@@ -359,21 +359,21 @@ const createStory = async ({ title, state, city, sinopsys, credits, artist, acti
     // create directory structure
     // story files
     var dir = __dirname + '/public/stories/'+sid;
-    if (!fs.existsSync(dir)) { fs.mkdirSync(dir, 0o744); }
+    if (!fs.existsSync(dir)) { fs.mkdirSync(dir, 0o755); }
     var sdir = __dirname + '/public/stories/' + sid + '/stages';
-    if (!fs.existsSync(sdir)) { fs.mkdirSync(sdir, 0o744); }
+    if (!fs.existsSync(sdir)) { fs.mkdirSync(sdir, 0o755); }
     var ddir = __dirname + '/public/stories/' + sid + '/design';
-    if (!fs.existsSync(ddir)) { fs.mkdirSync(ddir, 0o744); }
+    if (!fs.existsSync(ddir)) { fs.mkdirSync(ddir, 0o755); }
     var idir = __dirname + '/public/stories/' + sid + '/import';
-    if (!fs.existsSync(idir)) { fs.mkdirSync(idir, 0o744); }
+    if (!fs.existsSync(idir)) { fs.mkdirSync(idir, 0o755); }
 
     // Export directory structure
     var exdir = __dirname + '/public/export/';
-    if (!fs.existsSync(exdir)) { fs.mkdirSync(exdir, 0o744); }
+    if (!fs.existsSync(exdir)) { fs.mkdirSync(exdir, 0o755); }
     var sexdir = exdir + 'stories/';
-    if (!fs.existsSync(sexdir)) { fs.mkdirSync(sexdir, 0o744); }
+    if (!fs.existsSync(sexdir)) { fs.mkdirSync(sexdir, 0o755); }
     var edir =  sexdir + sid + '/';
-    if (!fs.existsSync(edir)) { fs.mkdirSync(edir, 0o744); }
+    if (!fs.existsSync(edir)) { fs.mkdirSync(edir, 0o755); }
 
     return res;
   } catch(e) {
@@ -497,28 +497,28 @@ const createStage = async ({ sid , name, photo, adress, description, dimension, 
     const ssid = res.get('id');
     // create story stages directory
     var dir = __dirname + '/public/stories/'+ sid + '/stages/'+ssid;
-    if (!fs.existsSync(dir)) { fs.mkdirSync(dir, 0o744); }
+    if (!fs.existsSync(dir)) { fs.mkdirSync(dir, 0o755); }
     // create images, pictures, audios, and videos directories
     var idir = dir + '/images';
-    if (!fs.existsSync(idir)) { fs.mkdirSync(idir, 0o744); }
+    if (!fs.existsSync(idir)) { fs.mkdirSync(idir, 0o755); }
     var pdir = dir + '/pictures';
-    if (!fs.existsSync(pdir)) { fs.mkdirSync(pdir, 0o744); }
+    if (!fs.existsSync(pdir)) { fs.mkdirSync(pdir, 0o755); }
     var adir = dir + '/audios';
-    if (!fs.existsSync(adir)) { fs.mkdirSync(adir, 0o744); }
+    if (!fs.existsSync(adir)) { fs.mkdirSync(adir, 0o755); }
     var vdir = dir + '/videos';
-    if (!fs.existsSync(vdir)) { fs.mkdirSync(vdir, 0o744); }
+    if (!fs.existsSync(vdir)) { fs.mkdirSync(vdir, 0o755); }
     // create directory photo, onZoneEnter, onPictureMatch , onZoneLeave
     var photodir = dir + '/photo';
-    if (!fs.existsSync(photodir)) { fs.mkdirSync(photodir, 0o744); }
+    if (!fs.existsSync(photodir)) { fs.mkdirSync(photodir, 0o755); }
     var ozedir = dir + '/onZoneEnter';
-    if (!fs.existsSync(ozedir)) { fs.mkdirSync(ozedir, 0o744); }
+    if (!fs.existsSync(ozedir)) { fs.mkdirSync(ozedir, 0o755); }
     var opmdir = dir + '/onPictureMatch';
-    if (!fs.existsSync(opmdir)) { fs.mkdirSync(opmdir, 0o744); }
+    if (!fs.existsSync(opmdir)) { fs.mkdirSync(opmdir, 0o755); }
     var ozldir = dir + '/onZoneLeave';
-    if (!fs.existsSync(ozldir)) { fs.mkdirSync(ozldir, 0o744); }
+    if (!fs.existsSync(ozldir)) { fs.mkdirSync(ozldir, 0o755); }
     // create json directory to set elements from stage board
     var jdir = dir + '/json';
-    if (!fs.existsSync(jdir)) { fs.mkdirSync(jdir, 0o744); }
+    if (!fs.existsSync(jdir)) { fs.mkdirSync(jdir, 0o755); }
     return res;
   } catch(e) {
     console.log(e.message);
@@ -776,12 +776,12 @@ const exportStageTar = async (obj) => {
     //console.log(obj);
     let path = __dirname +'/public/stories/'+ obj.sid + '/stages/' + obj.id;
     let archive = __dirname +'/public/export/';
-    if (!fs.existsSync(archive))  await fs.mkdirSync(archive, 0o744) ;
-    if (!fs.existsSync(archive+'stories/'))  await fs.mkdirSync(archive+'stories/', 0o744) ;
+    if (!fs.existsSync(archive))  await fs.mkdirSync(archive, 0o755) ;
+    if (!fs.existsSync(archive+'stories/'))  await fs.mkdirSync(archive+'stories/', 0o755) ;
     let ex = archive + 'stories/'+ obj.sid + '/';
     let dest = ex + 'stages/';
-    if (!fs.existsSync(ex))  await fs.mkdirSync(ex, 0o744) ;
-    if (!fs.existsSync(dest))  await fs.mkdirSync(dest, 0o744) ;
+    if (!fs.existsSync(ex))  await fs.mkdirSync(ex, 0o755) ;
+    if (!fs.existsSync(dest))  await fs.mkdirSync(dest, 0o755) ;
     // packing a directory
     // __dirname +
     await tar.pack(path).pipe(fs.createWriteStream(dest+'stage_'+obj.id +'.tar'));
@@ -799,12 +799,12 @@ const exportStoryTar = async (sid) => {
     // create export for story
     // __dirname +'/public/export/stories/'
     let archive = __dirname +'/public/export/';
-    if (!fs.existsSync(archive))  await fs.mkdirSync(archive, 0o744) ;
-    if (!fs.existsSync(archive+'stories'))  await fs.mkdirSync(archive+'stories', 0o744) ;
+    if (!fs.existsSync(archive))  await fs.mkdirSync(archive, 0o755) ;
+    if (!fs.existsSync(archive+'stories'))  await fs.mkdirSync(archive+'stories', 0o755) ;
     let path = __dirname +'/public/stories/'+ sid +'/'  ;
     let ex = __dirname +'/public/export/stories/'+ sid +'/' ;;
-    if (!fs.existsSync(path))  await fs.mkdirSync(path, 0o744) ;
-    if (!fs.existsSync(ex))  await fs.mkdirSync(ex, 0o744) ;
+    if (!fs.existsSync(path))  await fs.mkdirSync(path, 0o755) ;
+    if (!fs.existsSync(ex))  await fs.mkdirSync(ex, 0o755) ;
     // packing a directory
     // __dirname +
     await tar.pack(path).pipe(fs.createWriteStream(ex+'story_'+ sid +'.tar'));
@@ -1535,7 +1535,7 @@ app.post('/stories/:storyId/import', function(req, res) {
   let sid = req.params.storyId;
   //check if import directory exist otherwise create it
   var dir = __dirname + '/public/stories/'+sid+'/import';
-  if (!fs.existsSync(dir)) { fs.mkdirSync(dir, 0o744); }
+  if (!fs.existsSync(dir)) { fs.mkdirSync(dir, 0o755); }
 
   var storage = multer.diskStorage({
       destination: function(req, file, cb){
@@ -1653,7 +1653,7 @@ app.post('/stories/:storyId/banner', function (req, res, next) {
   console.log(filename+' upload');
   // check if directory banner exist if not create it
   if (!fs.existsSync(path)) {
-    fs.mkdirSync(path, 0o744);
+    fs.mkdirSync(path, 0o755);
     console.log('Stories design banner directory created successfully')
   }
   // check if file exist
@@ -1685,10 +1685,10 @@ app.post('/stories/:storyId/gallery', function (req, res, next) {
   // delete folder recursively
   if (fs.existsSync(path)) {
     rimraf(path, function (e) {
-      fs.mkdirSync(path, 0o744);
+      fs.mkdirSync(path, 0o755);
     });
   } else {
-    fs.mkdirSync(path, 0o744);
+    fs.mkdirSync(path, 0o755);
     console.log('Stories design gallery directory created successfully')
   }
   // check if file exist

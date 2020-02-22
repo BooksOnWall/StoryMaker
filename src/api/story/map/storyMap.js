@@ -45,7 +45,7 @@ function Listimages(props) {
    return (
      <Card key={index} className='inverted'>
        <Card.Content>
-         <Modal inverted basic dimmer='blurring' closeIcon
+         <Modal  basic dimmer='blurring' closeIcon
            onClose={props.handleModalImgDeleteClose}
            size='fullscreen'
            trigger={<Image floated='right' src={props.server + image.path} />} centered={true} >
@@ -390,6 +390,7 @@ class storyMap extends Component {
          if (this.state.gallery.files  && this.state.gallery.files.length > 0) {
            //prepare aray of image name and path for store and let the rest for updateImages
            Array.from(this.state.gallery.files).forEach(file => {
+             file.name =
              gimages.push({
                  'name': file.name,
                  'size': file.size,
@@ -407,7 +408,7 @@ class storyMap extends Component {
               font1: this.state.theme.font1,
               font2: this.state.theme.font2,
               font3: this.state.theme.font3,
-              gallery: gimages,
+              gallery: JSON.stringify(gimages),
               color1: this.state.theme.color1,
               color2: this.state.theme.color2,
               color3: this.state.theme.color3
@@ -415,21 +416,19 @@ class storyMap extends Component {
           });
        });
     } catch(e) {
-      console.log(e);
+      console.log(e.message);
     }
   }
   toggleBannerUpload = () => this.setState({bannerUploadDisplay: !this.state.bannerUploadDisplay})
-  toggleGalleryUpload = () => this.setState({galleryUploadDisplay: !this.state.galleryUploadDisplay})
+  toggleGalleryUpload = () => this.setState({galleryUploadDisplay: !this.state.galleryUploadDisplay, galleryDropZoneDisplay: 'block'})
   onChangeBannerHandler = event => this.setState({ banner: event.target.files })
   onChangeGalleryHandler = event => this.setState({ gallery: event.target.files })
   handleImageGalleryDelete = (e) => {
-    console.log('delete');
     const imgName = e.target.name;
     let images = (typeof(this.state.theme.gallery) === 'string') ? JSON.parse(this.state.theme.gallery) : this.state.theme.gallery ;
-    images = (typeof(images) === 'string') ? JSON.parse(images): images;
     // remove image object from images array
     images = images.filter(function(e) {
-      return e.image.name !== imgName;
+      return e.name !== imgName;
     });
     this.setState({
       theme: {
@@ -477,7 +476,7 @@ class storyMap extends Component {
       <div>
         <aside style={thumbsContainer}>
           <Card.Group itemsPerRow={2}>
-            {(this.state.theme.gallery && this.state.theme.gallery.length > 0) ? <Listimages  handleImageDelete={this.handleImageGalleryDelete} handleImgDeleteOpen={this.handleImgDeleteOpen} handleModalImgDeleteClose={this.handleModalImgDeleteClose}  state={this.state} images={this.state.theme.gallery} server={this.state.server}/> : ''}
+            {(this.state.theme.gallery && this.state.theme.gallery.length > 0) ? <Listimages  handleImageGalleryDelete={this.handleImageGalleryDelete} handleImgDeleteOpen={this.handleImgDeleteOpen} handleModalImgDeleteClose={this.handleModalImgDeleteClose}  state={this.state} images={this.state.theme.gallery} server={this.state.server}/> : ''}
           </Card.Group>
         </aside>
         {this.state.galleryUploadDisplay &&
@@ -673,7 +672,7 @@ class storyMap extends Component {
                  icon='point'
                  iconposition='right'
                  placeholder={<FormattedMessage id="app.story.color1" defaultMessage={'Color 1'}/>}
-                 type="text"
+                 type="hidden"
                  name="color1"
                  onChange={handleChange}
                  onBlur={handleBlur}
@@ -695,7 +694,7 @@ class storyMap extends Component {
                  icon='point'
                  iconposition='right'
                  placeholder={<FormattedMessage id="app.story.color2" defaultMessage={'Color 2'}/>}
-                 type="text"
+                 type="hidden"
                  name="color2"
                  onChange={handleChange}
                  onBlur={handleBlur}
