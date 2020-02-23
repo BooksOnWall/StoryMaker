@@ -116,9 +116,9 @@ class storyMap extends Component {
           path: 'assets/stories/'+this.props.sid + '/design/banner/banner' + this.props.sid +'.png',
         },
         gallery: [],
-        color1: '#FFDDFF',
-        color2: '#DD00FF',
-        color3: '#00FFFF'
+        color1: '#9E1C00',
+        color2: '#D1D2D3',
+        color3: '#4B4F53'
       },
       activeIndex: 0,
       saveThemeLoading: false,
@@ -809,20 +809,23 @@ class storyMap extends Component {
       <Dimmer.Dimmable as={Segment} blurring dimmed={loading}>
           <Dimmer active={loading} onClickOutside={this.handleHide} />
           <Loader active={loading} ><FormattedMessage id="app.story.map.getmapinfo" defaultMessage={`Get map info`}/></Loader>
-            <Segment  className="view map" >
+        <Segment.Group horizontal>
+          <Segment  className="view map" >
               <MapGL
                 {...viewport}
-                width="94.5vw"
+                width="45vw"
                 height="79.3vh"
+                className= "mapBox"
                 mapStyle={mapStyle}
                 onViewportChange={this.onViewportChange}
                 mapboxApiAccessToken={MapboxAccessToken}
               >
-                <Segment className='mapPref' inverted style={{ width: '19vw', height: '79.3vh', float: 'left'}}>
-                   <Tab menu={{ inverted: true, pointing: true }} panes={panes} />
-                </Segment>
               </MapGL>
           </Segment>
+              <Segment className='mapPref' inverted style={{ height: '79.3vh', width: '50vw', padding: '40px',  overflow: 'scroll'}}>
+                <Tab menu={{ inverted: true, pointing: true }} panes={panes} />
+              </Segment>
+        </Segment.Group>
         </Dimmer.Dimmable>
     );
   }

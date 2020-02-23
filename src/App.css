@@ -510,8 +510,7 @@ width: 100%;
 .ui.buttons{ padding: 0 0 1em}
 .ui.table{margin: 0 !important; border-radius: 0 !important; padding: 0 !important}
 .ui.table:first-child{margin-top: 0 !important; }
-.ui.segment.view.map{padding: 0 !important}
-.sytylingMap{margin: 2em !important}
+
 .ui.label.labelLayer {}
 
 input[type="color"] {
@@ -594,7 +593,7 @@ margin-right: -4rem;}
     padding: 0.62em 0.875em;
     color:rgba(0, 0, 0, 0.87);
     transition: color 0.1s ease, border-color 0.1s ease;
-    background: url() no-repeat right white;
+    background: white;
 }
 
 .segment .stagePhoto{ text-align: center; width: 100px !important; min-height: 100px !important;}
@@ -616,7 +615,7 @@ margin-right: -4rem;}
 
 .button.primary:hover { background-position: right !important;}
 
-.ui.segment.stylingMap{padding: 0}
+.ui.segment .stylingMap{padding: 0 !important}
 
 .ui.small.modal > .header:not(.ui) { background: #0B0C0D !important; }
 .ui.segment.preflight{margin: 0; padding-bottom: 0}
@@ -638,3 +637,11 @@ margin-right: -4rem;}
 .ui.preflight .ui.red.message .header{ padding: 0; margin: 0}
 .exportMessage, .exportMessage div{ background: #1B1C1D !important; color:#fff}
 .exportMessage div.header{ color: #fff !important}
+
+.ui.segment.view.map{padding: 0 !important;}
+.sytylingMap{margin: 2em !important}
+.ui.segment..mapPref{}
+.ui.segment.mapPref.menu{ padding-bottom: 20px}
+.ui.segment.active.tab{padding: 15px !important}
+.ui.segment .mapBox{}
+.ui.menu .item::before { display: none}
