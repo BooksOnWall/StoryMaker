@@ -323,7 +323,9 @@ class storyMap extends Component {
 
       <div>
         <aside style={thumbsContainer}>
-          <Image src={this.state.server + this.state.theme.banner.path} />
+	    {this.state.theme && this.state.theme.banner &&
+		    <Image src={this.state.server + this.state.theme.banner.path} />	
+	    }
         </aside>
         {this.state.bannerUploadDisplay &&
           <div>
