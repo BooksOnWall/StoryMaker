@@ -81,6 +81,7 @@ class storyMap extends Component {
       dropImageGalleryURL: server+'stories/'+this.props.sid+'/drop',
       loading: null,
       mapStyle: MAP_STYLE,
+      story: null,
       server: server,
       colors: {
         water: '#aad9f5',
@@ -206,7 +207,6 @@ class storyMap extends Component {
           // console.log(data);
           if(data && data.map) {
             const map  = JSON.parse(data.map);
-            console.log(map);
             const colors = {};
             map.style.layers.map((layer) => {
               let color = (layer.paint['background-color']) ? layer.paint['background-color'] : '';
@@ -291,7 +291,6 @@ class storyMap extends Component {
     }
   }
   setBannerImages = (files) => {
-    console.log(files);
     const banner = {
       name: files[0].name,
       path: 'assets/stories/'+ this.props.sid + '/design/banner/' + files[0].path,
@@ -474,8 +473,6 @@ class storyMap extends Component {
   handleImgDeleteOpen = () => this.setState({ modalImgDelete: true })
   handleModalImgDeleteClose = () =>  this.setState({ modalImgDelete: false })
   editGallery(values) {
-    console.log('length',this.state.theme.gallery.length);
-    console.log('gallery',this.state.theme.gallery);
     return (
       <div>
         <aside style={thumbsContainer}>
@@ -499,7 +496,7 @@ class storyMap extends Component {
   preview = () => {
     return (
       <Tab.Pane attached={false} inverted>
-        <StoryPreview server={this.state.server} theme={this.state.theme}/>
+        <StoryPreview server={this.state.server} theme={this.state.theme} story={this.state.story}/>
       </Tab.Pane>
     )
   }
