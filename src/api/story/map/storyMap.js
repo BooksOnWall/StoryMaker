@@ -24,6 +24,8 @@ import StylePanel from './stylePanel';
 import { ChromePicker } from 'react-color';
 import BannerPreviews from '../theme/bannerPreview';
 import GalleryPreviews from '../theme/galleryPreview';
+import StoryPreview from '../theme/storyPreview';
+
 let MapboxAccessToken = process.env.REACT_APP_MAT;
 
 // Set bounds toMontevideo
@@ -45,7 +47,7 @@ function Listimages(props) {
    return (
      <Card key={index} className='inverted'>
        <Card.Content>
-         <Modal inverted basic dimmer='blurring' closeIcon
+         <Modal  basic dimmer='blurring' closeIcon
            onClose={props.handleModalImgDeleteClose}
            size='fullscreen'
            trigger={<Image floated='right' src={props.server + image.path} />} centered={true} >
@@ -79,6 +81,7 @@ class storyMap extends Component {
       dropImageGalleryURL: server+'stories/'+this.props.sid+'/drop',
       loading: null,
       mapStyle: MAP_STYLE,
+      story: null,
       server: server,
       colors: {
         water: '#aad9f5',
@@ -181,7 +184,7 @@ class storyMap extends Component {
       })
       .then(data => {
         if(data.theme.length > 0) {
-          this.setState({theme: data.theme});
+          this.setState({theme: JSON.parse(data.theme)});
         }
       });
     } catch(e) {
@@ -204,7 +207,6 @@ class storyMap extends Component {
           // console.log(data);
           if(data && data.map) {
             const map  = JSON.parse(data.map);
-            console.log(map);
             const colors = {};
             map.style.layers.map((layer) => {
               let color = (layer.paint['background-color']) ? layer.paint['background-color'] : '';
@@ -289,7 +291,6 @@ class storyMap extends Component {
     }
   }
   setBannerImages = (files) => {
-    console.log(files);
     const banner = {
       name: files[0].name,
       path: 'assets/stories/'+ this.props.sid + '/design/banner/' + files[0].path,
@@ -322,7 +323,9 @@ class storyMap extends Component {
 
       <div>
         <aside style={thumbsContainer}>
-          <Image src={this.state.server + this.state.theme.banner.path} />
+	    {this.state.theme && this.state.theme.banner &&
+		    <Image src={this.state.server + this.state.theme.banner.path} />	
+	    }
         </aside>
         {this.state.bannerUploadDisplay &&
           <div>
@@ -359,7 +362,8 @@ class storyMap extends Component {
          .then(data => {
             this.setState({
               bannerSubmit: false,
-              bannerUploadDisplay: false,});
+              bannerUploadDisplay: false
+            });
          });
       } catch(e) {
         console.log(e.message);
@@ -415,21 +419,19 @@ class storyMap extends Component {
           });
        });
     } catch(e) {
-      console.log(e);
+      console.log(e.message);
     }
   }
   toggleBannerUpload = () => this.setState({bannerUploadDisplay: !this.state.bannerUploadDisplay})
-  toggleGalleryUpload = () => this.setState({galleryUploadDisplay: !this.state.galleryUploadDisplay})
+  toggleGalleryUpload = () => this.setState({galleryUploadDisplay: !this.state.galleryUploadDisplay, galleryDropZoneDisplay: 'block'})
   onChangeBannerHandler = event => this.setState({ banner: event.target.files })
   onChangeGalleryHandler = event => this.setState({ gallery: event.target.files })
   handleImageGalleryDelete = (e) => {
-    console.log('delete');
     const imgName = e.target.name;
     let images = (typeof(this.state.theme.gallery) === 'string') ? JSON.parse(this.state.theme.gallery) : this.state.theme.gallery ;
-    images = (typeof(images) === 'string') ? JSON.parse(images): images;
     // remove image object from images array
     images = images.filter(function(e) {
-      return e.image.name !== imgName;
+      return e.name !== imgName;
     });
     this.setState({
       theme: {
@@ -477,7 +479,7 @@ class storyMap extends Component {
       <div>
         <aside style={thumbsContainer}>
           <Card.Group itemsPerRow={2}>
-            {(this.state.theme.gallery && this.state.theme.gallery.length > 0) ? <Listimages  handleImageDelete={this.handleImageGalleryDelete} handleImgDeleteOpen={this.handleImgDeleteOpen} handleModalImgDeleteClose={this.handleModalImgDeleteClose}  state={this.state} images={this.state.theme.gallery} server={this.state.server}/> : ''}
+            {(this.state.theme.gallery && this.state.theme.gallery.length > 0) ? <Listimages  handleImageGalleryDelete={this.handleImageGalleryDelete} handleImgDeleteOpen={this.handleImgDeleteOpen} handleModalImgDeleteClose={this.handleModalImgDeleteClose}  state={this.state} images={this.state.theme.gallery} server={this.state.server}/> : ''}
           </Card.Group>
         </aside>
         {this.state.galleryUploadDisplay &&
@@ -496,7 +498,7 @@ class storyMap extends Component {
   preview = () => {
     return (
       <Tab.Pane attached={false} inverted>
-        todo's Mobile app preview
+        <StoryPreview server={this.state.server} theme={this.state.theme} story={this.state.story}/>
       </Tab.Pane>
     )
   }
