@@ -185,7 +185,7 @@ class storyMap extends Component {
         return response.json();
       })
       .then(data => {
-        let theme = data.theme;
+        let theme = (typeof(data.theme) === 'string') ? JSON.parse(data.theme) : data.theme ;
         if(theme) {
           this.setState({theme: theme});
         }
