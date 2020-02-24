@@ -13,28 +13,38 @@ export default class storyPreview extends Component {
       this.state = {
         device: 'mobile', // tablet
         disposition: 'vertical', // horizontal
+        loading: false,
         styleSheet: {
-          segment: {
+          mobileContainer: {
             color: '#FFF',
-            backgroundColor: '#000'
+            backgroundColor: 'transparent',
+            display: 'flex',
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            marginTop: 0
           },
-          banner: {
+          tile: {
             background: 'transparent url('+ props.server+props.theme.banner.path+') no-repeat top left',
-          }
+          },
+          tileTitle: {
+            fontFamily: props.font1,
+            color: props.color1,
+          },
         }
       }
     }
     render() {
+    const {styleSheet, device, disposition, loading} = this.state;
     return (
-      <Segment className="movile" >
+      <Segment className="movile" style={styleSheet.mobileContainer}>
         <Header >
-            <Icon />
+            <Icon name="home"/>
         </Header>
         <Segment vertical>
-            <Segment vertical style={this.state.styleSheet.banner}>
+            <div vertical style={styleSheet.tile}>
                 <h1>title</h1>
                 <h2>City - Country</h2>
-             </Segment>
+             </div>
             <Segment vertical className="text">
              <Segment vertical  className="sinopsys">
                 <p>
