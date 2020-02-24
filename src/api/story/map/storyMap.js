@@ -115,8 +115,10 @@ class storyMap extends Component {
         font2: 'BadScript-Regular',
         font3: 'ATypewriterForMe',
         banner: {
-          name: 'banner'+this.props.sid+'.png',
-          path: 'assets/stories/'+this.props.sid + '/design/banner/banner' + this.props.sid +'.png',
+          name: null,
+          path: null,
+          size: null,
+          type: null
         },
         gallery: [],
         color1: '#9E1C00',
@@ -183,8 +185,12 @@ class storyMap extends Component {
         return response.json();
       })
       .then(data => {
-        if(data.theme.length > 0) {
-          this.setState({theme: JSON.parse(data.theme)});
+        let theme = data.theme;
+        console.log('theme', theme);
+        if(theme.length > 0) {
+          theme.banner = JSON.Parse(theme.banner);
+          theme.gallery= JSON.parse(theme.gallery);
+          return this.setState({theme});
         }
       });
     } catch(e) {
@@ -292,7 +298,7 @@ class storyMap extends Component {
   }
   setBannerImages = (files) => {
     const banner = {
-      name: files[0].name,
+      name: files[0].path,
       path: 'assets/stories/'+ this.props.sid + '/design/banner/' + files[0].path,
       size: files[0].size,
       type: files[0].type
@@ -323,9 +329,9 @@ class storyMap extends Component {
 
       <div>
         <aside style={thumbsContainer}>
-	    {this.state.theme && this.state.theme.banner &&
-		    <Image src={this.state.server + this.state.theme.banner.path} />	
-	    }
+	    {(this.state.theme.banner && this.state.theme.banner.path) ? (
+		    <Image src={this.state.server + this.state.theme.banner.path} />
+        ) : null }
         </aside>
         {this.state.bannerUploadDisplay &&
           <div>
@@ -364,6 +370,7 @@ class storyMap extends Component {
               bannerSubmit: false,
               bannerUploadDisplay: false
             });
+            return this.saveTheme();
          });
       } catch(e) {
         console.log(e.message);
@@ -417,6 +424,7 @@ class storyMap extends Component {
               color3: this.state.theme.color3
             }
           });
+          return this.saveTheme();
        });
     } catch(e) {
       console.log(e.message);

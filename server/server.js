@@ -1652,23 +1652,21 @@ app.get('/stories/:storyId/theme', function(req, res, next) {
 app.post('/stories/:storyId/banner', function (req, res, next) {
   const sid = req.params.storyId;
   const path = './public/stories/'+sid+'/design/banner';
-  const filename = 'banner'+sid+'.png';
-  console.log(filename+' upload');
-  // check if directory banner exist if not create it
+  // check if directory banner exist delete it and if not create it
   if (!fs.existsSync(path)) {
     fs.mkdirSync(path, 0o744);
     console.log('Stories design banner directory created successfully')
-  }
-  // check if file exist
-  if (fs.existsSync(path+filename)) {
-    rimraf(path+filename);
+  } else {
+    rimraf(path,function (e) {
+      fs.mkdirSync(path, 0o744);
+    });
   }
   var storage = multer.diskStorage({
       destination: function(req, file, cb){
         cb(null, path);
       },
       filename: function (req, file, cb) {
-        cb(null, filename);
+        cb(null, file.originalname);
       }
     });
     var upload = multer({ storage : storage}).any();
