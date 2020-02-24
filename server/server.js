@@ -1629,7 +1629,6 @@ app.post('/stories/:storyId/theme', function(req, res, next) {
   const sid = req.params.storyId;
   const themePath = __dirname + '/public/stories/'+sid+'/';
   const fileName = 'theme.json';
-  console.log('theme', design_options);
   if (fs.existsSync(themePath+fileName)) {
     //file already exist remove it :
    rimraf.sync(themePath+fileName);
