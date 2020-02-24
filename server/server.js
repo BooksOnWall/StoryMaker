@@ -1648,7 +1648,7 @@ app.get('/stories/:storyId/theme', function(req, res, next) {
     return res.json({theme:story.dataValues.design_options})
   });
 });
-//Uploading single file avatar
+//Uploading single file banner
 app.post('/stories/:storyId/banner', function (req, res, next) {
   const sid = req.params.storyId;
   const path = './public/stories/'+sid+'/design/banner';

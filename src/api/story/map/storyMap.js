@@ -161,7 +161,6 @@ class storyMap extends Component {
   async componentDidMount() {
     // check if user is logged in on refresh
     try {
-      await this.setState({loading: true});
       await this.state.toggleAuthenticateStatus;
       await this.getTheme();
       await this.getMapPreferences();
@@ -175,6 +174,7 @@ class storyMap extends Component {
     this.setState({loading: false});
   }
   getTheme = async () => {
+    this.setState({loading: true});
     try {
       await fetch(this.state.themeURL, {
         method: 'get',
@@ -186,11 +186,8 @@ class storyMap extends Component {
       })
       .then(data => {
         let theme = data.theme;
-        console.log('theme', theme);
-        if(theme.length > 0) {
-          theme.banner = JSON.Parse(theme.banner);
-          theme.gallery= JSON.parse(theme.gallery);
-          return this.setState({theme});
+        if(theme) {
+          this.setState({theme: theme});
         }
       });
     } catch(e) {
@@ -307,7 +304,7 @@ class storyMap extends Component {
     bannerDropZoneDisplay: 'none',
     banners: { files },
     theme : {
-      banner: banner ,
+      banner: banner,
       font1: this.state.theme.font1,
       font2: this.state.theme.font2,
       font3: this.state.theme.font3,
@@ -324,15 +321,14 @@ class storyMap extends Component {
     });
   }
 
-  editBanner(values) {
+  editBanner() {
     return (
-
       <div>
+        {(!this.state.bannerUploadDisplay && this.state.theme.banner.path) ?
         <aside style={thumbsContainer}>
-	    {(this.state.theme.banner && this.state.theme.banner.path) ? (
-		    <Image src={this.state.server + this.state.theme.banner.path} />
-        ) : null }
+		        <Image src={this.state.server + this.state.theme.banner.path} />
         </aside>
+        : null}
         {this.state.bannerUploadDisplay &&
           <div>
             <BannerPreviews state={this.state} />
@@ -347,13 +343,13 @@ class storyMap extends Component {
   }
   handleSubmitBanner = async (e) => {
       this.setState({bannerSubmit: true});
-
       let images = this.state.banners;
       try {
         let formData = new FormData();
         for(var x = 0; x < images.files.length; x++) {
           formData.append('file', images.files[x]);
         };
+
         await fetch(this.state.bannerThemeURL, {
           method: 'POST',
           credentials: 'same-origin',
@@ -361,12 +357,13 @@ class storyMap extends Component {
             'Access-Control-Allow-Origin': '*',
             'Accept':'application/json; charset=utf-8'
           },
-          file: JSON.stringify(images.files[0]),
+          files: JSON.stringify(images.files),
           body: formData
          })
          .then(response => response.json())
          .then(data => {
             this.setState({
+              banner: null,
               bannerSubmit: false,
               bannerUploadDisplay: false
             });
@@ -800,7 +797,7 @@ class storyMap extends Component {
   }
   render() {
 
-    const {viewport, mapStyle, loading} = this.state;
+    const {theme, viewport, mapStyle, loading} = this.state;
     const panes = [
       {
         menuItem: 'Theme',
