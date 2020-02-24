@@ -1637,7 +1637,7 @@ app.post('/stories/:storyId/theme', function(req, res, next) {
   fs.writeFile(themePath+fileName, JSON.stringify(design_options), 'utf8', function(err) {
     if (err) return res.json({msg: 'error theme  not saved' , error: err});
     // store theme in db
-    updateFieldFromStory({sid: sid, field: 'design_options', fieldValue: JSON.stringify(design_options)}).then((story) => {
+    updateFieldFromStory({sid: sid, field: 'design_options', fieldValue: design_options}).then((story) => {
       return res.json({  msg: 'Theme Story updated and saved successfully' })
     });
   });
