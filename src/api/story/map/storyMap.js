@@ -324,7 +324,7 @@ class storyMap extends Component {
   editBanner() {
     return (
       <div>
-        {(!this.state.bannerUploadDisplay && this.state.theme.banner.path) ?
+        {(!this.state.bannerUploadDisplay && this.state.theme && this.state.theme.banner.path) ?
         <aside style={thumbsContainer}>
 		        <Image src={this.state.server + this.state.theme.banner.path} />
         </aside>
