@@ -585,16 +585,19 @@ margin-right: -4rem;}
     display: block;
     height: auto;
     width: 100%;
-    background: transparent !important;
+    background: #0b0c0d !important;
     color: #fff !important;
-    border: 1px solid #666;
-    border-radius: 0.25rem;
+    border: 0px solid #666;
+    border-radius: 0;
     box-shadow: 0em 0em 0em 0emtransparent inset;
     padding: 0.62em 0.875em;
     color:rgba(0, 0, 0, 0.87);
     transition: color 0.1s ease, border-color 0.1s ease;
     background: white;
+    margin-top: 5px
 }
+
+.ui.form.inverted select option{ padding: 15px 0 !important}
 
 .segment .stagePhoto{ text-align: center; width: 100px !important; min-height: 100px !important;}
 
@@ -645,3 +648,13 @@ margin-right: -4rem;}
 .ui.segment.active.tab{padding: 15px !important}
 .ui.segment .mapBox{}
 .ui.menu .item::before { display: none}
+
+.ui.segment.movile{height: 65vh;  width: 25vw; background: #ccc !important}
+.ui.segment.movile .text{ height: 300px; padding: 20px !important; overflow: scroll}
+.ui.segment.movile {}
+.ui.segment.movile .title{ background-size: cover; background-repeat: no-repeat; background-position: center center}
+.ui.segment.movile .title{ }
+.ui.segment.mapPref .divider{ margin: 0px 0 30px }
+::selection{
+    background-color: #000 !important;
+}

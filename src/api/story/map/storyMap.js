@@ -672,7 +672,7 @@ class storyMap extends Component {
                  transparent
                  inverted
                  label={<FormattedMessage id="app.story.color1" defaultMessage={'Color 1'}/>}
-                 icon='point'
+                 icon='eyedropper'
                  iconposition='right'
                  placeholder={<FormattedMessage id="app.story.color1" defaultMessage={'Color 1'}/>}
                  type="text"
@@ -694,7 +694,7 @@ class storyMap extends Component {
                  transparent
                  inverted
                  label={<FormattedMessage id="app.story.color2" defaultMessage={'Color 2'}/>}
-                 icon='point'
+                 icon='eyedropper'
                  iconposition='right'
                  placeholder={<FormattedMessage id="app.story.color2" defaultMessage={'Color 2'}/>}
                  type="text"
@@ -716,7 +716,7 @@ class storyMap extends Component {
                  transparent
                  inverted
                  label={<FormattedMessage id="app.story.color3" defaultMessage={'Color 3'}/>}
-                 icon='point'
+                 icon='eyedropper'
                  iconposition='right'
                  placeholder={<FormattedMessage id="app.story.color3" defaultMessage={'Color 3'}/>}
                  type="text"
@@ -816,7 +816,7 @@ class storyMap extends Component {
               <MapGL
                 {...viewport}
                 width="45vw"
-                height="79.3vh"
+                height="81.5vh"
                 className= "mapBox"
                 mapStyle={mapStyle}
                 onViewportChange={this.onViewportChange}
@@ -824,7 +824,7 @@ class storyMap extends Component {
               >
               </MapGL>
           </Segment>
-              <Segment className='mapPref' inverted style={{ height: '79.3vh', width: '50vw', padding: '40px',  overflow: 'scroll'}}>
+              <Segment className='mapPref' inverted style={{ height: '80vh', width: '50vw', padding: '40px',  overflow: 'scroll'}}>
                 <Tab menu={{ inverted: true, pointing: true }} panes={panes} />
               </Segment>
         </Segment.Group>
