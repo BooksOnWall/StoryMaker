@@ -1653,9 +1653,11 @@ app.post('/stories/:storyId/banner', function (req, res, next) {
   const path = './public/stories/'+sid+'/design/banner';
   // check if directory banner exist delete it and if not create it
   if (!fs.existsSync(path)) {
+    // create directory banner
     fs.mkdirSync(path, 0o744);
     console.log('Stories design banner directory created successfully')
   } else {
+    //remove and recreate directory banner
     rimraf(path,function (e) {
       fs.mkdirSync(path, 0o744);
     });

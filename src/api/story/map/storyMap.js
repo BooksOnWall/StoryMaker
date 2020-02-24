@@ -344,38 +344,40 @@ class storyMap extends Component {
   handleSubmitBanner = async (e) => {
       this.setState({bannerSubmit: true});
       let images = this.state.banners;
-      try {
-        let formData = new FormData();
-        for(var x = 0; x < images.files.length; x++) {
-          formData.append('file', images.files[x]);
-        };
 
-        await fetch(this.state.bannerThemeURL, {
-          method: 'POST',
-          credentials: 'same-origin',
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Accept':'application/json; charset=utf-8'
-          },
-          files: JSON.stringify(images.files),
-          body: formData
-         })
-         .then(response => response.json())
-         .then(data => {
-            this.setState({
-              banner: null,
-              bannerSubmit: false,
-              bannerUploadDisplay: false
-            });
-            return this.saveTheme();
-         });
+      try {
+        if (images.files.length > 0) {
+          let formData = new FormData();
+          for(var x = 0; x < images.files.length; x++) {
+            formData.append('file', images.files[x]);
+          };
+          console.log(formData);
+          await fetch(this.state.bannerThemeURL, {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Accept':'application/json; charset=utf-8'
+            },
+            files: JSON.stringify(images.files),
+            body: formData
+           })
+           .then(response => response.json())
+           .then(data => {
+              this.setState({
+                banners: [],
+                bannerSubmit: false,
+                bannerUploadDisplay: false
+              });
+              return this.saveTheme();
+           });
+        }
       } catch(e) {
         console.log(e.message);
       }
   }
   handleSubmitGallery = async (e) => {
     this.setState({gallerySubmit: true});
-
     let images = this.state.gallery;
     try {
       let formData = new FormData();
