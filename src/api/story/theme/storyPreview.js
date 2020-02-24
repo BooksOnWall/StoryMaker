@@ -8,15 +8,30 @@ import {
 } from 'semantic-ui-react';
 
 export default class storyPreview extends Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        device: 'mobile', // tablet
+        disposition: 'vertical', // horizontal
+        styleSheet: {
+          segment: {
+            color: '#FFF',
+            backgroundColor: '#000'
+          },
+          banner: {
+            background: 'transparent url('+ props.server+props.theme.banner.path+') no-repeat top left',
+          }
+        }
+      }
+    }
     render() {
     return (
-      <Segment className="movile" fluid>
+      <Segment className="movile" >
         <Header >
             <Icon />
         </Header>
         <Segment vertical>
-            <Segment vertical>
-                <Image src={this.props.server+this.props.theme.banner.path} />
+            <Segment vertical style={this.state.styleSheet.banner}>
                 <h1>title</h1>
                 <h2>City - Country</h2>
              </Segment>
@@ -57,7 +72,7 @@ export default class storyPreview extends Component {
 
                     Apoyos:
 
-                    Fondo Concursable para la cultura del Ministerio de Educación y Cultura 
+                    Fondo Concursable para la cultura del Ministerio de Educación y Cultura
 
                     Roostudio
 
@@ -76,7 +91,7 @@ export default class storyPreview extends Component {
                 </List.Item>
                 <List.Item>
                     <Icon  name='point'  />
-                </List.Item>  
+                </List.Item>
             </List>
         </Segment>
       </Segment>
