@@ -77,11 +77,12 @@ class storyMap extends Component {
       authenticated: this.props.authenticated,
       sid: (!this.props.sid) ? (0) : (parseInt(this.props.sid)),
       mapURL: server+'stories/'+this.props.sid+'/map',
+      storyURL: server + 'stories/'+this.props.sid,
       themeURL: server+'stories/'+this.props.sid+'/theme',
       dropImageGalleryURL: server+'stories/'+this.props.sid+'/drop',
       loading: null,
       mapStyle: MAP_STYLE,
-      story: null,
+      story: this.props.state.story,
       server: server,
       colors: {
         water: '#aad9f5',
@@ -149,6 +150,32 @@ class storyMap extends Component {
     }
     this.handleImageGalleryDelete = this.handleImageGalleryDelete.bind(this);
   };
+  getStory = async () => {
+    this.setState({loading: true});
+    try {
+      await fetch(this.state.storyURL, {
+        method: 'get',
+        headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'}
+      })
+      .then(response => {
+        if (response && !response.ok) { throw new Error(response.statusText);}
+        return response.json();
+      })
+      .then(data => {
+          if(data) {
+            return this.setState({story: data.story, loading: false});
+          } else {
+            console.log('No Data received from the server');
+          }
+      })
+      .catch((error) => {
+        // Your error is here!
+        console.log({error})
+      });
+    } catch(e) {
+      console.log(e.message);
+    }
+  }
   setViewport = (field, value ) => {
     this.setState({viewport: {
       latitude: this.state.viewport.latitude,
@@ -163,6 +190,7 @@ class storyMap extends Component {
     try {
       await this.state.toggleAuthenticateStatus;
       await this.getTheme();
+      await this.getStory();
       await this.getMapPreferences();
 
       //await this.setState({loading: true});
@@ -170,6 +198,7 @@ class storyMap extends Component {
       console.log(e.message);
     }
   }
+
   toggleLoading(val) {
     this.setState({loading: false});
   }
