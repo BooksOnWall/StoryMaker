@@ -27,8 +27,9 @@ export default class storyPreview extends Component {
             flexDirection: 'column',
             justifyContent: 'flex-start',
             alignItems: 'stretch',
-            width: 440,
-            marginTop: 20,
+            width: 375,
+            height: 667,
+            marginTop: 10,
           },
           mobileHeader: {
             background: '#ccc',
@@ -137,8 +138,8 @@ export default class storyPreview extends Component {
             <Icon style={styleSheet.logo} name="lock"/>
         </Header>
         <div style={styleSheet.tile}>
-          <h1 style={styleSheet.tileTitle}>{ ReactHtmlParser(this.state.story.title) }</h1>
-          <h2 style={styleSheet.tileSubtitle}>{ ReactHtmlParser(this.state.story.city) } - { ReactHtmlParser(this.state.story.state) }</h2>
+          <h1 style={styleSheet.tileTitle}>{this.state.story.title}</h1>
+          <h2 style={styleSheet.tileSubtitle}>{this.state.story.city} - {this.state.story.state}</h2>
         </div>
         <div style={styleSheet.card} >
            <div  style={styleSheet.sinopsys}>

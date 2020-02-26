@@ -852,7 +852,7 @@ class storyMap extends Component {
               <MapGL
                 {...viewport}
                 width="45vw"
-                height="81.5vh"
+                height="87vh"
                 className= "mapBox"
                 mapStyle={mapStyle}
                 onViewportChange={this.onViewportChange}
@@ -860,7 +860,7 @@ class storyMap extends Component {
               >
               </MapGL>
           </Segment>
-              <Segment className='mapPref' inverted style={{ height: '80vh', width: '50vw', padding: '40px',  overflow: 'scroll'}}>
+              <Segment className='mapPref' inverted style={{ height: '87vh', width: '50vw', padding: '20px',  overflow: 'scroll'}}>
                 <Tab menu={{ inverted: true, pointing: true }} panes={panes} />
               </Segment>
         </Segment.Group>

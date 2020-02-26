@@ -659,19 +659,9 @@ margin-right: -4rem;}
 .exportMessage div.header{ color: #fff !important}
 
 .ui.segment.view.map{padding: 0 !important;}
-.sytylingMap{margin: 2em !important}
-.ui.segment..mapPref{}
-.ui.segment.mapPref.menu{ padding-bottom: 20px}
 .ui.segment.active.tab{padding: 15px !important}
-.ui.segment .mapBox{}
 .ui.menu .item::before { display: none}
 
-.ui.segment.movile{height: 65vh;  width: 25vw; background: #ccc !important}
-.ui.segment.movile .text{ height: 300px; padding: 20px !important; overflow: scroll}
-.ui.segment.movile {}
-.ui.segment.movile .title{ background-size: cover; background-repeat: no-repeat; background-position: center center}
-.ui.segment.movile .title{ }
-.ui.segment.mapPref .divider{ margin: 0px 0 30px }
 ::selection{
     background-color: #000 !important;
 }
