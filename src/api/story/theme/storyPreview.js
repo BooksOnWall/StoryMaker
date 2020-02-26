@@ -17,18 +17,52 @@ export default class storyPreview extends Component {
         styleSheet: {
           mobileContainer: {
             color: '#FFF',
-            backgroundColor: 'transparent',
+            backgroundColor: '#FFF',
             display: 'flex',
-            flexDirection: 'row',
-            flexWrap: 'wrap',
-            marginTop: 0
+            flexDirection: 'column',
+            justifyContent: 'flex-start',
+            alignItems: 'stretch',
+            height: '1024px',
+            widht: '720px',
           },
           tile: {
-            background: 'transparent url('+ props.server+props.theme.banner.path+') no-repeat top left',
+            background: '#f1f1f1 url('+props.server+props.theme.banner.path+') no-repeat center center',
+            backgroundSize: 'cover',
+            display: 'flex',
+            flexDirection: 'column',
           },
           tileTitle: {
-            fontFamily: props.font1,
-            color: props.color1,
+            display: 'flex',
+            fontFamily: props.theme.font1,
+            color: props.theme.color1,
+          },
+          tileSubtitle: {
+            display: 'flex',
+            fontFamily: props.theme.font2,
+          },
+          mobileHeader:{
+            background: '#ccc',
+            display: 'flex',
+          },
+          sinopsys:{
+            background: '#fff',
+            color: props.color2,
+          },
+          credits:{
+            background: props.theme.color1,
+            color: props.color3,
+            padding: '40px',
+          },
+          gallery:{
+            background: '#000',
+            display: 'flex',
+          },
+          nav:{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'stretch',
+            background: '#ccc',
           },
         }
       }
@@ -36,75 +70,38 @@ export default class storyPreview extends Component {
     render() {
     const {styleSheet, device, disposition, loading} = this.state;
     return (
-      <Segment className="movile" style={styleSheet.mobileContainer}>
-        <Header >
+      <div className="mobile" style={styleSheet.mobileContainer}>
+        <Header  style={styleSheet.mobileHeader}>
             <Icon name="home"/>
+            <Icon name="lock"/>
         </Header>
-        <Segment vertical>
-            <div vertical style={styleSheet.tile}>
-                <h1>title</h1>
-                <h2>City - Country</h2>
+        <Segment>
+            <div style={styleSheet.tile}>
+                <h1 style={styleSheet.tileTitle}>{ ReactHtmlParser(this.state.story.title) }</h1>
+                <h2 style={styleSheet.tileSubtitle}>{ ReactHtmlParser(this.state.story.city) }</h2>
              </div>
-            <Segment vertical className="text">
-             <Segment vertical  className="sinopsys">
-                <p>
-                  Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo
-                  ligula eget dolor. Aenean massa strong. Cum sociis natoque penatibus et
-                  magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis,
-                  ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa
-                  quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget,
-                  arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
-                  Nullam dictum felis eu pede link mollis pretium. Integer tincidunt. Cras
-                  dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus.
-                  Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.
-                  Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus
-                  viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet.
-                  Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi.
-                </p>
-              </Segment>
-              <Segment vertical  className="credits">
-                <p>
-                    Concepto y producción: Fulvio Capurso.
-                    Guión: Sergio López Suárez, Javier Martínez y Fulvio Capurso.
-                    Muralismo: Fulvio Capurso (aka Fulviet), David de la Mano, Jaime Molina, Lucas Butler (aka Demo), Rodrígo López (aka Lolo), Sebastián Salazar (aka Bastardo) y Hudson Henrique (aka Hudhen).
-                    Escultura: Fulvio Capurso (aka Fulviet).
-                    Asistencia de producción: Yves Cohen, Marcelo, Pablo y Brian
-                    Fotografía: Cristóbal Severin, Flora Pozzobon, Sofía Casanova y Fulvio Capurso
-                    Diseño visual e interactivo: Cristóbal Severin y Fulvio Capurso
-                    Desarrollo: Martín Terragona
-                    Animación: Alejo Schettini, Gachi García Díaz, Santiago Germano, Rodrigo López y Lucas Butler
-                    3D: Rodrigo López
-                    Música y sonido: Pablo Fagundez, Matías Nario y Betina Chavez
-                    Grabaciones: Pablo Notaro
-                    Colaboraciones instrumentales: Gonzalo Franco, Fernando Nathan, Mauricio Clavijo, Tato Garré, Ignacio Aldabe y Ben Leeb
-                    Comunicación y prensa: Manu Rivoir
-                    Agradecimientos: A los vecinos que cedieron alegremente sus fachadas para ser parte del cuento, a todos los niños y niñas que le pusieron voz a los personajes, a los artistas y amigos de Casa Wang, a   Ánima Espacio Cultural, a Javier, Maxi, Cris, Sofi, Nilo, a Alito y toda la banda de Radio Pedal, a Pablo, Tita, Samuel y Emma, a Alicia y su linda familia, a Satira, Fer y Elo, a Daniel y Efuka, a Anita, Doris y Boris, a todas las lindas personas que contribuyeron a la realización de este proyecto y por error no figuran en esta breve lista.
+             <div  style={styleSheet.sinopsys}>
+                { ReactHtmlParser(this.state.story.sinopsys) }
+              </div>
+              <div style={styleSheet.gallery}>
 
-                    Apoyos:
-
-                    Fondo Concursable para la cultura del Ministerio de Educación y Cultura
-
-                    Roostudio
-
-                    Anima Espacio Cultural
-                </p>
-              </Segment>
-            </Segment>
-        </Segment>
-        <Segment >
-            <List horizontal>
-                <List.Item>
+              </div>
+              <div style={styleSheet.credits}>
+                { ReactHtmlParser(this.state.story.credits) }
+              </div>
+          </Segment>
+          <div style={styleSheet.nav} >
+                <div>
                     <Icon  name='trash'  />
-                </List.Item>
-                <List.Item>
+                </div>
+                <div>
                     <Icon  name='play'  />
-                </List.Item>
-                <List.Item>
+                </div>
+                <div>
                     <Icon  name='point'  />
-                </List.Item>
-            </List>
-        </Segment>
-      </Segment>
+                </div>
+         </div>
+      </div>
     )
   }
 }
