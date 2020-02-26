@@ -5,7 +5,9 @@ import {
   Header,
     Icon,
     List,
+    Button,
 } from 'semantic-ui-react';
+import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 
 export default class storyPreview extends Component {
     constructor(props) {
@@ -14,6 +16,9 @@ export default class storyPreview extends Component {
         device: 'mobile', // tablet
         disposition: 'vertical', // horizontal
         loading: false,
+        story: this.props.story,
+        theme: this.props.theme,
+        server: this.props.server,
         styleSheet: {
           mobileContainer: {
             color: '#FFF',
@@ -22,47 +27,101 @@ export default class storyPreview extends Component {
             flexDirection: 'column',
             justifyContent: 'flex-start',
             alignItems: 'stretch',
-            height: '1024px',
-            widht: '720px',
+            width: 440,
+            marginTop: 20,
           },
+          mobileHeader: {
+            background: '#ccc',
+            display: 'flex',
+            justifyContent: 'space-around',
+            alignSelf: 'stretch',
+            flexGrow: 1,
+            padding: 20,
+            margin: 0,
+            },
+          logo: {
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            alignContent: 'center',
+            flexGrow: 1,
+            },
           tile: {
-            background: '#f1f1f1 url('+props.server+props.theme.banner.path+') no-repeat center center',
+            background: 'transparent url('+ this.props.server+this.props.theme.banner.path+') no-repeat top left',
             backgroundSize: 'cover',
             display: 'flex',
+            alignSelf: 'stretch',
+            flexGrow: 1,
             flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: 20,
+            margin: 0,
+            marginBottom: 3,
           },
           tileTitle: {
             display: 'flex',
-            fontFamily: props.theme.font1,
-            color: props.theme.color1,
+            alignSelf: 'stretch',
+            justifyContent: 'center',
+            flexGrow: 1,
+            fontFamily: this.props.theme.font1,
+            color: '#fff',
+            textShadowColor: 'rgba(0, 0, 0, 0.75)',
+            textShadowOffset: {width: 0, height: 1},
+            textShadowRadius: 10,
+            margin: 0,
+            padding: 0,
           },
           tileSubtitle: {
             display: 'flex',
-            fontFamily: props.theme.font2,
+            alignSelf: 'stretch',
+            justifyContent: 'center',
+            flexGrow: 1,
+            color: '#fff',
+            fontFamily: this.props.theme.font2,
+            textShadowColor: 'rgba(0, 0, 0, 0.75)',
+            textShadowOffset: {width: -1, height: 1},
+            textShadowRadius: 10,
+            margin: 0,
+            padding: 0,
+            fontSize: 14,
           },
-          mobileHeader:{
-            background: '#ccc',
+          card:{
             display: 'flex',
+            flexDirection: 'column',
+            alignContent: 'stretch',
+            overflow: 'scroll',
+            height: 540,
           },
           sinopsys:{
             background: '#fff',
-            color: props.color2,
+            color: '#000',
+            padding: '40px',
+            fontFamily: this.props.theme.font2,
           },
           credits:{
-            background: props.theme.color1,
-            color: props.color3,
+            background: this.props.theme.color1,
+            color: this.props.theme.color3,
             padding: '40px',
+            fontFamily: this.props.theme.font3,
           },
           gallery:{
-            background: '#000',
+            background: this.props.theme.color3,
             display: 'flex',
           },
           nav:{
             display: 'flex',
             flexDirection: 'row',
-            justifyContent: 'center',
+            justifyContent: 'space-around',
             alignItems: 'stretch',
-            background: '#ccc',
+            background: this.props.theme.color2,
+            padding: 20,
+            color: this.props.theme.color1,
+          },
+          titleCredits:{
+            color: this.props.theme.color3,
+            textTransform:'uppercase',
+            fontSize: '20px'
           },
         }
       }
@@ -70,36 +129,30 @@ export default class storyPreview extends Component {
     render() {
     const {styleSheet, device, disposition, loading} = this.state;
     return (
-      <div className="mobile" style={styleSheet.mobileContainer}>
-        <Header  style={styleSheet.mobileHeader}>
-            <Icon name="home"/>
-            <Icon name="lock"/>
-        </Header>
-        <Segment>
-            <div style={styleSheet.tile}>
-                <h1 style={styleSheet.tileTitle}>{ ReactHtmlParser(this.state.story.title) }</h1>
-                <h2 style={styleSheet.tileSubtitle}>{ ReactHtmlParser(this.state.story.city) }</h2>
-             </div>
-             <div  style={styleSheet.sinopsys}>
-                { ReactHtmlParser(this.state.story.sinopsys) }
-              </div>
-              <div style={styleSheet.gallery}>
 
-              </div>
-              <div style={styleSheet.credits}>
-                { ReactHtmlParser(this.state.story.credits) }
-              </div>
-          </Segment>
-          <div style={styleSheet.nav} >
-                <div>
-                    <Icon  name='trash'  />
-                </div>
-                <div>
-                    <Icon  name='play'  />
-                </div>
-                <div>
-                    <Icon  name='point'  />
-                </div>
+
+      <div style={styleSheet.mobileContainer}>
+        <Header style={styleSheet.mobileHeader}>
+            <Icon name="bars"/>
+            <Icon style={styleSheet.logo} name="lock"/>
+        </Header>
+        <div style={styleSheet.tile}>
+          <h1 style={styleSheet.tileTitle}>{ ReactHtmlParser(this.state.story.title) }</h1>
+          <h2 style={styleSheet.tileSubtitle}>{ ReactHtmlParser(this.state.story.city) } - { ReactHtmlParser(this.state.story.state) }</h2>
+        </div>
+        <div style={styleSheet.card} >
+           <div  style={styleSheet.sinopsys}>
+              { ReactHtmlParser(this.state.story.sinopsys) }
+            </div>
+            <div style={styleSheet.credits}>
+             <h1 style={styleSheet.titleCredits}>Credits</h1>
+              { ReactHtmlParser(this.state.story.credits) }
+            </div>
+        </div>
+        <div style={styleSheet.nav} >
+              <div><Icon  name='trash'  /></div>
+              <div><Icon  name='play'  /></div>
+              <div><Icon  name='point'  /></div>
          </div>
       </div>
     )
