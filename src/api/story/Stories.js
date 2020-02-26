@@ -38,10 +38,7 @@ class Stories extends Component {
     })
     .then(data => {
         if(data) {
-          console.log(data);
-          this.setState({data: data.stories});
-          // set loading
-          this.setState({loading: false});
+          this.setState({data: data.stories, loading: false});
         } else {
           console.log('No Data received from the server');
         }
