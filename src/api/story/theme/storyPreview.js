@@ -38,7 +38,6 @@ export default class storyPreview extends Component {
       }
     }
     render() {
-    console.table(this.props.story);
     const {styleSheet, device, disposition, loading} = this.state;
     return (
       <Segment className="movile" style={styleSheet.mobileContainer}>
