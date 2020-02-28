@@ -20,18 +20,28 @@ export default class storyPreview extends Component {
         theme: this.props.theme,
         server: this.props.server,
         styleSheet: {
-          mobileContainer: {
+          wrap:{
+            display:'flex',
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'flex-start',
+          },
+            mobileContainer: {
             color: '#FFF',
-            backgroundColor: '#FFF',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'flex-start',
             alignItems: 'stretch',
             width: 375,
             height: 667,
-            marginTop: 10,
+          },
+          deviceOption: {
+            display: 'flex',
+            background: "transparent",
+            paddingRight: 20,
           },
           mobileHeader: {
+            display:'flex',
             background: '#ccc',
             display: 'flex',
             justifyContent: 'space-around',
@@ -110,19 +120,37 @@ export default class storyPreview extends Component {
             background: this.props.theme.color3,
             display: 'flex',
           },
+          titleCredits:{
+            color: this.props.theme.color3,
+            textTransform:'uppercase',
+            fontSize: '20px'
+          },
           nav:{
             display: 'flex',
-            flexDirection: 'row',
+            flexDirection: 'column',
             justifyContent: 'space-around',
             alignItems: 'stretch',
             background: this.props.theme.color2,
             padding: 20,
             color: this.props.theme.color1,
           },
-          titleCredits:{
-            color: this.props.theme.color3,
-            textTransform:'uppercase',
-            fontSize: '20px'
+          menu:{
+            display: 'flex',
+            flexDirection: 'row',
+          },
+          message:{
+
+          },
+          transport: {
+            display: 'flex',
+            flexDirection: 'row',
+            fontSize: 12,
+            backgroundColor: '#4B4F53',
+            borderWidth: 0,
+            borderColor: '#d2d2d2',
+            minHeight: 40,
+            maxHeight: 40,
+            margin: 0,
           },
         }
       }
@@ -131,30 +159,49 @@ export default class storyPreview extends Component {
     const {styleSheet, device, disposition, loading} = this.state;
     return (
 
-
-      <div style={styleSheet.mobileContainer}>
-        <Header style={styleSheet.mobileHeader}>
-            <Icon name="bars"/>
-            <Icon style={styleSheet.logo} name="lock"/>
-        </Header>
-        <div style={styleSheet.tile}>
-          <h1 style={styleSheet.tileTitle}>{this.state.story.title}</h1>
-          <h2 style={styleSheet.tileSubtitle}>{this.state.story.city} - {this.state.story.state}</h2>
+      <div style={styleSheet.wrap} >
+        <div style={styleSheet.deviceOption}>
+        <Button.Group vertical >
+          <Button secondary icon>
+            <Icon name='undo alternate' />
+          </Button>
+          <Button secondary icon>
+            <Icon name='tablet alternate' />
+          </Button>
+        </Button.Group>
         </div>
-        <div style={styleSheet.card} >
-           <div  style={styleSheet.sinopsys}>
-              { ReactHtmlParser(this.state.story.sinopsys) }
-            </div>
-            <div style={styleSheet.credits}>
-             <h1 style={styleSheet.titleCredits}>Credits</h1>
-              { ReactHtmlParser(this.state.story.credits) }
-            </div>
+        <div style={styleSheet.mobileContainer}>
+          <Header style={styleSheet.mobileHeader}>
+              <Icon name="bars"/>
+              <Icon style={styleSheet.logo} name="b"/>
+          </Header>
+          <div style={styleSheet.tile}>
+            <h1 style={styleSheet.tileTitle}>{this.state.story.title}</h1>
+            <h2 style={styleSheet.tileSubtitle}>{this.state.story.city} - {this.state.story.state}</h2>
+          </div>
+          <div style={styleSheet.card} >
+             <div  style={styleSheet.sinopsys}>
+                { ReactHtmlParser(this.state.story.sinopsys) }
+              </div>
+              <div style={styleSheet.credits}>
+               <h1 style={styleSheet.titleCredits}>Credits</h1>
+                { ReactHtmlParser(this.state.story.credits) }
+              </div>
+          </div>
+          <div style={styleSheet.nav} >
+              <div style={styleSheet.message}> Please choose your mode of transportation and press Start Navigation.</div>
+              <div style={styleSheet.transport} >
+                <Button>Caminando</Button>
+                <Button>Auto</Button>
+                <Button>En bici</Button>
+              </div >
+              <div style={styleSheet.menu} >
+                  <Button><Icon  name='trash'  /></Button>
+                  <Button><Icon  name='play'  /></Button>
+                  <Button><Icon  name='point'  /></Button>
+              </div >
+           </div>
         </div>
-        <div style={styleSheet.nav} >
-              <div><Icon  name='trash'  /></div>
-              <div><Icon  name='play'  /></div>
-              <div><Icon  name='point'  /></div>
-         </div>
       </div>
     )
   }
