@@ -667,6 +667,7 @@ class stage extends Component {
                   <ReactAudioPlayer
                     src={t.src}
                     autoPlay={t.autoplay}
+                    className= {'audioPreview'}
                     loop={t.loop}
                     controls
                     />

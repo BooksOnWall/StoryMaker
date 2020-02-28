@@ -83,6 +83,7 @@ video {
 .ui.segment.audio .react-audio-player {
   width: inherit;
 }
+.audioPreview div, .audioPreview span{ background: #000 !important }
 .App-link {
   color: #61dafb;
 }
@@ -156,7 +157,7 @@ video {
   height: -webkit-fill-available;
   min-height: 100%;
   min-width: 100%;
-    padding: 0 !important
+  padding: 0 !important
 }
 .ui.segment.audio {
   padding: 0;
@@ -205,7 +206,9 @@ padding: 1em;
 .draggable.image , .draggable.audio , .draggable.picture , .draggable.video { box-shadow: 1px 1px 6px 1px rgba(0,0,0,0.5) !important;}
 .draggable.image .icon, .draggable.audio .icon, .draggable.picture .icon, .draggable.video .icon{ margin: 0 !important}
 .draggable.pictures{ width: 140px !important; margin: 5px !important}
+.ui.draggable .ui.card{ box-shadow: 0 1px 3px 0 #111, 0 0 0 1px #111 !important;}
 
+.ui.inverted.blue.segment{}
 .ui.segment.video {
   margin: 0 !important;
   padding: 0 !important;
@@ -593,7 +596,7 @@ margin-right: -4rem;}
 
 #login .ui.form input, #signup .ui.form input, #login .button, #signup button, #users .ui.form input{ margin: 5px 0 !important;}
 
-.ui.card.inverted{ background: #222 !important; color:#fff !important; border: 0px transparent solid !important; box-shadow: 0px 1px 3px 0px #000, 0px 0px 0px 1px #000 !important; }
+.ui.card.inverted{  background: #222 !important; color:#fff !important; border: 0px transparent solid !important; box-shadow: 0px 1px 3px 0px #000, 0px 0px 0px 1px #000 !important; }
 .ui.card.inverted .content {padding: 7px !important}
 .ui.card.inverted .content img{ border-radius: 2px}
 .ui.card.inverted .header, .ui.card.inverted .description, .ui.card.inverted .meta{color: #fff !important; padding:0px 10px}

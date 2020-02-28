@@ -133,7 +133,6 @@ const ObjectsPreview = (props) => {
             return   <Segment
               inverted
               name={'audios_'+ index}
-              color="blue"
               key={'audio' + index}
               onDragStart = {(e) => props.onDragStart(e, e.key)}
               draggable
@@ -312,10 +311,10 @@ class DragDrop extends Component {
 
 
                     <Segment inverted style={{width:"100%"}}>
-                      <Button.Group inverted fluid>
-                        <Button name="Stage" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Stage') ? true : false } ><FormattedMessage id="app.story.board.stage" defaultMessage={`Stage`}/></Button>
-                        <Button name="Geo" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Geo') ? true : false }>Geo</Button>
-                        <Button name="Images" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Images') ? true : false }><FormattedMessage id="app.story.board.images" defaultMessage={`Images`}/></Button>
+                      <Button.Group >
+                        <Button secondary name="Stage" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Stage') ? true : false } ><FormattedMessage id="app.story.board.stage" defaultMessage={`Stage`}/></Button>
+                        <Button secondary name="Geo" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Geo') ? true : false }>Geo</Button>
+                        <Button secondary name="Images" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Images') ? true : false }><FormattedMessage id="app.story.board.images" defaultMessage={`Images`}/></Button>
                       </Button.Group>
                       {(this.props.stageStep === 'Stage') ? this.props.editStage() : ''}
                       {(this.props.stageStep === 'Images') ? (
@@ -366,10 +365,10 @@ class DragDrop extends Component {
                     >
                     <Segment.Group horizontal  >
                         <Segment inverted fluid style={{maxWidth: '20vh'}}>
-                            <Button.Group inverted vertical>
-                              <Button name="Pictures" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Pictures') ? true : false }><FormattedMessage id="app.story.board.pictures" defaultMessage={`Pictures`}/></Button>
-                              <Button name="Videos" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Videos') ? true : false }>Videos</Button>
-                              <Button name="Audios" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Audios') ? true : false }>Audios</Button>
+                            <Button.Group  vertical>
+                              <Button secondary name="Pictures" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Pictures') ? true : false }><FormattedMessage id="app.story.board.pictures" defaultMessage={`Pictures`}/></Button>
+                              <Button secondary name="Videos" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Videos') ? true : false }>Videos</Button>
+                              <Button secondary name="Audios" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Audios') ? true : false }>Audios</Button>
                             </Button.Group>
                         </Segment>
                         <Segment inverted  style={{minWidth: '82vh', padding:0}}>

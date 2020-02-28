@@ -26,7 +26,7 @@ export default class storyPreview extends Component {
             justifyContent: 'flex-start',
             alignItems: 'flex-start',
           },
-            mobileContainer: {
+          device: {
             color: '#FFF',
             display: 'flex',
             flexDirection: 'column',
@@ -35,12 +35,12 @@ export default class storyPreview extends Component {
             width: 375,
             height: 667,
           },
-          deviceOption: {
+          options: {
             display: 'flex',
             background: "transparent",
             paddingRight: 20,
           },
-          mobileHeader: {
+          header: {
             display:'flex',
             background: '#ccc',
             display: 'flex',
@@ -113,8 +113,13 @@ export default class storyPreview extends Component {
           credits:{
             background: this.props.theme.color1,
             color: this.props.theme.color3,
-            padding: '40px',
             fontFamily: this.props.theme.font3,
+            fontSize: 13,
+            marginTop: 1,
+            marginBottom: 1,
+            padding: 30,
+            lineHeight: 20,
+            letterSpacing: 0,
           },
           gallery:{
             background: this.props.theme.color3,
@@ -151,7 +156,7 @@ export default class storyPreview extends Component {
             minHeight: 40,
             maxHeight: 40,
             margin: 0,
-          },
+          }
         }
       }
     }
@@ -160,18 +165,19 @@ export default class storyPreview extends Component {
     return (
 
       <div style={styleSheet.wrap} >
-        <div style={styleSheet.deviceOption}>
+        <div style={styleSheet.options}>
         <Button.Group vertical >
           <Button secondary icon>
             <Icon name='undo alternate' />
           </Button>
           <Button secondary icon>
             <Icon name='tablet alternate' />
+            <Icon name='mobile alternate' />
           </Button>
         </Button.Group>
         </div>
-        <div style={styleSheet.mobileContainer}>
-          <Header style={styleSheet.mobileHeader}>
+        <div style={styleSheet.device}>
+          <Header style={styleSheet.header}>
               <Icon name="bars"/>
               <Icon style={styleSheet.logo} name="b"/>
           </Header>
