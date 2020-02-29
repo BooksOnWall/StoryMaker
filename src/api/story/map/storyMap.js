@@ -84,6 +84,7 @@ class storyMap extends Component {
       mapStyle: MAP_STYLE,
       story: this.props.state.story,
       server: server,
+      modal: false,
       colors: {
         water: '#aad9f5',
         parks: '#2bedbd',
@@ -532,12 +533,13 @@ class storyMap extends Component {
   onViewportChange = (viewport) => this.setState({viewport})
   onStyleChange = (mapStyle) => this.setState({mapStyle})
   preview = () => {
-    return (
-      <Tab.Pane attached={false} inverted>
-        <StoryPreview server={this.state.server} theme={this.state.theme} story={this.state.story}/>
-      </Tab.Pane>
-    )
+      return (
+        <Tab.Pane attached={false} inverted>
+          <StoryPreview server={this.state.server} theme={this.state.theme} story={this.state.story} modal={this.state.modal} setModal={this.setModal}/>
+        </Tab.Pane>
+      );
   }
+  setModal = () => this.setState({modal: !this.state.modal})
   mapPrefs = () => {
     if (this.state.colors) {
       return (
@@ -839,7 +841,7 @@ class storyMap extends Component {
         render: () => this.mapPrefs(),
       },
       {
-        menuItem: 'View',
+        menuItem: {key: 'view', icon : 'eye', content: 'Preview'},
         render: () => this.preview(),
       }
     ];

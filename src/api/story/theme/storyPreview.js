@@ -1,11 +1,15 @@
 import React, {Component} from 'react';
 import {
   Segment,
+  Form,
   Image,
   Header,
-    Icon,
-    List,
-    Button,
+  Icon,
+  List,
+  Modal,
+  Select,
+  Rail,
+  Button,
 } from 'semantic-ui-react';
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 
@@ -14,11 +18,20 @@ export default class storyPreview extends Component {
       super(props);
       this.state = {
         device: 'mobile', // tablet
-        disposition: 'vertical', // horizontal
+        orientation: 'vertical', // horizontal
+        displayFormats: [
+          { key: '0', value: 'd16-9', text: '16:9' },
+          { key: '1', value: 'd16-10', text: '16:10'},
+          { key: '2', value: 'd18-9', text: '18:9' },
+          { key: '3', value: 'd19-9', text: '19:9' },
+          { key: '4', value: 'd21-9', text: '21:9'}
+        ],
+        display: 'd16-9',
         loading: false,
         story: this.props.story,
         theme: this.props.theme,
         server: this.props.server,
+        modal: this.props.modal,
         styleSheet: {
           wrap:{
             display:'flex',
@@ -32,8 +45,7 @@ export default class storyPreview extends Component {
             flexDirection: 'column',
             justifyContent: 'flex-start',
             alignItems: 'stretch',
-            width: 375,
-            height: 667,
+            backgroundColor: '#FFDD00',
           },
           options: {
             display: 'flex',
@@ -43,7 +55,6 @@ export default class storyPreview extends Component {
           header: {
             display:'flex',
             background: '#ccc',
-            display: 'flex',
             justifyContent: 'space-around',
             alignSelf: 'stretch',
             flexGrow: 1,
@@ -56,7 +67,7 @@ export default class storyPreview extends Component {
             alignItems: 'center',
             alignContent: 'center',
             flexGrow: 1,
-            },
+          },
           tile: {
             background: 'transparent url('+ this.props.server+this.props.theme.banner.path+') no-repeat top left',
             backgroundSize: 'cover',
@@ -102,7 +113,6 @@ export default class storyPreview extends Component {
             flexDirection: 'column',
             alignContent: 'stretch',
             overflow: 'scroll',
-            height: 540,
           },
           sinopsys:{
             background: '#fff',
@@ -159,55 +169,71 @@ export default class storyPreview extends Component {
           }
         }
       }
+      this.togglePreviewOrientation = this.togglePreviewOrientation.bind(this);
     }
+    componentDidMount = () => this.setState({modal: true})
+    togglePreviewOrientation = () => this.setState({orientation: (this.state.orientation === 'vertical') ? 'horizontal' : 'vertical'})
+    togglePreviewDevice = () => this.setState({device: (this.state.device === 'mobile') ? 'tablet' : 'mobile'})
+    togglePreviewDisplay = (e) =>  this.setState({display: e.target.textContent.replace(":", "-")})
+    togglePreviewClose = () => this.setState({modal: false})
     render() {
-    const {styleSheet, device, disposition, loading} = this.state;
+    const {styleSheet, display, device, orientation, loading} = this.state;
+    let mclass = device + ' ' + orientation + ' ' + display;
+
     return (
 
       <div style={styleSheet.wrap} >
-        <div style={styleSheet.options}>
-        <Button.Group vertical >
-          <Button secondary icon>
-            <Icon name='undo alternate' />
-          </Button>
-          <Button secondary icon>
-            <Icon name='tablet alternate' />
-            <Icon name='mobile alternate' />
-          </Button>
-        </Button.Group>
-        </div>
-        <div style={styleSheet.device}>
-          <Header style={styleSheet.header}>
-              <Icon name="bars"/>
-              <Icon style={styleSheet.logo} name="b"/>
-          </Header>
-          <div style={styleSheet.tile}>
-            <h1 style={styleSheet.tileTitle}>{this.state.story.title}</h1>
-            <h2 style={styleSheet.tileSubtitle}>{this.state.story.city} - {this.state.story.state}</h2>
-          </div>
-          <div style={styleSheet.card} >
-             <div  style={styleSheet.sinopsys}>
-                { ReactHtmlParser(this.state.story.sinopsys) }
+        <Modal  basic dimmer='blurring' closeIcon style={styleSheet.modal}
+          onClose={this.togglePreviewClose}
+           open={this.state.modal}
+           centered={false} >
+          <Modal.Actions>
+            <Form style={styleSheet.options} inverted>
+              <Select placeholder='Display' options={this.state.displayFormats} defaultValue={this.state.display} onChange={this.togglePreviewDisplay} />
+               <Rail attached position='left' size='tiny' >
+                 <Button.Group  >
+                   <Button secondary icon onClick={this.togglePreviewOrientation}>   <Icon name='undo alternate' /> </Button>
+                   <Button secondary icon onClick={this.togglePreviewDevice}> <Icon name={device+' alternate'} /> </Button>
+                 </Button.Group>
+               </Rail>
+
+            </Form>
+          </Modal.Actions>
+          <Modal.Content className={mclass} scrolling>
+            <div  style={styleSheet.device}>
+              <Header style={styleSheet.header}>
+                  <Icon name="bars"/>
+                  <Icon style={styleSheet.logo} name="man"/>
+              </Header>
+              <div className='tile' style={styleSheet.tile}>
+                <h1 style={styleSheet.tileTitle}>{this.state.story.title}</h1>
+                <h2 style={styleSheet.tileSubtitle}>{this.state.story.city} - {this.state.story.state}</h2>
               </div>
-              <div style={styleSheet.credits}>
-               <h1 style={styleSheet.titleCredits}>Credits</h1>
-                { ReactHtmlParser(this.state.story.credits) }
+              <div className='card' style={styleSheet.card} >
+                 <div  style={styleSheet.sinopsys}>
+                    { ReactHtmlParser(this.state.story.sinopsys) }
+                  </div>
+                  <div style={styleSheet.credits}>
+                   <h1 style={styleSheet.titleCredits}>Credits</h1>
+                    { ReactHtmlParser(this.state.story.credits) }
+                  </div>
               </div>
-          </div>
-          <div style={styleSheet.nav} >
-              <div style={styleSheet.message}> Please choose your mode of transportation and press Start Navigation.</div>
-              <div style={styleSheet.transport} >
-                <Button>Caminando</Button>
-                <Button>Auto</Button>
-                <Button>En bici</Button>
-              </div >
-              <div style={styleSheet.menu} >
-                  <Button><Icon  name='trash'  /></Button>
-                  <Button><Icon  name='play'  /></Button>
-                  <Button><Icon  name='point'  /></Button>
-              </div >
-           </div>
-        </div>
+              <div className='nav' style={styleSheet.nav} >
+                  <div style={styleSheet.message}> Please choose your mode of transportation and press Start Navigation.</div>
+                  <div style={styleSheet.transport} >
+                    <Button>Caminando</Button>
+                    <Button>Auto</Button>
+                    <Button>En bici</Button>
+                  </div >
+                  <div style={styleSheet.menu} >
+                      <Button><Icon  name='trash'  /></Button>
+                      <Button><Icon  name='play'  /></Button>
+                      <Button><Icon  name='point'  /></Button>
+                  </div >
+               </div>
+            </div>
+          </Modal.Content>
+        </Modal>
       </div>
     )
   }
