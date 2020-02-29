@@ -4,14 +4,15 @@ import {
   Form,
   Image,
   Header,
-  Icon,
   List,
+  Icon,
   Modal,
   Select,
   Rail,
   Button,
 } from 'semantic-ui-react';
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
+import CustomIcon from "../../../utils/Icon";
 
 export default class storyPreview extends Component {
     constructor(props) {
@@ -202,8 +203,8 @@ export default class storyPreview extends Component {
           <Modal.Content className={mclass} scrolling>
             <div  style={styleSheet.device}>
               <Header style={styleSheet.header}>
-                  <Icon name="bars"/>
-                  <Icon style={styleSheet.logo} name="man"/>
+                  <CustomIcon name='menu'/>
+                  <CustomIcon style={styleSheet.logo} name='bow-logo'/>
               </Header>
               <div className='tile' style={styleSheet.tile}>
                 <h1 style={styleSheet.tileTitle}>{this.state.story.title}</h1>
@@ -226,9 +227,9 @@ export default class storyPreview extends Component {
                     <Button>En bici</Button>
                   </div >
                   <div style={styleSheet.menu} >
-                      <Button><Icon  name='trash'  /></Button>
-                      <Button><Icon  name='play'  /></Button>
-                      <Button><Icon  name='point'  /></Button>
+                      <Button><CustomIcon  name='trash'  /></Button>
+                      <Button><CustomIcon  name='play'  /></Button>
+                      <Button><CustomIcon  name='geopoint'  /></Button>
                   </div >
                </div>
             </div>

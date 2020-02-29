@@ -37,7 +37,6 @@ body{
 }
 @font-face {
   font-family: "TrashHand";
-  src: url("./fonts/TrashHand.otf") format("otf");
   src: local('TrashHand'), url("./fonts/TrashHand.otf") format("otf");
   font-weight: 300;
   font-style: normal;
@@ -55,8 +54,10 @@ body{
   font-style: normal;
 }
 @font-face {
-  font-family: "booksonwall.ttf";
-  src: url("./fonts/booksonwall.ttf") format("ttf");
+  font-family: "booksonwall";
+  src: local('booksonwall'), url("./fonts/booksonwall.ttf") format("ttf");
+  font-weight: 300;
+  font-style: normal;
 }
  .App-logo {
   animation: none;
