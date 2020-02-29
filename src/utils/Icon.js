@@ -1,10 +1,10 @@
 // icon.js
 import React from "react";
 import IcoMoon from "react-icomoon";
-const iconSet = require("../assets/nav/selection.json");
+const iconSet = require("../semantic-ui/site/assets/fonts/selection.json");
 
-const CustomIcon = ({ ...props }) => {
+const Icon = ({ ...props }) => {
   return <IcoMoon iconSet={iconSet} {...props} />;
 };
 
-export default CustomIcon;
+export default Icon;

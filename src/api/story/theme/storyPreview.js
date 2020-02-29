@@ -203,7 +203,7 @@ export default class storyPreview extends Component {
           <Modal.Content className={mclass} scrolling>
             <div  style={styleSheet.device}>
               <Header style={styleSheet.header}>
-                  <CustomIcon name='menu'/>
+                  <CustomIcon name='menu'size='42'/>
                   <CustomIcon style={styleSheet.logo} name='bow-logo'/>
               </Header>
               <div className='tile' style={styleSheet.tile}>
