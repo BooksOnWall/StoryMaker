@@ -1630,7 +1630,7 @@ class stage extends Component {
             {(this.state.ssid === 0) ?
               <Segment.Group horizontal style={{height: '70vh'}}>
                 <Segment style={{height: 'inherit', width: '150px'}}>{this.editStage()}</Segment>
-                <Segment style={{height: 'inherit'}}>{(this.state.ssid === 0 ) ? <StageMap height="80vh" sid={this.state.sid} mode={this.state.mode} setStageLocation={this.setStageLocation} stageLocation={this.state.stage.stageLocation}
+                <Segment style={{height: 'inherit'}}>{(this.state.ssid === 0 ) ? <StageMap sid={this.state.sid} mode={this.state.mode} setStageLocation={this.setStageLocation} stageLocation={this.state.stage.stageLocation}
                 /> : ''}</Segment>
               </Segment.Group>
             : ''}

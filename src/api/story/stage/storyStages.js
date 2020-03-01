@@ -551,52 +551,51 @@ class storyStages extends Component {
                 </Button.Group>
             </Segment>
 
-            <Segment.Group horizontal  clearing="true" >
+            <Segment.Group horizontal clearing="true" >
+            <Segment className="stages" style={{width: '40vw', height: '77.5vh' }}>
+              <ReactDragListView {...this.dragProps}>
+                <Table inverted compact sortable selectable padded >
+                  <Table.Header className='slide-out'>
+                    <Table.Row>
+                      <Table.HeaderCell   >
+                        <FormattedMessage id="app.stage.storystage.order" defaultMessage={`Order`} />
+                      </Table.HeaderCell>
+                      <Table.HeaderCell >
+                        <FormattedMessage id="app.stage.storystage.name" defaultMessage={`Name`} />
+                      </Table.HeaderCell>
+                      <Table.HeaderCell   >
+                        <FormattedMessage id="app.stage.storystage.progress" defaultMessage={`Progress`} />
+                      </Table.HeaderCell>
+                      <Table.HeaderCell   >
+                        <FormattedMessage id="app.stage.storystage.type" defaultMessage={`Type`} />
+                      </Table.HeaderCell>
+                      <Table.HeaderCell   >
+                        <FormattedMessage id="app.stage.storystage.drag" defaultMessage={`Drag`} />
+                      </Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
+                  <Table.Body>
+                    {_.map(this.state.stages, ({ id, name, type, description , stageOrder, updatedAt, rank, percent }) => (
+                      <Table.Row className='slide-out' key={id} onClick={() => this.tableRowClickFunc({id})}>
+                        <Table.Cell>{stageOrder}</Table.Cell>
+                        <Table.Cell>{name}</Table.Cell>
+                        <Table.Cell><Progress percent={percent} progress active indicating inverted /></Table.Cell>
+                        <Table.Cell>{type}</Table.Cell>
+                        <Table.Cell>{<a className="drag-handle" href="void(0)"><Icon name='sort'inverted color='black' /></a>}</Table.Cell>
+                      </Table.Row>
+                      ))}
+                  </Table.Body>
+                </Table>
+              </ReactDragListView>
+            </Segment>
 
-              <Segment style={{width: '35vw' }} className="stagesMap">
+              <Segment style={{width: '60vw' }} className="stagesMap">
                 {(this.state.location)
                   ? <StagesMap goToStage={this.goToStage} stages={this.state.stages} location={this.state.location} sid={this.state.sid} state={this.state}/>
                   : <Placeholder>
                     <Placeholder.Image rectangular />
                   </Placeholder>
                 }
-              </Segment>
-
-              <Segment className="stages" >
-                <ReactDragListView {...this.dragProps}>
-                  <Table inverted compact sortable selectable padded striped>
-                    <Table.Header className='slide-out'>
-                      <Table.Row>
-                        <Table.HeaderCell   >
-                          <FormattedMessage id="app.stage.storystage.order" defaultMessage={`Order`} />
-                        </Table.HeaderCell>
-                        <Table.HeaderCell >
-                          <FormattedMessage id="app.stage.storystage.name" defaultMessage={`Name`} />
-                        </Table.HeaderCell>
-                        <Table.HeaderCell   >
-                          <FormattedMessage id="app.stage.storystage.progress" defaultMessage={`Progress`} />
-                        </Table.HeaderCell>
-                        <Table.HeaderCell   >
-                          <FormattedMessage id="app.stage.storystage.type" defaultMessage={`Type`} />
-                        </Table.HeaderCell>
-                        <Table.HeaderCell   >
-                          <FormattedMessage id="app.stage.storystage.drag" defaultMessage={`Drag`} />
-                        </Table.HeaderCell>
-                      </Table.Row>
-                    </Table.Header>
-                    <Table.Body>
-                      {_.map(this.state.stages, ({ id, name, type, description , stageOrder, updatedAt, rank, percent }) => (
-                        <Table.Row className='slide-out' key={id} onClick={() => this.tableRowClickFunc({id})}>
-                          <Table.Cell>{stageOrder}</Table.Cell>
-                          <Table.Cell>{name}</Table.Cell>
-                          <Table.Cell><Progress percent={percent} progress active indicating inverted /></Table.Cell>
-                          <Table.Cell>{type}</Table.Cell>
-                          <Table.Cell>{<a className="drag-handle" href="void(0)"><Icon name='sort'inverted color='black' /></a>}</Table.Cell>
-                        </Table.Row>
-                        ))}
-                    </Table.Body>
-                  </Table>
-                </ReactDragListView>
               </Segment>
             </Segment.Group>
         </Dimmer.Dimmable>

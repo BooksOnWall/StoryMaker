@@ -823,8 +823,12 @@ class storyMap extends Component {
         )}
       </Formik>
         <Divider />
-        <Button fluid loading={this.state.saveThemeLoading} onClick={this.saveTheme} primary>
-        <FormattedMessage id="app.story.map.savetheme" defaultMessage={`Save Theme`}/></Button>
+          <Button rigth onClick={this.saveTheme} primary>
+            <FormattedMessage id="app.story.map.savetheme" defaultMessage={'Save Theme'}/>
+          </Button>
+          <Button left secondary>
+            <Icon name='eye' /><FormattedMessage id="app.story.map.preview" defaultMessage={'Preview'}/>
+          </Button>
       </Tab.Pane>
     )
   }
@@ -850,10 +854,13 @@ class storyMap extends Component {
           <Dimmer active={loading} onClickOutside={this.handleHide} />
           <Loader active={loading} ><FormattedMessage id="app.story.map.getmapinfo" defaultMessage={`Get map info`}/></Loader>
         <Segment.Group horizontal>
-          <Segment  className="view map" >
+        <Segment className='mapPref' inverted style={{ height: '87vh', width: '40vw', padding: '20px',  overflow: 'scroll'}}>
+          <Tab menu={{ inverted: true, pointing: true }} panes={panes} />
+        </Segment>
+        <Segment  className="view map" >
               <MapGL
                 {...viewport}
-                width="45vw"
+                width="60vw"
                 height="87vh"
                 className= "mapBox"
                 mapStyle={mapStyle}
@@ -862,9 +869,6 @@ class storyMap extends Component {
               >
               </MapGL>
           </Segment>
-              <Segment className='mapPref' inverted style={{ height: '87vh', width: '50vw', padding: '20px',  overflow: 'scroll'}}>
-                <Tab menu={{ inverted: true, pointing: true }} panes={panes} />
-              </Segment>
         </Segment.Group>
         </Dimmer.Dimmable>
     );
