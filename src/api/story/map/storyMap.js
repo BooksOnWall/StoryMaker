@@ -602,7 +602,20 @@ class storyMap extends Component {
     color2: this.state.theme.color2,
     color3: color.hex
   } })
-
+  handleChange = (e) => {
+    // console.log('name',e.target.name);
+    // console.log('value',e.target.value);
+      this.setState({ theme: {
+      banner: this.state.theme.banner,
+      font1: (e.name === 'font1') ? e.target.value: this.state.theme.font1,
+      font2: (e.name === 'font2') ? e.target.value: this.state.theme.font2,
+      font3: (e.name === 'font3') ? e.target.value: this.state.theme.font3,
+      gallery: this.state.theme.gallery,
+      color1: this.state.theme.color1,
+      color2: this.state.theme.color2,
+      color3: this.state.theme.color3
+    } });
+  }
   themePrefs = () => {
      const { activeIndex } = this.state;
      const popover = {
@@ -670,7 +683,7 @@ class storyMap extends Component {
                  <span className='label small'>Font 1: </span><br/>
                  <select
                    size='small'
-                   name="font"
+                   name="font1"
                    type="select"
                    className="fontSelect"
                    defaultValue={this.state.theme.font1}
