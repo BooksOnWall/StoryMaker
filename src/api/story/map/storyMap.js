@@ -832,7 +832,7 @@ class storyMap extends Component {
         )}
       </Formik>
         <Divider />
-          <Button rigth onClick={this.saveTheme} primary loading={this.saveThemeLoading}>
+          <Button rigth onClick={this.saveTheme} primary loading={this.state.saveThemeLoading}>
             <FormattedMessage id="app.story.map.savetheme" defaultMessage={'Save Theme'}/>
           </Button>
       </Tab.Pane>
