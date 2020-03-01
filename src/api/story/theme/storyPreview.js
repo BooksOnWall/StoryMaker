@@ -176,18 +176,16 @@ export default class storyPreview extends Component {
     togglePreviewOrientation = () => this.setState({orientation: (this.state.orientation === 'vertical') ? 'horizontal' : 'vertical'})
     togglePreviewDevice = () => this.setState({device: (this.state.device === 'mobile') ? 'tablet' : 'mobile'})
     togglePreviewDisplay = (e) =>  this.setState({display: e.target.textContent.replace(":", "-")})
-    togglePreviewClose = () => this.setState({modal: false})
+    togglePreviewClose = () => this.props.setModal();
     render() {
-    const {styleSheet, display, device, orientation, loading} = this.state;
+    const {styleSheet, display, device, orientation} = this.state;
     let mclass = device + ' ' + orientation + ' ' + display;
-
-    return (
-
-      <div style={styleSheet.wrap} >
-        <Modal  basic dimmer='blurring' closeIcon style={styleSheet.modal}
+    let story = this.props.story;
+    return (!this.props.story) ?  null :  (
+        <Modal basic dimmer='blurring' closeIcon style={styleSheet.modal}
           onClose={this.togglePreviewClose}
-           open={this.state.modal}
-           centered={false} >
+          open={this.props.modal}
+          centered={false} >
           <Modal.Actions>
             <Form style={styleSheet.options} inverted>
               <Select placeholder='Display' options={this.state.displayFormats} defaultValue={this.state.display} onChange={this.togglePreviewDisplay} />
@@ -197,7 +195,6 @@ export default class storyPreview extends Component {
                    <Button secondary icon onClick={this.togglePreviewDevice}> <Icon name={device+' alternate'} /> </Button>
                  </Button.Group>
                </Rail>
-
             </Form>
           </Modal.Actions>
           <Modal.Content className={mclass} scrolling>
@@ -207,16 +204,16 @@ export default class storyPreview extends Component {
                   <CustomIcon style={styleSheet.logo} name='bow-logo'/>
               </Header>
               <div className='tile' style={styleSheet.tile}>
-                <h1 style={styleSheet.tileTitle}>{this.state.story.title}</h1>
-                <h2 style={styleSheet.tileSubtitle}>{this.state.story.city} - {this.state.story.state}</h2>
+                <h1 style={styleSheet.tileTitle}>{story.title}</h1>
+                <h2 style={styleSheet.tileSubtitle}>{story.city} - {story.state}</h2>
               </div>
               <div className='card' style={styleSheet.card} >
                  <div  style={styleSheet.sinopsys}>
-                    { ReactHtmlParser(this.state.story.sinopsys) }
+                    { ReactHtmlParser(story.sinopsys) }
                   </div>
                   <div style={styleSheet.credits}>
                    <h1 style={styleSheet.titleCredits}>Credits</h1>
-                    { ReactHtmlParser(this.state.story.credits) }
+                    { ReactHtmlParser(story.credits) }
                   </div>
               </div>
               <div className='nav' style={styleSheet.nav} >
@@ -235,7 +232,6 @@ export default class storyPreview extends Component {
             </div>
           </Modal.Content>
         </Modal>
-      </div>
     )
   }
 }

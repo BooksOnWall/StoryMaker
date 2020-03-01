@@ -11,8 +11,8 @@ import {
   Modal,
   Image,
   Input,
-  Button,
   Divider,
+  Button,
   Accordion
 } from 'semantic-ui-react';
 import { Formik } from 'formik';
@@ -150,6 +150,8 @@ class storyMap extends Component {
       setViewport: this.setViewport,
     }
     this.handleImageGalleryDelete = this.handleImageGalleryDelete.bind(this);
+    this.setModal = this.setModal.bind(this);
+    this.getStory = this.getStory.bind(this);
   };
   getStory = async () => {
     this.setState({loading: true});
@@ -164,7 +166,7 @@ class storyMap extends Component {
       })
       .then(data => {
           if(data) {
-            return this.setState({story: data.story, loading: false});
+            this.setState({story: data.story, loading: false});
           } else {
             console.log('No Data received from the server');
           }
@@ -532,14 +534,10 @@ class storyMap extends Component {
   }
   onViewportChange = (viewport) => this.setState({viewport})
   onStyleChange = (mapStyle) => this.setState({mapStyle})
-  preview = () => {
-      return (
-        <Tab.Pane attached={false} inverted>
-          <StoryPreview server={this.state.server} theme={this.state.theme} story={this.state.story} modal={this.state.modal} setModal={this.setModal}/>
-        </Tab.Pane>
-      );
+  setModal = () => {
+    let m =  (this.state.modal === false) ? true : false;
+    this.setState({modal: m});
   }
-  setModal = () => this.setState({modal: !this.state.modal})
   mapPrefs = () => {
     if (this.state.colors) {
       return (
@@ -617,8 +615,17 @@ class storyMap extends Component {
       bottom: '0px',
       left: '0px',
     };
+    const eye = {
+      position: 'fixed',
+      left: '180px',
+      top: '27px',
+    }
     return (
       <Tab.Pane attached={false} inverted>
+        <Button  style={eye} floated='right' secondary onClick={this.setModal}>
+          <Icon name='eye' /><FormattedMessage id="app.story.map.preview" defaultMessage={'Preview'}/>
+        </Button>
+        <Divider />
         <Formik
           enableReinitialize={true}
           initialValues={this.state.theme}
@@ -647,6 +654,7 @@ class storyMap extends Component {
             isSubmitting,
             /* and other goodies */
           }) => (
+
             <Form inverted size='large' onSubmit={this.handleSubmit}>
               <Accordion inverted fluid>
                <Accordion.Title
@@ -826,15 +834,12 @@ class storyMap extends Component {
           <Button rigth onClick={this.saveTheme} primary>
             <FormattedMessage id="app.story.map.savetheme" defaultMessage={'Save Theme'}/>
           </Button>
-          <Button left secondary>
-            <Icon name='eye' /><FormattedMessage id="app.story.map.preview" defaultMessage={'Preview'}/>
-          </Button>
       </Tab.Pane>
     )
   }
   render() {
 
-    const {theme, viewport, mapStyle, loading} = this.state;
+    const {viewport, mapStyle, loading} = this.state;
     const panes = [
       {
         menuItem: 'Theme',
@@ -843,10 +848,6 @@ class storyMap extends Component {
       {
         menuItem: 'Map',
         render: () => this.mapPrefs(),
-      },
-      {
-        menuItem: {key: 'view', icon : 'eye', content: 'Preview'},
-        render: () => this.preview(),
       }
     ];
     return (
@@ -856,6 +857,7 @@ class storyMap extends Component {
         <Segment.Group horizontal>
         <Segment className='mapPref' inverted style={{ height: '87vh', width: '40vw', padding: '20px',  overflow: 'scroll'}}>
           <Tab menu={{ inverted: true, pointing: true }} panes={panes} />
+          <StoryPreview server={this.state.server} theme={this.state.theme} story={this.state.story} modal={this.state.modal} setModal={this.setModal}/>
         </Segment>
         <Segment  className="view map" >
               <MapGL
