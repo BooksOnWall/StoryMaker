@@ -152,6 +152,7 @@ class storyMap extends Component {
     this.handleImageGalleryDelete = this.handleImageGalleryDelete.bind(this);
     this.setModal = this.setModal.bind(this);
     this.getStory = this.getStory.bind(this);
+    this.saveTheme = this.saveTheme.bind(this);
   };
   getStory = async () => {
     this.setState({loading: true});
@@ -831,7 +832,7 @@ class storyMap extends Component {
         )}
       </Formik>
         <Divider />
-          <Button rigth onClick={this.saveTheme} primary>
+          <Button rigth onClick={this.saveTheme} primary loading={this.state.saveThemeLoading}>
             <FormattedMessage id="app.story.map.savetheme" defaultMessage={'Save Theme'}/>
           </Button>
       </Tab.Pane>
