@@ -229,7 +229,7 @@ video {
   -o-transition: width 2s, height 2s;
   transition: width 2s, height 2s;
 }
-
+.ui.modal > .content {width: 'inherit'}
 .tablet.vertical.d19-9.content {
   width: 227px;
   height: 480px;

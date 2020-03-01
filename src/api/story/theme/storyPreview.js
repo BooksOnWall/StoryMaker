@@ -17,6 +17,7 @@ import CustomIcon from "../../../utils/Icon";
 export default class storyPreview extends Component {
     constructor(props) {
       super(props);
+      this.preview = React.createRef();
       this.state = {
         device: 'mobile', // tablet
         orientation: 'vertical', // horizontal
@@ -188,7 +189,7 @@ export default class storyPreview extends Component {
     }
     _handleWindowResize () {
       this.setState({
-        containerWidth: React.findDOMNode(this._containerTarget).offsetWidth
+        //containerWidth: React.findDOMNode(this.preview).offsetWidth
       });
     }
     render() {
@@ -211,12 +212,7 @@ export default class storyPreview extends Component {
                </Rail>
             </Form>
           </Modal.Actions>
-          <Modal.Content ref={node => {
-            // this callback executes before componentDidMount
-            if (node !== null) {
-              this._containerTarget = node;
-            }
-          }} className={mclass} scrolling>
+          <Modal.Content ref={this.preview} onChange={this.preview} className={mclass} scrolling>
             <div style={styleSheet.device}>
               <Header style={styleSheet.header}>
                   <CustomIcon name='menu'size='42'/>
