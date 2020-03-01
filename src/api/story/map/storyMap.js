@@ -664,10 +664,10 @@ class storyMap extends Component {
                  onClick={this.handleClick}
                >
                  <Icon name='dropdown' />
-                FONT
+                Fonts
                </Accordion.Title>
                <Accordion.Content active={activeIndex === 0}>
-                 <span className='label small'>Font 1: </span><br/>
+                 <span className='label small'>Font 1: </span>
                  <select
                    size='small'
                    name="font"
@@ -678,8 +678,7 @@ class storyMap extends Component {
                    >
                    <option key={0} disabled hidden value=''></option>
                    {this.state.fonts.map(font => <option key={font} value={font} style={{fontFamily: font}} > {font} </option>)}
-                 </select>
-                 <Divider/>
+                 </select><br/>
                  <span className='label small'>Font 2 : </span><br/>
                  <select
                    size='small'
@@ -690,8 +689,7 @@ class storyMap extends Component {
                    >
                    <option key={0} disabled hidden value=''></option>
                    {this.state.fonts.map(font => <option key={font} value={font} >{font}</option>)}
-                 </select>
-                 <Divider/>
+                 </select><br/>
                  <span className='label small'>Font 3: </span><br/>
                  <select
                    size='small'
@@ -702,16 +700,16 @@ class storyMap extends Component {
                    >
                    <option key={0} disabled hidden value=''></option>
                    {this.state.fonts.map(font => <option key={font} value={font} >{font}</option>)}
-                 </select>
-                 <Divider/>
+                 </select><br/>
                </Accordion.Content>
+               <Divider/>
                <Accordion.Title
                  active={activeIndex === 1}
                  index={1}
                  onClick={this.handleClick}
                >
                  <Icon name='dropdown' />
-                COLOR
+                Color
                </Accordion.Title>
                <Accordion.Content active={activeIndex === 1}>
                  <Input
@@ -735,7 +733,7 @@ class storyMap extends Component {
                     <div style={ cover } onClick={ this.handleClose1 }/>
                     <ChromePicker color={ this.state.theme.color1 }  onChangeComplete={ this.handleColor1 }/>
                   </div> : null }
-                 <Divider/>
+                 <br/>
                  <Input
                  fluid
                  transparent
@@ -757,7 +755,7 @@ class storyMap extends Component {
                     <div style={ cover } onClick={ this.handleClose2 }/>
                     <ChromePicker color={ this.state.theme.color2 }  onChangeComplete={ this.handleColor2 }/>
                   </div> : null }
-                 <Divider/>
+                  <br/>
                  <Input
                  fluid
                  transparent
@@ -779,15 +777,15 @@ class storyMap extends Component {
                     <div style={ cover } onClick={ this.handleClose3 }/>
                     <ChromePicker color={ this.state.theme.color3 }  onChangeComplete={ this.handleColor3 }/>
                   </div> : null }
-                 <Divider/>
                </Accordion.Content>
+               <Divider/>
                <Accordion.Title
                  active={activeIndex === 2}
                  index={2}
                  onClick={this.handleClick}
                >
                  <Icon name='dropdown' />
-                IMAGES
+                Images
                </Accordion.Title>
                <Accordion.Content active={activeIndex === 2}>
                  <Input
@@ -825,7 +823,6 @@ class storyMap extends Component {
                    />
                  {this.editGallery()}
                  {errors.gallery && touched.gallery && errors.gallery}
-                 <Divider/>
                </Accordion.Content>
              </Accordion>
           </Form>
