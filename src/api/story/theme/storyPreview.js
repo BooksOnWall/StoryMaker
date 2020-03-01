@@ -198,7 +198,7 @@ export default class storyPreview extends Component {
             </Form>
           </Modal.Actions>
           <Modal.Content className={mclass} scrolling>
-            <div  style={styleSheet.device}>
+            <div style={styleSheet.device}>
               <Header style={styleSheet.header}>
                   <CustomIcon name='menu'size='42'/>
                   <CustomIcon style={styleSheet.logo} name='bow-logo'/>
