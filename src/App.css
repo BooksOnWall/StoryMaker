@@ -96,7 +96,7 @@ video {
 .container-drag {
   height: 'inherit';
 }
-.mobile.vertical.d16-9 {
+.mobile.vertical.d16-9.content {
   width: 270px;
   height: 480px;
   backgroundColor: #00FF00;
@@ -105,7 +105,7 @@ video {
   -o-transition: width 2s, height 2s;
   transition: width 2s, height 2s;
 }
-.mobile.horizontal.d16-9 {
+.mobile.horizontal.d16-9.contentS {
   width: 480px;
   height: 270px;
   backgroundColor: #00FF00;
@@ -115,7 +115,7 @@ video {
   transition: width 2s, height 2s;
 }
 
-.tablet.vertical.d16-9 {
+.tablet.vertical.d16-9.content {
   width: 270px;
   height: 480px;
   backgroundColor: #00FF00;
@@ -124,7 +124,7 @@ video {
   -o-transition: width 2s, height 2s;
   transition: width 2s, height 2s;
 }
-.tablet.horizontal.d16-9 {
+.tablet.horizontal.d16-9.content {
   width: 480px;
   height: 270px;
   backgroundColor: #00FF00;
@@ -133,7 +133,7 @@ video {
   -o-transition: width 2s, height 2s;
   transition: width 2s, height 2s;
 }
-.mobile.vertical.d16-10 {
+.mobile.vertical.d16-10.content {
   width: 300px;
   height: 480px;
   backgroundColor: #00FF00;
@@ -142,7 +142,7 @@ video {
   -o-transition: width 2s, height 2s;
   transition: width 2s, height 2s;
 }
-.mobile.horizontal.d16-10 {
+.mobile.horizontal.d16-10.content {
   width: 480px;
   height: 300px;
   backgroundColor: #00FF00;
@@ -152,7 +152,7 @@ video {
   transition: width 2s, height 2s;
 }
 
-.tablet.vertical.d16-10 {
+.tablet.vertical.d16-10.content {
   width: 300px;
   height: 480px;
   backgroundColor: #00FF00;
@@ -161,7 +161,7 @@ video {
   -o-transition: width 2s, height 2s;
   transition: width 2s, height 2s;
 }
-.tablet.horizontal.d16-10 {
+.tablet.horizontal.d16-10.content {
   width: 480px;
   height: 300px;
   backgroundColor: #00FF00;
@@ -170,7 +170,7 @@ video {
   -o-transition: width 2s, height 2s;
   transition: width 2s, height 2s;
 }
-.mobile.vertical.d18-9 {
+.mobile.vertical.d18-9.content {
   width: 240px;
   height: 480px;
   backgroundColor: #00FF00;
@@ -179,7 +179,7 @@ video {
   -o-transition: width 2s, height 2s;
   transition: width 2s, height 2s;
 }
-.mobile.horizontal.d18-9 {
+.mobile.horizontal.d18-9.content {
   width: 480px;
   height: 240px;
   backgroundColor: #00FF00;
@@ -189,7 +189,7 @@ video {
   transition: width 2s, height 2s;
 }
 
-.tablet.vertical.d18-9 {
+.tablet.vertical.d18-9.content {
   width: 240px;
   height: 480px;
   backgroundColor: #00FF00;
@@ -198,7 +198,7 @@ video {
   -o-transition: width 2s, height 2s;
   transition: width 2s, height 2s;
 }
-.tablet.horizontal.d18-9 {
+.tablet.horizontal.d18-9.content {
   width: 480px;
   height: 240px;
   backgroundColor: #00FF00;
@@ -211,7 +211,7 @@ video {
   -o-transition: width 2s, height 2s;
   transition: width 2s, height 2s;
 }
-.mobile.vertical.d19-9 {
+.mobile.vertical.d19-9.content {
   width: 227px;
   height: 480px;
   backgroundColor: #00FF00;
@@ -220,7 +220,7 @@ video {
   -o-transition: width 2s, height 2s;
   transition: width 2s, height 2s;
 }
-.mobile.horizontal.d19-9 {
+.mobile.horizontal.d19-9.content {
   width: 480px;
   height: 227px;
   backgroundColor: #00FF00;
@@ -230,38 +230,38 @@ video {
   transition: width 2s, height 2s;
 }
 
-.tablet.vertical.d19-9 {
+.tablet.vertical.d19-9.content {
   width: 227px;
   height: 480px;
   backgroundColor: #00FF00;
   transition: width 2s, height 2s;
 }
-.tablet.horizontal.d19-9 {
+.tablet.horizontal.d19-9.content {
   width: 480px;
   height: 227px;
   backgroundColor: #00FF00;
   transition: width 2s, height 2s;
 }
-.mobile.vertical.d21-9 {
+.mobile.vertical.d21-9.content {
   width: 411px;
   height: 960px;
   backgroundColor: #00FF00;
   transition: width 2s, height 2s;
 }
-.mobile.horizontal.d21-9 {
+.mobile.horizontal.d21-9.content {
   width: 205px;
   height: 480px;
   backgroundColor: #00FF00;
   transition: width 2s, height 2s;
 }
 
-.tablet.vertical.d21-9 {
+.tablet.vertical.d21-9.content {
   width: 205px;
   height: 480px;
   backgroundColor: #00FF00;
   transition: width 2s, height 2s;
 }
-.tablet.horizontal.d21-9 {
+.tablet.horizontal.d21-content {
   width: 480px;
   height: 205px;
   backgroundColor: #00FF00;

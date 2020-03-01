@@ -33,6 +33,8 @@ export default class storyPreview extends Component {
         theme: this.props.theme,
         server: this.props.server,
         modal: this.props.modal,
+        containerWidth: 0,
+        containerHeight: 0,
         styleSheet: {
           wrap:{
             display:'flex',
@@ -170,6 +172,7 @@ export default class storyPreview extends Component {
           }
         }
       }
+      this._handleWindowResize = this._handleWindowResize.bind(this);
       this.togglePreviewOrientation = this.togglePreviewOrientation.bind(this);
     }
     componentDidMount = () => this.setState({modal: true})
@@ -177,6 +180,17 @@ export default class storyPreview extends Component {
     togglePreviewDevice = () => this.setState({device: (this.state.device === 'mobile') ? 'tablet' : 'mobile'})
     togglePreviewDisplay = (e) =>  this.setState({display: e.target.textContent.replace(":", "-")})
     togglePreviewClose = () => this.props.setModal();
+    componentDidMount = () => {
+        window.addEventListener('resize', this._handleWindowResize);
+    }
+    componentWillUnmount() {
+        window.removeEventListener('resize', this._handleWindowResize);
+    }
+    _handleWindowResize () {
+      this.setState({
+        containerWidth: React.findDOMNode(this._containerTarget).offsetWidth
+      });
+    }
     render() {
     const {styleSheet, display, device, orientation} = this.state;
     let mclass = device + ' ' + orientation + ' ' + display;
@@ -197,7 +211,12 @@ export default class storyPreview extends Component {
                </Rail>
             </Form>
           </Modal.Actions>
-          <Modal.Content className={mclass} scrolling>
+          <Modal.Content ref={node => {
+            // this callback executes before componentDidMount
+            if (node !== null) {
+              this._containerTarget = node;
+            }
+          }} className={mclass} scrolling>
             <div style={styleSheet.device}>
               <Header style={styleSheet.header}>
                   <CustomIcon name='menu'size='42'/>
