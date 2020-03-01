@@ -90,14 +90,14 @@ class Artists extends Component {
     <Container className="main" fluid>
       <Segment inverted className="view" >
         <Dimmer active={this.state.loading}>
-          <Loader active={this.state.loading} >Get users info</Loader>
+          <Loader className='loader' active={this.state.loading} >Get users info</Loader>
         </Dimmer>
         <Header as={Segment} vertical size='large'>
-            {<FormattedMessage id="app.artists.title" defaultMessage={`Artists`}/>}          
+            {<FormattedMessage id="app.artists.title" defaultMessage={`Artists`}/>}
           <Link to="/artists/0">
-            <Button primary size='large' icon floated='right' >
+            <Button primary size='small' icon floated='right' >
                 <Icon name='plus' />
-            </Button>         
+            </Button>
           </Link>
         </Header>
           <Table inverted striped selectable sortable>

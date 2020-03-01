@@ -700,7 +700,7 @@ class Artist extends Component {
     <Container className="main artist" fluid>
       <Dimmer.Dimmable as={Segment} inverted className='view' blurring dimmed={this.state.loading}>
         <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
-        <Loader active={this.state.loading} >Get artist info</Loader>
+        <Loader className='loader' active={this.state.loading} >Get artist info</Loader>
 
         <Header as={Segment} vertical size='medium'>
             {(this.state.mode === 'create') ? <FormattedMessage id="app.artist.title.create" defaultMessage={`Create Artist`}/> : <FormattedMessage id="app.artist.title.edit" defaultMessage={`Edit Artist`}/> }

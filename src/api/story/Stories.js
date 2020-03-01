@@ -90,7 +90,7 @@ class Stories extends Component {
       <Dimmer.Dimmable as={Segment} inverted className="view" blurring dimmed={this.state.loading}>
           <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
               <Dimmer active={this.state.loading}>
-                <Loader active={this.state.loading} >
+                <Loader className='loader' active={this.state.loading} >
               <FormattedMessage id="app.story.stories.getuser"  defaultMessage={'Get users info'} />
               </Loader>
               </Dimmer>

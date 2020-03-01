@@ -207,14 +207,14 @@ class stagesMap extends Component {
     const {viewport, interactiveLayerIds, loading} = this.state;
 
     return (
-      <Segment  className="stagesMap" >
+      <Segment  className="stagesMap">
         <Dimmer.Dimmable as={Segment} blurring dimmed={loading}>
           <Dimmer active={loading} onClickOutside={this.handleHide} />
-          <Loader active={loading} ><FormattedMessage id="app.story.map.stagemap.getmapinfo"  defaultMessage={"Get Map Info"} /></Loader>
+          <Loader className='loader' active={loading} ><FormattedMessage id="app.story.map.stagemap.getmapinfo"  defaultMessage={"Get Map Info"} /></Loader>
             <MapGL
               {...viewport}
               width="inherit"
-              height="85vh"
+              height="76.5vh"
               mapStyle={this.state.mapStyle}
               clickRadius={2}
               onClick={this.onClick}
