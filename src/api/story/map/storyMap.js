@@ -853,17 +853,17 @@ class storyMap extends Component {
     return (
       <Dimmer.Dimmable as={Segment} blurring dimmed={loading}>
           <Dimmer active={loading} onClickOutside={this.handleHide} />
-          <Loader active={loading} ><FormattedMessage id="app.story.map.getmapinfo" defaultMessage={`Get map info`}/></Loader>
+          <Loader className='loader' active={loading} ><FormattedMessage id="app.story.map.getmapinfo" defaultMessage={`Get map info`}/></Loader>
         <Segment.Group horizontal>
-        <Segment className='mapPref' inverted style={{ height: '87vh', width: '40vw', padding: '20px',  overflow: 'scroll'}}>
+        <Segment className='mapPref' inverted style={{ height: '84vh', width: '40vw', padding: '1em', overflow: 'scroll'}}>
           <Tab menu={{ inverted: true, pointing: true }} panes={panes} />
           <StoryPreview server={this.state.server} theme={this.state.theme} story={this.state.story} modal={this.state.modal} setModal={this.setModal}/>
         </Segment>
-        <Segment  className="view map" >
+        <Segment  className="view map" style={{ height: '82vh', width: '60vw', overflow: 'hidden'}} >
               <MapGL
                 {...viewport}
                 width="60vw"
-                height="87vh"
+                height="82vh"
                 className= "mapBox"
                 mapStyle={mapStyle}
                 onViewportChange={this.onViewportChange}

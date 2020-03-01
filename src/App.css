@@ -303,12 +303,12 @@ video {
 }
 .ui.header.segment{
   margin: 0 ;
-  padding: 10px 31px !important ;
+  padding: 14px !important ;
   width:100%;
   text-transform: uppercase ;
   font-size: .85em !important;
   font-weight: normal;
-  text-align: right;
+  text-align: center;
   color: #777 !important
 
 }
@@ -406,8 +406,8 @@ padding: 1em;
 div.DraftEditor-root {
   width:100%;
   margin:auto;
-  box-shadow: 0px 0px 6px 1px rgba(0,0,0,0.5);
-  height: 58vh;
+  box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.5);
+  height: 62vh;
   padding: 20px 5px;
   font-size: 18px;
   font-family: 'calibri', sans-serif;
@@ -687,7 +687,7 @@ width: 100%;
 
 .ui.icon.header{ text-align: right !important; }
 
-.ui.segment .ui.header .icon{ padding: 10px; margin-top: -6px}
+.ui.segment .ui.header .icon{ padding: 6px; margin-top: -6px}
 .ui.segment .ui.header .icon i { margin: 0px; padding:0 }
 
 .ui.visible.left.sidebar ~ .fixed, .ui.visible.left.sidebar ~ .pusher{transform: translate3d(160px,0,0) !important;}
@@ -696,6 +696,9 @@ width: 100%;
 .ui.fluid.steps, .ui.steps .step:first-child, .ui.steps .step:first-child, .ui.steps .step:last-child{border-radius: 0 !important; margin: 0 !important}
 .ui.fluid.steps.inverted{border-color: #222 !important}
 .ui.fluid.steps.inverted .step{ background: #1f1f1f  !important; color: #666 !important; border-color: #333}
+.ui.container.main .ui.steps{  -webkit-box-shadow: 0px 1px 1px -1px rgba(0,0,0,0.75);
+            -moz-box-shadow: 0px 1px 1px -1px rgba(0,0,0,0.75);
+            box-shadow: 0px 1px 1px -1px rgba(0,0,0,0.75) !important;}
 .ui.steps.inverted .step.active{ background: #111 !important;}
 .ui.steps.inverted .step.active::after, .ui.steps .step::after{ background: #111 !important; border-color: #333}
 .ui.steps .step.active .title{ color:#fff !important}
@@ -704,8 +707,8 @@ width: 100%;
 .ui.fluid.steps.inverted .icon{ color: #444 !important}
 .ui.segment.view.story, #StepsContent.ui.segment.view {padding: 0 !important; }
 .ui.segment.view.story, #StepsContent.ui.segment{ padding: 0 !important; margin: 0 !important}
-.ui.segment.stagesMap{ padding: 0 !important; height: 78vh !important;}
-.ui.segment.stages { padding: 0 .71em 0 !important; max-height: 87vh; overflow: scroll; border-radius: 3px}
+#StepsContent .ui.segment.stagesMap{ padding: 0 !important; margin: 0 .3em !important; border-radius: 3px !important; overflow: hidden;}
+.ui.segment.stages { padding: 0 .71em 0 !important; max-height: 87vh; overflow: scroll; }
 .ui.segment .navStage{ padding-right: 15px; margin-top: 25px !important}
 
 .ui.buttons{ padding: 0 0 1em}
@@ -768,6 +771,8 @@ margin-right: -4rem;}
 #StepsContent .segment, #StepsContent .segments, .ui.segment.stageCol{ margin: 0 !important; border: 0 !important}
 #StepsContent .segments .segment{ margin: 0 ;}
 #StepsContent .segments.horizontal .segment{ padding: 0}
+#StepsContent .ui.segment.view.map{padding: 0 !important; margin: 1em !important; border-radius: 3px !important; overflow: hidden;}
+
 .ui.segment.stageCol { border: 0px solid #222 !important}
 
 #login .ui.form input, #signup .ui.form input, #login .button, #signup button, #users .ui.form input{ margin: 5px 0 !important;}
@@ -845,11 +850,11 @@ margin-right: -4rem;}
 .exportMessage, .exportMessage div{ background: #1B1C1D !important; color:#fff}
 .exportMessage div.header{ color: #fff !important}
 
-.ui.segment.view.map{padding: 0 !important;}
+.ui.segment.view.map{padding: 0 !important; margin: .3em !importatn}
 .ui.segment.active.tab{padding: 15px !important}
 .ui.menu .item::before { display: none}
 
-::selection{
-
-    background-color: #111 !important; color: #f1f1f1
-}
+::selection{ background-color: #111 !important; color: #666}
+.ui.segment .loader.content { font-size: .9em !important }
+.ui.dimmer .ui.text.loader { font-size: .9em !important }
+.ui.dimmer{ font-size: .9em !important}

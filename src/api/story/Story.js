@@ -576,7 +576,7 @@ class Story extends Component {
       <Container fluid className="main">
         <Dimmer.Dimmable as={Segment} inverted className="view " blurring dimmed={this.state.loading}>
           <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
-          <Loader active={this.state.loading} >Get story info</Loader>
+          <Loader className='loader' active={this.state.loading} >Get story info</Loader>
             <Header as={Segment} vertical size='medium'>
                 {(this.state.mode === 'create') ? <FormattedMessage id="app.story.create" defaultMessage={`Create Story`}/> : <FormattedMessage id="app.story.edit" defaultMessage={`Edit Story`}/> }
             </Header>
