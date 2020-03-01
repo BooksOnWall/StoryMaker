@@ -13,49 +13,49 @@ body{
 }
 @font-face {
   font-family: "ATypewriterForMe";
-  src: local('ATypewriterForMe'), url("./semantic-ui/site/assets/fonts/ATypewriterForMe.otf") format("otf");
+  src: local('ATypewriterForMe'), url("./semantic-ui/site/assets/fonts/ATypewriterForMe.otf") format("opentype");
   font-weight: 300;
   font-style: normal;
 }
 @font-face {
   font-family: "BadScript-Regular";
-  src: local('BadScript-Regular'), url("./semantic-ui/site/assets/fonts/BadScript-Regular.otf") format("otf");
+  src: local('BadScript-Regular'), url("./semantic-ui/site/assets/fonts/BadScript-Regular.otf") format("opentype");
   font-weight: 300;
   font-style: normal;
 }
 @font-face {
   font-family: "OpenSansCondensed-Bold";
-  src: local('OpenSansCondensed-Bold'), url("./semantic-ui/site/assets/fonts/OpenSansCondensed-Bold.otf") format("otf");
+  src: local('OpenSansCondensed-Bold'), url("./semantic-ui/site/assets/fonts/OpenSansCondensed-Bold.otf") format("opentype");
   font-weight: 700;
   font-style: bold;
 }
 @font-face {
   font-family: "OpenSansCondensed-Light";
-  src: local('OpenSansCondensed-Light'),  url("./semantic-ui/site/assets/fonts/OpenSansCondensed-Light.otf")  format("otf");
+  src: local('OpenSansCondensed-Light'),  url("./semantic-ui/site/assets/fonts/OpenSansCondensed-Light.otf")  format("opentype");
   font-weight: 200;
   font-style: Light;
 }
 @font-face {
   font-family: "TrashHand";
-  src: local('TrashHand'), url("./semantic-ui/site/assets/fonts/TrashHand.otf") format("otf");
+  src: local('TrashHand'), url("./semantic-ui/site/assets/fonts/TrashHand.otf") format("opentype");
   font-weight: 300;
   font-style: normal;
 }
 @font-face {
   font-family: "Typewriterhand";
-  src: local('Typewriterhand'), url("./semantic-ui/site/assets/fonts/Typewriterhand.otf") format("otf");
+  src: local('Typewriterhand'), url("./semantic-ui/site/assets/fonts/Typewriterhand.otf") format("opentype");
   font-weight: 300;
   font-style: normal
 }
 @font-face {
   font-family: "WaitingfortheSunrise";
-  src: local('WaitingfortheSunrise'),  url("./semantic-ui/site/assets/fonts/WaitingfortheSunrise.otf")  format("otf");
+  src: local('WaitingfortheSunrise'),  url("./semantic-ui/site/assets/fonts/WaitingfortheSunrise.otf")  format("opentype");
   font-weight: 300;
   font-style: normal;
 }
 @font-face {
-  font-family: "booksonwall";
-  src: local('booksonwall'), url("./semantic-ui/site/assets/fonts/booksonwall.ttf") format("ttf");
+  font-family: "Booksonwall";
+  src: local('Booksonwall'), url("./semantic-ui/site/assets/fonts/booksonwall.ttf") format("ttf");
   font-weight: 300;
   font-style: normal;
 }
@@ -100,12 +100,18 @@ video {
   width: 270px;
   height: 480px;
   backgroundColor: #00FF00;
+  -webkit-transition: width 2s, height 2s;
+  -moz-transition: width 2s, height 2s;
+  -o-transition: width 2s, height 2s;
   transition: width 2s, height 2s;
 }
 .mobile.horizontal.d16-9 {
   width: 480px;
   height: 270px;
   backgroundColor: #00FF00;
+  -webkit-transition: width 2s, height 2s;
+  -moz-transition: width 2s, height 2s;
+  -o-transition: width 2s, height 2s;
   transition: width 2s, height 2s;
 }
 
@@ -113,24 +119,36 @@ video {
   width: 270px;
   height: 480px;
   backgroundColor: #00FF00;
+  -webkit-transition: width 2s, height 2s;
+  -moz-transition: width 2s, height 2s;
+  -o-transition: width 2s, height 2s;
   transition: width 2s, height 2s;
 }
 .tablet.horizontal.d16-9 {
   width: 480px;
   height: 270px;
   backgroundColor: #00FF00;
+  -webkit-transition: width 2s, height 2s;
+  -moz-transition: width 2s, height 2s;
+  -o-transition: width 2s, height 2s;
   transition: width 2s, height 2s;
 }
 .mobile.vertical.d16-10 {
   width: 300px;
   height: 480px;
   backgroundColor: #00FF00;
+  -webkit-transition: width 2s, height 2s;
+  -moz-transition: width 2s, height 2s;
+  -o-transition: width 2s, height 2s;
   transition: width 2s, height 2s;
 }
 .mobile.horizontal.d16-10 {
   width: 480px;
   height: 300px;
   backgroundColor: #00FF00;
+  -webkit-transition: width 2s, height 2s;
+  -moz-transition: width 2s, height 2s;
+  -o-transition: width 2s, height 2s;
   transition: width 2s, height 2s;
 }
 
@@ -138,24 +156,36 @@ video {
   width: 300px;
   height: 480px;
   backgroundColor: #00FF00;
+  -webkit-transition: width 2s, height 2s;
+  -moz-transition: width 2s, height 2s;
+  -o-transition: width 2s, height 2s;
   transition: width 2s, height 2s;
 }
 .tablet.horizontal.d16-10 {
   width: 480px;
   height: 300px;
   backgroundColor: #00FF00;
+  -webkit-transition: width 2s, height 2s;
+  -moz-transition: width 2s, height 2s;
+  -o-transition: width 2s, height 2s;
   transition: width 2s, height 2s;
 }
 .mobile.vertical.d18-9 {
   width: 240px;
   height: 480px;
   backgroundColor: #00FF00;
+  -webkit-transition: width 2s, height 2s;
+  -moz-transition: width 2s, height 2s;
+  -o-transition: width 2s, height 2s;
   transition: width 2s, height 2s;
 }
 .mobile.horizontal.d18-9 {
   width: 480px;
   height: 240px;
   backgroundColor: #00FF00;
+  -webkit-transition: width 2s, height 2s;
+  -moz-transition: width 2s, height 2s;
+  -o-transition: width 2s, height 2s;
   transition: width 2s, height 2s;
 }
 
@@ -163,24 +193,40 @@ video {
   width: 240px;
   height: 480px;
   backgroundColor: #00FF00;
+  -webkit-transition: width 2s, height 2s;
+  -moz-transition: width 2s, height 2s;
+  -o-transition: width 2s, height 2s;
   transition: width 2s, height 2s;
 }
 .tablet.horizontal.d18-9 {
   width: 480px;
   height: 240px;
   backgroundColor: #00FF00;
+  -webkit-transition: width 2s, height 2s;
+  -moz-transition: width 2s, height 2s;
+  -o-transition: width 2s, height 2s;
+  transition: width 2s, height 2s;
+  -webkit-transition: width 2s, height 2s;
+  -moz-transition: width 2s, height 2s;
+  -o-transition: width 2s, height 2s;
   transition: width 2s, height 2s;
 }
 .mobile.vertical.d19-9 {
   width: 227px;
   height: 480px;
   backgroundColor: #00FF00;
+  -webkit-transition: width 2s, height 2s;
+  -moz-transition: width 2s, height 2s;
+  -o-transition: width 2s, height 2s;
   transition: width 2s, height 2s;
 }
 .mobile.horizontal.d19-9 {
   width: 480px;
   height: 227px;
   backgroundColor: #00FF00;
+  -webkit-transition: width 2s, height 2s;
+  -moz-transition: width 2s, height 2s;
+  -o-transition: width 2s, height 2s;
   transition: width 2s, height 2s;
 }
 
