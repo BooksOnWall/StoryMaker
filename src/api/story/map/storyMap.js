@@ -113,9 +113,9 @@ class storyMap extends Component {
         'WaitingfortheSunrise'
       ],
       theme: {
-        font1: 'TrashHand',
-        font2: 'BadScript-Regular',
-        font3: 'ATypewriterForMe',
+        font1: this.props.story.design_options.font1,
+        font2: this.props.story.design_options.font2,
+        font3: this.props.story.design_options.font3,
         banner: {
           name: null,
           path: null,
@@ -123,9 +123,9 @@ class storyMap extends Component {
           type: null
         },
         gallery: [],
-        color1: '#9E1C00',
-        color2: '#D1D2D3',
-        color3: '#4B4F53'
+        color1: this.props.story.design_options.color1,
+        color2: this.props.story.design_options.color2,
+        color3: this.props.story.design_options.color3
       },
       activeIndex: 0,
       saveThemeLoading: false,
@@ -606,14 +606,14 @@ class storyMap extends Component {
     // console.log('name',e.target.name);
     // console.log('value',e.target.value);
       this.setState({ theme: {
-      banner: this.state.theme.banner,
+      banner: (e.name === 'banner') ? e.target.value: this.state.theme.banner,
       font1: (e.name === 'font1') ? e.target.value: this.state.theme.font1,
       font2: (e.name === 'font2') ? e.target.value: this.state.theme.font2,
       font3: (e.name === 'font3') ? e.target.value: this.state.theme.font3,
-      gallery: this.state.theme.gallery,
-      color1: this.state.theme.color1,
-      color2: this.state.theme.color2,
-      color3: this.state.theme.color3
+      gallery: (e.name === 'gallery') ? e.target.value: this.state.theme.gallery,
+      color1: (e.name === 'color1') ? e.target.value: this.state.theme.color1,
+      color2: (e.name === 'color2') ? e.target.value: this.state.theme.color2,
+      color3: (e.name === 'color3') ? e.target.value: this.state.theme.color3
     } });
   }
   themePrefs = () => {

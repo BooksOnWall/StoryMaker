@@ -51,6 +51,7 @@ class Story extends Component {
       map:  '/stories/' + this.props.match.params.id + '/map',
       loading: null,
       data: null,
+      story: null,
       title: '',
       state: '',
       city: '',
@@ -333,6 +334,7 @@ class Story extends Component {
             this.setState({sid: story.id, title: story.title, artist: story.artist});
             this.setState({initialSValues: story});
             this.setState({loading: false});
+            this.setState({story: story});
             return story;
           } else {
             console.log('No Data received from the server');
@@ -585,7 +587,7 @@ class Story extends Component {
                 {(this.state.step === 'Story') ? this.EditForm() : '' }
                 {(this.state.step === 'Sinopsys') ? this.EditSino() : '' }
                 {(this.state.step === 'Credits') ? this.EditCred() : '' }
-                {(this.state.step === 'Map') ? <StoryMap sid={this.state.sid}  history={this.props.history} step={this.state.step} state={this.state} /> : '' }
+                {(this.state.step === 'Map') ? <StoryMap sid={this.state.sid}  history={this.props.history} step={this.state.step} state={this.state} story={this.state.story}/> : '' }
                 {(this.state.step === 'Stages') ? <StoryStages sid={this.state.sid} history={this.props.history} step={this.state.step} state={this.state} />  : '' }
               </Segment>
         </Dimmer.Dimmable>
