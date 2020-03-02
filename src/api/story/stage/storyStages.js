@@ -513,7 +513,7 @@ class storyStages extends Component {
     return (
       <Dimmer.Dimmable as={Segment} clearing inverted blurring dimmed={this.state.loading}>
           <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
-            <Segment inverted>
+            <Segment inverted className="stagesBar">
                 <Button  primary onClick={this.handleCreate}><Icon name="plus" /><FormattedMessage id="app.stage.storystage.addstage" defaultMessage={`Add`} /></Button>
                 <Button.Group floated='right'>
                   <Button basic color='teal' loading={this.state.importLoading} onClick={() => this.fileInputRef.current.click()}><Icon name="cloud upload" /><FormattedMessage id="app.stage.storystage.import" defaultMessage={`import`} /></Button>

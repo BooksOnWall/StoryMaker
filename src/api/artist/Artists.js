@@ -100,7 +100,7 @@ class Artists extends Component {
             </Button>
           </Link>
         </Header>
-          <Table inverted striped selectable sortable>
+          <Table inverted selectable sortable>
           <Table.Header className='slide-out' >
             <Table.Row>
               <Table.HeaderCell

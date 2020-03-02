@@ -35,16 +35,13 @@ class LeftSlideMenu extends Component {
                 <Icon size='large' name='dashboard' /><span className='text'>Dashboard</span>
               </Menu.Item>
 
-              <Divider inverted />
               <Menu.Item name='artists' active={this.state.activeItem === 'artists'} onClick={this.handleItemClick} as={Link} to='/artists'  >
                 <Icon size='large' name='paint brush' /><span className='text'>Artists</span>
               </Menu.Item>
-              <Divider inverted />
               <Menu.Item name='stories' active={this.state.activeItem === 'stories'} onClick={this.handleItemClick} as={Link} to='/stories'  >
                 <Icon size='large' name='book' /><span className='text'>Stories</span>
               </Menu.Item>
-              
-              <Divider inverted />
+
               <Menu.Item name='logout' className='logout' active={this.state.activeItem === 'logout'} onClick={this.handleItemClick} as={Link} to='/logout' >
                 <Icon name='log out' /><span className='text'>Logout</span>
               </Menu.Item>

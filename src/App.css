@@ -276,7 +276,7 @@ video {
   background: transparent none no-repeat;
   border: none;
 }
-.rdw-option-wrapper,.rdw-embedded-modal,.rdw-image-modal,.rdw-emoji-modal, .rdw-colorpicker-modal-style-label, .rdw-link-modal,  .rdw-dropdown-selectedtext, .rdw-dropdown-optionwrapper, .rdw-dropdownoption-default,  .rdw-dropdownoption-active, .rdw-dropdown-carettoclose, .rdw-fontfamily-placeholder, rdw-dropdown-wrapper, rdw-editor-toolbar  {
+.rdw-option-wrapper,.rdw-embedded-modal,.rdw-image-modal,.rdw-emoji-modal, .rdw-colorpicker-modal-style-label, .rdw-link-modal,  .rdw-dropdown-selectedtext, .rdw-dropdown-optionwrapper, .rdw-dropdownoption-default,  .rdw-dropdownoption-active, .rdw-dropdown-carettoclose, .rdw-fontfamily-placeholder, .rdw-dropdown-wrapper, .rdw-editor-toolbar  {
   color: #FFF !important;
   background: #333;
   border: none;
@@ -420,6 +420,9 @@ div.DraftEditor-root {
 
 .ui.stages .inverted.table thead{top: 0;  }
 .ui.stages .inverted.table thead th{position: relative; }
+
+.ui.inverted.table{background-color: rgba(0, 0, 0, .0) !important;}
+
 .dropzone {
   flex: 1;
   display: flex;
@@ -641,8 +644,9 @@ width: 100%;
   color: white;
 }
 .menu a span {   text-transform: uppercase; font-size: 10px; font-weight: bold}
-.menu a.active{
-    background: #333 !important;
+.bwSidebarMenu.menu a.active{
+    background: #000 !important;
+    opacity: .5
 }
 @media screen and (max-width: 768px) {
   .menu a {
@@ -770,8 +774,9 @@ margin-right: -4rem;}
 .ui.inverted.segment.stages{ padding: 0 !important; margin: 0 !important }
 #StepsContent .segment, #StepsContent .segments, .ui.segment.stageCol{ margin: 0 !important; border: 0 !important}
 #StepsContent .segments .segment{ margin: 0 ;}
+#StepsContent .segment .stagesBar { padding: .8em .7em;}
 #StepsContent .segments.horizontal .segment{ padding: 0}
-#StepsContent .ui.segment.view.map{padding: 0 !important; margin: 1em !important; border-radius: 3px !important; overflow: hidden;}
+#StepsContent .ui.segment.view.map{padding: 0 !important; margin: 1em 1em 1em .5em !important; border-radius: 3px !important; overflow: hidden;}
 
 .ui.segment.stageCol { border: 0px solid #222 !important}
 
