@@ -17,7 +17,7 @@ import CustomIcon from "../../../utils/Icon";
 export default class storyPreview extends Component {
     constructor(props) {
       super(props);
-      let bannerPath = this.props.server+this.props.theme.banner.path;
+
       this.state = {
         device: 'mobile', // tablet
         orientation: 'vertical', // horizontal
@@ -32,7 +32,6 @@ export default class storyPreview extends Component {
         loading: false,
         story: this.props.story,
         theme: this.props.theme,
-        bannerPath: bannerPath,
         server: this.props.server,
         modal: this.props.modal,
         containerWidth: 0,
@@ -50,7 +49,7 @@ export default class storyPreview extends Component {
     let mclass = device + ' ' + orientation + ' ' + display;
     let story = this.props.story;
     let theme = this.props.theme;
-
+    let bannerPath = 'transparent url('+ this.props.server + theme.banner.path + ') no-repeat top left';
     let styleSheet = {
       wrap:{
         display:'flex',
@@ -88,7 +87,7 @@ export default class storyPreview extends Component {
         flexGrow: 1,
       },
       tile: {
-        background: this.bannerPath,
+        background: bannerPath,
         backgroundSize: 'cover',
         display: 'flex',
         alignSelf: 'stretch',
@@ -189,6 +188,7 @@ export default class storyPreview extends Component {
     };
     console.log(styleSheet);
     let modal = this.props.modal;
+
    return (!modal) ? null : (
         <Modal basic dimmer='blurring' closeIcon style={styleSheet.modal}
           onClose={this.togglePreviewClose}
