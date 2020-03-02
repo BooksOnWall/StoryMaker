@@ -209,9 +209,8 @@ class storyMap extends Component {
     // check if user is logged in on refresh
     try {
       await this.state.toggleAuthenticateStatus;
-
-      await this.getStory();
       await this.getTheme();
+      await this.getStory();
       await this.getMapPreferences();
 
       //await this.setState({loading: true});
@@ -637,7 +636,7 @@ class storyMap extends Component {
     console.log(this.state.theme.font1);
   }
   themePrefs = () => {
-     const { activeIndex } = this.state;
+     let { modal, activeIndex } = this.state;
      const popover = {
       position: 'absolute',
       zIndex: '2',
@@ -656,7 +655,7 @@ class storyMap extends Component {
     }
     return (
       <Tab.Pane attached={false} inverted>
-        <StoryPreview server={this.state.server} theme={this.state.theme} story={this.state.story} modal={this.state.modal} setModal={this.setModal}/>
+        <StoryPreview server={this.state.server} theme={this.state.theme} story={this.state.story} modal={modal} setModal={this.setModal}/>
         <Button  style={eye} floated='right' secondary onClick={this.setModal}>
           <Icon name='eye' /><FormattedMessage id="app.story.map.preview" defaultMessage={'Preview'}/>
         </Button>
