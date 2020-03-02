@@ -17,7 +17,7 @@ import CustomIcon from "../../../utils/Icon";
 export default class storyPreview extends Component {
     constructor(props) {
       super(props);
-      this.preview = React.createRef();
+
       this.state = {
         device: 'mobile', // tablet
         orientation: 'vertical', // horizontal
@@ -36,144 +36,7 @@ export default class storyPreview extends Component {
         modal: this.props.modal,
         containerWidth: 0,
         containerHeight: 0,
-        styleSheet: {
-          wrap:{
-            display:'flex',
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
-            alignItems: 'flex-start',
-          },
-          device: {
-            color: '#FFF',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-start',
-            alignItems: 'stretch',
-            backgroundColor: '#FFDD00',
-          },
-          options: {
-            display: 'flex',
-            background: "transparent",
-            paddingRight: 20,
-          },
-          header: {
-            display:'flex',
-            background: '#ccc',
-            justifyContent: 'space-around',
-            alignSelf: 'stretch',
-            flexGrow: 1,
-            padding: 20,
-            margin: 0,
-            },
-          logo: {
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            alignContent: 'center',
-            flexGrow: 1,
-          },
-          tile: {
-            background: 'transparent url('+ this.props.server+this.props.theme.banner.path+') no-repeat top left',
-            backgroundSize: 'cover',
-            display: 'flex',
-            alignSelf: 'stretch',
-            flexGrow: 1,
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: 20,
-            margin: 0,
-            marginBottom: 3,
-          },
-          tileTitle: {
-            display: 'flex',
-            alignSelf: 'stretch',
-            justifyContent: 'center',
-            flexGrow: 1,
-            fontFamily: this.props.theme.font1,
-            color: '#fff',
-            textShadowColor: 'rgba(0, 0, 0, 0.75)',
-            textShadowOffset: {width: 0, height: 1},
-            textShadowRadius: 10,
-            margin: 0,
-            padding: 0,
-          },
-          tileSubtitle: {
-            display: 'flex',
-            alignSelf: 'stretch',
-            justifyContent: 'center',
-            flexGrow: 1,
-            color: '#fff',
-            fontFamily: this.props.theme.font2,
-            textShadowColor: 'rgba(0, 0, 0, 0.75)',
-            textShadowOffset: {width: -1, height: 1},
-            textShadowRadius: 10,
-            margin: 0,
-            padding: 0,
-            fontSize: 14,
-          },
-          card:{
-            display: 'flex',
-            flexDirection: 'column',
-            alignContent: 'stretch',
-            overflow: 'scroll',
-          },
-          sinopsys:{
-            background: '#fff',
-            color: '#000',
-            padding: '40px',
-            fontFamily: this.props.theme.font2,
-          },
-          credits:{
-            background: this.props.theme.color1,
-            color: this.props.theme.color3,
-            fontFamily: this.props.theme.font3,
-            fontSize: 13,
-            marginTop: 1,
-            marginBottom: 1,
-            padding: 30,
-            lineHeight: 20,
-            letterSpacing: 0,
-          },
-          gallery:{
-            background: this.props.theme.color3,
-            display: 'flex',
-          },
-          titleCredits:{
-            color: this.props.theme.color3,
-            textTransform:'uppercase',
-            fontSize: '20px'
-          },
-          nav:{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-around',
-            alignItems: 'stretch',
-            background: this.props.theme.color2,
-            padding: 20,
-            color: this.props.theme.color1,
-          },
-          menu:{
-            display: 'flex',
-            flexDirection: 'row',
-          },
-          message:{
-
-          },
-          transport: {
-            display: 'flex',
-            flexDirection: 'row',
-            fontSize: 12,
-            backgroundColor: '#4B4F53',
-            borderWidth: 0,
-            borderColor: '#d2d2d2',
-            minHeight: 40,
-            maxHeight: 40,
-            margin: 0,
-          }
-        }
       }
-      this._handleWindowResize = this._handleWindowResize.bind(this);
       this.togglePreviewOrientation = this.togglePreviewOrientation.bind(this);
     }
     componentDidMount = () => this.setState({modal: true})
@@ -181,29 +44,159 @@ export default class storyPreview extends Component {
     togglePreviewDevice = () => this.setState({device: (this.state.device === 'mobile') ? 'tablet' : 'mobile'})
     togglePreviewDisplay = (e) =>  this.setState({display: e.target.textContent.replace(":", "-")})
     togglePreviewClose = () => this.props.setModal();
-    componentDidMount = () => {
-        window.addEventListener('resize', this._handleWindowResize);
-    }
-    componentWillUnmount() {
-        window.removeEventListener('resize', this._handleWindowResize);
-    }
-    _handleWindowResize () {
-      this.setState({
-        //containerWidth: React.findDOMNode(this.preview).offsetWidth
-      });
-    }
     render() {
-    const {styleSheet, display, device, orientation} = this.state;
+    let {display, device, orientation} = this.state;
     let mclass = device + ' ' + orientation + ' ' + display;
     let story = this.props.story;
-    return (!this.props.story) ?  null :  (
+    let theme = this.props.theme;
+    let bannerPath = 'transparent url('+ this.props.server + theme.banner.path + ') no-repeat top left';
+    let styleSheet = {
+      wrap:{
+        display:'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+      },
+      device: {
+        color: '#FFF',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'stretch',
+        backgroundColor: '#FFDD00',
+      },
+      options: {
+        display: 'flex',
+        background: "transparent",
+        paddingRight: 20,
+      },
+      header: {
+        display:'flex',
+        background: '#ccc',
+        justifyContent: 'space-around',
+        alignSelf: 'stretch',
+        flexGrow: 1,
+        padding: 20,
+        margin: 0,
+        },
+      logo: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignContent: 'center',
+        flexGrow: 1,
+      },
+      tile: {
+        background: bannerPath,
+        backgroundSize: 'cover',
+        display: 'flex',
+        alignSelf: 'stretch',
+        flexGrow: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 20,
+        margin: 0,
+        marginBottom: 3,
+      },
+      tileTitle: {
+        display: 'flex',
+        alignSelf: 'stretch',
+        justifyContent: 'center',
+        flexGrow: 1,
+        fontFamily: theme.font1,
+        color: '#fff',
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowOffset: {width: 0, height: 1},
+        textShadowRadius: 10,
+        margin: 0,
+        padding: 0,
+      },
+      tileSubtitle: {
+        display: 'flex',
+        alignSelf: 'stretch',
+        justifyContent: 'center',
+        flexGrow: 1,
+        color: '#fff',
+        fontFamily: theme.font2,
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowOffset: {width: -1, height: 1},
+        textShadowRadius: 10,
+        margin: 0,
+        padding: 0,
+        fontSize: 14,
+      },
+      card:{
+        display: 'flex',
+        flexDirection: 'column',
+        alignContent: 'stretch',
+        overflow: 'scroll',
+      },
+      sinopsys:{
+        background: '#fff',
+        color: '#000',
+        padding: '40px',
+        fontFamily: theme.font2,
+      },
+      credits:{
+        background: theme.color1,
+        color: theme.color3,
+        fontFamily: theme.font3,
+        fontSize: 13,
+        marginTop: 1,
+        marginBottom: 1,
+        padding: 30,
+        lineHeight: 20,
+        letterSpacing: 0,
+      },
+      gallery:{
+        background: theme.color3,
+        display: 'flex',
+      },
+      titleCredits:{
+        color: theme.color3,
+        textTransform:'uppercase',
+        fontSize: '20px'
+      },
+      nav:{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-around',
+        alignItems: 'stretch',
+        background: theme.color2,
+        padding: 20,
+        color: theme.color1,
+      },
+      menu:{
+        display: 'flex',
+        flexDirection: 'row',
+      },
+      message:{
+
+      },
+      transport: {
+        display: 'flex',
+        flexDirection: 'row',
+        fontSize: 12,
+        backgroundColor: '#4B4F53',
+        borderWidth: 0,
+        borderColor: '#d2d2d2',
+        minHeight: 40,
+        maxHeight: 40,
+        margin: 0,
+      }
+    };
+    console.log(styleSheet);
+    let modal = this.props.modal;
+
+   return (!modal) ? null : (
         <Modal basic dimmer='blurring' closeIcon style={styleSheet.modal}
           onClose={this.togglePreviewClose}
-          open={this.props.modal}
+          open={modal}
           centered={false} >
           <Modal.Actions>
             <Form style={styleSheet.options} inverted>
-              <Select placeholder='Display' options={this.state.displayFormats} defaultValue={this.state.display} onChange={this.togglePreviewDisplay} />
+              <Select placeholder='Display' options={this.state.displayFormats} defaultValue={display} onChange={this.togglePreviewDisplay} />
                <Rail attached position='left' size='tiny' >
                  <Button.Group  >
                    <Button secondary icon onClick={this.togglePreviewOrientation}>   <Icon name='undo alternate' /> </Button>
@@ -212,7 +205,7 @@ export default class storyPreview extends Component {
                </Rail>
             </Form>
           </Modal.Actions>
-          <Modal.Content ref={this.preview} onChange={this.preview} className={mclass} scrolling>
+          <Modal.Content className={mclass} scrolling>
             <div style={styleSheet.device}>
               <Header style={styleSheet.header}>
                   <CustomIcon name='menu'size='42'/>

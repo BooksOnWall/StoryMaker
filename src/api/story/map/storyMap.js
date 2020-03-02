@@ -72,6 +72,21 @@ class storyMap extends Component {
     let protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
     let domain = protocol + '://' + process.env.REACT_APP_SERVER_HOST;
     let server = domain + ':'+ process.env.REACT_APP_SERVER_PORT+'/';
+    this.theme = (this.props.story && this.props.story.design_options) ? this.props.story.design_options : {
+      font1: 'ATypewriterForMe',
+      font2: 'BadScript-Regular',
+      font3: 'OpenSansCondensed-Bold',
+      banner: {
+        name: null,
+        path: null,
+        size: null,
+        type: null
+      },
+      gallery: [],
+      color1: '#FFDDFF',
+      color2: '#DD00FF',
+      color3: '#FF9900'
+    };
     this.state = {
       toggleAuthenticateStatus: this.props.toggleAuthenticateStatus,
       authenticated: this.props.authenticated,
@@ -82,7 +97,7 @@ class storyMap extends Component {
       dropImageGalleryURL: server+'stories/'+this.props.sid+'/drop',
       loading: null,
       mapStyle: MAP_STYLE,
-      story: this.props.state.story,
+      story: this.props.story,
       server: server,
       modal: false,
       colors: {
@@ -113,9 +128,9 @@ class storyMap extends Component {
         'WaitingfortheSunrise'
       ],
       theme: {
-        font1: 'TrashHand',
-        font2: 'BadScript-Regular',
-        font3: 'ATypewriterForMe',
+        font1: this.theme.font1,
+        font2: this.theme.font2,
+        font3: this.theme.font3,
         banner: {
           name: null,
           path: null,
@@ -123,9 +138,9 @@ class storyMap extends Component {
           type: null
         },
         gallery: [],
-        color1: '#9E1C00',
-        color2: '#D1D2D3',
-        color3: '#4B4F53'
+        color1: this.theme.color1,
+        color2: this.theme.color2,
+        color3: this.theme.color3
       },
       activeIndex: 0,
       saveThemeLoading: false,
@@ -149,6 +164,7 @@ class storyMap extends Component {
       gallerySubmit: false,
       setViewport: this.setViewport,
     }
+    this.handleChange = this.handleChange.bind(this);
     this.handleImageGalleryDelete = this.handleImageGalleryDelete.bind(this);
     this.setModal = this.setModal.bind(this);
     this.getStory = this.getStory.bind(this);
@@ -220,7 +236,7 @@ class storyMap extends Component {
       .then(data => {
         let theme = (typeof(data.theme) === 'string') ? JSON.parse(data.theme) : data.theme ;
         if(theme) {
-          this.setState({theme: theme});
+          this.setState({theme: theme, loading: false});
         }
       });
     } catch(e) {
@@ -302,6 +318,7 @@ class storyMap extends Component {
     try {
       this.setState({saveThemeLoading: true});
       let theme = this.state.theme;
+      console.log('theme',theme);
       await fetch(this.state.themeURL, {
         method: 'post',
         headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'},
@@ -314,6 +331,7 @@ class storyMap extends Component {
       .then(data => {
           if(data) {
             this.setState({saveThemeLoading: false});
+            return this.getTheme();
           } else {
             console.log('No Data received from the server');
           }
@@ -602,9 +620,23 @@ class storyMap extends Component {
     color2: this.state.theme.color2,
     color3: color.hex
   } })
-
+  handleChange = (e) => {
+    console.log('name',e.target.name);
+    console.log('value',e.target.value);
+    this.setState({ theme: {
+      banner: this.state.theme.banner,
+      font1: (e.target.name === 'font1') ? e.target.value: this.state.theme.font1,
+      font2: (e.target.name === 'font2') ? e.target.value: this.state.theme.font2,
+      font3: (e.target.name === 'font3') ? e.target.value: this.state.theme.font3,
+      gallery: this.state.theme.gallery,
+      color1: (e.target.name === 'color1') ? e.target.value: this.state.theme.color1,
+      color2: (e.target.name === 'color2') ? e.target.value: this.state.theme.color2,
+      color3: (e.target.name === 'color3') ? e.target.value: this.state.theme.color3
+    } });
+    console.log(this.state.theme.font1);
+  }
   themePrefs = () => {
-     const { activeIndex } = this.state;
+     let { modal, activeIndex } = this.state;
      const popover = {
       position: 'absolute',
       zIndex: '2',
@@ -623,6 +655,7 @@ class storyMap extends Component {
     }
     return (
       <Tab.Pane attached={false} inverted>
+        <StoryPreview server={this.state.server} theme={this.state.theme} story={this.state.story} modal={modal} setModal={this.setModal}/>
         <Button  style={eye} floated='right' secondary onClick={this.setModal}>
           <Icon name='eye' /><FormattedMessage id="app.story.map.preview" defaultMessage={'Preview'}/>
         </Button>
@@ -635,7 +668,7 @@ class storyMap extends Component {
             return errors;
           }}
           onSubmit={(values, { setSubmitting }) => {
-            this.saveTheme(values);
+            this.saveTheme(this.state.theme);
 
             setTimeout(() => {
               //alert(JSON.stringify(values, null, 2));
@@ -667,40 +700,47 @@ class storyMap extends Component {
                 Fonts
                </Accordion.Title>
                <Accordion.Content active={activeIndex === 0}>
-                 <span className='label small'>Font 1: </span>
+                 <span className='label small'>Story Title font</span>
                  <select
                    size='small'
-                   name="font"
-                   type="select"
-                   className="fontSelect"
+                   name='font1'
+                   type='select'
+                   style={{fontFamily: this.state.theme.font1}}
                    defaultValue={this.state.theme.font1}
                    onChange={this.handleChange}
                    >
                    <option key={0} disabled hidden value=''></option>
                    {this.state.fonts.map(font => <option key={font} value={font} style={{fontFamily: font}} > {font} </option>)}
                  </select><br/>
-                 <span className='label small'>Font 2 : </span><br/>
+                 <span className='label small'>Sinopsys font</span><br/>
                  <select
                    size='small'
-                   name="font2"
-                   type="select"
+                   name='font2'
+                   type='select'
+                   className='fontSelect'
+                   style={{fontFamily: this.state.theme.font2}}
                    defaultValue={this.state.theme.font2}
                    onChange={this.handleChange}
                    >
                    <option key={0} disabled hidden value=''></option>
-                   {this.state.fonts.map(font => <option key={font} value={font} >{font}</option>)}
-                 </select><br/>
-                 <span className='label small'>Font 3: </span><br/>
+
+                   {this.state.fonts.map(font => <option key={font} value={font} style={{fontFamily: font}}>{font}</option>)}
+                 </select>
+                 <br/>
+
+                 <span className='label small'>Credits font</span>
                  <select
                    size='small'
-                   name="font3"
-                   type="select"
+                   name='font3'
+                   type='select'
+                   className='fontSelect'
+                   style={{fontFamily: this.state.theme.font3}}
                    defaultValue={this.state.theme.font3}
                    onChange={this.handleChange}
                    >
                    <option key={0} disabled hidden value=''></option>
-                   {this.state.fonts.map(font => <option key={font} value={font} >{font}</option>)}
-                 </select><br/>
+                   {this.state.fonts.map(font => <option key={font} value={font} style={{fontFamily: font}}>{font}</option>)}
+                 </select>
                </Accordion.Content>
                <Divider/>
                <Accordion.Title
@@ -716,17 +756,17 @@ class storyMap extends Component {
                  fluid
                  transparent
                  inverted
-                 label={<FormattedMessage id="app.story.color1" defaultMessage={'Color 1'}/>}
+                 label={<FormattedMessage id="app.story.color1" defaultMessage={'Primary story color'}/>}
                  icon='eyedropper'
                  iconposition='right'
-                 placeholder={<FormattedMessage id="app.story.color1" defaultMessage={'Color 1'}/>}
+                 placeholder={<FormattedMessage id="app.story.color1" defaultMessage={'Primary'}/>}
                  type="text"
                  name="color1"
                  onChange={handleChange}
                  onBlur={handleBlur}
                  style={{backgroundColor: this.state.theme.color1 }}
                  onClick={this.handleFocus1}
-                 defaultValue={this.state.theme.color1}
+                 value={this.state.theme.color1}
                    />
                  {errors.color1 && touched.color1 && errors.color1}
                  { this.state.displayColorPicker1 ? <div style={ popover }>
@@ -738,10 +778,10 @@ class storyMap extends Component {
                  fluid
                  transparent
                  inverted
-                 label={<FormattedMessage id="app.story.color2" defaultMessage={'Color 2'}/>}
+                 label={<FormattedMessage id="app.story.color2" defaultMessage={'Secondary'}/>}
                  icon='eyedropper'
                  iconposition='right'
-                 placeholder={<FormattedMessage id="app.story.color2" defaultMessage={'Color 2'}/>}
+                 placeholder={<FormattedMessage id="app.story.color2" defaultMessage={'Secondary'}/>}
                  type="text"
                  name="color2"
                  onChange={handleChange}
@@ -760,10 +800,10 @@ class storyMap extends Component {
                  fluid
                  transparent
                  inverted
-                 label={<FormattedMessage id="app.story.color3" defaultMessage={'Color 3'}/>}
+                 label={<FormattedMessage id="app.story.color3" defaultMessage={'Credits fonts color'}/>}
                  icon='eyedropper'
                  iconposition='right'
-                 placeholder={<FormattedMessage id="app.story.color3" defaultMessage={'Color 3'}/>}
+                 placeholder={<FormattedMessage id="app.story.color3" defaultMessage={'Credits fonts color'}/>}
                  type="text"
                  name="color3"
                  onChange={handleChange}
@@ -855,7 +895,6 @@ class storyMap extends Component {
         <Segment.Group horizontal>
         <Segment className='mapPref' inverted style={{ height: '84vh', width: '40vw', padding: '1em', overflow: 'scroll'}}>
           <Tab menu={{ inverted: true, pointing: true }} panes={panes} />
-          <StoryPreview server={this.state.server} theme={this.state.theme} story={this.state.story} modal={this.state.modal} setModal={this.setModal}/>
         </Segment>
         <Segment  className="view map" style={{ height: '82vh', width: '60vw', overflow: 'hidden'}} >
               <MapGL
