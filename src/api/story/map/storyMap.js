@@ -705,6 +705,7 @@ class storyMap extends Component {
                    size='small'
                    name='font1'
                    type='select'
+                   style={{fontFamily: this.state.theme.font1}}
                    defaultValue={this.state.theme.font1}
                    onChange={this.handleChange}
                    >
@@ -718,11 +719,12 @@ class storyMap extends Component {
                    name='font2'
                    type='select'
                    className='fontSelect'
+                   style={{fontFamily: this.state.theme.font2}}
                    defaultValue={this.state.theme.font2}
                    onChange={this.handleChange}
                    >
                    <option key={0} disabled hidden value=''></option>
-                   {this.state.fonts.map(font => <option key={font} value={font} >{font}</option>)}
+                   {this.state.fonts.map(font => <option key={font} value={font} style={{fontFamily: font}}>{font}</option>)}
                  </select>
                  <Divider/>
                  <span className='label small'>Font 3: </span><br/>
@@ -731,11 +733,12 @@ class storyMap extends Component {
                    name='font3'
                    type='select'
                    className='fontSelect'
+                   style={{fontFamily: this.state.theme.font3}}
                    defaultValue={this.state.theme.font3}
                    onChange={this.handleChange}
                    >
                    <option key={0} disabled hidden value=''></option>
-                   {this.state.fonts.map(font => <option key={font} value={font} >{font}</option>)}
+                   {this.state.fonts.map(font => <option key={font} value={font} style={{fontFamily: font}}>{font}</option>)}
                  </select>
                  <Divider/>
                </Accordion.Content>
