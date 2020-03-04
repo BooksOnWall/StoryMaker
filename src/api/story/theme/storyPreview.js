@@ -171,6 +171,9 @@ export default class storyPreview extends Component {
         display: 'flex',
         flexDirection: 'row',
       },
+      html: {
+        color: theme.color2,
+      },
       message:{
 
       },
@@ -221,7 +224,7 @@ export default class storyPreview extends Component {
                   </div>
                   <div style={styleSheet.credits}>
                    <h1 style={styleSheet.titleCredits}>Credits</h1>
-                    { ReactHtmlParser(story.credits) }
+                    <div style={styleSheet.html}>{ ReactHtmlParser(story.credits) }</div>
                   </div>
               </div>
               <div className='nav' style={styleSheet.nav} >
