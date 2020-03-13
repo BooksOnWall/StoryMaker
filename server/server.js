@@ -6,6 +6,7 @@ var http = require('http');
 var https = require('https');
 var multer = require('multer');
 var rimraf = require("rimraf");
+var morgan = require('morgan');
 const Extra = require('telegraf/extra');
 const session = require('telegraf/session');
 const { reply } = Telegraf;
@@ -92,7 +93,7 @@ let strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
 // use the strategy
 passport.use(strategy);
 const app = express();
-
+app.use(morgan('combined'));
 // initialize passport with express
 app.use(passport.initialize());
 app.use(zip());
@@ -642,7 +643,6 @@ const checkPreFlight =  (obj) => {
     if(obj.photo && obj.photo.length > 0 && obj.photo[0].src) {
       let src = obj.photo[0].src;
       let objectpath =(obj.photo[0]) ? obj.photo[0].path.substring(7) : null;
-
       check = (obj.photo && obj.photo.length === 1) ? {ssid: obj.id, category: 'photo', condition: 'There can be only one photo' , check: true} : {ssid: obj.id, category: 'photo', src: src, condition: 'There can be only one photo' , check: false};
       log.push(check);
       let path = (obj.photo[0] && objectpath ) ? __dirname +'/public/' + objectpath : null;
@@ -670,7 +670,7 @@ const checkPreFlight =  (obj) => {
     check =  (obj.radius && obj.radius.length !== 0) ? {ssid: obj.id, category: 'radius', condition: 'Radius must be filled' , check: true} : {ssid: obj.id, category: 'radius', condition: 'Radius must be filled' , check: false,   error:  'Empty: No Radius'};
     log.push(check);
     // check picture dimensions
-    let pictures = (obj.pictures) ? obj.pictures : null ;
+    let pictures = (obj.pictures && obj.pictures.length > 0) ? obj.pictures : null ;
       if(pictures) {
         pictures = (typeof(pictures) === 'string') ? JSON.parse(pictures) : pictures;
         let picsDim=[];
