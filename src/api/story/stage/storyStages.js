@@ -48,7 +48,9 @@ class storyStages extends Component {
       story: null,
       stages: null,
       activeIndex: null,
-      location: null,
+      viewport: this.props.viewport,
+      geometry: this.props.geometry,
+      location: (this.props.geometry && this.props.geometry.coordinates) ? this.props.geometry.coordinates : [-56.1670182, -34.9022229],
       listStages: this.listStages,
       confirmOpen: false,
       sid: parseInt(props.sid),
@@ -132,9 +134,8 @@ class storyStages extends Component {
     })
     .then(data => {
         if(data) {
-          console.log(data);
           this.setState({stages: data, loading: false});
-          this.setState({location: data[0].geometry.coordinates});
+          if (data.length > 0) this.setState({location: data[0].geometry.coordinates});
           return data;
         } else {
           console.log('No Data received from the server');
@@ -590,8 +591,8 @@ class storyStages extends Component {
             </Segment>
 
               <Segment style={{width: '60vw', height: '77vh' }} className="stagesMap">
-                {(this.state.location)
-                  ? <StagesMap goToStage={this.goToStage} stages={this.state.stages} location={this.state.location} sid={this.state.sid} state={this.state}/>
+                {(this.state.location && this.props.viewport)
+                  ? <StagesMap goToStage={this.goToStage} stages={this.state.stages} location={this.state.location} sid={this.state.sid} state={this.state} viewport={this.props.viewport} geometry={this.props.geometry}/>
                   : <Placeholder>
                     <Placeholder.Image rectangular />
                   </Placeholder>

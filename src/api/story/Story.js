@@ -6,6 +6,8 @@ import {
   Container,
   Checkbox,
   Form,
+  Grid,
+  Icon,
   Input,
   Button,
   Confirm,
@@ -25,6 +27,7 @@ import htmlToDraft from 'html-to-draftjs';
 import sanitizeHtml from 'sanitize-html';
 // maps
 import StoryMap from './map/storyMap';
+import StoryLocateMap from './map/storyLocateMap';
 //Stages
 import StoryStages from './stage/storyStages';
 
@@ -57,8 +60,10 @@ class Story extends Component {
       city: '',
       sinoState: EditorState.createEmpty(),
       sinopsys: '',
-      tesselate: null,
+      storyLocation: null,
+      viewport: {},
       geometry: null,
+      tesselate: null,
       stages: null,
       editorState: EditorState.createEmpty(),
       step: (this.props.step) ? this.props.step : 'Story',
@@ -87,6 +92,28 @@ class Story extends Component {
     e.preventDefault();
     this.setState({ open: true })
   }
+  setStoryLocation = (location) => {
+    const geometry = {
+      'type': 'Point',
+      'coordinates': [
+      location[0],
+      location[1]
+      ]
+    };
+    this.setState({geometry: geometry});
+  }
+  setFormDataLocation = ({place_name, geometry, center, context, viewport}) => {
+    const city = (place_name) ? place_name.split(',')[0] : this.state.city ;
+    const state = (place_name) ? place_name.split(',')[2] : this.state.country ;
+    this.setState({
+      city: city,
+      state: state,
+      geometry: geometry,
+      center: center,
+      context: context,
+      viewport: viewport,
+    });
+  }
   handleConfirm = () => this.setState({ open: false })
   handleCancel = () => this.setState({ open: false })
   handleChange(e) {
@@ -95,7 +122,11 @@ class Story extends Component {
     value = (target.type === 'select') ? target.selected : value;
     let change = {};
     change[e.target.name] = value ;
-    this.setState({initialSValues: change});
+    let title = (target.name === 'title') ? target.value: this.state.title ;
+    let city = (target.name === 'city') ? target.value: this.state.city;
+    let country = (target.name === 'state') ?  target.value: this.state.state;
+    console.log('country',country);
+    this.setState({title: title, city: city, state: country ,initialSValues: change});
   }
   nextStep = (step) => {
     this.setState({step: step});
@@ -235,6 +266,7 @@ class Story extends Component {
           city: this.state.city,
           tesselate: this.state.tesselate,
           geometry: this.state.geometry,
+          viewport: this.state.viewport,
           sinopsys: (this.state.sinopsys) ? sanitizeHtml(this.state.sinopsys) : '' ,
           credits: (this.state.credits) ? sanitizeHtml(this.state.credits) : '' ,
           artist:parseInt(this.state.artist),
@@ -264,15 +296,17 @@ class Story extends Component {
 
   async updateStory(values) {
     try {
+
       await fetch(this.state.stories+'/'+this.state.sid, {
         method: 'PATCH',
         headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json', charset:'utf-8' },
         body:JSON.stringify({
           title: this.state.title,
-          state:this.state.state,
+          state: this.state.state,
           city: this.state.city,
           tesselate: this.state.tesselate,
           geometry: this.state.geometry,
+          viewport: this.state.viewport,
           sinopsys: sanitizeHtml(this.state.sinopsys),
           credits: sanitizeHtml(this.state.credits),
           artist:parseInt(this.state.artist),
@@ -323,18 +357,25 @@ class Story extends Component {
             const creditContentState = ContentState.createFromBlockArray(htmlToDraft(story.credits));
             const creditState = EditorState.createWithContent(creditContentState);
 
-            this.setState({sinoState: sinoState});
-            this.setState({sinopsys: story.sinopsys});
-            this.setState({creditState: creditState});
-            this.setState({credits: story.credits});
-            this.setState({state: story.state, city: story.city});
-            this.setState({stages: story.stages});
-            this.setState({tesselate: story.tesselate});
-            this.setState({geometry: story.geometry});
-            this.setState({sid: story.id, title: story.title, artist: story.artist});
-            this.setState({initialSValues: story});
-            this.setState({loading: false});
-            this.setState({story: story});
+            this.setState({
+              sid: story.id,
+              title: story.title,
+              artist: story.artist,
+              sinoState: sinoState,
+              sinopsys: story.sinopsys,
+              creditState: creditState,
+              credits: story.credits,
+              state: story.state,
+              city: story.city,
+              stages: story.stages,
+              tesselate: story.tesselate,
+              geometry: story.geometry,
+              viewport: story.viewport,
+              initialSValues: story,
+              story: story,
+              loading: false,
+            });
+
             return story;
           } else {
             console.log('No Data received from the server');
@@ -432,141 +473,169 @@ class Story extends Component {
     );
   }
   EditForm = () => {
-
     return (
-    <Segment  className="story" inverted>
-      <Formik
-        enableReinitialize={true}
-        initialValues={this.state.initialSValues}
-        validate={values => {
-          let errors = {};
-          return errors;
-        }}
-        onSubmit={(values, { setSubmitting }) => {
-          if(this.state.mode === 'update') {
-            this.updateStory(values);
-          } else {
-            this.createStory(values);
-          }
+  <Segment placeholder className="story" inverted>
+    <Grid columns={2} stackable textAlign='center'>
+      <Grid.Row verticalAlign='middle'>
+        <Grid.Column>
+          <Formik
+            enableReinitialize={true}
+            initialValues={this.state.initialSValues}
+            validate={values => {
+              let errors = {};
+              return errors;
+            }}
+            onSubmit={(values, { setSubmitting }) => {
+              if(this.state.mode === 'update') {
+                this.updateStory(values);
+              } else {
+                this.createStory(values);
+              }
 
-          setTimeout(() => {
-            //alert(JSON.stringify(values, null, 2));
+              setTimeout(() => {
+                //alert(JSON.stringify(values, null, 2));
 
-            setSubmitting(false);
-          }, 400);
-        }}
-        >
-        {({
-          values,
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          handleDelete,
-          isSubmitting,
-          /* and other goodies */
-        }) => (
-          <Form inverted  size='large' onSubmit={this.handleSubmit}>
-                <Segment inverted>
-                <span className='label small'>Choose artist/autor: </span><br/>
-                <select
-                size='small'
-                name="artist"
-                type="select"
-                defaultValue={this.state.artist}
-                onChange={this.handleChange}
-                >
-                  <option key={0} disabled hidden value=''></option>
-                  {this.state.artistOptions.map(options => <option key={options.key} value={options.value} >{options.text}</option>)}
-                </select>
-                </Segment>
-                <Divider/>
-                <Input
-                fluid
-                transparent
-                inverted
-                label={<FormattedMessage id="app.story.title" defaultMessage={'Title'}/>}
-                icon='pencil alternate'
-                iconposition='right'
-                  placeholder={<FormattedMessage id="app.story.title" defaultMessage={'Title'}/>}
-                  autoFocus={true}
-                  type="text"
-                  name="title"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  defaultValue={this.state.title}
-                  />
-                {errors.title && touched.title && errors.title}
-                <Divider/>
-                <Input
-                fluid
-                transparent
-                inverted
-                label={<FormattedMessage id="app.story.state" defaultMessage={'State'}/>}
-                icon='point'
-                iconposition='right'
-                  placeholder={<FormattedMessage id="app.story.state" defaultMessage={'State'}/>}
-                  type="text"
-                  name="state"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  defaultValue={this.state.state}
-                  />
-                {errors.state && touched.state && errors.state}
-                <Divider/>
-                <Input
-                fluid
-                transparent
-                inverted
-                label={<FormattedMessage id="app.story.city" defaultMessage={'City'}/>}
-                icon='point'
-                iconposition='right'
-                  type="text"
-                  name="city"
-                  color="teal"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  defaultValue={this.state.city}
-                  />
-                {errors.city && touched.city && errors.city}
-                <Divider  />
-                <Checkbox
-                  label='Active'
-                  placeholder=''
-                  ref = "active"
-                  name="active"
-                  defaultChecked= {values.checked}
-                  onChange = {(e, { checked }) => handleChange(checked)}
-                  onBlur = {handleBlur}
-                  defaultValue={(this.state.active === true) ? 1 : 0 }
-                  toggle
-                  />
-                {errors.active && touched.active && errors.active}
-                <Divider  />
-                <Button onClick={handleSubmit} floated='right' primary size='large' type="submit" disabled={isSubmitting}>
-                  {(this.state.mode === 'create') ? 'Create' : 'Update'}
-                </Button>
-                {(this.state.mode === 'update') ? (
-                  <div>
-                    <Button onClick={this.show} color='red' basic floated='left' size='large' type="submit" disabled={isSubmitting}>
-                      <FormattedMessage id="app.story.delete" defaultMessage={`Delete Story`}/>
-                    </Button>
-                    <Confirm
-                      open={this.state.open}
-                      cancelButton='Never mind'
-                      confirmButton="Delete Story"
-                      onCancel={this.handleCancel}
-                      onConfirm={this.handleDelete}
+                setSubmitting(false);
+              }, 400);
+            }}
+            >
+            {({
+              values,
+              errors,
+              touched,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              handleDelete,
+              isSubmitting,
+              /* and other goodies */
+            }) => (
+              <Form inverted  size='large' onSubmit={this.handleSubmit}>
+                    <Segment inverted>
+                    <span className='label small'>Choose artist/autor: </span><br/>
+                    <select
+                      size='small'
+                      name="artist"
+                      type="select"
+                      defaultValue={this.state.artist}
+                      onChange={this.handleChange}
+                    >
+                      <option key={0} disabled hidden value=''></option>
+                      {this.state.artistOptions.map(options => <option key={options.key} value={options.value} >{options.text}</option>)}
+                    </select>
+                    </Segment>
+                    <Divider/>
+                    <Input
+                      fluid
+                      transparent
+                      inverted
+                      label={<FormattedMessage id="app.story.title" defaultMessage={'Title'}/>}
+                      icon='pencil alternate'
+                      iconposition='right'
+                      placeholder={<FormattedMessage id="app.story.title" defaultMessage={'Title'}/>}
+                      autoFocus={true}
+                      type="text"
+                      name="title"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      defaultValue={this.state.title}
                       />
-                  </div>
-                ) : '' }
-          </Form>
-        )}
-      </Formik>
-    </Segment>
+                    {errors.title && touched.title && errors.title}
+                    <Divider/>
+                    <Input
+                      fluid
+                      transparent
+                      inverted
+                      label={<FormattedMessage id="app.story.state" defaultMessage={'State'}/>}
+                      icon='point'
+                      iconposition='right'
+                      placeholder={<FormattedMessage id="app.story.state" defaultMessage={'State'}/>}
+                      type="text"
+                      name="state"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      defaultValue={this.state.state}
+                      />
+                    {errors.state && touched.state && errors.state}
+                    <Divider/>
+                    <Input
+                      fluid
+                      transparent
+                      inverted
+                      label={<FormattedMessage id="app.story.city" defaultMessage={'City'}/>}
+                      icon='point'
+                      iconposition='right'
+                      type="text"
+                      name="city"
+                      color="teal"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      defaultValue={this.state.city}
+                      />
+                    {errors.city && touched.city && errors.city}
+                    <Divider  />
+                    <Checkbox
+                      label='Active'
+                      placeholder=''
+                      ref = "active"
+                      name="active"
+                      defaultChecked= {values.checked}
+                      onChange = {(e, { checked }) => handleChange(checked)}
+                      onBlur = {handleBlur}
+                      defaultValue={(this.state.active === true) ? 1 : 0 }
+                      toggle
+                      />
+                    {errors.active && touched.active && errors.active}
+                    <Divider  />
+                    <Button onClick={handleSubmit} floated='right' primary size='large' type="submit" disabled={isSubmitting}>
+                      {(this.state.mode === 'create') ? 'Create' : 'Update'}
+                    </Button>
+                    {(this.state.mode === 'update') ? (
+                      <div>
+                        <Button onClick={this.show} color='red' basic floated='left' size='large' type="submit" disabled={isSubmitting}>
+                          <FormattedMessage id="app.story.delete" defaultMessage={`Delete Story`}/>
+                        </Button>
+                        <Confirm
+                          open={this.state.open}
+                          cancelButton='Never mind'
+                          confirmButton="Delete Story"
+                          onCancel={this.handleCancel}
+                          onConfirm={this.handleDelete}
+                          />
+                      </div>
+                    ) : '' }
+              </Form>
+            )}
+          </Formik>
+        </Grid.Column>
+
+        <Grid.Column>
+          <Header icon style={{color: '#FFF'}}>
+            <Icon name='world'  />
+            Locate your Story
+          </Header>
+          {this.locateStory()}
+        </Grid.Column>
+      </Grid.Row>
+    </Grid>
+  </Segment>
     );
   }
+  locateStory = () => {
+    return (this.state.geometry && this.state.geometry.coordinates && this.state.viewport) ? (
+      <StoryLocateMap
+          sid={this.state.sid}
+          city={this.state.city}
+          viewport={this.state.viewport}
+          geometry={this.state.geometry}
+          height={'50vh'}
+          width={'50vw'}
+          setFormDataLocation={this.setFormDataLocation}
+          setStoryLocation={this.setStoryLocation}
+          />
+      ) : '';
+
+  };
   setSteps = (obj) => {
     if(obj) this.setState(obj);
   }
@@ -583,13 +652,13 @@ class Story extends Component {
                 {(this.state.mode === 'create') ? <FormattedMessage id="app.story.create" defaultMessage={`Create Story`}/> : <FormattedMessage id="app.story.edit" defaultMessage={`Edit Story`}/> }
             </Header>
             <StorySteps sid={this.state.sid} step={this.state.step}  setSteps={this.setSteps} state={this.state} location={this.props.location} />
-              <Segment id='StepsContent' inverted>
+            <Segment id='StepsContent' inverted>
                 {(this.state.step === 'Story') ? this.EditForm() : '' }
                 {(this.state.step === 'Sinopsys') ? this.EditSino() : '' }
                 {(this.state.step === 'Credits') ? this.EditCred() : '' }
-                {(this.state.step === 'Map') ? <StoryMap sid={this.state.sid}  history={this.props.history} step={this.state.step} state={this.state} story={this.state.story}/> : '' }
-                {(this.state.step === 'Stages') ? <StoryStages sid={this.state.sid} history={this.props.history} step={this.state.step} state={this.state} />  : '' }
-              </Segment>
+                {(this.state.step === 'Map' && Object.keys(this.state.viewport).length>0) ? <StoryMap sid={this.state.sid}  history={this.props.history} step={this.state.step} state={this.state} story={this.state.story} viewport={this.state.viewport} geometry={this.state.geometry} /> : '' }
+                {(this.state.step === 'Stages' && this.state.viewport) ? <StoryStages sid={this.state.sid} history={this.props.history} step={this.state.step} state={this.state} viewport={this.state.viewport} geometry={this.state.geometry}/>  : '' }
+            </Segment>
         </Dimmer.Dimmable>
         <Dimmer active={this.state.loading}>
           <Loader active={this.state.loading} >Get story info</Loader>

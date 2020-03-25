@@ -28,11 +28,7 @@ import StoryPreview from '../theme/storyPreview';
 
 let MapboxAccessToken = process.env.REACT_APP_MAT;
 
-// Set bounds toMontevideo
-var bounds = [
-  [-34.9036749, -56.2189153], // Southwest coordinates
-  [-34.9068829, -56.211639]  // Northeast coordinates
-];
+
 const thumbsContainer = {
   display: 'flex',
   flexDirection: 'row',
@@ -87,6 +83,7 @@ class storyMap extends Component {
       color2: '#DD00FF',
       color3: '#FF9900'
     };
+    console.log('viewport',this.props.viewport);
     this.state = {
       toggleAuthenticateStatus: this.props.toggleAuthenticateStatus,
       authenticated: this.props.authenticated,
@@ -110,14 +107,8 @@ class storyMap extends Component {
       },
       active: 'Map',
       saveMapLoading: false,
-      bounds: bounds,
-      viewport: {
-        latitude: -34.9022229,
-        longitude: -56.1670182,
-        zoom: 13,
-        bearing: -60, // bearing in degrees
-        pitch: 60  // pitch in degrees
-      },
+      viewport: this.props.viewport,
+      geometry: this.props.geometry,
       fonts: [
         'ATypewriterForMe',
         'BadScript-Regular',
@@ -183,10 +174,11 @@ class storyMap extends Component {
       })
       .then(data => {
           if(data) {
-            this.setState({story: data.story, loading: false});
+            this.setState({story: data.story, loading: false, viewport: data.story.viewport, geometry: data.story.geometry});
           } else {
             console.log('No Data received from the server');
           }
+          return data.story;
       })
       .catch((error) => {
         // Your error is here!

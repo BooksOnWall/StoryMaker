@@ -413,8 +413,9 @@ const updateFieldFromStory = async ({ sid, field, fieldValue }) => {
     { where: {id : sid }}
   );
 };
-const patchStory = async ({ sid, title, artist, state, city, sinopsys, credits, design_options, tesselate, geometry, active }) => {
-  return await Stories.update({ title, artist, state, city, sinopsys, credits, design_options, tesselate, geometry, active },
+const patchStory = async ({ sid, title, artist, state, city, sinopsys, credits, design_options, tesselate, geometry, viewport, active }) => {
+  console.log('patchStory: geometry', geometry);
+  return await Stories.update({ title, artist, state, city, sinopsys, credits, design_options, tesselate, geometry, viewport, active },
     { where: {id : sid}}
   );
 }
@@ -1509,8 +1510,8 @@ app.get('/stories', async (req, res, next) => {
   }
 });
 app.post('/stories/0', function(req, res, next) {
-  const { title, state, city, sinopsys, credits, artist, active } = req.body;
-  createStory({ title, state, city, sinopsys, credits, artist, active }).then((story) => {
+  const { title, state, city, sinopsys, credits,tesselate, geometry, viewport, artist, active } = req.body;
+  createStory({ title, state, city, sinopsys, credits, tesselate, geometry, viewport, artist, active }).then((story) => {
     //if(hasbot) {bot.telegram.sendMessage(chat_id,"New Story created: " + title); }
     return res.json({ 'data': story, msg: 'story created successfully' })
   });
@@ -1520,11 +1521,11 @@ app.get('/stories/:storyId', (req, res) => {
   getStory({id: sid}).then(story => res.json({story: story, msg: 'get story success'}));
 });
 app.patch('/stories/:storyId', function(req, res, next) {
-  const { title, artist, state, city, sinopsys, credits, active } = req.body;
+  const { title, artist, state, city, sinopsys, tesselate, geometry, viewport, credits, active } = req.body;
   let sid = parseInt(req.params.storyId);
-  patchStory({ sid, title, artist, state, city, sinopsys, credits, active }).then(user =>
-      res.json({ user, msg: 'Story updated successfully' })
-    );
+  patchStory({ sid, title, artist, state, city, sinopsys, tesselate, geometry, viewport,  credits, active }).then(user =>
+    res.json({ user, msg: 'Story updated successfully' })
+  );
 });
 app.delete('/stories/:storyId', function(req, res, next) {
   let sid = parseInt(req.params.storyId);

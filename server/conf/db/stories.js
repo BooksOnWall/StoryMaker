@@ -45,6 +45,11 @@ module.exports.stories = {
     type: Sequelize.GEOMETRY,
     allowNull: true
   },
+  viewport:  {
+    type: Sequelize.JSON,
+    allowNull: true,
+    defaultValue: null
+  },
   active: {
     type: Sequelize.BOOLEAN,
     defaultValue: false

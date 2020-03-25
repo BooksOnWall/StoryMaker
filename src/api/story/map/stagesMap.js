@@ -20,18 +20,15 @@ import * as d3 from 'd3-ease';
 
 let MapboxAccessToken = process.env.REACT_APP_MAT;
 
-// Set bounds toMontevideo
-var bounds = [
-  [-34.9036749, -56.2189153], // Southwest coordinates
-  [-34.9068829, -56.211639]  // Northeast coordinates
-];
+
 class stagesMap extends Component {
   constructor(props) {
     super(props);
     let protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
     let domain = protocol + '://' + process.env.REACT_APP_SERVER_HOST;
     let server = domain + ':'+ process.env.REACT_APP_SERVER_PORT+'/';
-    let location = this.props.location;
+    let location = (this.props.geometry) ? this.props.geometry.coordinates: this.props.location ;
+    console.log(this.props.viewport);
     this.state = {
       toggleAuthenticateStatus: this.props.toggleAuthenticateStatus,
       authenticated: this.props.authenticated,
@@ -40,10 +37,10 @@ class stagesMap extends Component {
       mapStyle: null,
       mapURL: server + 'stories/'+ props.sid+'/map',
       active: 'Map',
-      bounds: bounds,
       popupInfo: null,
+      geometry: this.props.geometry,
       stages: (this.props.stages && this.props.stages.length > 0) ? this.props.stages : [],
-      viewport: {
+      viewport: (this.props.viewport && this.props.viewport.length > 0) ? this.props.viewport : {
         latitude: parseFloat(location[1]),
         longitude: parseFloat(location[0]),
         zoom: 15,

@@ -40,7 +40,7 @@ class stageMap extends Component {
       location: (location) ? location : null ,
       //bounds: bounds,
       popupInfo: null,
-      viewport: {
+      viewport: (this.props.viewport) ? this.props.viewport : {
         latitude: (parseFloat(location[1])) ? parseFloat(location[1]) : -34.9022229  ,
         longitude: (parseFloat(location[0])) ? parseFloat(location[0]) : -56.1670182 ,
         zoom: 18,
