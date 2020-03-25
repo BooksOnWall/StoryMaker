@@ -41,8 +41,8 @@ class stagesMap extends Component {
       geometry: this.props.geometry,
       stages: (this.props.stages && this.props.stages.length > 0) ? this.props.stages : [],
       viewport: (this.props.viewport && this.props.viewport.length > 0) ? this.props.viewport : {
-        latitude: parseFloat(location[1]),
-        longitude: parseFloat(location[0]),
+        latitude: (this.props.stages && this.props.stages.length > 0 && this.props.stages[0]) ? parseFloat(this.props.stages[0].geometry.coordinates[1]): parseFloat(location[1]),
+        longitude:  (this.props.stages && this.props.stages.length > 0 && this.props.stages[0]) ? parseFloat(this.props.stages[0].geometry.coordinates[0]) : parseFloat(location[0]),
         zoom: 15,
         bearing: -60, // bearing in degrees
         pitch: 60  // pitch in degrees
