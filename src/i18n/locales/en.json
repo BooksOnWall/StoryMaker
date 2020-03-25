@@ -1,170 +1,170 @@
 {
-  "app": {
-    "users": {
-      "id": "Id",
-      "name": "Name",
-      "email": "Email",
-      "active": "Active",
-      "adduser": "Add user",
-      "created": "Created",
-      "loading": "Get users info",
-      "updated": "Updated"
-    },
-    "user": {
-      "edit": "Edit user",
-      "login": "Login",
-      "theme": "Choose your theme",
-      "create": "Users",
-      "delete": "Delete user",
-      "locale": "Choose your Language",
-      "logout": "Logging out",
-      "singup": "Login",
-      "update": "Update",
-      "created": "Create",
-      "loading": "Get user info",
-      "required": "Required",
-      "passwdtitle": "Change password",
-      "invalidEmail": "Invalid email",
-      "useredit": {
-        "name": "Name",
-        "email": "Email",
-        "password": "Password",
-        "repeatpassword": "Repeat Password"
-      },
-      "wrongpassword": "Invalid repeat password",
-      "profile": {
-        "update": "Update",
-        "myprofile": "My Profile",
-        "userpreferences": "User preferences"
-      },
-      "user": {
-        "useravatar": {
-          "file": "choose File",
-          "save": "save",
-          "zoom": "Zoom",
-          "scale": "Broders radius",
-          "width": "Avatar width",
-          "cancel": "cancel",
-          "height": "Avatar height",
-          "rotate": "rotate",
-          "preview": {
-            "": "Preview"
-          }
-        }
-      },
-      "usersteps": {
-        "steps": {
-          "user": {
-            "title": "Edit User",
-            "avatar": "Avatar",
-            "password": "Password",
-            "preferences": "Preferences"
-          }
-        }
-      }
-    },
-    "home": {
-      "title": "Books on Wall",
-      "logged": "You are  logged in.!",
-      "subtitle": "This is the home page.",
-      "unlogged": "You are not logged in.!"
-    },
-    "story": {
-      "edit": "Edit Story",
-      "create": "Create Story",
-      "delete": "Delete Story",
-      "board": {
-        "next": "Next",
-        "photo": "Photo",
-        "reset": "Reset",
-        "stage": "Stage",
-        "export": "Export",
-        "images": "Images",
-        "import": "Import",
-        "destroy": "Destroy",
-        "preview": "Preview",
-        "location": "Location",
-        "pictures": "Pictures",
-        "dragimage": "Drag your image here",
-        "description": "Description",
-        "onzoneenter": "On Zone Enter",
-        "onzoneleave": "On Zone Leave",
-        "onpicturematch": "On Picture Match"
-      },
-      "stage": {
-        "delete": "Delete stage",
-        "title": {
-          "edit": "Story: Edit Stage",
-          "create": "Story: Create stage"
-        },
-        "stageSteps": {
-          "stage": "Stage",
-          "geoposition": "GeoPosition",
-          "augmentedReality": "Augmented Reality"
-        },
-        "stageaudios": {
-          "files": "Drag and drop some files here, or click to select files"
-        },
-        "stageimages": {
-          "files": "Drag and drop some files here, or click to select files"
-        },
-        "stagevideos": {
-          "files": "Drag and drop some files here, or click to select files"
-        },
-        "stagepicture": {
-          "files": "Drag and drop some files here, or click to select files"
-        }
-      },
-      "map": {
-        "getmapinfo": "Get map info",
-        "stagemap": {
-          "getmapinfo": "Get Map Info"
-        }
-      },
-      "stories": {
-        "getuser": "Get users info",
-        "addstory": "Add Story",
-        "table": {
-          "id": "Id",
-          "city": "City",
-          "state": "State",
-          "title": "Title",
-          "artist": "Artist",
-          "create": "Created",
-          "updated": "Updated"
-        }
-      }
-    },
-    "artists": {
-      "add": "Add Artist",
-      "title": "Artists"
-    },
-    "artist": {
-      "delete": "Delete Artist",
-      "title": {
-        "edit": "Edit Artist",
-        "create": "Create Artist"
-      },
-      "artistSteps": {
-        "artist": {
-          "bio": "Bio",
-          "edit": "Edit Artist",
-          "images": "Images"
-        }
-      }
-    },
-    "userPrefs": {
-      "loading": "Get users preferences"
-    },
-    "stage": {
-      "storystage": {
-        "drag": "Drag",
-        "name": "Name",
-        "type": "Type",
-        "order": "Order",
-        "export": "export",
-        "import": "import"
-      }
-    }
-  }
+	"app": {
+		"artist": {
+			"artistSteps": {
+				"artist": {
+					"bio": "Bio",
+					"edit": "Edit Artist",
+					"images": "Images"
+				}
+			},
+			"delete": "Delete Artist",
+			"title": {
+				"create": "Create Artist",
+				"edit": "Edit Artist"
+			}
+		},
+		"artists": {
+			"add": "Add Artist",
+			"title": "Artists"
+		},
+		"home": {
+			"logged": "You are logged in!",
+			"subtitle": "This is the home page.",
+			"title": "BooksonWall",
+			"unlogged": "You are not logged in!"
+		},
+		"stage": {
+			"storystage": {
+				"drag": "Drag",
+				"export": "Export",
+				"import": "Import",
+				"name": "Name",
+				"order": "Order",
+				"type": "Type"
+			}
+		},
+		"story": {
+			"board": {
+				"description": "Description",
+				"destroy": "Destroy",
+				"dragimage": "Drag your image here",
+				"export": "Export",
+				"images": "Images",
+				"import": "Import",
+				"location": "Location",
+				"next": "Next",
+				"onpicturematch": "On Picture Match",
+				"onzoneenter": "On Zone Enter",
+				"onzoneleave": "On Zone Leave",
+				"photo": "Photo",
+				"pictures": "Pictures",
+				"preview": "Preview",
+				"reset": "Reset",
+				"stage": "Stage"
+			},
+			"create": "Create Story",
+			"delete": "Delete Story",
+			"edit": "Edit Story",
+			"map": {
+				"getmapinfo": "Get Map info",
+				"stagemap": {
+					"getmapinfo": "Get Map Info"
+				}
+			},
+			"stage": {
+				"delete": "Delete stage",
+				"stageSteps": {
+					"augmentedReality": "Augmented Reality",
+					"geoposition": "GeoPosition",
+					"stage": "Stage"
+				},
+				"stageaudios": {
+					"files": "Drag and drop some files here, or click to select files"
+				},
+				"stageimages": {
+					"files": "Drag and drop some files here, or click to select files"
+				},
+				"stagepicture": {
+					"files": "Drag and drop some files here, or click to select files"
+				},
+				"stagevideos": {
+					"files": "Drag and drop some files here, or click to select files"
+				},
+				"title": {
+					"create": "Story: Create stage",
+					"edit": "Story: Edit Stage"
+				}
+			},
+			"stories": {
+				"addstory": "Add Story",
+				"getuser": "Get users info",
+				"table": {
+					"artist": "Artist",
+					"city": "City",
+					"create": "Created",
+					"id": "Id",
+					"state": "State",
+					"title": "Title",
+					"updated": "Updated"
+				}
+			}
+		},
+		"user": {
+			"create": "Users",
+			"created": "Create",
+			"delete": "Delete user",
+			"edit": "Edit user",
+			"invalidEmail": "Invalid email",
+			"loading": "Get user info",
+			"locale": "Choose your Language",
+			"login": "Login",
+			"logout": "Logging out",
+			"passwdtitle": "Change password",
+			"profile": {
+				"myprofile": "My Profile",
+				"update": "Update",
+				"userpreferences": "User preferences"
+			},
+			"required": "Required",
+			"singup": "Login",
+			"theme": "Choose your theme",
+			"update": "Update",
+			"user": {
+				"useravatar": {
+					"cancel": "Cancel",
+					"file": "Choose File",
+					"height": "Avatar height",
+					"preview": {
+						"": "Preview"
+					},
+					"rotate": "Rotate",
+					"save": "save",
+					"scale": "Borders radius",
+					"width": "Avatar width",
+					"zoom": "Zoom"
+				}
+			},
+			"useredit": {
+				"email": "Email",
+				"name": "Name",
+				"password": "Password",
+				"repeatpassword": "Repeat Password"
+			},
+			"usersteps": {
+				"steps": {
+					"user": {
+						"avatar": "Avatar",
+						"password": "Password",
+						"preferences": "Preferences",
+						"title": "Edit User"
+					}
+				}
+			},
+			"wrongpassword": "Invalid repeat password"
+		},
+		"userPrefs": {
+			"loading": "Get users preferences"
+		},
+		"users": {
+			"active": "Active",
+			"adduser": "Add user",
+			"created": "Created",
+			"email": "Email",
+			"id": "Id",
+			"loading": "Get users info",
+			"name": "Name",
+			"updated": "Updated"
+		}
+	}
 }
