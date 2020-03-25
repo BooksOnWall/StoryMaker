@@ -32,6 +32,15 @@ class storyStages extends Component {
     let domain = protocol + '://' + process.env.REACT_APP_SERVER_HOST;
     let server = domain + ':'+ process.env.REACT_APP_SERVER_PORT+'/';
     this.fileInputRef = React.createRef();
+    let location =  (this.props.geometry && this.props.geometry.coordinates) ? this.props.geometry.coordinates : [-56.1670182, -34.9022229];
+    location = (this.props.stages && this.props.stages.length > 0 ) ? this.props.stages[0].geometry.coordinates: location;
+    let viewport = {
+      latitude: parseFloat(location[1]),
+      longitude: parseFloat(location[0]),
+      zoom: 6,
+      bearing:  this.props.viewport.bearing, // bearing in degrees
+      pitch:  this.props.viewport.pitch,
+    }
     this.state = {
       active: 'Stages',
       server: server,
@@ -48,9 +57,9 @@ class storyStages extends Component {
       story: null,
       stages: null,
       activeIndex: null,
-      viewport: this.props.viewport,
+      viewport: viewport,
       geometry: this.props.geometry,
-      location: (this.props.geometry && this.props.geometry.coordinates) ? this.props.geometry.coordinates : [-56.1670182, -34.9022229],
+      location: location,
       listStages: this.listStages,
       confirmOpen: false,
       sid: parseInt(props.sid),
@@ -134,6 +143,7 @@ class storyStages extends Component {
     })
     .then(data => {
         if(data) {
+          console.log(data);
           this.setState({stages: data, loading: false});
           if (data.length > 0) this.setState({location: data[0].geometry.coordinates});
           return data;
@@ -511,6 +521,8 @@ class storyStages extends Component {
     )
   }
   render() {
+    const {stages, viewport} = this.state;
+
     return (
       <Dimmer.Dimmable as={Segment} clearing inverted blurring dimmed={this.state.loading}>
           <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
@@ -576,7 +588,7 @@ class storyStages extends Component {
                     </Table.Row>
                   </Table.Header>
                   <Table.Body>
-                    {_.map(this.state.stages, ({ id, name, type, description , stageOrder, updatedAt, rank, percent }) => (
+                    {_.map(stages, ({ id, name, type, description , stageOrder, updatedAt, rank, percent }) => (
                       <Table.Row className='slide-out' key={id} onClick={() => this.tableRowClickFunc({id})}>
                         <Table.Cell>{stageOrder}</Table.Cell>
                         <Table.Cell>{name}</Table.Cell>
@@ -592,7 +604,7 @@ class storyStages extends Component {
 
               <Segment style={{width: '60vw', height: '77vh' }} className="stagesMap">
                 {(this.state.location && this.props.viewport)
-                  ? <StagesMap goToStage={this.goToStage} stages={this.state.stages} location={this.state.location} sid={this.state.sid} state={this.state} viewport={this.props.viewport} geometry={this.props.geometry}/>
+                  ? <StagesMap goToStage={this.goToStage} stages={stages} location={this.state.location} sid={this.state.sid} state={this.state} viewport={viewport} geometry={this.props.geometry}/>
                   : <Placeholder>
                     <Placeholder.Image rectangular />
                   </Placeholder>

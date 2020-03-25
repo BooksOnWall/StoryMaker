@@ -189,7 +189,6 @@ export default class storyPreview extends Component {
         margin: 0,
       }
     };
-    console.log(styleSheet);
     let modal = this.props.modal;
 
    return (!modal) ? null : (

@@ -83,6 +83,7 @@ class storyMap extends Component {
       color2: '#DD00FF',
       color3: '#FF9900'
     };
+
     console.log('viewport',this.props.viewport);
     this.state = {
       toggleAuthenticateStatus: this.props.toggleAuthenticateStatus,
@@ -174,6 +175,8 @@ class storyMap extends Component {
       })
       .then(data => {
           if(data) {
+            console.log('geometry',data.story.geometry);
+            console.log('coordinates',data.story.geometry.coordinates)
             this.setState({story: data.story, loading: false, viewport: data.story.viewport, geometry: data.story.geometry});
           } else {
             console.log('No Data received from the server');

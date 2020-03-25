@@ -27,8 +27,16 @@ class stagesMap extends Component {
     let protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
     let domain = protocol + '://' + process.env.REACT_APP_SERVER_HOST;
     let server = domain + ':'+ process.env.REACT_APP_SERVER_PORT+'/';
-    let location = (this.props.geometry) ? this.props.geometry.coordinates: this.props.location ;
-    console.log(this.props.viewport);
+    let location = (this.props.geometry) ? this.props.geometry.coordinates : this.props.location ;
+    console.log(this.props.stages);
+    let viewport = (this.props.stages && this.props.stages.length > 0) ? {
+        latitude: (this.props.stages[0]) ? parseFloat(this.props.stages[0].geometry.coordinates[1]): parseFloat(location[1]),
+        longitude:  (this.props.stages[0]) ? parseFloat(this.props.stages[0].geometry.coordinates[0]) : parseFloat(location[0]),
+        zoom: this.props.viewport.zoom,
+        bearing:  this.props.viewport.bearing, // bearing in degrees
+        pitch:  this.props.viewport.pitch,  // pitch in degrees
+    } : this.props.viewport;
+    console.log(viewport);
     this.state = {
       toggleAuthenticateStatus: this.props.toggleAuthenticateStatus,
       authenticated: this.props.authenticated,
@@ -40,18 +48,13 @@ class stagesMap extends Component {
       popupInfo: null,
       geometry: this.props.geometry,
       stages: (this.props.stages && this.props.stages.length > 0) ? this.props.stages : [],
-      viewport: (this.props.viewport && this.props.viewport.length > 0) ? this.props.viewport : {
-        latitude: (this.props.stages && this.props.stages.length > 0 && this.props.stages[0]) ? parseFloat(this.props.stages[0].geometry.coordinates[1]): parseFloat(location[1]),
-        longitude:  (this.props.stages && this.props.stages.length > 0 && this.props.stages[0]) ? parseFloat(this.props.stages[0].geometry.coordinates[0]) : parseFloat(location[0]),
-        zoom: 15,
-        bearing: -60, // bearing in degrees
-        pitch: 60  // pitch in degrees
-      },
+      viewport: viewport,
       interactiveLayerIds: []
     };
   }
   getMapPreferences = async () => {
     try {
+      this.setState({loading: true});
       await fetch(this.state.mapURL, {
         method: 'get',
         headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'},
@@ -63,10 +66,10 @@ class stagesMap extends Component {
       .then(data => {
           if(data) {
             const map  = JSON.parse(data.map);
-            map.viewport.zoom = 18;
-            map.viewport.latitude = parseFloat(this.props.location[1]);
-            map.viewport.longitude = parseFloat(this.props.location[0]);
-            this.setState({mapStyle: map.style, viewport: map.viewport});
+            map.viewport.zoom = 12;
+            map.viewport.latitude = parseFloat(this.state.geometry.coordinates[1]);
+            map.viewport.longitude = parseFloat(this.state.geometry.coordinates[0]);
+            this.setState({mapStyle: map.style, viewport: map.viewport, loading: false});
           } else {
             console.log('No Data received from the server');
           }
