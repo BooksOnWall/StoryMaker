@@ -412,6 +412,7 @@ class stage extends Component {
       onPictureMatch: this.state.stage.onPictureMatch,
       onZoneLeave: this.state.stage.onZoneLeave,
       type: this.state.stage.type,
+      scene_type: this.state.stage.scene_type,
       description: this.state.stage.description,
       geometry: {
         "type": "Point",
