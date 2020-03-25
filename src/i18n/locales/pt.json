@@ -10,7 +10,7 @@
 			},
 			"delete": "Excluir Artista",
 			"title": {
-				"create": "Crear Artista",
+				"create": "Criar Artista",
 				"edit": "Editar Artista"
 			}
 		},
@@ -19,10 +19,10 @@
 			"title": "Artistas"
 		},
 		"home": {
-			"logged": "Você já esta dentro!",
-			"subtitle": "Esse é o começo",
+			"logged": "Já estás dentro!",
+			"subtitle": "Este é o Inicio",
 			"title": "BooksonWall",
-			"unlogged": "(Você)deve ingressar com seu usuario e senha"
+			"unlogged": "Regista-te com seu nome de usuário e senha"
 		},
 		"stage": {
 			"storystage": {
@@ -37,29 +37,29 @@
 		"story": {
 			"board": {
 				"description": "Descrição",
-				"destroy": "Destruir",
+				"destroy": "Cancelar",
 				"dragimage": "Arraste aqui a sua imagem",
 				"export": "Exportar",
 				"images": "Imagens",
 				"import": "Importar",
-				"location": "Locação",
+				"location": "Localização",
 				"next": "Seguinte",
-				"onpicturematch": "Ao reconhecer a imagem",
-				"onzoneenter": "Ao entrar na zona",
-				"onzoneleave": "Ao sair da zona",
+				"onpicturematch": "Reconhecer a imagem",
+				"onzoneenter": "Entrar na zona RA",
+				"onzoneleave": "Sair da zona RA",
 				"photo": "Foto",
 				"pictures": "Imagem RA",
 				"preview": "Pré-visualização",
-				"reset": "Resetar",
+				"reset": "Restaurar",
 				"stage": "Cena"
 			},
-			"create": "Criar estória",
+			"create": "Criar conto",
 			"delete": "Eliminar conto",
 			"edit": "Editar conto",
 			"map": {
-				"getmapinfo": "Obtendo info do mapa",
+				"getmapinfo": "A obter informação do mapa",
 				"stagemap": {
-					"getmapinfo": "Obtendo info do mapa"
+					"getmapinfo": "A obter informação do mapa"
 				}
 			},
 			"stage": {
@@ -70,30 +70,30 @@
 					"stage": "Cena"
 				},
 				"stageaudios": {
-					"files": "Faça clic aqui ou arraste um ficheiro para fazer o upload!"
+					"files": "Clica aqui ou arrasta um ficheiro para fazer o upload!"
 				},
 				"stageimages": {
-					"files": "Faça clic aqui ou arraste um ficheiro para fazer o upload!"
+					"files": "Clica aqui ou arrasta um ficheiro para fazer o upload!"
 				},
 				"stagepicture": {
-					"files": "Faça clic aqui ou arraste um ficheiro para fazer o upload!"
+					"files": "Clica aqui ou arrasta um ficheiro para fazer o upload!"
 				},
 				"stagevideos": {
-					"files": "Faça clic aqui ou arraste um ficheiro para fazer o upload!"
+					"files": "Clica aqui ou arrasta um ficheiro para fazer o upload!"
 				},
 				"title": {
-					"create": "Conto: Creae uma cena",
+					"create": "Conto: Criar uma cena",
 					"edit": "Conto: Editar uma cena"
 				}
 			},
 			"stories": {
 				"addstory": "Adicionar conto",
-				"getuser": "Obtendo info usuário",
+				"getuser": "Obtendo informação do usuário",
 				"table": {
 					"artist": "Autor",
 					"city": "Cidade",
 					"create": "Criado",
-					"id": "Id",
+					"id": "ID",
 					"state": "País",
 					"title": "Título",
 					"updated": "Última atualização"
@@ -105,14 +105,14 @@
 			"created": "Criado",
 			"delete": "Apagar conta de usuário",
 			"edit": "Editar usuário",
-			"invalidEmail": "Email inválido",
+			"invalidEmail": "E-mail inválido",
 			"loading": "Obter informação do usuário",
-			"locale": "Selecione o seu idioma",
+			"locale": "Seleciona o teu idioma",
 			"login": "Aceder",
 			"logout": "Fechar sessão",
 			"passwdtitle": "Alterar Senha",
 			"profile": {
-				"myprofile": "Meu perfil",
+				"myprofile": "O meu perfil",
 				"update": "Atualizar",
 				"userpreferences": "Preferências"
 			},
@@ -122,13 +122,13 @@
 			"update": "Atualizar",
 			"user": {
 				"useravatar": {
-					"cancel": "Cancelar",
-					"file": "Escolha um ficheiro",
+					"cancel": "Apagar",
+					"file": "Escolhe um ficheiro",
 					"height": "Altura do avatar",
 					"preview": {
 						"": "Pré-visualização"
 					},
-					"rotate": "Girar",
+					"rotate": "Rodar",
 					"save": "Guardar",
 					"scale": "Arredondar arestas",
 					"width": "Largura do avatar",
@@ -136,7 +136,7 @@
 				}
 			},
 			"useredit": {
-				"email": "Email",
+				"email": "E-mail",
 				"name": "Nome",
 				"password": "Senha",
 				"repeatpassword": "Repetir senha"
@@ -160,7 +160,7 @@
 			"active": "Ativo",
 			"adduser": "Adicionar usuário",
 			"created": "Criado",
-			"email": "Email",
+			"email": "E-mail",
 			"id": "Id",
 			"loading": "Obter informação do usuário",
 			"name": "Nome",

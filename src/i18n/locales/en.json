@@ -93,7 +93,7 @@
 					"artist": "Artist",
 					"city": "City",
 					"create": "Created",
-					"id": "Id",
+					"id": "ID",
 					"state": "State",
 					"title": "Title",
 					"updated": "Updated"
