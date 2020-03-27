@@ -31,7 +31,7 @@ class storyLocateMap extends Component {
       let viewport = (this.props.viewport) ? this.props.viewport : {
         latitude: (parseFloat(location[1])) ? parseFloat(location[1]) : -34.9022229  ,
         longitude: (parseFloat(location[0])) ? parseFloat(location[0]) : -56.1670182 ,
-        zoom: 12,
+        zoom: 18,
         bearing: -60, // bearing in degrees
         pitch: 60  // pitch in degrees
       };
@@ -52,7 +52,7 @@ class storyLocateMap extends Component {
       active: 'Map',
       storyPosition: null,
       place_name: null,
-      geometry: (this.props.geometry) ? this.props.geometry : null,
+      geometry: geometry,
       center: null,
       context: null,
       location: (location) ? location : null ,
@@ -208,7 +208,7 @@ handleOnResult = event => {
             ...this.state.viewport,
             longitude: lng,
             latitude: Lat,
-            zoom: 20,
+            zoom: 17,
             transitionDuration: 1500,
             transitionInterpolator: new FlyToInterpolator(),
             transitionEasing: d3.easeCubic

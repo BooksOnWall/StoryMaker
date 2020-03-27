@@ -89,7 +89,7 @@ class storyMap extends Component {
     let viewport = (this.props.stages && this.props.stages.length > 0) ? {
         latitude: (this.props.stages[0]) ? parseFloat(this.props.stages[0].geometry.coordinates[1]): parseFloat(location[1]),
         longitude:  (this.props.stages[0]) ? parseFloat(this.props.stages[0].geometry.coordinates[0]) : parseFloat(location[0]),
-        zoom: this.props.viewport.zoom,
+        zoom: (this.props.viewport.zoom) ? this.props.viewport.zoom : 15 ,
         bearing:  this.props.viewport.bearing, // bearing in degrees
         pitch:  this.props.viewport.pitch,  // pitch in degrees
     } : this.props.viewport;
