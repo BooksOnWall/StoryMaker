@@ -353,9 +353,9 @@ const getStories = async () => {
   }
 }
 
-const createStory = async ({ title, state, city, sinopsys, credits, artist, active }) => {
+const createStory = async ({ title, state, city, sinopsys, credits, artist, geometry, viewport, active }) => {
   try {
-    let res = await Stories.create({ title, state, city, sinopsys, credits, artist, active });
+    let res = await Stories.create({ title, state, city, sinopsys, credits, artist, geometry, viewport, active });
     const sid = res.get('id');
     // create directory structure
     // story files
