@@ -69,7 +69,7 @@ class stagesMap extends Component {
             map.viewport.zoom = 12;
             map.viewport.latitude = parseFloat(this.state.geometry.coordinates[1]);
             map.viewport.longitude = parseFloat(this.state.geometry.coordinates[0]);
-            this.setState({mapStyle: map.style, viewport: map.viewport, loading: false});
+            this.setState({mapStyle: map.style, loading: false});
           } else {
             console.log('No Data received from the server');
           }

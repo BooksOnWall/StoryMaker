@@ -258,8 +258,6 @@ class storyMap extends Component {
         return response.json();
       })
       .then(data => {
-          this.setState({loading: false});
-          // console.log(data);
           if(data && data.map) {
             const map  = JSON.parse(data.map);
             const colors = {};
@@ -271,7 +269,8 @@ class storyMap extends Component {
               if(layer.paint) { colors[layer.id] = color ; }
               return layer;
             });
-            this.setState({colors: colors, mapStyle: map.style});
+            this.setState({colors: colors, mapStyle: map.style, loading: false});
+            // console.log(data);
           } else {
             console.log('No Data received from the server');
             return this.saveMapPrefs();

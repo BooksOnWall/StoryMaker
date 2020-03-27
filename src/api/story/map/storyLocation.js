@@ -63,7 +63,7 @@ class storyLocation extends Component {
       .then(data => {
           if(data) {
             const map  = JSON.parse(data.map);
-            this.setState({mapStyle: map.style, viewport: map.viewport});
+            this.setState({mapStyle: map.style});
           } else {
             console.log('No Data received from the server');
           }

@@ -78,7 +78,7 @@ class storyLocateMap extends Component {
           if(data && !data.error) {
             const map  = JSON.parse(data.map);
             map.viewport.zoom = 17;
-            this.setState({mapStyle: map.style, viewport: map.viewport});
+            this.setState({mapStyle: map.style});
           } else {
             console.log(data.error);
             console.log('No Data received from the server');
