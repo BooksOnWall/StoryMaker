@@ -76,8 +76,8 @@ class storyLocateMap extends Component {
       })
       .then(data => {
           if(data && !data.error) {
-            console.log(data);
             const map  = JSON.parse(data.map);
+            map.viewport.zoom = 17;
             this.setState({mapStyle: map.style, viewport: map.viewport});
           } else {
             console.log(data.error);
@@ -123,7 +123,7 @@ handleGeocoderViewportChange = viewport => {
     transitionInterpolator: new FlyToInterpolator(),
     transitionEasing: d3.easeCubic,
     transitionDuration: 1500,
-    zoom: 15
+    zoom: 18
    };
 
   return this.handleViewportChange({

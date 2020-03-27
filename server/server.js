@@ -415,6 +415,7 @@ const updateFieldFromStory = async ({ sid, field, fieldValue }) => {
 };
 const patchStory = async ({ sid, title, artist, state, city, sinopsys, credits, design_options, tesselate, geometry, viewport, active }) => {
   console.log('patchStory: geometry', geometry);
+  console.log('patchStory: viewport', viewport);
   return await Stories.update({ title, artist, state, city, sinopsys, credits, design_options, tesselate, geometry, viewport, active },
     { where: {id : sid}}
   );

@@ -357,6 +357,7 @@ class Story extends Component {
             const creditContentState = ContentState.createFromBlockArray(htmlToDraft(story.credits));
             const creditState = EditorState.createWithContent(creditContentState);
 
+            console.log(story.viewport);
             this.setState({
               sid: story.id,
               title: story.title,
@@ -656,7 +657,7 @@ class Story extends Component {
                 {(this.state.step === 'Story') ? this.EditForm() : '' }
                 {(this.state.step === 'Sinopsys') ? this.EditSino() : '' }
                 {(this.state.step === 'Credits') ? this.EditCred() : '' }
-                {(this.state.step === 'Map' && this.state.viewport && this.state.viewport.latitude) ? <StoryMap sid={this.state.sid}  history={this.props.history} step={this.state.step} state={this.state} story={this.state.story} viewport={this.state.viewport} geometry={this.state.geometry} /> : '' }
+                {(this.state.step === 'Map' && this.state.viewport) ? <StoryMap sid={this.state.sid}  history={this.props.history} step={this.state.step} state={this.state} story={this.state.story} viewport={this.state.viewport} geometry={this.state.geometry} /> : '' }
                 {(this.state.step === 'Stages' && this.state.viewport) ? <StoryStages sid={this.state.sid} history={this.props.history} step={this.state.step} state={this.state} viewport={this.state.viewport} geometry={this.state.geometry}/>  : '' }
             </Segment>
         </Dimmer.Dimmable>
