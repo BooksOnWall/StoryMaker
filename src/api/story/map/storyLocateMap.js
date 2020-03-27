@@ -31,7 +31,7 @@ class storyLocateMap extends Component {
       let viewport = (this.props.viewport) ? this.props.viewport : {
         latitude: (parseFloat(location[1])) ? parseFloat(location[1]) : -34.9022229  ,
         longitude: (parseFloat(location[0])) ? parseFloat(location[0]) : -56.1670182 ,
-        zoom: 18,
+        zoom: 14,
         bearing: -60, // bearing in degrees
         pitch: 60  // pitch in degrees
       };
@@ -39,6 +39,10 @@ class storyLocateMap extends Component {
         type: "Point",
         coordinates: location
       };
+      console.log(viewport);
+      viewport.zoom = (6);
+      viewport.latitude = location[1];
+      console.log(viewport);
     let geometry = (this.props.geometry) ? this.props.geometry : default_geo;
     this.state = {
       toggleAuthenticateStatus: this.props.toggleAuthenticateStatus,
@@ -56,7 +60,6 @@ class storyLocateMap extends Component {
       center: null,
       context: null,
       location: (location) ? location : null ,
-      //bounds: bounds,
       searchResultLayer: null,
       popupInfo: null,
       viewport: viewport,
@@ -77,7 +80,6 @@ class storyLocateMap extends Component {
       .then(data => {
           if(data && !data.error) {
             const map  = JSON.parse(data.map);
-            map.viewport.zoom = 17;
             this.setState({mapStyle: map.style});
           } else {
             console.log(data.error);
@@ -95,7 +97,7 @@ class storyLocateMap extends Component {
   componentDidMount = async () => {
     try {
       await this.getMapPreferences();
-      this.setState({loading: false, viewport: this.props.viewport});
+      this.setState({loading: false});
     } catch(e) {
       console.log(e.message);
     }
@@ -208,7 +210,7 @@ handleOnResult = event => {
             ...this.state.viewport,
             longitude: lng,
             latitude: Lat,
-            zoom: 17,
+            zoom: 18,
             transitionDuration: 1500,
             transitionInterpolator: new FlyToInterpolator(),
             transitionEasing: d3.easeCubic
@@ -252,9 +254,7 @@ handleOnResult = event => {
                     Story location
                   </Marker>
                 }
-
               </MapGL>
-            }
         </Dimmer.Dimmable>
     </Segment>
     );

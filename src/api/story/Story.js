@@ -476,55 +476,55 @@ class Story extends Component {
   }
   EditForm = () => {
     return (
-  <Segment placeholder className="story" inverted>
-    <Grid columns={2} stackable textAlign='center'>
-      <Grid.Row verticalAlign='middle'>
-        <Grid.Column>
-          <Formik
-            enableReinitialize={true}
-            initialValues={this.state.initialSValues}
-            validate={values => {
-              let errors = {};
-              return errors;
-            }}
-            onSubmit={(values, { setSubmitting }) => {
-              if(this.state.mode === 'update') {
-                this.updateStory(values);
-              } else {
-                this.createStory(values);
-              }
+      <Segment placeholder className="story" inverted>
+        <Grid columns={2} stackable textAlign='center'>
+          <Grid.Row verticalAlign='middle'>
+            <Grid.Column>
+              <Formik
+                enableReinitialize={true}
+                initialValues={this.state.initialSValues}
+                validate={values => {
+                  let errors = {};
+                  return errors;
+                }}
+                onSubmit={(values, { setSubmitting }) => {
+                  if(this.state.mode === 'update') {
+                    this.updateStory(values);
+                  } else {
+                    this.createStory(values);
+                  }
 
-              setTimeout(() => {
-                //alert(JSON.stringify(values, null, 2));
+                  setTimeout(() => {
+                    //alert(JSON.stringify(values, null, 2));
 
-                setSubmitting(false);
-              }, 400);
-            }}
-            >
-            {({
-              values,
-              errors,
-              touched,
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              handleDelete,
-              isSubmitting,
-              /* and other goodies */
-            }) => (
-              <Form inverted  size='large' onSubmit={this.handleSubmit}>
+                    setSubmitting(false);
+                  }, 400);
+                }}
+                >
+                {({
+                  values,
+                  errors,
+                  touched,
+                  handleChange,
+                  handleBlur,
+                  handleSubmit,
+                  handleDelete,
+                  isSubmitting,
+                  /* and other goodies */
+                }) => (
+                  <Form inverted  size='large' onSubmit={this.handleSubmit}>
                     <Segment inverted>
-                    <span className='label small'>Choose artist/autor: </span><br/>
-                    <select
-                      size='small'
-                      name="artist"
-                      type="select"
-                      defaultValue={this.state.artist}
-                      onChange={this.handleChange}
-                    >
-                      <option key={0} disabled hidden value=''></option>
-                      {this.state.artistOptions.map(options => <option key={options.key} value={options.value} >{options.text}</option>)}
-                    </select>
+                      <span className='label small'>Choose artist/autor: </span><br/>
+                      <select
+                        size='small'
+                        name="artist"
+                        type="select"
+                        defaultValue={this.state.artist}
+                        onChange={this.handleChange}
+                        >
+                        <option key={0} disabled hidden value=''></option>
+                        {this.state.artistOptions.map(options => <option key={options.key} value={options.value} >{options.text}</option>)}
+                      </select>
                     </Segment>
                     <Divider/>
                     <Input
@@ -606,24 +606,25 @@ class Story extends Component {
                           />
                       </div>
                     ) : '' }
-              </Form>
-            )}
-          </Formik>
-        </Grid.Column>
+                  </Form>
+                )}
+              </Formik>
+            </Grid.Column>
 
-        <Grid.Column>
-          <Header icon style={{color: '#FFF'}}>
-            <Icon name='world'  />
-            Locate your Story
-          </Header>
-          {this.locateStory()}
-        </Grid.Column>
-      </Grid.Row>
-    </Grid>
-  </Segment>
+            <Grid.Column>
+              <Header icon style={{color: '#FFF'}}>
+                <Icon name='world'  />
+                Locate your Story
+              </Header>
+              {this.locateStory()}
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Segment>
     );
   }
   locateStory = () => {
+    console.log(this.state.viewport);
     return (
       <StoryLocateMap
           sid={this.state.sid}
@@ -637,7 +638,7 @@ class Story extends Component {
           />
       );
 
-  };
+  }
   setSteps = (obj) => {
     if(obj) this.setState(obj);
   }

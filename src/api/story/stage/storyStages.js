@@ -37,7 +37,7 @@ class storyStages extends Component {
     let viewport = {
       latitude: parseFloat(location[1]),
       longitude: parseFloat(location[0]),
-      zoom: 6,
+      zoom: 8,
       bearing:  this.props.viewport.bearing, // bearing in degrees
       pitch:  this.props.viewport.pitch,
     }
