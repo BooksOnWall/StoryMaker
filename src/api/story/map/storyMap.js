@@ -85,6 +85,14 @@ class storyMap extends Component {
     };
 
     console.log('viewport',this.props.viewport);
+    let location = (this.props.geometry) ? this.props.geometry.coordinates : this.props.location ;
+    let viewport = (this.props.stages && this.props.stages.length > 0) ? {
+        latitude: (this.props.stages[0]) ? parseFloat(this.props.stages[0].geometry.coordinates[1]): parseFloat(location[1]),
+        longitude:  (this.props.stages[0]) ? parseFloat(this.props.stages[0].geometry.coordinates[0]) : parseFloat(location[0]),
+        zoom: this.props.viewport.zoom,
+        bearing:  this.props.viewport.bearing, // bearing in degrees
+        pitch:  this.props.viewport.pitch,  // pitch in degrees
+    } : this.props.viewport;
     this.state = {
       toggleAuthenticateStatus: this.props.toggleAuthenticateStatus,
       authenticated: this.props.authenticated,
@@ -108,7 +116,7 @@ class storyMap extends Component {
       },
       active: 'Map',
       saveMapLoading: false,
-      viewport: this.props.viewport,
+      viewport: viewport,
       geometry: this.props.geometry,
       fonts: [
         'ATypewriterForMe',
@@ -263,7 +271,7 @@ class storyMap extends Component {
               if(layer.paint) { colors[layer.id] = color ; }
               return layer;
             });
-            this.setState({colors: colors, mapStyle: map.style, viewport: map.viewport});
+            this.setState({colors: colors, mapStyle: map.style});
           } else {
             console.log('No Data received from the server');
             return this.saveMapPrefs();
@@ -873,6 +881,7 @@ class storyMap extends Component {
   render() {
 
     const {viewport, mapStyle, loading} = this.state;
+
     const panes = [
       {
         menuItem: 'Theme',

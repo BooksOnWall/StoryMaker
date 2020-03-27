@@ -622,7 +622,7 @@ class Story extends Component {
     );
   }
   locateStory = () => {
-    return (this.state.geometry && this.state.geometry.coordinates && this.state.viewport) ? (
+    return (
       <StoryLocateMap
           sid={this.state.sid}
           city={this.state.city}
@@ -633,7 +633,7 @@ class Story extends Component {
           setFormDataLocation={this.setFormDataLocation}
           setStoryLocation={this.setStoryLocation}
           />
-      ) : '';
+      );
 
   };
   setSteps = (obj) => {
@@ -656,7 +656,7 @@ class Story extends Component {
                 {(this.state.step === 'Story') ? this.EditForm() : '' }
                 {(this.state.step === 'Sinopsys') ? this.EditSino() : '' }
                 {(this.state.step === 'Credits') ? this.EditCred() : '' }
-                {(this.state.step === 'Map' && Object.keys(this.state.viewport).length>0) ? <StoryMap sid={this.state.sid}  history={this.props.history} step={this.state.step} state={this.state} story={this.state.story} viewport={this.state.viewport} geometry={this.state.geometry} /> : '' }
+                {(this.state.step === 'Map' && this.state.viewport && this.state.viewport.latitude) ? <StoryMap sid={this.state.sid}  history={this.props.history} step={this.state.step} state={this.state} story={this.state.story} viewport={this.state.viewport} geometry={this.state.geometry} /> : '' }
                 {(this.state.step === 'Stages' && this.state.viewport) ? <StoryStages sid={this.state.sid} history={this.props.history} step={this.state.step} state={this.state} viewport={this.state.viewport} geometry={this.state.geometry}/>  : '' }
             </Segment>
         </Dimmer.Dimmable>

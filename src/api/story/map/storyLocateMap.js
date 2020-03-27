@@ -22,13 +22,24 @@ class storyLocateMap extends Component {
   constructor(props) {
     super(props);
 
-    console.log('geometry', this.props.geometry);
     let location = (this.props.geometry)
       ? this.props.geometry.coordinates
       : [-56.1670182, -34.9022229];
       let protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
       let domain = protocol + '://' + process.env.REACT_APP_SERVER_HOST;
       let server = domain + ':'+ process.env.REACT_APP_SERVER_PORT+'/';
+      let viewport = (this.props.viewport) ? this.props.viewport : {
+        latitude: (parseFloat(location[1])) ? parseFloat(location[1]) : -34.9022229  ,
+        longitude: (parseFloat(location[0])) ? parseFloat(location[0]) : -56.1670182 ,
+        zoom: 12,
+        bearing: -60, // bearing in degrees
+        pitch: 60  // pitch in degrees
+      };
+      const default_geo = {
+        type: "Point",
+        coordinates: location
+      };
+    let geometry = (this.props.geometry) ? this.props.geometry : default_geo;
     this.state = {
       toggleAuthenticateStatus: this.props.toggleAuthenticateStatus,
       authenticated: this.props.authenticated,
@@ -48,13 +59,7 @@ class storyLocateMap extends Component {
       //bounds: bounds,
       searchResultLayer: null,
       popupInfo: null,
-      viewport: (this.props.viewport && this.props.mode === 'update') ? this.props.viewport : {
-        latitude: (parseFloat(location[1])) ? parseFloat(location[1]) : -34.9022229  ,
-        longitude: (parseFloat(location[0])) ? parseFloat(location[0]) : -56.1670182 ,
-        zoom: 18,
-        bearing: -60, // bearing in degrees
-        pitch: 60  // pitch in degrees
-      },
+      viewport: viewport,
       interactiveLayerIds: []
     };
 
@@ -211,13 +216,13 @@ handleOnResult = event => {
         this.setState({viewport});
     };
   render() {
-    const {mapStyle, viewport, searchResultLayer, interactiveLayerIds,  loading, geometry} = this.state;
+    const {mapStyle, viewport, searchResultLayer, interactiveLayerIds,  loading} = this.state;
+    const geometry = (this.state.geometry) ? this.state.geometry :this.props.geometry;
     return (
       <Segment  className="storyMap" style={{padding:0}} >
         <Dimmer.Dimmable as={Segment} blurring dimmed={this.state.loading}>
           <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
             <Loader active={loading} >Get map info</Loader>
-            {geometry &&
               <MapGL
                 {...viewport}
                 width="inherit"
@@ -241,11 +246,13 @@ handleOnResult = event => {
                   position="top-left"
                 />
                 <DeckGL {...viewport} layers={[searchResultLayer]} />
-
-                  <Marker key='story' longitude={parseFloat(this.props.geometry.coordinates[0])} latitude={parseFloat(this.props.geometry.coordinates[1])}>
+                {geometry &&
+                  <Marker key='story' longitude={parseFloat(geometry.coordinates[0])} latitude={parseFloat(geometry.coordinates[1])}>
                     <StagePin size={20} onClick={() => this.setState({popupInfo: 'toto'})} />
                     Story location
                   </Marker>
+                }
+
               </MapGL>
             }
         </Dimmer.Dimmable>
