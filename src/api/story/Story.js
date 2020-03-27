@@ -356,8 +356,9 @@ class Story extends Component {
 
             const creditContentState = ContentState.createFromBlockArray(htmlToDraft(story.credits));
             const creditState = EditorState.createWithContent(creditContentState);
-
-            console.log(story.viewport);
+            console.log('viewstate typeof',typeof(story.viewport));
+            let viewport = (story.viewport && typeof(story.viewport) === String) ? JSON.parse(story.viewport) : story.viewport;
+            console.log(viewport);
             this.setState({
               sid: story.id,
               title: story.title,
@@ -371,7 +372,7 @@ class Story extends Component {
               stages: story.stages,
               tesselate: story.tesselate,
               geometry: story.geometry,
-              viewport: story.viewport,
+              viewport: viewport,
               initialSValues: story,
               story: story,
               loading: false,
