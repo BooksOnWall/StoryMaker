@@ -357,7 +357,7 @@ class Story extends Component {
             const creditContentState = ContentState.createFromBlockArray(htmlToDraft(story.credits));
             const creditState = EditorState.createWithContent(creditContentState);
             console.log('viewstate typeof',typeof(story.viewport));
-            let viewport = (story.viewport && typeof(story.viewport) === String) ? JSON.parse(story.viewport) : story.viewport;
+            let viewport = (story.viewport && typeof(story.viewport) === 'string') ? JSON.parse(story.viewport) : story.viewport;
             console.log(viewport);
             this.setState({
               sid: story.id,
