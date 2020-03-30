@@ -27,16 +27,16 @@ class stagesMap extends Component {
     let protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
     let domain = protocol + '://' + process.env.REACT_APP_SERVER_HOST;
     let server = domain + ':'+ process.env.REACT_APP_SERVER_PORT+'/';
-    let location = (this.props.geometry) ? this.props.geometry.coordinates : this.props.location ;
-    console.log(this.props.stages);
+    let location = (this.props.geometry) ? this.props.geometry.coordinates : null ;
+    console.log(this.props.viewport.zoom);
     let viewport = (this.props.stages && this.props.stages.length > 0) ? {
         latitude: (this.props.stages[0]) ? parseFloat(this.props.stages[0].geometry.coordinates[1]): parseFloat(location[1]),
         longitude:  (this.props.stages[0]) ? parseFloat(this.props.stages[0].geometry.coordinates[0]) : parseFloat(location[0]),
-        zoom: this.props.viewport.zoom,
-        bearing:  this.props.viewport.bearing, // bearing in degrees
-        pitch:  this.props.viewport.pitch,  // pitch in degrees
+        zoom: (this.props.viewport.zoom) ? this.props.viewport.zoom: 12,
+        bearing:  (this.props.viewport.bearing) ? this.props.viewport.bearing : 0, // bearing in degrees
+        pinch:  (this.props.viewport.pinch) ? this.props.viewport.pinch : 0,  // pitch in degrees
     } : this.props.viewport;
-    console.log(viewport);
+    console.log(this.props.viewport);
     this.state = {
       toggleAuthenticateStatus: this.props.toggleAuthenticateStatus,
       authenticated: this.props.authenticated,
@@ -66,9 +66,6 @@ class stagesMap extends Component {
       .then(data => {
           if(data) {
             const map  = JSON.parse(data.map);
-            map.viewport.zoom = 12;
-            map.viewport.latitude = parseFloat(this.state.geometry.coordinates[1]);
-            map.viewport.longitude = parseFloat(this.state.geometry.coordinates[0]);
             this.setState({mapStyle: map.style, loading: false});
           } else {
             console.log('No Data received from the server');
@@ -205,7 +202,7 @@ class stagesMap extends Component {
   render() {
 
     const {viewport, interactiveLayerIds, loading} = this.state;
-
+    console.log(viewport);
     return (
       <Segment  className="stagesMap">
         <Dimmer.Dimmable as={Segment} blurring dimmed={loading}>

@@ -21,27 +21,22 @@ let MapboxAccessToken = process.env.REACT_APP_MAT;
 class storyLocateMap extends Component {
   constructor(props) {
     super(props);
-
+    console.log('viewport',this.props.viewport);
     let location = (this.props.geometry)
       ? this.props.geometry.coordinates
       : [-56.1670182, -34.9022229];
       let protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
       let domain = protocol + '://' + process.env.REACT_APP_SERVER_HOST;
       let server = domain + ':'+ process.env.REACT_APP_SERVER_PORT+'/';
-      let viewport = (this.props.viewport) ? this.props.viewport : {
-        latitude: (parseFloat(location[1])) ? parseFloat(location[1]) : -34.9022229  ,
-        longitude: (parseFloat(location[0])) ? parseFloat(location[0]) : -56.1670182 ,
-        zoom: 14,
-        bearing: -60, // bearing in degrees
-        pitch: 60  // pitch in degrees
-      };
+      let viewport = (this.props.viewport) ? this.props.viewport : {};
       const default_geo = {
         type: "Point",
         coordinates: location
       };
       console.log(viewport);
-      viewport.zoom = (6);
-      viewport.latitude = location[1];
+      viewport['zoom'] = 10;
+      viewport['latitude'] = location[1];
+      viewport['longitude'] = location[0];
       console.log(viewport);
     let geometry = (this.props.geometry) ? this.props.geometry : default_geo;
     this.state = {
@@ -97,7 +92,6 @@ class storyLocateMap extends Component {
   componentDidMount = async () => {
     try {
       await this.getMapPreferences();
-      this.setState({loading: false});
     } catch(e) {
       console.log(e.message);
     }
@@ -218,7 +212,8 @@ handleOnResult = event => {
         this.setState({viewport});
     };
   render() {
-    const {mapStyle, viewport, searchResultLayer, interactiveLayerIds,  loading} = this.state;
+    const {mapStyle, searchResultLayer, interactiveLayerIds,  loading} = this.state;
+    const viewport = (this.state.viewport) ? this.state.viewport : this.props.viewport;
     const geometry = (this.state.geometry) ? this.state.geometry :this.props.geometry;
     return (
       <Segment  className="storyMap" style={{padding:0}} >

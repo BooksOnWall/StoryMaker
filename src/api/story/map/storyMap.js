@@ -85,14 +85,21 @@ class storyMap extends Component {
     };
 
     console.log('viewport',this.props.viewport);
-    let location = (this.props.geometry) ? this.props.geometry.coordinates : this.props.location ;
-    let viewport = (this.props.stages && this.props.stages.length > 0) ? {
-        latitude: (this.props.stages[0]) ? parseFloat(this.props.stages[0].geometry.coordinates[1]): parseFloat(location[1]),
-        longitude:  (this.props.stages[0]) ? parseFloat(this.props.stages[0].geometry.coordinates[0]) : parseFloat(location[0]),
-        zoom: (this.props.viewport.zoom) ? this.props.viewport.zoom : 15 ,
-        bearing:  this.props.viewport.bearing, // bearing in degrees
-        pitch:  this.props.viewport.pitch,  // pitch in degrees
-    } : this.props.viewport;
+    // let location = (this.props.geometry) ? this.props.geometry.coordinates : this.props.location ;
+    const viewport = {
+      longitude: (this.props.viewport.longitude) ? this.props.viewport.longitude :  this.props.story.viewport.longitude ,
+      latitude: (this.props.viewport.latitude) ? this.props.viewport.latitude : this.props.story.viewport.latitude,
+      zoom: (this.props.viewport.zoom) ? this.props.viewport.zoom : 12,
+      pinch: (this.props.viewport.pinch) ? this.props.viewport.pinch : 0 ,
+      bearing: (this.props.viewport.bearing) ? this.props.viewport.bearing: 0,
+    };
+    // let viewport = (this.props.stages && this.props.stages.length > 0) ? {
+    //     latitude: (this.props.stages[0]) ? parseFloat(this.props.stages[0].geometry.coordinates[1]): parseFloat(location[1]),
+    //     longitude:  (this.props.stages[0]) ? parseFloat(this.props.stages[0].geometry.coordinates[0]) : parseFloat(location[0]),
+    //     zoom: (this.props.viewport.zoom) ? this.props.viewport.zoom : (15) ,
+    //     bearing:  this.props.viewport.bearing, // bearing in degrees
+    //     pitch:  this.props.viewport.pitch,  // pitch in degrees
+    // } : this.props.viewport;
     this.state = {
       toggleAuthenticateStatus: this.props.toggleAuthenticateStatus,
       authenticated: this.props.authenticated,
@@ -184,8 +191,15 @@ class storyMap extends Component {
       .then(data => {
           if(data) {
             console.log('geometry',data.story.geometry);
-            console.log('coordinates',data.story.geometry.coordinates)
-            this.setState({story: data.story, loading: false, viewport: data.story.viewport, geometry: data.story.geometry});
+            console.log('coordinates',data.story.geometry.coordinates);
+            const viewport = {
+              longitude: data.story.viewport.longitude,
+              latttude: data.story.viewport.latitude,
+              zoom: data.story.viewport.zoom,
+              pinch: data.story.viewport.pinch,
+              bearing: data.storys.viewport.bearing,
+            };
+            this.setState({story: data.story, loading: false, viewport: viewport, geometry: data.story.geometry});
           } else {
             console.log('No Data received from the server');
           }
@@ -899,18 +913,21 @@ class storyMap extends Component {
         <Segment className='mapPref' inverted style={{ height: '84vh', width: '40vw', padding: '1em', overflow: 'scroll'}}>
           <Tab menu={{ inverted: true, pointing: true }} panes={panes} />
         </Segment>
-        <Segment  className="view map" style={{ height: '82vh', width: '60vw', overflow: 'hidden'}} >
-              <MapGL
-                {...viewport}
-                width="60vw"
-                height="82vh"
-                className= "mapBox"
-                mapStyle={mapStyle}
-                onViewportChange={this.onViewportChange}
-                mapboxApiAccessToken={MapboxAccessToken}
-              >
-              </MapGL>
-          </Segment>
+
+          <Segment  className="view map" style={{ height: '82vh', width: '60vw', overflow: 'hidden'}} >
+                <MapGL
+                  {...viewport}
+                  width="60vw"
+                  height="82vh"
+                  className= "mapBox"
+                  mapStyle={mapStyle}
+                  onViewportChange={this.onViewportChange}
+                  mapboxApiAccessToken={MapboxAccessToken}
+                >
+                </MapGL>
+            </Segment>
+
+
         </Segment.Group>
         </Dimmer.Dimmable>
     );

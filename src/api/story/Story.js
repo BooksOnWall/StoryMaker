@@ -257,6 +257,13 @@ class Story extends Component {
   async createStory(values) {
     this.setState(values);
     try {
+      const viewport = {
+        longitude: this.state.viewport.longitude,
+        latitude: this.state.viewport.latitude,
+        zoom: this.state.viewport.zoom,
+        pinch: this.state.viewport.pinch,
+        bearing: this.state.viewport.bearing,
+      };
       await fetch(this.state.stories +'/'+ 0, {
         method: 'post',
         headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'},
@@ -266,7 +273,7 @@ class Story extends Component {
           city: this.state.city,
           tesselate: this.state.tesselate,
           geometry: this.state.geometry,
-          viewport: this.state.viewport,
+          viewport: viewport,
           sinopsys: (this.state.sinopsys) ? sanitizeHtml(this.state.sinopsys) : '' ,
           credits: (this.state.credits) ? sanitizeHtml(this.state.credits) : '' ,
           artist:parseInt(this.state.artist),
@@ -296,7 +303,13 @@ class Story extends Component {
 
   async updateStory(values) {
     try {
-
+      const viewport = {
+        longitude: this.state.viewport.longitude,
+        latitude: this.state.viewport.latitude,
+        zoom: this.state.viewport.zoom,
+        pinch: this.state.viewport.pinch,
+        bearing: this.state.viewport.bearing,
+      };
       await fetch(this.state.stories+'/'+this.state.sid, {
         method: 'PATCH',
         headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json', charset:'utf-8' },
@@ -306,7 +319,7 @@ class Story extends Component {
           city: this.state.city,
           tesselate: this.state.tesselate,
           geometry: this.state.geometry,
-          viewport: this.state.viewport,
+          viewport: viewport,
           sinopsys: sanitizeHtml(this.state.sinopsys),
           credits: sanitizeHtml(this.state.credits),
           artist:parseInt(this.state.artist),
@@ -357,7 +370,15 @@ class Story extends Component {
             const creditContentState = ContentState.createFromBlockArray(htmlToDraft(story.credits));
             const creditState = EditorState.createWithContent(creditContentState);
             console.log('viewstate typeof',typeof(story.viewport));
-            let viewport = (story.viewport && typeof(story.viewport) === 'string') ? JSON.parse(story.viewport) : story.viewport;
+            const oviewport = (story.viewport && typeof(story.viewport) === 'string') ? JSON.parse(story.viewport) : story.viewport;
+            console.log('oviewport', oviewport);
+            const viewport = {
+              longitude: oviewport.longitude,
+              latitude: oviewport.latitude,
+              zoom: (oviewport.zoom) ? oviewport.zoom : 0,
+              pinch: (oviewport.pinch) ? oviewport.pinch: 0,
+              bearing: (oviewport.bearing) ? oviewport.bearing : 0,
+            };
             console.log(viewport);
             this.setState({
               sid: story.id,
@@ -624,8 +645,8 @@ class Story extends Component {
     );
   }
   locateStory = () => {
-    console.log(this.state.viewport);
-    return (
+    console.log(Object.keys(this.state.viewport).length);
+    return (Object.keys(this.state.viewport).length > 0) ? (
       <StoryLocateMap
           sid={this.state.sid}
           city={this.state.city}
@@ -636,7 +657,7 @@ class Story extends Component {
           setFormDataLocation={this.setFormDataLocation}
           setStoryLocation={this.setStoryLocation}
           />
-      );
+      ) : '';
 
   }
   setSteps = (obj) => {
@@ -659,8 +680,8 @@ class Story extends Component {
                 {(this.state.step === 'Story') ? this.EditForm() : '' }
                 {(this.state.step === 'Sinopsys') ? this.EditSino() : '' }
                 {(this.state.step === 'Credits') ? this.EditCred() : '' }
-                {(this.state.step === 'Map' && this.state.viewport) ? <StoryMap sid={this.state.sid}  history={this.props.history} step={this.state.step} state={this.state} story={this.state.story} viewport={this.state.viewport} geometry={this.state.geometry} /> : '' }
-                {(this.state.step === 'Stages' && this.state.viewport) ? <StoryStages sid={this.state.sid} history={this.props.history} step={this.state.step} state={this.state} viewport={this.state.viewport} geometry={this.state.geometry}/>  : '' }
+                {(this.state.step === 'Map' ) ? <StoryMap sid={this.state.sid}  history={this.props.history} step={this.state.step} state={this.state} story={this.state.story} viewport={this.state.viewport} geometry={this.state.geometry} /> : '' }
+                {(this.state.step === 'Stages') ? <StoryStages sid={this.state.sid} history={this.props.history} step={this.state.step} state={this.state} story={this.state.story} viewport={this.state.viewport} geometry={this.state.geometry}/>  : '' }
             </Segment>
         </Dimmer.Dimmable>
         <Dimmer active={this.state.loading}>

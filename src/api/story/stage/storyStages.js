@@ -34,13 +34,14 @@ class storyStages extends Component {
     this.fileInputRef = React.createRef();
     let location =  (this.props.geometry && this.props.geometry.coordinates) ? this.props.geometry.coordinates : [-56.1670182, -34.9022229];
     location = (this.props.stages && this.props.stages.length > 0 ) ? this.props.stages[0].geometry.coordinates: location;
-    let viewport = {
-      latitude: parseFloat(location[1]),
-      longitude: parseFloat(location[0]),
-      zoom: 8,
-      bearing:  this.props.viewport.bearing, // bearing in degrees
-      pitch:  this.props.viewport.pitch,
-    }
+    const viewport = {
+      longitude: (this.props.viewport.longitude) ? this.props.viewport.longitude : location[0] ,
+      latitude: (this.props.viewport.latitude) ? this.props.viewport.latitude : location[1],
+      zoom: (this.props.viewport.zoom) ? this.props.viewport.zoom: 10,
+      pinch: (this.props.viewport.pinch) ? this.props.viewport.pinch : 0,
+      bearing: (this.props.viewport.bearing) ? this.props.viewport.bearing : 0 ,
+    };
+
     this.state = {
       active: 'Stages',
       server: server,
@@ -604,7 +605,7 @@ class storyStages extends Component {
 
               <Segment style={{width: '60vw', height: '77vh' }} className="stagesMap">
                 {(this.state.location && this.props.viewport)
-                  ? <StagesMap goToStage={this.goToStage} stages={stages} location={this.state.location} sid={this.state.sid} state={this.state} viewport={viewport} geometry={this.props.geometry}/>
+                  ? <StagesMap goToStage={this.goToStage} stages={stages} location={this.state.location} sid={this.state.sid} state={this.state} viewport={this.state.viewport} geometry={this.props.geometry}/>
                   : <Placeholder>
                     <Placeholder.Image rectangular />
                   </Placeholder>
