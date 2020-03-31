@@ -65,7 +65,7 @@ class Story extends Component {
         longitude: 0,
         latitude: 0,
         zoom: 10,
-        pinch: 0,
+        pitch: 0,
         bearing: 0,
       } : {},
       geometry: null,
@@ -270,7 +270,7 @@ class Story extends Component {
         longitude: this.state.viewport.longitude,
         latitude: this.state.viewport.latitude,
         zoom: this.state.viewport.zoom,
-        pinch: this.state.viewport.pinch,
+        pitch: this.state.viewport.pitch,
         bearing: this.state.viewport.bearing,
       };
       await fetch(this.state.stories +'/'+ 0, {
@@ -316,7 +316,7 @@ class Story extends Component {
         longitude: this.state.viewport.longitude,
         latitude: this.state.viewport.latitude,
         zoom: this.state.viewport.zoom,
-        pinch: this.state.viewport.pinch,
+        pitch: this.state.viewport.pitch,
         bearing: this.state.viewport.bearing,
       };
       await fetch(this.state.stories+'/'+this.state.sid, {
@@ -383,7 +383,7 @@ class Story extends Component {
               longitude: oviewport.longitude,
               latitude: oviewport.latitude,
               zoom: (oviewport.zoom) ? oviewport.zoom : 0,
-              pinch: (oviewport.pinch) ? oviewport.pinch: 0,
+              pitch: (oviewport.pitch) ? oviewport.pitch: 0,
               bearing: (oviewport.bearing) ? oviewport.bearing : 0,
             };
             console.log(viewport);

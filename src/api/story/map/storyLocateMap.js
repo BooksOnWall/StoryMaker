@@ -252,7 +252,7 @@ handleOnResult = event => {
                 }
                 {stages &&
                   stages.map((stage,i) => (
-                    <Marker key='story' longitude={parseFloat(stage.geometry.coordinates[0])} latitude={parseFloat(stage.geometry.coordinates[1])}>
+                    <Marker key='stage' longitude={parseFloat(stage.geometry.coordinates[0])} latitude={parseFloat(stage.geometry.coordinates[1])}>
                       <StagePin size={20} onClick={() => this.setState({popupInfo: 'toto'})} />
                       {stage.name}
                     </Marker>
