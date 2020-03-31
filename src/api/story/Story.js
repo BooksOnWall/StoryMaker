@@ -108,7 +108,10 @@ class Story extends Component {
     this.setState({
       city: city,
       state: state,
-      geometry: geometry,
+      geometry: {
+        'type': 'Point',
+        'coordinates': [viewport.longitude,viewport.latitude]
+      },
       center: center,
       context: context,
       viewport: viewport,
@@ -369,9 +372,7 @@ class Story extends Component {
 
             const creditContentState = ContentState.createFromBlockArray(htmlToDraft(story.credits));
             const creditState = EditorState.createWithContent(creditContentState);
-            console.log('viewstate typeof',typeof(story.viewport));
             const oviewport = (story.viewport && typeof(story.viewport) === 'string') ? JSON.parse(story.viewport) : story.viewport;
-            console.log('oviewport', oviewport);
             const viewport = {
               longitude: oviewport.longitude,
               latitude: oviewport.latitude,
@@ -645,7 +646,6 @@ class Story extends Component {
     );
   }
   locateStory = () => {
-    console.log(Object.keys(this.state.viewport).length);
     return (Object.keys(this.state.viewport).length > 0) ? (
       <StoryLocateMap
           sid={this.state.sid}

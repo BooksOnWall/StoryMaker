@@ -31,10 +31,10 @@ class storyLocateMap extends Component {
       let viewport = (this.props.viewport) ? this.props.viewport : {};
       const default_geo = {
         type: "Point",
-        coordinates: location
+        coordinates: (this.props.viewport) ? [ this.props.viewport.longitude, this.props.viewport.latitude ] : location
       };
       console.log(viewport);
-      viewport['zoom'] = 10;
+      viewport['zoom'] = 14;
       viewport['latitude'] = location[1];
       viewport['longitude'] = location[0];
       console.log(viewport);
@@ -102,7 +102,7 @@ class storyLocateMap extends Component {
   onClickMap = (map, evt) => {
     this.setState({storyPosition: map.lngLat});
     this.renderStoryMarker(map.lngLat);
-    this.props.setStoryLocation(map.lngLat);
+    //this.props.setStoryLocation(map.lngLat);
   }
   mapRef = React.createRef();
 
