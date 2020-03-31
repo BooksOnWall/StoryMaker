@@ -244,12 +244,7 @@ handleOnResult = event => {
                   position="top-left"
                 />
                 <DeckGL {...viewport} layers={[searchResultLayer]} />
-                {geometry &&
-                  <Marker key='story' longitude={parseFloat(geometry.coordinates[0])} latitude={parseFloat(geometry.coordinates[1])}>
-                    <StagePin size={20} onClick={() => this.setState({popupInfo: 'toto'})} />
-                    Story location
-                  </Marker>
-                }
+          
                 {stages &&
                   stages.map((stage,i) => (
                     <Marker key='stage' longitude={parseFloat(stage.geometry.coordinates[0])} latitude={parseFloat(stage.geometry.coordinates[1])}>
