@@ -90,7 +90,7 @@ class storyMap extends Component {
       longitude: (this.props.viewport.longitude) ? this.props.viewport.longitude :  this.props.story.viewport.longitude ,
       latitude: (this.props.viewport.latitude) ? this.props.viewport.latitude : this.props.story.viewport.latitude,
       zoom: (this.props.viewport.zoom) ? this.props.viewport.zoom : 12,
-      pinch: (this.props.viewport.pinch) ? this.props.viewport.pinch : 0 ,
+      pitch: (this.props.viewport.pitch) ? this.props.viewport.pitch : 0 ,
       bearing: (this.props.viewport.bearing) ? this.props.viewport.bearing: 0,
     };
     // let viewport = (this.props.stages && this.props.stages.length > 0) ? {
@@ -194,7 +194,7 @@ class storyMap extends Component {
               longitude: data.story.viewport.longitude,
               latitude: data.story.viewport.latitude,
               zoom: data.story.viewport.zoom,
-              pinch: data.story.viewport.pinch,
+              pitch: data.story.viewport.pitch,
               bearing: data.storys.viewport.bearing,
             };
             this.setState({story: data.story, loading: false, viewport: viewport, geometry: data.story.geometry});
