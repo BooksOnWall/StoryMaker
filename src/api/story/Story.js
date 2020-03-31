@@ -61,7 +61,13 @@ class Story extends Component {
       sinoState: EditorState.createEmpty(),
       sinopsys: '',
       storyLocation: null,
-      viewport: {},
+      viewport: (parseInt(this.props.match.params.id) === 0) ? {
+        longitude: 0,
+        latitude: 0,
+        zoom: 10,
+        pinch: 0,
+        bearing: 0,
+      } : {},
       geometry: null,
       tesselate: null,
       stages: null,
@@ -646,6 +652,7 @@ class Story extends Component {
     );
   }
   locateStory = () => {
+    console.log(Object.keys(this.state.viewport).length);
     return (Object.keys(this.state.viewport).length > 0) ? (
       <StoryLocateMap
           sid={this.state.sid}
