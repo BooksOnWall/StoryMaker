@@ -37,7 +37,7 @@ class storyStages extends Component {
     const viewport = {
       longitude: (this.props.viewport.longitude) ? this.props.viewport.longitude : location[0] ,
       latitude: (this.props.viewport.latitude) ? this.props.viewport.latitude : location[1],
-      zoom: (this.props.viewport.zoom) ? this.props.viewport.zoom: 10,
+      zoom: (this.props.viewport.zoom) ? this.props.viewport.zoom: 12,
       pinch: (this.props.viewport.pinch) ? this.props.viewport.pinch : 0,
       bearing: (this.props.viewport.bearing) ? this.props.viewport.bearing : 0 ,
     };

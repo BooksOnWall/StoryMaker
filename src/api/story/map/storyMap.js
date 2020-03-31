@@ -190,11 +190,9 @@ class storyMap extends Component {
       })
       .then(data => {
           if(data) {
-            console.log('geometry',data.story.geometry);
-            console.log('coordinates',data.story.geometry.coordinates);
             const viewport = {
               longitude: data.story.viewport.longitude,
-              latttude: data.story.viewport.latitude,
+              latitude: data.story.viewport.latitude,
               zoom: data.story.viewport.zoom,
               pinch: data.story.viewport.pinch,
               bearing: data.storys.viewport.bearing,
