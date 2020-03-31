@@ -52,6 +52,7 @@ class storyLocateMap extends Component {
       storyPosition: null,
       place_name: null,
       geometry: geometry,
+      stages: this.props.stages,
       center: null,
       context: null,
       location: (location) ? location : null ,
@@ -212,7 +213,7 @@ handleOnResult = event => {
         this.setState({viewport});
     };
   render() {
-    const {mapStyle, searchResultLayer, interactiveLayerIds,  loading} = this.state;
+    const {stages,mapStyle, searchResultLayer, interactiveLayerIds,  loading} = this.state;
     const viewport = (this.state.viewport) ? this.state.viewport : this.props.viewport;
     const geometry = (this.state.geometry) ? this.state.geometry :this.props.geometry;
     return (
@@ -249,6 +250,15 @@ handleOnResult = event => {
                     Story location
                   </Marker>
                 }
+                {stages &&
+                  stages.map((stage,i) => (
+                    <Marker key='story' longitude={parseFloat(stage.geometry.coordinates[0])} latitude={parseFloat(stage.geometry.coordinates[1])}>
+                      <StagePin size={20} onClick={() => this.setState({popupInfo: 'toto'})} />
+                      {stage.name}
+                    </Marker>
+                  ))
+                }
+
               </MapGL>
         </Dimmer.Dimmable>
     </Segment>

@@ -652,13 +652,14 @@ class Story extends Component {
     );
   }
   locateStory = () => {
-    console.log(Object.keys(this.state.viewport).length);
+
     return (Object.keys(this.state.viewport).length > 0) ? (
       <StoryLocateMap
           sid={this.state.sid}
           city={this.state.city}
           viewport={this.state.viewport}
           geometry={this.state.geometry}
+          stages={this.state.stages}
           height={'50vh'}
           width={'50vw'}
           setFormDataLocation={this.setFormDataLocation}
