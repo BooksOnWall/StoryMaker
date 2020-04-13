@@ -566,7 +566,7 @@ class Story extends Component {
                       autoFocus={true}
                       type="text"
                       name="title"
-                      onChange={handleChange}
+                      onChange={this.handleChange}
                       onBlur={handleBlur}
                       defaultValue={this.state.title}
                       />
