@@ -37,10 +37,10 @@ const stageOptions = [
   { key: 'Linestring', value: 'Linestring', text: 'Line String' }
 ];
 const sceneOptions = [
-  { key: 0, value: 0, text: 'Video inside Picture' },
-  { key: 1, value: 1, text: 'Video aside anchored picture' },
-  { key: 2, value: 2, text: 'Video aside anchored with multiple pictures' },
-  { key: 3, value: 3, text: 'Portal' }
+  { key: 1, value: 1, text: 'Video inside Picture' },
+  { key: 2, value: 2, text: 'Video aside anchored picture' },
+  { key: 3, value: 3, text: 'Video aside anchored with multiple pictures' },
+  { key: 4, value: 4, text: 'Portal' }
 ];
 
 function humanFileSize(bytes, si) {
@@ -951,6 +951,7 @@ class stage extends Component {
         onPictureMatch: this.state.stage.onPictureMatch,
         onZoneLeave: this.state.stage.onZoneLeave,
         type: this.state.stage.type,
+        scene_type: this.state.stage.scene_type,
         description: this.state.stage.description,
         geometry: this.state.stage.geometry,
         stageLocation: lngLat
