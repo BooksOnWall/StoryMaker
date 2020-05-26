@@ -6,10 +6,10 @@ import {
   Menu,
   Ref,
   Icon,
-  Label,
   Dimmer,
   Confirm,
   Button,
+  Modal,
   Grid,
   Header,
 } from 'semantic-ui-react';
@@ -161,6 +161,17 @@ const ObjectsPreview = (props) => {
     return items;
   }
 };
+const PictureToMatch = ({pictures}) => {
+  console.log(pictures);
+  const picture = pictures[0];
+  console.log(picture);
+  return (
+    <Modal trigger={<Image src={picture.src} />}>
+    <Modal.Header image><Image src={picture.src} /></Modal.Header>
+  </Modal>
+
+  );
+}
 const picturesContainer = {
   display: 'flex',
   flexDirection: 'row',
@@ -292,6 +303,7 @@ class DragDrop extends Component {
   handleCancel = (key) => this.setState({ [key]: false })
   render() {
     let tasks = this.props.renderTasks();
+    const {stagePictures} = this.props.stage.pictures;
      return (
        <Dimmer.Dimmable inverted as={Segment} blurring dimmed={this.state.loading}>
           <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
@@ -458,19 +470,22 @@ class DragDrop extends Component {
 
                         <Segment className="main-board">
                             <Segment className='stageProfile' inverted style={{minHeight: '18vh'}}>
-                              <Grid columns={3}>
-                                <Grid.Column mobile={16} tablet={4} computer={2} className='stagePhoto'>
+                              <Grid columns={4}>
+                                <Grid.Column mobile={16} tablet={2} computer={2} className='stagePhoto'>
                                     <Segment style={{padding:'0', background: 'transparent'}} onDragOver={(e)=>this.props.onDragOver(e)}
                                     onDrop={(e)=>this.props.onDrop(e, "photo")}>
                                     {(tasks.photo.length > 0) ? tasks.photo : <Image src='https://react.semantic-ui.com/images/avatar/large/matthew.png' wrapped  /> }
                                     </Segment>
                                 </Grid.Column>
-                                <Grid.Column mobile={16} tablet={8} computer={6}>
+                                <Grid.Column mobile={16} tablet={4} computer={3}>
                                     <Header inverted as='h4'>{this.props.stage.name}</Header>
                                     {this.props.setStageDescription()}
                                     <Icon className="button left floated" floated="left" name="edit outline"  onClick={this.props.toggleLock}  />
                                 </Grid.Column>
-                                <Grid.Column textAlign='right' mobile={16} tablet={8} computer={8}>
+                                <Grid.Column  mobile={16} tablet={4} computer={4}>
+                                    <PictureToMatch pictures={this.props.stage.pictures}/>
+                                </Grid.Column>
+                                <Grid.Column textAlign='right' mobile={16} tablet={8} computer={6}>
                                     {(this.props.stages) ? this.StagesNav(this.props.stages, this.props.stage) : null}
                                 </Grid.Column>
                             </Grid>
