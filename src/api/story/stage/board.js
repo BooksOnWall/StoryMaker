@@ -162,15 +162,13 @@ const ObjectsPreview = (props) => {
   }
 };
 const PictureToMatch = ({pictures}) => {
-  console.log(pictures);
-  const picture = pictures[0];
-  console.log(picture);
-  return (
-    <Modal trigger={<Image src={picture.src} />}>
-    <Modal.Header image><Image src={picture.src} /></Modal.Header>
+  const picture = (pictures && pictures.length > 0) ? pictures[0] : null;
+  return (pictures && pictures.length > 0 && picture) ? (
+    <Modal trigger={<Image fluid src={picture.src} />}>
+    <Modal.Header image><Image fluid src={picture.src} /></Modal.Header>
   </Modal>
 
-  );
+) : '';
 }
 const picturesContainer = {
   display: 'flex',
@@ -303,7 +301,7 @@ class DragDrop extends Component {
   handleCancel = (key) => this.setState({ [key]: false })
   render() {
     let tasks = this.props.renderTasks();
-    const {stagePictures} = this.props.stage.pictures;
+
      return (
        <Dimmer.Dimmable inverted as={Segment} blurring dimmed={this.state.loading}>
           <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
