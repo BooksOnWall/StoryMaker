@@ -1568,7 +1568,7 @@ class stage extends Component {
             <Divider />
             <Label fluid as='a' color='violet'>MimeType: {picture.mimetype}</Label>
             <Label fluid as='a' color='green' >Size: {humanFileSize(picture.size)}</Label>
-             {(picture.rating) ? <Label as='a' color='green'>ArcoreImg Rank: <Rating icon='star' defaultRating={(picture.rating/10)} maxRating={10} disabled/>{picture.rank}</Label> : <Label as='a' color='red'>ArcoreImg Rank: {(picture.rank) ? picture.rank : 'unset'}</Label>}
+             {(picture.rating) ? <Label as='a' color='green'>ArcoreImg Rank: <Rating icon='star' defaultRating={(picture.rating/10)} maxRating={10} disabled/>{picture.rating}</Label> : <Label as='a' color='red'>ArcoreImg Rank: {(picture.rank) ? picture.rank : 'unset'}</Label>}
              <Divider />
             <Icon className="button left floated" floated="left" name="save outline"  onClick={this.updateStagePicture}  />
           </Form>
