@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 ## this script should be used fro the root of the project
-## ex: sh src/third_parties/install.sh
-cd  src/third_parties/
+## ex: sh server/third_parties/install.sh
+cd  server/third_parties/
+pwd
 echo "Checking arcoreimg"
 echo "Downloading arcore-android-sdk"
 git clone https://github.com/google-ar/arcore-android-sdk.git
