@@ -18,6 +18,7 @@ import {
   TextArea,
   Modal,
   List,
+  Rating,
   Dimmer,
   Loader,
     Divider,
@@ -1560,13 +1561,15 @@ class stage extends Component {
         </Container>
         <Container className="desc transparent" inverted fluid key="back" style={{ padding:0 }}>
           <Form fluid style={{display: 'inherit', width: '100%' }}>
-            <Label as='a' color='blue' image>
+            <Label fluid as='a' color='blue' image>
               <Image src={picture.src} />
               {picture.name}
             </Label>
-            <Label as='a' color='violet'>MimeType: {picture.mimetype}</Label>
-            <Label as='a' color='green' >Size: {humanFileSize(picture.size)}</Label>
-             {(picture.rank) ? <Label as='a' color='green'>ArcoreImg Rank: {picture.rank}</Label> : <Label as='a' color='red'>ArcoreImg Rank: {(picture.rank) ? picture.rank : 'unset'}</Label>}
+            <Divider />
+            <Label fluid as='a' color='violet'>MimeType: {picture.mimetype}</Label>
+            <Label fluid as='a' color='green' >Size: {humanFileSize(picture.size)}</Label>
+             {(picture.rank) ? <Label as='a' color='green'>ArcoreImg Rank: <Rating icon='star' defaultRating={(picture.rank/10)} maxRating={10} />{picture.rank}</Label> : <Label as='a' color='red'>ArcoreImg Rank: {(picture.rank) ? picture.rank : 'unset'}</Label>}
+             <Divider />
             <Icon className="button left floated" floated="left" name="save outline"  onClick={this.updateStagePicture}  />
           </Form>
         </Container>
