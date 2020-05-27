@@ -54,7 +54,7 @@
     "test": "craco test",
     "eject": "craco eject",
     "extract:messages": "extract-messages --locales=es,pt,en --output src/i18n/locales/ 'src/**/*.js'",
-    "third_parties": "sh src/third_parties/install.sh",
+    "third_parties": "sh server/third_parties/install.sh"
   },
   "eslintConfig": {
     "extends": "react-app"
