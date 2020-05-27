@@ -155,6 +155,7 @@ class stage extends Component {
       this.lock=this.lock.bind(this);
       this.unlock=this.unlock.bind(this);
       this.toggleLock = this.toggleLock.bind(this);
+      this.togglePictureLock = this.togglePictureLock.bind(this);
   }
 
   segmentRef = createRef()
@@ -319,6 +320,7 @@ class stage extends Component {
   lock = () => this.setState({descLock: true})
   unlock = () => this.setState({descLock: false})
   toggleLock = () => (this.state.descLock === true) ? this.unlock() : this.lock()
+  togglePictureLock = () => (this.state.pictureLock === true) ? this.setState({pictureLock: false}) : this.setState({pictureLock: true})
   setSteps = (e) => this.setState(e)
   onDrop = async (ev, cat) => {
     // move object from category
@@ -1506,6 +1508,7 @@ class stage extends Component {
             this.mergeTasks('onZoneEnter', data.onZoneEnter);
             this.mergeTasks('onPictureMatch', data.onPictureMatch);
             this.mergeTasks('onZoneLeave', data.onZoneLeave);
+            console.log(data.pictures);
             return data;
           } else {
             console.log('No Data received from the server');
@@ -1543,7 +1546,33 @@ class stage extends Component {
              <Icon className="button left floated" floated="left" name="save outline"  onClick={this.updateStageDescription}  />
           </Form>
           </Container>
-        </ReactCardFlip>)
+        </ReactCardFlip>
+  )
+  setStagePictures = () => {
+    const {stage} = this.state;
+    const picture = (stage.pictures && stage.pictures.length > 0) ? stage.pictures[0] : null;
+    if (picture) return (
+      <ReactCardFlip id="stagePicture" style={{backgroundColor: 'transparent', height: 'auto', width: '100%'}}  isFlipped={this.state.pictureLock} flipDirection="vertical">
+        <Container className="desc" inverted fluid key="front" style={{ padding:0 }}>
+          <Modal trigger={<Image fluid src={picture.src} />}>
+            <Modal.Header image><Image fluid src={picture.src} /></Modal.Header>
+          </Modal>
+        </Container>
+        <Container className="desc transparent" inverted fluid key="back" style={{ padding:0 }}>
+          <Form fluid style={{display: 'inherit', width: '100%' }}>
+            <Label as='a' color='blue' image>
+              <Image src={picture.src} />
+              {picture.name}
+            </Label>
+            <Label as='a' color='violet'>MimeType: {picture.mimetype}</Label>
+            <Label as='a' color='green' >Size: {humanFileSize(picture.size)}</Label>
+             {(picture.rank) ? <Label as='a' color='green'>ArcoreImg Rank: {picture.rank}</Label> : <Label as='a' color='red'>ArcoreImg Rank: {(picture.rank) ? picture.rank : 'unset'}</Label>}
+            <Icon className="button left floated" floated="left" name="save outline"  onClick={this.updateStagePicture}  />
+          </Form>
+        </Container>
+      </ReactCardFlip>
+    )
+  }
   handleStageStep = (e) => this.setState({stageStep: e.target.name})
   handleExport = () => {
     this.setState({preflightModal: false});
@@ -1650,6 +1679,7 @@ class stage extends Component {
               editStage={this.editStage}
               setStageLocation={this.setStageLocation}
               setStageDescription={this.setStageDescription}
+              setStagePictures={this.setStagePictures}
               stageStep={this.state.stageStep}
               setSteps={this.setSteps}
               renderTasks={this.renderTasks}
@@ -1658,6 +1688,7 @@ class stage extends Component {
               setStageObjects={this.setStageObjects}
               onChangeObjectsHandler={this.onChangeObjectsHandler}
               toggleLock = {this.toggleLock}
+              togglePictureLock = {this.togglePictureLock}
               toggleSideBar = {this.toggleSideBar}
               stageImages={this.state.stageImages}
               stagePictures={this.state.stagePictures}

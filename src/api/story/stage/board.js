@@ -161,15 +161,7 @@ const ObjectsPreview = (props) => {
     return items;
   }
 };
-const PictureToMatch = ({pictures}) => {
-  const picture = (pictures && pictures.length > 0) ? pictures[0] : null;
-  return (pictures && pictures.length > 0 && picture) ? (
-    <Modal trigger={<Image fluid src={picture.src} />}>
-    <Modal.Header image><Image fluid src={picture.src} /></Modal.Header>
-  </Modal>
 
-) : '';
-}
 const picturesContainer = {
   display: 'flex',
   flexDirection: 'row',
@@ -481,7 +473,8 @@ class DragDrop extends Component {
                                     <Icon className="button left floated" floated="left" name="edit outline"  onClick={this.props.toggleLock}  />
                                 </Grid.Column>
                                 <Grid.Column  mobile={16} tablet={4} computer={4}>
-                                    <PictureToMatch pictures={this.props.stage.pictures}/>
+                                  {this.props.setStagePictures()}
+                                  <Icon className="button left floated" floated="left" name="edit outline"  onClick={this.props.togglePictureLock}  />
                                 </Grid.Column>
                                 <Grid.Column textAlign='right' mobile={16} tablet={8} computer={6}>
                                     {(this.props.stages) ? this.StagesNav(this.props.stages, this.props.stage) : null}

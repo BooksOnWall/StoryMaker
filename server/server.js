@@ -16,7 +16,7 @@ var zip = require('express-easy-zip');
 var tar = require('tar-fs');
 const prettyBytes = require('pretty-bytes');
 var getSize = require('get-folder-size');
-
+const { exec } = require("child_process");
 const bodyParser = require('body-parser');
 //CORS
 var cors = require('cors');
@@ -66,6 +66,25 @@ function compare(hash, password) {
   const originalHash = password.split('$')[1];
   hash = crypto.pbkdf2Sync(hash, salt, 2048, 32, 'sha512').toString('hex');
   return hash === originalHash;
+}
+// exec shell init (if arcoreimg is installed)
+
+// let cmd2 ="ls public/stories/7/stages/17/pictures/photo_2020-03-19_09-22-54.jpg";
+const  arcoreimgRank = async (path, file)  => {
+    try {
+      const arcoreimg_path ="./third_parties/google/arcoreimg/linux/";
+      const command =arcoreimg_path + "arcoreimg eval-img --input_image_path=" + path;
+      return new Promise((resolve, reject) => {
+        exec(command, (error, stdout, stderr) => {
+         if (error) {
+          console.warn(error);
+         }
+         resolve(stdout? stdout : stderr);
+        });
+       });
+    } catch(e) {
+      console.log(e.message);
+    }
 }
 
 //jwt_payload & passport
@@ -1824,27 +1843,49 @@ app.post('/stories/:storyId/stages/:stageId/uploadPictures', function (req, res,
       }
     });
     var upload = multer({ storage : storage}).any();
-    upload(req,res,function(err) {
+    upload(req,res, async function(err) {
       if(err) {
         return res.end("Error uploading file." + err);
       } else {
-        let images=[];
         //bot.telegram.sendPhoto(chat_id, "http://localhost:3010"+req.files[0].path).then(res => res);
-         req.files.forEach( function(file) {
 
-           images.push({
-               'category': 'pictures',
-               'name': file.originalname,
-               'size': file.size,
-               'type': 'picture',
-               'mimetype': file.mimetype,
-               'path': 'assets/stories/'+ sid + '/stages/' + ssid + '/pictures/' + file.originalname,
-               'src': serverUrl + 'assets/stories/'+ sid + '/stages/' + ssid + '/pictures/' + file.originalname
-           });
+        try {
+          Promise.all(req.files.map(async file => {
+            let image =  {
+              'category': 'pictures',
+              'name': file.originalname,
+              'size': file.size,
+              'type': 'picture',
+              'mimetype': file.mimetype,
+              'path': 'assets/stories/'+ sid + '/stages/' + ssid + '/pictures/' + file.originalname,
+              'src': serverUrl + 'assets/stories/'+ sid + '/stages/' + ssid + '/pictures/' + file.originalname
+            };
+            image.rank = await arcoreimgRank(path + '/' + file.originalname).then((resolve, reject) =>
+            {
+              resolve = resolve.replace("\n", "");
+              return  (parseInt(resolve) > 0) ? parseInt(resolve) : null;
+            });
+              return image;
+          })).then(images => {
+              if(images && images.length > 0 ) {
+                updateFieldFromStage({ssid: ssid, sid: sid, field: 'pictures', fieldValue: images}).then(stage =>
+                   res.json({ stage, pictures: images, msg: 'Stage updated successfully' })
+                );
+              } else {
+                res.json({msg: 'Error image(s) are rejected'});
+              }
+              // all found riders here
+          }).catch(err => {
+              // error here
           });
-        updateFieldFromStage({ssid: ssid, sid: sid, field: 'pictures', fieldValue: images}).then(stage =>
-            res.json({ stage, pictures: images, msg: 'Stage updated successfully' })
-          );
+
+        } catch(e) {
+          console.log(e.message);
+        }
+
+        // console.log('toto');
+        // console.log('IMAGES', images);
+
       }
     });
 });
