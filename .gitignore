@@ -9,7 +9,7 @@
 server/server.crt
 server/server.key
 ## ignore third_parties
-src/third_parties/google
+server/third_parties/google
 # testing
 /coverage
 
