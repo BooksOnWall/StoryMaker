@@ -1860,7 +1860,7 @@ app.post('/stories/:storyId/stages/:stageId/uploadPictures', function (req, res,
               'path': 'assets/stories/'+ sid + '/stages/' + ssid + '/pictures/' + file.originalname,
               'src': serverUrl + 'assets/stories/'+ sid + '/stages/' + ssid + '/pictures/' + file.originalname
             };
-            image.rank = await arcoreimgRank(path + '/' + file.originalname).then((resolve, reject) =>
+            image.rating = await arcoreimgRank(path + '/' + file.originalname).then((resolve, reject) =>
             {
               resolve = resolve.replace("\n", "");
               return  (parseInt(resolve) > 0) ? parseInt(resolve) : null;
@@ -1876,7 +1876,7 @@ app.post('/stories/:storyId/stages/:stageId/uploadPictures', function (req, res,
               }
               // all found riders here
           }).catch(err => {
-              // error here
+              console.log(err);
           });
 
         } catch(e) {
