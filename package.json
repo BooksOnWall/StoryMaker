@@ -23,7 +23,7 @@
     "re-resizable": "^6.0.0",
     "react": "^16.8.6",
     "react-audio-player": "^0.11.1",
-    "react-avatar-editor": "^11.0.7",
+    "react-avatar-editor": "11.0.7",
     "react-card-flip": "^0.8.1",
     "react-color": "^2.18.0",
     "react-dom": "^16.8.6",
@@ -73,6 +73,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-transform-runtime": "^7.11.0",
     "@craco/craco": "^5.5.0",
     "@semantic-ui-react/craco-less": "^1.1.0",
     "extract-react-intl-messages": "^1.0.2",

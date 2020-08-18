@@ -130,7 +130,7 @@ app.use(cors({
     console.log('origin',origin);
     if(allowedOrigins.indexOf(origin) === -1){
       var msg = 'The CORS policy for this site does not ' +
-                'allow access from the specified Origin.';
+                'allow access from the specified Origin.[Server.js:133]';
       return callback(new Error(msg), false);
     }
     return callback(null, true);
