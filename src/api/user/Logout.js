@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Auth from '../../module/Auth';
+import Auth from './Auth';
 import {  FormattedMessage } from 'react-intl';
 
 
@@ -17,7 +17,7 @@ class Logout extends Component {
   render() {
     return (
       <div>
-        <p><FormattedMessage id="app.user.logout" defaultMessage={`Logging out`}/></p>
+        <p><FormattedMessage id="user.logout" defaultMessage={`Logging out`}/></p>
       </div>
     )
   }
