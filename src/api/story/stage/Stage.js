@@ -61,7 +61,7 @@ function humanFileSize(bytes, si) {
     } while(Math.abs(bytes) >= thresh && u < units.length - 1);
     return bytes.toFixed(1)+' '+units[u];
 }
-const WallCanvas = ({picture, video, videoPosition, picturePosition, handlePositionChange, savePosition}) =>  {
+const WallCanvas = ({dimension, picture, video, videoPosition, picturePosition, handlePositionChange, savePosition}) =>  {
   const meters2pixels = (meters) => (meters*30);
 
   const display = (videoPosition.mode === 'left' || videoPosition.mode === 'right') ? 'flex' : 'block';
@@ -75,7 +75,7 @@ const WallCanvas = ({picture, video, videoPosition, picturePosition, handlePosit
 
       }
       {video &&
-        <div style={{width: '50%', marginLeft: meters2pixels(videoPosition.left), marginTop: meters2pixels(videoPosition.top), marginRight: meters2pixels(videoPosition.right), marginBottom: meters2pixels(videoPosition.bottom)}} className="draggable">
+        <div style={{width: '40%', marginLeft: meters2pixels(videoPosition.left), marginTop: meters2pixels(videoPosition.top), marginRight: meters2pixels(videoPosition.right), marginBottom: meters2pixels(videoPosition.bottom)}} className="draggable">
           <ReactPlayer
             playsinline={true}
             playing={video.autoplay}
@@ -158,6 +158,7 @@ const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration
 
        </Header>
        <WallCanvas
+         dimension={stage.dimension}
          picturePosition={picturePosition}
          videoPosition={videoPosition}
          picture={(stage && stage.pictures && stage.pictures.length > 0) ? stage.pictures[0] : null}
@@ -166,6 +167,7 @@ const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration
        <Segment inverted style={{width:'45vw',display: 'flex', justifyContent: 'space-between',flexWrap: 'no-wrap'}}>
          <div >
            <Header inverted as="h6">Image Position</Header>
+           <label>Picture Dimension: {stage.dimension}</label>
          </div>
          <div style={{width:'25vw'}} >
            <Header inverted as="h6">Video Position in meters</Header>
@@ -348,7 +350,7 @@ class stage extends Component {
           top: 0,
           left: 0,
           right: 0,
-          bottom: 50,
+          bottom: 0,
           rotateAngle: 0,
           mode: 'bottom'
         },
