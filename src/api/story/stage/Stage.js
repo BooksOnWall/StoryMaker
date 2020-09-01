@@ -62,6 +62,8 @@ function humanFileSize(bytes, si) {
     return bytes.toFixed(1)+' '+units[u];
 }
 const WallCanvas = ({picture, video, videoPosition, picturePosition, handlePositionChange, savePosition}) =>  {
+  const meters2pixels = (meters) => (meters*30);
+
   const display = (videoPosition.mode === 'left' || videoPosition.mode === 'right') ? 'flex' : 'block';
   return (
     <Segment style={{alignItems: 'flex-end', minHeight: '35vh', display: display, flexWrap: 'wrap'}}>
@@ -73,7 +75,7 @@ const WallCanvas = ({picture, video, videoPosition, picturePosition, handlePosit
 
       }
       {video &&
-        <div style={{width: '50%', marginLeft: videoPosition.left, marginTop: videoPosition.top, marginRight: videoPosition.right, marginBottom: videoPosition.bottom}} className="draggable">
+        <div style={{width: '50%', marginLeft: meters2pixels(videoPosition.left), marginTop: meters2pixels(videoPosition.top), marginRight: meters2pixels(videoPosition.right), marginBottom: meters2pixels(videoPosition.bottom)}} className="draggable">
           <ReactPlayer
             playsinline={true}
             playing={video.autoplay}
@@ -165,7 +167,7 @@ const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration
          <div >
            <Header inverted as="h6">Image Position</Header>
          </div>
-         <div >
+         <div style={{width:'25vw'}} >
            <Header inverted as="h6">Video Position in meters</Header>
            {videoPosition.mode === 'left' &&
              <>
@@ -334,9 +336,9 @@ class stage extends Component {
           width: 100,
           height: 100,
           top: 0,
-          left: 100,
+          left: 0,
           right: 0,
-          bottom: 60,
+          bottom: 0,
           rotateAngle: 0,
           mode: 'left' // display video according to its position vs picture
         },
@@ -353,28 +355,28 @@ class stage extends Component {
         leftSettings : {
           start: 0,
           min: 0,
-          max: 50,
+          max: 10,
           step: .01,
           onChange: value => this.handleVideoPosition(value, 'left')
         },
         rightSettings : {
           start: 0,
           min: 0,
-          max: 50,
+          max: 10,
           step: .01,
           onChange: value => this.handleVideoPosition(value, 'right')
         },
         topSettings : {
           start: 0,
           min: 0,
-          max: 50,
+          max: 10,
           step: .01,
           onChange: value => this.handleVideoPosition(value, 'top')
         },
         bottomSettings : {
           start: 0,
           min: 0,
-          max: 50,
+          max: 10,
           step: .01,
           onChange: value => this.handleVideoPosition(value, 'bottom')
         },
