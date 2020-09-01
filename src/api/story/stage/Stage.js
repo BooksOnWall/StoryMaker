@@ -1323,13 +1323,14 @@ class stage extends Component {
   }
   handleBlur = () =>  true;
   switchArType = (e, value, name) => {
-    this.setState({open: true});
+    if(value !== 1) this.setState({open: true});
     return this.handleChange(e, value, name);
   }
   switchVideoPosition = (e, value, name) => {
     let {videoPosition} = this.state;
+    console.log('name',name);
     videoPosition.mode= value;
-    this.setState({videoPosition:videoPosition});
+    this.setState({videoPosition});
   }
   handleVideoPosition = (value, field ) => {
     let {videoPosition} = this.state;
@@ -1423,8 +1424,6 @@ class stage extends Component {
 
   editStage = () => {
     let { animation, duration, open , stage, videoPosition, picturePosition, leftSettings, rightSettings, topSettings, bottomSettings} = this.state;
-    console.log(videoPosition.left);
-
     return (
           <Formik
             enableReinitialize={true}
