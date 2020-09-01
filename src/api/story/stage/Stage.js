@@ -21,7 +21,8 @@ import {
   Rating,
   Dimmer,
   Loader,
-    Divider,
+  Divider,
+  TransitionablePortal,
 } from 'semantic-ui-react';
 import {  FormattedMessage } from 'react-intl';
 import { Formik } from 'formik';
@@ -32,6 +33,7 @@ import ReactAudioPlayer from 'react-audio-player';
 import ReactCardFlip from 'react-card-flip';
 import StageMap from '../map/stageMap';
 import LogReport from '../logReport';
+import { Slider } from "react-semantic-ui-range";
 
 const stageOptions = [
   { key: 'Point', value: 'Point', text: 'Geo Point' },
@@ -59,7 +61,191 @@ function humanFileSize(bytes, si) {
     } while(Math.abs(bytes) >= thresh && u < units.length - 1);
     return bytes.toFixed(1)+' '+units[u];
 }
+const WallCanvas = ({picture, video, videoPosition, picturePosition, handlePositionChange, savePosition}) =>  {
+  const display = (videoPosition.mode === 'left' || videoPosition.mode === 'right') ? 'flex' : 'block';
+  return (
+    <Segment style={{alignItems: 'flex-end', minHeight: '35vh', display: display, flexWrap: 'wrap'}}>
 
+      {picture && (videoPosition.mode === "left" || videoPosition.mode === "top")  &&
+        <div style={{width: '20vh', alignSelf: 'flex-end', marginTop: picturePosition.top, marginBottom: picturePosition.bottom}} className="draggable">
+          <Image src={picture.src} />
+        </div>
+
+      }
+      {video &&
+        <div style={{width: '50%', marginLeft: videoPosition.left, marginTop: videoPosition.top, marginRight: videoPosition.right, marginBottom: videoPosition.bottom}} className="draggable">
+          <ReactPlayer
+            playsinline={true}
+            playing={video.autoplay}
+            preload="true"
+            light={false}
+            name={video.name}
+            muted={false}
+            controls={true}
+            loop={video.loop}
+            width='100%'
+            height='auto'
+            pip={true}
+            seeking="true"
+            config={{file: {
+              attributes:  {
+                crossOrigin: 'anonymous',
+                width: '100%',
+                height: 'auto'
+              },
+              forceVideo: true
+            }
+          }}
+
+          id={"video_position" }
+          key={"vid_position" }
+          url={video.src}
+        />
+        </div>
+
+      }
+      {picture && (videoPosition.mode === "right" || videoPosition.mode === "bottom" ) &&
+        <div style={{width: '20vh', alignSelf: 'flex-end', marginTop: picturePosition.top, marginBottom: picturePosition.bottom}} className="draggable">
+          <Image src={picture.src} />
+        </div>
+
+      }
+    </Segment>
+  );
+};
+const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration, open, handleBlur, leftSettings, rightSettings, topSettings, bottomSettings, handleVideoPosition, switchVideoPosition, toggleArType, saveVideoposition}) => {
+  const positionOptions = [
+    { key: 'left', value: 'left', text: 'Left' },
+    { key: 'right', value: 'right', text: 'Right' },
+    { key: 'top', value: 'top', text: 'Top' },
+    { key: 'bottom', value: 'bottom', text: 'Bottom' }
+  ];
+  return (
+    <TransitionablePortal
+     open={open}
+     transition={{ animation, duration }}
+   >
+    <>
+     <Segment
+       inverted
+       style={{
+         width: '80vw',
+         height: 'auto',
+         maxHeight: '70vh',
+         left: '10%',
+         overflowY: 'auto',
+         position: 'fixed',
+         top: '10vh',
+         zIndex: 1000,
+       }}
+     >
+       <Header style={{display: 'flex', justifyContent: 'space-between',flexWrap: 'no-wrap'}}>Video position configuration
+        <Select
+          inverted
+          transparent
+          placeholder='Video position'
+          options={positionOptions}
+          name="videoPosition"
+          label='Video Position'
+          type="select"
+          onChange={(e, {value}) => switchVideoPosition(e, value, 'video_position')}
+          onBlur={e => handleBlur}
+          defaultValue={videoPosition.mode}
+          />
+
+
+       </Header>
+       <WallCanvas
+         picturePosition={picturePosition}
+         videoPosition={videoPosition}
+         picture={(stage && stage.pictures && stage.pictures.length > 0) ? stage.pictures[0] : null}
+         video={(stage && stage.onPictureMatch && stage.onPictureMatch.length > 0) ? stage.onPictureMatch[0] : null}
+         />
+       <Segment inverted style={{width:'45vw',display: 'flex', justifyContent: 'space-between',flexWrap: 'no-wrap'}}>
+         <div >
+           <Header inverted as="h6">Image Position</Header>
+         </div>
+         <div >
+           <Header inverted as="h6">Video Position in meters</Header>
+           {videoPosition.mode === 'left' &&
+             <>
+             <Input
+                  fluid
+                  inverted
+                  transparent
+                  label='Left'
+                  placeholder='Left'
+                  type="text"
+                  name="left"
+                  onChange={e => handleVideoPosition(e.currentTarget.value, 'left')}
+                  onBlur={e => handleBlur}
+                  value={videoPosition.left}
+                  />
+                <Slider color="grey" name="left" value={videoPosition.left} primary settings={leftSettings} />
+                </>
+           }
+           {videoPosition.mode === 'right' &&
+             <>
+                 <Input
+                 fluid
+                 inverted
+                 transparent
+                 label='Right'
+                 placeholder='Right'
+                 type="text"
+                 name="right"
+                 onChange={e => handleVideoPosition(e.currentTarget.value, 'right')}
+                 onBlur={e => handleBlur}
+                 value={videoPosition.right}
+                 />
+               <Slider color="grey" name="right" value={videoPosition.right} primary settings={rightSettings} />
+               </>
+           }
+           {videoPosition.mode === 'top' &&
+             <>
+               <Input
+                 fluid
+                 inverted
+                 transparent
+                 label='Top'
+                 placeholder='Top'
+                 type="text"
+                 name="top"
+                 onChange={e => handleVideoPosition(e.currentTarget.value, 'top')}
+                 onBlur={e => handleBlur}
+                 value={videoPosition.top}
+                 />
+               <Slider color="grey" name="top" value={videoPosition.top} primary settings={topSettings} />
+               </>
+           }
+               <Input
+                 fluid
+                 inverted
+                 transparent
+                 label='Bottom'
+                 placeholder='Bottom'
+                 type="text"
+                 name="bottom"
+                 onChange={e => handleVideoPosition(e.currentTarget.value, 'bottom')}
+                 onBlur={e => handleBlur}
+                 value={videoPosition.bottom}
+                 />
+               <Slider color="grey" name="bottom" value={videoPosition.bottom} primary settings={bottomSettings} />
+         </div>
+       </Segment>
+
+
+         <Segment inverted  style={{display: 'flex', justifyContent: 'space-between',flexWrap: 'no-wrap'}}>
+           <Button secondary onClick={e=> toggleArType()}>close</Button>
+           <Button primary onClick={e=> saveVideoposition()}>Save</Button>
+         </Segment>
+   </Segment>
+
+   </>
+   </TransitionablePortal>
+  );
+
+}
 class stage extends Component {
   constructor(props) {
       super(props);
@@ -90,6 +276,8 @@ class stage extends Component {
         animation: 'slide along',
         direction: 'right',
         dimmed: null,
+        open: false,
+        duration: 500,
         descLock: false,
         stageStep: 'Stage',
         confirm: false,
@@ -142,6 +330,54 @@ class stage extends Component {
         stageVideos: [],
         stageAudios: [],
         videoDefaultSize: '350',
+        videoPosition: {
+          width: 100,
+          height: 100,
+          top: 0,
+          left: 100,
+          right: 0,
+          bottom: 60,
+          rotateAngle: 0,
+          mode: 'left' // display video according to its position vs picture
+        },
+        picturePosition: {
+          width: 100,
+          height: 100,
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 50,
+          rotateAngle: 0,
+          mode: 'bottom'
+        },
+        leftSettings : {
+          start: 0,
+          min: 0,
+          max: 50,
+          step: .01,
+          onChange: value => this.handleVideoPosition(value, 'left')
+        },
+        rightSettings : {
+          start: 0,
+          min: 0,
+          max: 50,
+          step: .01,
+          onChange: value => this.handleVideoPosition(value, 'right')
+        },
+        topSettings : {
+          start: 0,
+          min: 0,
+          max: 50,
+          step: .01,
+          onChange: value => this.handleVideoPosition(value, 'top')
+        },
+        bottomSettings : {
+          start: 0,
+          min: 0,
+          max: 50,
+          step: .01,
+          onChange: value => this.handleVideoPosition(value, 'bottom')
+        },
         preflightModal: false,
         preflightLog: null,
         setSteps: this.setSteps,
@@ -793,6 +1029,7 @@ class stage extends Component {
                       <Label  className="inverted">Url:
                         <Label.Detail><Button href={t.src}>Source</Button></Label.Detail>
                       </Label>
+                      <Button primary onClick={(e) => this.toggleArType()}>set video position</Button>
                       <Checkbox label="Use as a loop"
                         name={t.name}
                         checked={t.loop}
@@ -1081,6 +1318,21 @@ class stage extends Component {
     }
   }
   handleBlur = () =>  true;
+  switchArType = (e, value, name) => {
+    this.setState({open: true});
+    return this.handleChange(e, value, name);
+  }
+  switchVideoPosition = (e, value, name) => {
+    let {videoPosition} = this.state;
+    videoPosition.mode= value;
+    this.setState({videoPosition:videoPosition});
+  }
+  handleVideoPosition = (value, field ) => {
+    let {videoPosition} = this.state;
+    videoPosition[field] = value;
+    this.setState({videoPosition});
+  }
+  toggleArType = () => this.setState({open: !this.state.open})
   handleChange = (e, value, name) => {
     this.setState({
       stage: {
@@ -1163,7 +1415,12 @@ class stage extends Component {
       console.log(e.message);
     }
   }
+
+
   editStage = () => {
+    let { animation, duration, open , stage, videoPosition, picturePosition, leftSettings, rightSettings, topSettings, bottomSettings} = this.state;
+    console.log(videoPosition.left);
+
     return (
           <Formik
             enableReinitialize={true}
@@ -1295,11 +1552,29 @@ class stage extends Component {
                   label='Ar Scene type'
                   type="select"
                   name="scene_type"
-                  onChange={(e, {value}) => this.handleChange(e, value, 'scene_type')}
+                  onChange={(e, {value}) => this.switchArType(e, value, 'scene_type')}
                   onBlur={e => handleBlur}
                   options={sceneOptions}
                   defaultValue={values.scene_type}
                   />
+                <VideoConfig
+                  stage={stage}
+                  videoPosition={videoPosition}
+                  picturePosition={picturePosition}
+                  animation={animation}
+                  duration={duration}
+                  open={open}
+                  saveVideoposition={this.saveVideoposition}
+                  toggleArType={this.toggleArType}
+                  handleVideoPosition={this.handleVideoPosition}
+                  switchVideoPosition={this.switchVideoPosition}
+                  handleBlur={this.handleBlur}
+                  leftSettings={leftSettings}
+                  rightSettings={rightSettings}
+                  topSettings={topSettings}
+                  bottomSettings={bottomSettings}
+                  />
+
                 {errors.scene_type && touched.scene_type && errors.scene_type}
                 <Divider />
                 <Button onClick={handleSubmit} floated='right' primary  size='large' type="submit" disabled={isSubmitting}>
@@ -1569,6 +1844,7 @@ class stage extends Component {
             <Label fluid as='a' color='violet'>MimeType: {picture.mimetype}</Label>
             <Label fluid as='a' color='green' >Size: {humanFileSize(picture.size)}</Label>
              {(picture.rating) ? <Label as='a' color='green'>ArcoreImg rating: <Rating icon='star' defaultRating={(picture.rating/10)} maxRating={10} disabled/>{picture.rating}</Label> : <Label as='a' color='red'>ArcoreImg Rank: {(picture.rank) ? picture.rank : 'unset'}</Label>}
+             <Button primary onClick={e=> this.toggleArType()}>set video position</Button>
              <Divider />
             <Icon className="button left floated" floated="left" name="save outline"  onClick={this.updateStagePicture}  />
           </Form>
@@ -1694,6 +1970,7 @@ class stage extends Component {
               togglePictureLock = {this.togglePictureLock}
               toggleSideBar = {this.toggleSideBar}
               stageImages={this.state.stageImages}
+              toggleArType={this.toggleArType}
               stagePictures={this.state.stagePictures}
               stageVideos={this.state.stageVideos}
               stageAudios={this.state.stageAudios}
