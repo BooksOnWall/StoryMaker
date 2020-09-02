@@ -153,7 +153,7 @@ const PAV = ({dimension, picture, video, videoPosition, picturePosition, handleP
       </div>
     }
     {video &&
-      <div style={{width: '40%', marginLeft: meters2pixels(videoPosition.left), marginTop: meters2pixels(videoPosition.top), marginRight: meters2pixels(videoPosition.right), marginBottom: meters2pixels(videoPosition.bottom)}} className="draggable">
+      <div style={{width: meters2pixels(videoPosition.width)+'px', height: meters2pixels(videoPosition.height)+'px',  marginLeft: meters2pixels(videoPosition.left), marginTop: meters2pixels(videoPosition.top), marginRight: meters2pixels(videoPosition.right), marginBottom: meters2pixels(videoPosition.bottom)}} className="draggable">
         <ReactPlayer
           playsinline={true}
           playing={video.autoplay}
@@ -163,15 +163,15 @@ const PAV = ({dimension, picture, video, videoPosition, picturePosition, handleP
           muted={false}
           controls={true}
           loop={video.loop}
-          width='100%'
-          height='auto'
+          width={meters2pixels(videoPosition.width)+'px'}
+          height={meters2pixels(videoPosition.height)+'px'}
           pip={true}
           seeking="true"
           config={{file: {
             attributes:  {
               crossOrigin: 'anonymous',
-              width: '100%',
-              height: 'auto'
+              width: meters2pixels(videoPosition.width)+'px',
+              height: meters2pixels(videoPosition.height)+'px'
             },
             forceVideo: true
           }
@@ -281,7 +281,7 @@ const PivConfig = ({picturePosition,handlePicturePosition, leftSettings, rightSe
   </div>
   );
 }
-const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration, open, handleBlur, leftSettings, rightSettings, topSettings, bottomSettings, handleVideoPosition, handlePicturePosition, switchVideoPosition, switchPicture, toggleArType, switchArType, saveVideoposition, pIndex}) => {
+const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration, open, handleBlur, leftSettings, rightSettings, topSettings, bottomSettings, handleVideoPosition, handlePicturePosition, switchVideoPosition, switchPicture, toggleArType, switchArType, saveVideoposition, pIndex, widthSettings, heightSettings}) => {
   const positionOptions = [
     { key: 'left', value: 'left', text: 'Left' },
     { key: 'right', value: 'right', text: 'Right' },
@@ -314,7 +314,7 @@ const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration
          zIndex: 1000,
        }}
      >
-       <Header as="h4" style={{display: 'flex', justifyContent: 'space-between',flexWrap: 'no-wrap'}}>Video position configuration
+       <Header as="h5" style={{display: 'flex', justifyContent: 'space-between',flexWrap: 'no-wrap'}}>Video position configuration
 
          <Select
            inverted
@@ -376,7 +376,36 @@ const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration
 
          </div>
          <div style={{width:'25vw'}} >
-           <Header inverted as="h6">Video Position in meters</Header>
+           <Header inverted as="h6">Video Dimension in meters</Header>
+             <Input
+               fluid
+               inverted
+               transparent
+               label='Width'
+               placeholder='Width'
+               type="text"
+               name="width"
+               onChange={e => handleVideoPosition(e.currentTarget.value, 'width')}
+               onBlur={e => handleBlur}
+               value={videoPosition.width}
+               />
+             <Slider color="grey" name="width" value={videoPosition.width} primary settings={widthSettings} />
+               <Input
+                 fluid
+                 inverted
+                 transparent
+                 label='Height'
+                 placeholder='Height'
+                 type="text"
+                 name="height"
+                 onChange={e => handleVideoPosition(e.currentTarget.value, 'height')}
+                 onBlur={e => handleBlur}
+                 value={videoPosition.height}
+                 />
+               <Slider color="grey" name="height" value={videoPosition.height} primary settings={heightSettings} />
+               </div>
+             <div style={{width:'25vw'}} >
+         <Header inverted as="h6">Video Position in meters</Header>
            {(videoPosition.mode === 'left' || videoPosition.mode === 'bottom' || videoPosition.mode === 'top') &&
              <>
              <Input
@@ -543,8 +572,8 @@ class stage extends Component {
         stageAudios: [],
         videoDefaultSize: '350',
         videoPosition: {
-          width: 100,
-          height: 100,
+          width: 5,
+          height: 4,
           top: 0,
           left: 0,
           right: 0,
@@ -553,8 +582,8 @@ class stage extends Component {
           mode: 'left' // display video according to its position vs picture
         },
         picturePosition: {
-          width: 100,
-          height: 100,
+          width: 5,
+          height: 4,
           top: 0,
           left: 0,
           right: 0,
@@ -589,6 +618,20 @@ class stage extends Component {
           max: 10,
           step: .01,
           onChange: value => this.handleVideoPosition(value, 'bottom')
+        },
+        widthSettings : {
+          start: 0,
+          min: 0,
+          max: 20,
+          step: .01,
+          onChange: value => this.handleVideoPosition(value, 'width')
+        },
+        heightSettings : {
+          start: 0,
+          min: 0,
+          max: 20,
+          step: .01,
+          onChange: value => this.handleVideoPosition(value, 'height')
         },
         pIndex: 0,
         preflightModal: false,
@@ -1643,7 +1686,7 @@ class stage extends Component {
 
 
   editStage = () => {
-    let { animation, duration, open , stage, videoPosition, picturePosition, leftSettings, rightSettings, topSettings, bottomSettings, pIndex} = this.state;
+    let { animation, duration, open , stage, videoPosition, picturePosition, leftSettings, rightSettings, topSettings, bottomSettings, pIndex, widthSettings, heightSettings} = this.state;
     return (
           <Formik
             enableReinitialize={true}
@@ -1788,6 +1831,8 @@ class stage extends Component {
                   duration={duration}
                   open={open}
                   pIndex={pIndex}
+                  widthSettings={widthSettings}
+                  heightSettings={heightSettings}
                   switchArType={this.switchArType}
                   switchPicture={this.switchPicture}
                   saveVideoposition={this.saveVideoposition}
