@@ -63,16 +63,16 @@ function humanFileSize(bytes, si) {
 }
 const WallCanvas = ({dimension, picture, video, videoPosition, picturePosition, handlePositionChange, savePosition}) =>  {
   const meters2pixels = (meters) => (meters*30);
-
   const display = (videoPosition.mode === 'left' || videoPosition.mode === 'right') ? 'flex' : 'block';
+  const alignItems = (videoPosition.mode === 'left' || videoPosition.mode === 'right') ? 'flex-end' : 'start';
+  const justifyContent = (videoPosition.mode === 'left' || videoPosition.mode === 'right') ? 'initial' : 'center';
   return (
-    <Segment style={{alignItems: 'flex-end', minHeight: '35vh', display: display, flexWrap: 'wrap'}}>
+    <Segment style={{justifyContent: justifyContent, alignItems: alignItems, minHeight: '35vh', display: display, flexWrap: 'wrap'}}>
 
-      {picture && (videoPosition.mode === "left" || videoPosition.mode === "top")  &&
-        <div style={{width: '20vh', alignSelf: 'flex-end', marginTop: picturePosition.top, marginBottom: picturePosition.bottom}} className="draggable">
+      {dimension && picture && (videoPosition.mode === "left" || videoPosition.mode === "top")  &&
+        <div style={{width: meters2pixels(dimension.split('x')[0])+'px', alignSelf: alignItems, marginTop: picturePosition.top, marginBottom: picturePosition.bottom}}>
           <Image src={picture.src} />
         </div>
-
       }
       {video &&
         <div style={{width: '40%', marginLeft: meters2pixels(videoPosition.left), marginTop: meters2pixels(videoPosition.top), marginRight: meters2pixels(videoPosition.right), marginBottom: meters2pixels(videoPosition.bottom)}} className="draggable">
@@ -106,11 +106,10 @@ const WallCanvas = ({dimension, picture, video, videoPosition, picturePosition, 
         </div>
 
       }
-      {picture && (videoPosition.mode === "right" || videoPosition.mode === "bottom" ) &&
-        <div style={{width: '20vh', alignSelf: 'flex-end', marginTop: picturePosition.top, marginBottom: picturePosition.bottom}} className="draggable">
+      {dimension && picture && (videoPosition.mode === "right" || videoPosition.mode === "bottom" ) &&
+        <div style={{width: meters2pixels(dimension.split('x')[0]), alignSelf: alignItems, marginTop: picturePosition.top, marginBottom: picturePosition.bottom}} className="draggable">
           <Image src={picture.src} />
         </div>
-
       }
     </Segment>
   );
@@ -171,57 +170,59 @@ const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration
          </div>
          <div style={{width:'25vw'}} >
            <Header inverted as="h6">Video Position in meters</Header>
-           {videoPosition.mode === 'left' &&
+           {(videoPosition.mode === 'left' || videoPosition.mode === 'bottom' || videoPosition.mode === 'top') &&
              <>
              <Input
-                  fluid
-                  inverted
-                  transparent
-                  label='Left'
-                  placeholder='Left'
-                  type="text"
-                  name="left"
-                  onChange={e => handleVideoPosition(e.currentTarget.value, 'left')}
-                  onBlur={e => handleBlur}
-                  value={videoPosition.left}
-                  />
-                <Slider color="grey" name="left" value={videoPosition.left} primary settings={leftSettings} />
-                </>
+               fluid
+               inverted
+               transparent
+               label='Left'
+               placeholder='Left'
+               type="text"
+               name="left"
+               onChange={e => handleVideoPosition(e.currentTarget.value, 'left')}
+               onBlur={e => handleBlur}
+               value={videoPosition.left}
+               />
+             <Slider color="grey" name="left" value={videoPosition.left} primary settings={leftSettings} />
+             </>
            }
-           {videoPosition.mode === 'right' &&
+           {(videoPosition.mode === 'right' || videoPosition.mode === 'bottom' || videoPosition.mode === 'top') &&
              <>
-                 <Input
-                 fluid
-                 inverted
-                 transparent
-                 label='Right'
-                 placeholder='Right'
-                 type="text"
-                 name="right"
-                 onChange={e => handleVideoPosition(e.currentTarget.value, 'right')}
-                 onBlur={e => handleBlur}
-                 value={videoPosition.right}
-                 />
-               <Slider color="grey" name="right" value={videoPosition.right} primary settings={rightSettings} />
-               </>
+             <Input
+               fluid
+               inverted
+               transparent
+               label='Right'
+               placeholder='Right'
+               type="text"
+               name="right"
+               onChange={e => handleVideoPosition(e.currentTarget.value, 'right')}
+               onBlur={e => handleBlur}
+               value={videoPosition.right}
+               />
+             <Slider color="grey" name="right" value={videoPosition.right} primary settings={rightSettings} />
+             </>
            }
-           {videoPosition.mode === 'top' &&
+           {(videoPosition.mode === 'top' ) &&
              <>
-               <Input
-                 fluid
-                 inverted
-                 transparent
-                 label='Top'
-                 placeholder='Top'
-                 type="text"
-                 name="top"
-                 onChange={e => handleVideoPosition(e.currentTarget.value, 'top')}
-                 onBlur={e => handleBlur}
-                 value={videoPosition.top}
-                 />
-               <Slider color="grey" name="top" value={videoPosition.top} primary settings={topSettings} />
-               </>
+             <Input
+               fluid
+               inverted
+               transparent
+               label='Top'
+               placeholder='Top'
+               type="text"
+               name="top"
+               onChange={e => handleVideoPosition(e.currentTarget.value, 'top')}
+               onBlur={e => handleBlur}
+               value={videoPosition.top}
+               />
+             <Slider color="grey" name="top" value={videoPosition.top} primary settings={topSettings} />
+             </>
            }
+            {(videoPosition.mode === 'left' || videoPosition.mode === 'right' || videoPosition.mode === 'bottom') &&
+              <>
                <Input
                  fluid
                  inverted
@@ -235,10 +236,10 @@ const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration
                  value={videoPosition.bottom}
                  />
                <Slider color="grey" name="bottom" value={videoPosition.bottom} primary settings={bottomSettings} />
-         </div>
+             </>
+        }
+       </div>
        </Segment>
-
-
          <Segment inverted  style={{display: 'flex', justifyContent: 'space-between',flexWrap: 'no-wrap'}}>
            <Button secondary onClick={e=> toggleArType()}>close</Button>
            <Button primary onClick={e=> saveVideoposition()}>Save</Button>
@@ -1328,7 +1329,10 @@ class stage extends Component {
   }
   switchVideoPosition = (e, value, name) => {
     let {videoPosition} = this.state;
-    console.log('name',name);
+    videoPosition.left =0;
+    videoPosition.right =0;
+    videoPosition.top =0;
+    videoPosition.bottom =0;
     videoPosition.mode= value;
     this.setState({videoPosition});
   }
