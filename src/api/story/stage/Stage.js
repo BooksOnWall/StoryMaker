@@ -67,7 +67,7 @@ function humanFileSize(bytes, si) {
 }
 const PIV = ({dimension, picture, video, videoPosition, picturePosition, handlePositionChange, savePosition, sceneType, meters2pixels, alignItems}) => {
   return (<>
-    <div style={{position: 'absolute', left: '50px', bottom: '60px', minHeight: meters2pixels(dimension.split('x')[1])+'px', minWidth: meters2pixels(dimension.split('x')[0])+'px', zIndex: 1001}}>
+    <div style={{position: 'absolute', left: '50px', bottom: '60px', minHeight: meters2pixels(picturePosition.height), minWidth: meters2pixels(picturePosition.width), zIndex: 1001}}>
       {dimension && picture && (videoPosition.mode === "left" || videoPosition.mode === "top")  &&
         <div style={{width: meters2pixels(picturePosition.width), height:meters2pixels(picturePosition.height) , alignSelf: alignItems, marginTop: picturePosition.top, marginBottom: picturePosition.bottom}}>
           <Image style={{width: meters2pixels(picturePosition.width), height:meters2pixels(picturePosition.height)}} src={picture.src} />
@@ -210,8 +210,7 @@ const WallCanvas = ({dimension, picture, video, videoPosition, picturePosition, 
 const PivConfig = ({picturePosition,handlePicturePosition, leftSettings, rightSettings, handleBlur, topSettings, bottomSettings }) => {
   return (
     <div>
-    {(picturePosition.mode === 'left' || picturePosition.mode === 'bottom' || picturePosition.mode === 'top') &&
-      <>
+
       <Input
         fluid
         inverted
@@ -225,10 +224,8 @@ const PivConfig = ({picturePosition,handlePicturePosition, leftSettings, rightSe
         value={picturePosition.left}
         />
       <Slider color="grey" name="left" value={picturePosition.left} primary settings={leftSettings} />
-      </>
-    }
-    {(picturePosition.mode === 'right' || picturePosition.mode === 'bottom' || picturePosition.mode === 'top') &&
-      <>
+
+
       <Input
         fluid
         inverted
@@ -242,10 +239,8 @@ const PivConfig = ({picturePosition,handlePicturePosition, leftSettings, rightSe
         value={picturePosition.right}
         />
       <Slider color="grey" name="right" value={picturePosition.right} primary settings={rightSettings} />
-      </>
-    }
-    {(picturePosition.mode === 'top' ) &&
-      <>
+
+
       <Input
         fluid
         inverted
@@ -259,11 +254,8 @@ const PivConfig = ({picturePosition,handlePicturePosition, leftSettings, rightSe
         value={picturePosition.top}
         />
       <Slider color="grey" name="top" value={picturePosition.top} primary settings={topSettings} />
-      </>
-    }
-    {(picturePosition.mode === 'left' || picturePosition.mode === 'right' || picturePosition.mode === 'bottom') &&
-       <>
-        <Input
+
+    <Input
           fluid
           inverted
           transparent
@@ -276,8 +268,7 @@ const PivConfig = ({picturePosition,handlePicturePosition, leftSettings, rightSe
           value={picturePosition.bottom}
           />
         <Slider color="grey" name="bottom" value={picturePosition.bottom} primary settings={bottomSettings} />
-      </>
-    }
+
   </div>
   );
 }
