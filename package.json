@@ -41,12 +41,14 @@
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
     "react-semantic-ui-range": "^0.7.0",
+    "react-three-fiber": "^4.2.21",
     "react-toasts": "^3.0.6",
     "react-transition-group": "^4.2.1",
     "sanitize-html": "^1.20.1",
     "semantic-ui-react": "^0.87.3",
     "style-loader": "^1.0.0",
-    "styled-components": "^4.3.2"
+    "styled-components": "^4.3.2",
+    "three": "^0.120.1"
   },
   "scripts": {
     "start": "craco start",

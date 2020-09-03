@@ -35,6 +35,7 @@ import StageMap from '../map/stageMap';
 import LogReport from '../logReport';
 import { Slider } from "react-semantic-ui-range";
 import Portal from '../../../assets/images/portal.jpg';
+import Editor3d from './3dEditor';
 const stageOptions = [
   { key: 'Point', value: 'Point', text: 'Geo Point' },
   { key: 'Linestring', value: 'Linestring', text: 'Line String' }
@@ -201,7 +202,8 @@ const WallCanvas = ({dimension, picture, video, videoPosition, picturePosition, 
       {(sceneType === 1) && <VIP meters2pixels={meters2pixels} alignItems={alignItems} dimension={dimension} picture={picture} video={video} videoPosition={videoPosition} picturePosition={picturePosition} handlePositionChange={handlePositionChange} savePosition={savePosition} sceneType={sceneType}/>}
       {(sceneType === 2  || sceneType === 3) && <PAV meters2pixels={meters2pixels} alignItems={alignItems} dimension={dimension} picture={picture} video={video} videoPosition={videoPosition} picturePosition={picturePosition} handlePositionChange={handlePositionChange} savePosition={savePosition} sceneType={sceneType}/>}
       {(sceneType === 5 || sceneType === 6) && <PIV meters2pixels={meters2pixels} alignItems={alignItems} dimension={dimension} picture={picture} video={video} videoPosition={videoPosition} picturePosition={picturePosition} handlePositionChange={handlePositionChange} savePosition={savePosition} sceneType={sceneType}/>}
-      {(sceneType === 4) && <Image src={Portal} style={{maxWidth: '70vw', maxHeight: '30vh'}}/>
+      {(sceneType === 4) && <Image src={Portal} style={{maxWidth: '70vw', maxHeight: '30vh'}}/>}
+      {(sceneType === 7) && <Editor3d  style={{maxWidth: '70vw', maxHeight: '30vh'}}/>}
 
       }
     </Segment>
