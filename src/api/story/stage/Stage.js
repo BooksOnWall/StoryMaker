@@ -294,7 +294,7 @@ const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration
     p.value = i;
       return p;
   });
-
+  console.log('scene_type',stage.scene_type);
   return (
     <TransitionablePortal
      open={open}
@@ -328,7 +328,7 @@ const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration
            onBlur={e => handleBlur}
            defaultValue={stage.scene_type}
            />
-         {(pictures.length > 1) && (stage.scene_type === 3  || stage.scene_type === 6) &&
+         {(stage.scene_type === 3  || stage.scene_type === 6 ) &&
            <Select
              inverted
              transparent
