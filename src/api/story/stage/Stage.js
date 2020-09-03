@@ -204,8 +204,6 @@ const WallCanvas = ({dimension, picture, video, videoPosition, picturePosition, 
       {(sceneType === 5 || sceneType === 6) && <PIV meters2pixels={meters2pixels} alignItems={alignItems} dimension={dimension} picture={picture} video={video} videoPosition={videoPosition} picturePosition={picturePosition} handlePositionChange={handlePositionChange} savePosition={savePosition} sceneType={sceneType}/>}
       {(sceneType === 4) && <Image src={Portal} style={{maxWidth: '70vw', maxHeight: '30vh'}}/>}
       {(sceneType === 7) && <Editor3d  style={{maxWidth: '70vw', maxHeight: '30vh'}}/>}
-
-      }
     </Segment>
   );
 };
