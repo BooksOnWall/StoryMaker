@@ -69,13 +69,13 @@ const PIV = ({dimension, picture, video, videoPosition, picturePosition, handleP
   return (<>
     <div style={{position: 'absolute', left: '50px', bottom: '60px', minHeight: meters2pixels(dimension.split('x')[1])+'px', minWidth: meters2pixels(dimension.split('x')[0])+'px', zIndex: 1001}}>
       {dimension && picture && (videoPosition.mode === "left" || videoPosition.mode === "top")  &&
-        <div style={{width: meters2pixels(dimension.split('x')[0])+'px', alignSelf: alignItems, marginTop: picturePosition.top, marginBottom: picturePosition.bottom}}>
-          <Image src={picture.src} />
+        <div style={{width: meters2pixels(picturePosition.width), height:meters2pixels(picturePosition.height) , alignSelf: alignItems, marginTop: picturePosition.top, marginBottom: picturePosition.bottom}}>
+          <Image style={{width: meters2pixels(picturePosition.width), height:meters2pixels(picturePosition.height)}} src={picture.src} />
         </div>
       }
     </div>
     {video &&
-      <div style={{width: '100%', marginLeft: meters2pixels(videoPosition.left), marginTop: meters2pixels(videoPosition.top), marginRight: meters2pixels(videoPosition.right), marginBottom: meters2pixels(videoPosition.bottom)}} className="draggable">
+      <div style={{width: '45vw', marginLeft: meters2pixels(videoPosition.left), marginTop: meters2pixels(videoPosition.top), marginRight: meters2pixels(videoPosition.right), marginBottom: meters2pixels(videoPosition.bottom)}} className="draggable">
         <ReactPlayer
           playsinline={true}
           playing={video.autoplay}
@@ -86,7 +86,7 @@ const PIV = ({dimension, picture, video, videoPosition, picturePosition, handleP
           controls={true}
           loop={video.loop}
           width='100%'
-          height='auto'
+          height='35vh'
           pip={true}
           seeking="true"
           config={{file: {
@@ -113,8 +113,8 @@ const PIV = ({dimension, picture, video, videoPosition, picturePosition, handleP
 const VIP = ({dimension, picture, video, videoPosition, picturePosition, handlePositionChange, savePosition, sceneType, meters2pixels, alignItems}) => {
   return (
     <>
-    <Image src={picture.src} style={{position: 'absolute', top: '10vh', zIndex: 998}}/>
-      <div style={{position: 'absolute', top: '10vh', zIndex: 999}}>
+    <Image src={picture.src} style={{position: 'absolute', bottom: '0vh', maxHeight: '35vh', zIndex: 998, width: meters2pixels(picturePosition.width), height: meters2pixels(picturePosition.height) }}/>
+      <div style={{position: 'absolute', bottom: '0vh', maxHeight: '35vh', zIndex: 999,width: meters2pixels(videoPosition.width), height: meters2pixels(videoPosition.height) }}>
         <ReactPlayer
           playsinline={true}
           playing={video.autoplay}
@@ -124,15 +124,15 @@ const VIP = ({dimension, picture, video, videoPosition, picturePosition, handleP
           muted={false}
           controls={true}
           loop={video.loop}
-          width='100%'
-          height='auto'
+          width={meters2pixels(videoPosition.width)}
+          height={meters2pixels(videoPosition.height)}
           pip={true}
           seeking="true"
           config={{file: {
             attributes:  {
               crossOrigin: 'anonymous',
-              width: '100%',
-              height: 'auto'
+              width: meters2pixels(videoPosition.width),
+              height: meters2pixels(videoPosition.height)
             },
             forceVideo: true
           }
@@ -149,12 +149,12 @@ const VIP = ({dimension, picture, video, videoPosition, picturePosition, handleP
 const PAV = ({dimension, picture, video, videoPosition, picturePosition, handlePositionChange, savePosition, sceneType, meters2pixels, alignItems}) => {
   return (<>
     {dimension && picture && (videoPosition.mode === "left" || videoPosition.mode === "top")  &&
-      <div style={{width: meters2pixels(dimension.split('x')[0])+'px', alignSelf: alignItems, marginTop: picturePosition.top, marginBottom: picturePosition.bottom}}>
-        <Image src={picture.src} />
+      <div style={{width: meters2pixels(picturePosition.width), height: meters2pixels(picturePosition.height), alignSelf: alignItems, marginTop: picturePosition.top, marginBottom: picturePosition.bottom}}>
+        <Image style={{width: meters2pixels(picturePosition.width), height: meters2pixels(picturePosition.height)}} src={picture.src} />
       </div>
     }
     {video &&
-      <div style={{width: meters2pixels(videoPosition.width)+'px', height: meters2pixels(videoPosition.height)+'px',  marginLeft: meters2pixels(videoPosition.left), marginTop: meters2pixels(videoPosition.top), marginRight: meters2pixels(videoPosition.right), marginBottom: meters2pixels(videoPosition.bottom)}} className="draggable">
+      <div style={{width: meters2pixels(videoPosition.width), height: meters2pixels(videoPosition.height),  marginLeft: meters2pixels(videoPosition.left), marginTop: meters2pixels(videoPosition.top), marginRight: meters2pixels(videoPosition.right), marginBottom: meters2pixels(videoPosition.bottom)}} className="draggable">
         <ReactPlayer
           playsinline={true}
           playing={video.autoplay}
@@ -164,15 +164,15 @@ const PAV = ({dimension, picture, video, videoPosition, picturePosition, handleP
           muted={false}
           controls={true}
           loop={video.loop}
-          width={meters2pixels(videoPosition.width)+'px'}
-          height={meters2pixels(videoPosition.height)+'px'}
+          width={meters2pixels(videoPosition.width)}
+          height={meters2pixels(videoPosition.height)}
           pip={true}
           seeking="true"
           config={{file: {
             attributes:  {
               crossOrigin: 'anonymous',
-              width: meters2pixels(videoPosition.width)+'px',
-              height: meters2pixels(videoPosition.height)+'px'
+              width: meters2pixels(videoPosition.width),
+              height: meters2pixels(videoPosition.height)
             },
             forceVideo: true
           }
@@ -186,8 +186,8 @@ const PAV = ({dimension, picture, video, videoPosition, picturePosition, handleP
 
     }
     {dimension && picture && (videoPosition.mode === "right" || videoPosition.mode === "bottom" ) &&
-      <div style={{width: meters2pixels(dimension.split('x')[0]), alignSelf: alignItems, marginTop: picturePosition.top, marginBottom: picturePosition.bottom}} className="draggable">
-        <Image src={picture.src} />
+      <div style={{width: meters2pixels(picturePosition.width),height: meters2pixels(picturePosition.height), alignSelf: alignItems, marginTop: picturePosition.top, marginBottom: picturePosition.bottom}} className="draggable">
+        <Image style={{width: meters2pixels(picturePosition.width),height: meters2pixels(picturePosition.height)}} src={picture.src} />
       </div>
     }
   </>)
@@ -281,7 +281,7 @@ const PivConfig = ({picturePosition,handlePicturePosition, leftSettings, rightSe
   </div>
   );
 }
-const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration, open, handleBlur, leftSettings, rightSettings, topSettings, bottomSettings, handleVideoPosition, handlePicturePosition, switchVideoPosition, switchPicture, toggleArType, switchArType, saveVideoposition, pIndex, widthSettings, heightSettings}) => {
+const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration, open, handleBlur, leftSettings, rightSettings, topSettings, bottomSettings, handleVideoPosition, handlePicturePosition, switchVideoPosition, switchPicture, toggleArType, switchArType, saveVideoposition, pIndex, widthSettings, heightSettings, pwidthSettings, pheightSettings}) => {
   const positionOptions = [
     { key: 'left', value: 'left', text: 'Left' },
     { key: 'right', value: 'right', text: 'Right' },
@@ -289,11 +289,11 @@ const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration
     { key: 'bottom', value: 'bottom', text: 'Bottom' }
   ];
 
-  const pictures = stage.pictures.map((p,i) => {
+  const pictures = (stage.pictures && stage.pictures.length > 0) ? stage.pictures.map((p,i) => {
     p.text = "Picture "+(i+1);
     p.value = i;
       return p;
-  });
+  }): null;
   console.log('scene_type',stage.scene_type);
   return (
     <TransitionablePortal
@@ -308,6 +308,7 @@ const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration
          height: 'auto',
          maxHeight: '70vh',
          left: '10%',
+         padding: 0,
          overflowY: 'auto',
          position: 'fixed',
          top: '10vh',
@@ -316,19 +317,8 @@ const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration
      >
        <Header as="h5" style={{display: 'flex', justifyContent: 'space-between',flexWrap: 'no-wrap'}}>Video position configuration
 
-         <Select
-           inverted
-           transparent
-           placeholder='Ar Type'
-           options={sceneOptions}
-           name="arType"
-           label='AR Type'
-           type="select"
-           onChange={(e, {value}) => switchArType(e, value, 'scene_type')}
-           onBlur={e => handleBlur}
-           defaultValue={stage.scene_type}
-           />
-         {(stage.scene_type === 3  || stage.scene_type === 6 ) &&
+
+         {pictures && (stage.scene_type === 3  || stage.scene_type === 6 ) &&
            <Select
              inverted
              transparent
@@ -356,6 +346,19 @@ const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration
              defaultValue={videoPosition.mode}
              />
          }
+         <Select
+           inverted
+           transparent
+           placeholder='Ar Type'
+           options={sceneOptions}
+           name="arType"
+           label='AR Type'
+           style={{zIndex: 2003}}
+           type="select"
+           onChange={(e, {value}) => switchArType(e, value, 'scene_type')}
+           onBlur={e => handleBlur}
+           defaultValue={stage.scene_type}
+           />
        </Header>
        {stage.scene_type > 0 &&
          <WallCanvas
@@ -369,9 +372,38 @@ const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration
        }
 
        <Segment inverted style={{width:'45vw',display: 'flex', justifyContent: 'space-between',flexWrap: 'nowrap'}}>
-         <div >
+         <div  style={{width:'25vw'}}>
+           <Header inverted as="h6">Image Dimension in meters</Header>
+             <Input
+               fluid
+               inverted
+               transparent
+               label='Width'
+               placeholder='Width'
+               type="text"
+               name="width"
+               onChange={e => handlePicturePosition(e.currentTarget.value, 'width')}
+               onBlur={e => handleBlur}
+               value={picturePosition.width}
+               />
+             <Slider color="grey" name="width" value={picturePosition.width} primary settings={pwidthSettings} />
+               <Input
+                 fluid
+                 inverted
+                 transparent
+                 label='Height'
+                 placeholder='Height'
+                 type="text"
+                 name="height"
+                 onChange={e => handlePicturePosition(e.currentTarget.value, 'height')}
+                 onBlur={e => handleBlur}
+                 value={picturePosition.height}
+                 />
+               <Slider color="grey" name="height" value={picturePosition.height} primary settings={pheightSettings} />
+
+          </div>
+         <div style={{width:'25vw'}}>
            <Header inverted as="h6">Image Position</Header>
-           <label>Picture Dimension: {stage.dimension}</label>
            {(stage.scene_type  === 5 || stage.scene_type  === 6) && <PivConfig picturePosition={picturePosition} handlePicturePosition={handlePicturePosition} leftSettings={leftSettings} rightSettings={rightSettings} handleBlur={handleBlur} topSettings={topSettings} bottomSettings={bottomSettings}/> }
 
          </div>
@@ -626,12 +658,26 @@ class stage extends Component {
           step: .01,
           onChange: value => this.handleVideoPosition(value, 'width')
         },
+        pwidthSettings : {
+          start: 0,
+          min: 0,
+          max: 20,
+          step: .01,
+          onChange: value => this.handlePicturePosition(value, 'width')
+        },
         heightSettings : {
           start: 0,
           min: 0,
           max: 20,
           step: .01,
           onChange: value => this.handleVideoPosition(value, 'height')
+        },
+        pheightSettings : {
+          start: 0,
+          min: 0,
+          max: 20,
+          step: .01,
+          onChange: value => this.handlePicturePosition(value, 'height')
         },
         pIndex: 0,
         preflightModal: false,
@@ -1686,7 +1732,7 @@ class stage extends Component {
 
 
   editStage = () => {
-    let { animation, duration, open , stage, videoPosition, picturePosition, leftSettings, rightSettings, topSettings, bottomSettings, pIndex, widthSettings, heightSettings} = this.state;
+    let { animation, duration, open , stage, videoPosition, picturePosition, leftSettings, rightSettings, topSettings, bottomSettings, pIndex, widthSettings, heightSettings, pwidthSettings, pheightSettings} = this.state;
     return (
           <Formik
             enableReinitialize={true}
@@ -1832,7 +1878,9 @@ class stage extends Component {
                   open={open}
                   pIndex={pIndex}
                   widthSettings={widthSettings}
+                  pwidthSettings={pwidthSettings}
                   heightSettings={heightSettings}
+                  pheightSettings={pheightSettings}
                   switchArType={this.switchArType}
                   switchPicture={this.switchPicture}
                   saveVideoposition={this.saveVideoposition}
