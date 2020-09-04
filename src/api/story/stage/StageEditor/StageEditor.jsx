@@ -33,38 +33,9 @@ const PIV = ({dimension, picture, video, videoPosition, picturePosition, handleP
     </div>
     {video &&
       <div style={{maxWidth: '50vw', maxHeight: '35vh', marginLeft: meters2pixels(videoPosition.left), marginTop: meters2pixels(videoPosition.top), marginRight: meters2pixels(videoPosition.right), marginBottom: meters2pixels(videoPosition.bottom)}}>
-        <ReactPlayer
-          playsinline={true}
-          playing={video.autoplay}
-          preload="false"
-          light={false}
-          name={video.name}
-          muted={false}
-          controls={true}
-          loop={video.loop}
-          width='100%'
-          height='35vh'
-          pip={true}
-          seeking="true"
-          config={{file: {
-            attributes:  {
-              crossOrigin: 'anonymous',
-              width: '100%',
-              height: 'auto'
-            },
-            forceVideo: true
-          }
-        }}
-
-        id={"video_position" }
-        key={"vid_position" }
-        url={video.src}
-      />
+        <video src={video.src} width={meters2pixels(picturePosition.width)} height={meters2pixels(picturePosition.height)}  style={{maxHeight: '35vh'}}/>
       </div>
-
     }
-
-
     </>);
 }
 const VIP = ({dimension, picture, video, videoPosition, picturePosition, handlePositionChange, savePosition, sceneType, meters2pixels, alignItems}) => {
@@ -76,37 +47,38 @@ const VIP = ({dimension, picture, video, videoPosition, picturePosition, handleP
     console.log('res', (value * ratio));
     return (value * ratio)+'vh';
   }
+  //*   <ReactPlayer
+  //     playsinline={true}
+  //     playing={video.autoplay}
+  //     preload="true"
+  //     light={false}
+  //     name={video.name}
+  //     muted={false}
+  //     controls={true}
+  //     loop={video.loop}
+  //     width={ratioIze('35vh', picturePosition.width, picturePosition.height )}
+  //     height="35vh"
+  //     pip={true}
+  //     seeking="true"
+  //     config={{file: {
+  //       attributes:  {
+  //         crossOrigin: 'anonymous',
+  //         width: ratioIze('35vh', picturePosition.width, picturePosition.height ),
+  //         height: '35vh'
+  //       },
+  //       forceVideo: true
+  //     }
+  //   }}
+  //
+  //   id={"video_position" }
+  //   key={"vid_position" }
+  //   url={video.src}
+  //* />
   return (
     <>
     <Image src={picture.src} style={{position: 'absolute', bottom: '0vh', maxHeight: '35vh', minHeight: '35vh', minWidth : ratioIze('35vh', picturePosition.width, picturePosition.height ), zIndex: 998, width: meters2pixels(picturePosition.width), height: meters2pixels(picturePosition.height) }}/>
       <div style={{position: 'absolute', bottom: '0vh', maxHeight: '35vh', zIndex: 999,width: ratioIze('35vh', picturePosition.width, picturePosition.height ), height: '35vh' }}>
-        <ReactPlayer
-          playsinline={true}
-          playing={video.autoplay}
-          preload="true"
-          light={false}
-          name={video.name}
-          muted={false}
-          controls={true}
-          loop={video.loop}
-          width={ratioIze('35vh', picturePosition.width, picturePosition.height )}
-          height="35vh"
-          pip={true}
-          seeking="true"
-          config={{file: {
-            attributes:  {
-              crossOrigin: 'anonymous',
-              width: ratioIze('35vh', picturePosition.width, picturePosition.height ),
-              height: '35vh'
-            },
-            forceVideo: true
-          }
-        }}
-
-        id={"video_position" }
-        key={"vid_position" }
-        url={video.src}
-      />
+          <video src={video.src} width={meters2pixels(picturePosition.width)} height={meters2pixels(picturePosition.height)}  />
       </div>
       </>
   );
@@ -120,33 +92,7 @@ const PAV = ({dimension, picture, video, videoPosition, picturePosition, handleP
     }
     {video &&
       <div style={{width: meters2pixels(videoPosition.width), height: meters2pixels(videoPosition.height),  marginLeft: meters2pixels(videoPosition.left), marginTop: meters2pixels(videoPosition.top), marginRight: meters2pixels(videoPosition.right), marginBottom: meters2pixels(videoPosition.bottom)}} className="draggable">
-        <ReactPlayer
-          playsinline={true}
-          playing={video.autoplay}
-          preload="true"
-          light={false}
-          name={video.name}
-          muted={false}
-          controls={true}
-          loop={video.loop}
-          width={meters2pixels(videoPosition.width)}
-          height={meters2pixels(videoPosition.height)}
-          pip={true}
-          seeking="true"
-          config={{file: {
-            attributes:  {
-              crossOrigin: 'anonymous',
-              width: meters2pixels(videoPosition.width),
-              height: meters2pixels(videoPosition.height)
-            },
-            forceVideo: true
-          }
-        }}
-
-        id={"video_position" }
-        key={"vid_position" }
-        url={video.src}
-      />
+        <video src={video.src} width={meters2pixels(picturePosition.width)} height={meters2pixels(picturePosition.height)}  />
       </div>
 
     }
@@ -174,122 +120,7 @@ const WallCanvas = ({dimension, picture, video, videoPosition, picturePosition, 
     </Segment>
   );
 };
-const PicturePosition = ({picturePosition,handlePicturePosition, leftSettings, rightSettings, handleBlur, topSettings, bottomSettings, xpictureSettings, ypictureSettings, zpictureSettings }) => {
-  return (
-    <>
-    <div style={{width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'stretch'}}>
 
-
-    <div>
-
-      <Input
-        fluid
-        inverted
-        transparent
-        label='X'
-        placeholder='X'
-        type="text"
-        name="x"
-        onChange={e => handlePicturePosition(e.currentTarget.value, 'x')}
-        onBlur={e => handleBlur}
-        value={picturePosition.x}
-        />
-      <Slider color="grey" name="x" value={picturePosition.x} primary settings={xpictureSettings} />
-
-
-      <Input
-        fluid
-        inverted
-        transparent
-        label='Y'
-        placeholder='Y'
-        type="text"
-        name="y"
-        onChange={e => handlePicturePosition(e.currentTarget.value, 'y')}
-        onBlur={e => handleBlur}
-        value={picturePosition.y}
-        />
-      <Slider color="grey" name="y" value={picturePosition.y} primary settings={ypictureSettings} />
-
-
-      <Input
-        fluid
-        inverted
-        transparent
-        label='Z'
-        placeholder='Z'
-        type="text"
-        name="z"
-        onChange={e => handlePicturePosition(e.currentTarget.value, 'z')}
-        onBlur={e => handleBlur}
-        value={picturePosition.z}
-        />
-      <Slider color="grey" name="z" value={picturePosition.z} primary settings={zpictureSettings} />
-      </div>
-      <div>
-      <Input
-        fluid
-        inverted
-        transparent
-        label='Left'
-        placeholder='Left'
-        type="text"
-        name="left"
-        onChange={e => handlePicturePosition(e.currentTarget.value, 'left')}
-        onBlur={e => handleBlur}
-        value={picturePosition.left}
-        />
-      <Slider color="grey" name="left" value={picturePosition.left} primary settings={leftSettings} />
-
-
-      <Input
-        fluid
-        inverted
-        transparent
-        label='Right'
-        placeholder='Right'
-        type="text"
-        name="right"
-        onChange={e => handlePicturePosition(e.currentTarget.value, 'right')}
-        onBlur={e => handleBlur}
-        value={picturePosition.right}
-        />
-      <Slider color="grey" name="right" value={picturePosition.right} primary settings={rightSettings} />
-
-
-      <Input
-        fluid
-        inverted
-        transparent
-        label='Top'
-        placeholder='Top'
-        type="text"
-        name="top"
-        onChange={e => handlePicturePosition(e.currentTarget.value, 'top')}
-        onBlur={e => handleBlur}
-        value={picturePosition.top}
-        />
-      <Slider color="grey" name="top" value={picturePosition.top} primary settings={topSettings} />
-
-    <Input
-          fluid
-          inverted
-          transparent
-          label='Bottom'
-          placeholder='Bottom'
-          type="text"
-          name="bottom"
-          onChange={e => handlePicturePosition(e.currentTarget.value, 'bottom')}
-          onBlur={e => handleBlur}
-          value={picturePosition.bottom}
-          />
-        <Slider color="grey" name="bottom" value={picturePosition.bottom} primary settings={bottomSettings} />
-
-  </div>
-      </div>
-  </>
-  );
-}
 const VideoSize = ({ conf, handleVideoPosition, handleBlur, widthSettings, heightSettings  }) => {
   return (
     <>
@@ -300,12 +131,12 @@ const VideoSize = ({ conf, handleVideoPosition, handleBlur, widthSettings, heigh
         label='Width'
         placeholder='Width'
         type="text"
-        name="width"
+        name="vwidth"
         onChange={e => handleVideoPosition(e.currentTarget.value, 'width')}
         onBlur={e => handleBlur}
         value={conf.width}
         />
-      <Slider color="grey" name="width" value={conf.width} primary settings={widthSettings} />
+      <Slider color="grey" name="vwidth" value={conf.width} primary settings={widthSettings} />
         <Input
           fluid
           inverted
@@ -313,12 +144,12 @@ const VideoSize = ({ conf, handleVideoPosition, handleBlur, widthSettings, heigh
           label='Height'
           placeholder='Height'
           type="text"
-          name="height"
+          name="vheight"
           onChange={e => handleVideoPosition(e.currentTarget.value, 'height')}
           onBlur={e => handleBlur}
           value={conf.height}
           />
-        <Slider color="grey" name="height" value={conf.height} primary settings={heightSettings} />
+        <Slider color="grey" name="vheight" value={conf.height} primary settings={heightSettings} />
         </>
     );
 }
@@ -333,12 +164,12 @@ const PictureSize = ({conf, handlePicturePosition, handleBlur, pwidthSettings, p
        label='Width'
        placeholder='Width'
        type="text"
-       name="width"
+       name="pwidth"
        onChange={e => handlePicturePosition(e.currentTarget.value, 'width')}
        onBlur={e => handleBlur}
        value={conf.width}
        />
-     <Slider color="grey" name="width" value={conf.width} primary settings={pwidthSettings} />
+     <Slider color="grey" name="pwidth" value={conf.width} primary settings={pwidthSettings} />
        <Input
          fluid
          inverted
@@ -346,13 +177,127 @@ const PictureSize = ({conf, handlePicturePosition, handleBlur, pwidthSettings, p
          label='Height'
          placeholder='Height'
          type="text"
-         name="height"
+         name="pheight"
          onChange={e => handlePicturePosition(e.currentTarget.value, 'height')}
          onBlur={e => handleBlur}
          value={conf.height}
          />
-       <Slider color="grey" name="height" value={conf.height} primary settings={pheightSettings} />
+       <Slider color="grey" name="pheight" value={conf.height} primary settings={pheightSettings} />
        </>
+  );
+}
+const PicturePosition = ({picturePosition, handlePicturePosition, leftSettings, rightSettings, handleBlur, topSettings, bottomSettings, xpictureSettings, ypictureSettings, zpictureSettings }) => {
+  return (
+    <>
+    <Header inverted as="h6">Image Position</Header>
+    <div style={{width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'stretch'}}>
+    <div>
+      <Input
+        fluid
+        inverted
+        transparent
+        label='X'
+        placeholder='X'
+        type="text"
+        name="px"
+        onChange={e => handlePicturePosition(e.currentTarget.value, 'x')}
+        onBlur={e => handleBlur}
+        value={picturePosition.x}
+        />
+      <Slider color="grey" name="px" value={picturePosition.x} primary settings={xpictureSettings} />
+
+
+      <Input
+        fluid
+        inverted
+        transparent
+        label='Y'
+        placeholder='Y'
+        type="text"
+        name="py"
+        onChange={e => handlePicturePosition(e.currentTarget.value, 'y')}
+        onBlur={e => handleBlur}
+        value={picturePosition.y}
+        />
+      <Slider color="grey" name="py" value={picturePosition.y} primary settings={ypictureSettings} />
+
+
+      <Input
+        fluid
+        inverted
+        transparent
+        label='Z'
+        placeholder='Z'
+        type="text"
+        name="pz"
+        onChange={e => handlePicturePosition(e.currentTarget.value, 'z')}
+        onBlur={e => handleBlur}
+        value={picturePosition.z}
+        />
+      <Slider color="grey" name="pz" value={picturePosition.z} primary settings={zpictureSettings} />
+      </div>
+      <div>
+      <Input
+        fluid
+        inverted
+        transparent
+        label='Left'
+        placeholder='Left'
+        type="text"
+        name="pleft"
+        onChange={e => handlePicturePosition(e.currentTarget.value, 'left')}
+        onBlur={e => handleBlur}
+        value={picturePosition.left}
+        />
+      <Slider color="grey" name="PropTypes.any.isRequiredleft" value={picturePosition.left} primary settings={leftSettings} />
+
+
+      <Input
+        fluid
+        inverted
+        transparent
+        label='Right'
+        placeholder='Right'
+        type="text"
+        name="pright"
+        onChange={e => handlePicturePosition(e.currentTarget.value, 'right')}
+        onBlur={e => handleBlur}
+        value={picturePosition.right}
+        />
+      <Slider color="grey" name="pright" value={picturePosition.right} primary settings={rightSettings} />
+
+
+      <Input
+        fluid
+        inverted
+        transparent
+        label='Top'
+        placeholder='Top'
+        type="text"
+        name="ptop"
+        onChange={e => handlePicturePosition(e.currentTarget.value, 'top')}
+        onBlur={e => handleBlur}
+        value={picturePosition.top}
+        />
+      <Slider color="grey" name="ptop" value={picturePosition.top} primary settings={topSettings} />
+
+    <Input
+          fluid
+          inverted
+          transparent
+          label='Bottom'
+          placeholder='Bottom'
+          type="text"
+          name="pbottom"
+          onChange={e => handlePicturePosition(e.currentTarget.value, 'bottom')}
+          onBlur={e => handleBlur}
+          value={picturePosition.bottom}
+          />
+        <Slider color="grey" name="pbottom" value={picturePosition.bottom} primary settings={bottomSettings} />
+
+  </div>
+      </div>
+  </>
   );
 }
 const VideoPosition = ({videoPosition,handleVideoPosition,handleBlur, leftSettings, rightSettings, topSettings, bottomSettings,xSettings, ySettings, zSettings}) => {
@@ -367,12 +312,12 @@ const VideoPosition = ({videoPosition,handleVideoPosition,handleBlur, leftSettin
       label='X'
       placeholder='X'
       type="text"
-      name="x"
+      name="vx"
       onChange={e => handleVideoPosition(e.currentTarget.value, 'x')}
       onBlur={e => handleBlur}
       value={videoPosition.x}
       />
-    <Slider color="grey" name="x" value={videoPosition.x} primary settings={xSettings} />
+    <Slider color="grey" name="vx" value={videoPosition.x} primary settings={xSettings} />
 
 
     <Input
@@ -382,12 +327,12 @@ const VideoPosition = ({videoPosition,handleVideoPosition,handleBlur, leftSettin
       label='Y'
       placeholder='Y'
       type="text"
-      name="y"
+      name="vy"
       onChange={e => handleVideoPosition(e.currentTarget.value, 'y')}
       onBlur={e => handleBlur}
       value={videoPosition.y}
       />
-    <Slider color="grey" name="y" value={videoPosition.y} primary settings={ySettings} />
+    <Slider color="grey" name="vy" value={videoPosition.y} primary settings={ySettings} />
 
 
     <Input
@@ -397,12 +342,12 @@ const VideoPosition = ({videoPosition,handleVideoPosition,handleBlur, leftSettin
       label='Z'
       placeholder='Z'
       type="text"
-      name="z"
+      name="vz"
       onChange={e => handleVideoPosition(e.currentTarget.value, 'z')}
       onBlur={e => handleBlur}
       value={videoPosition.z}
       />
-    <Slider color="grey" name="z" value={videoPosition.z} primary settings={zSettings} />
+    <Slider color="grey" name="vz" value={videoPosition.z} primary settings={zSettings} />
     </div>
     <div>
 
@@ -415,12 +360,12 @@ const VideoPosition = ({videoPosition,handleVideoPosition,handleBlur, leftSettin
           label='Left'
           placeholder='Left'
           type="text"
-          name="left"
+          name="vleft"
           onChange={e => handleVideoPosition(e.currentTarget.value, 'left')}
           onBlur={e => handleBlur}
           value={videoPosition.left}
           />
-        <Slider color="grey" name="left" value={videoPosition.left} primary settings={leftSettings} />
+        <Slider color="grey" name="vleft" value={videoPosition.left} primary settings={leftSettings} />
         </>
       }
       {(videoPosition.mode === 'right' || videoPosition.mode === 'bottom' || videoPosition.mode === 'top') &&
@@ -432,12 +377,12 @@ const VideoPosition = ({videoPosition,handleVideoPosition,handleBlur, leftSettin
           label='Right'
           placeholder='Right'
           type="text"
-          name="right"
+          name="vright"
           onChange={e => handleVideoPosition(e.currentTarget.value, 'right')}
           onBlur={e => handleBlur}
           value={videoPosition.right}
           />
-        <Slider color="grey" name="right" value={videoPosition.right} primary settings={rightSettings} />
+        <Slider color="grey" name="vright" value={videoPosition.right} primary settings={rightSettings} />
         </>
       }
       {(videoPosition.mode === 'top' ) &&
@@ -449,12 +394,12 @@ const VideoPosition = ({videoPosition,handleVideoPosition,handleBlur, leftSettin
           label='Top'
           placeholder='Top'
           type="text"
-          name="top"
+          name="vtop"
           onChange={e => handleVideoPosition(e.currentTarget.value, 'top')}
           onBlur={e => handleBlur}
           value={videoPosition.top}
           />
-        <Slider color="grey" name="top" value={videoPosition.top} primary settings={topSettings} />
+        <Slider color="grey" name="vtop" value={videoPosition.top} primary settings={topSettings} />
         </>
       }
        {(videoPosition.mode === 'left' || videoPosition.mode === 'right' || videoPosition.mode === 'bottom') &&
@@ -466,12 +411,12 @@ const VideoPosition = ({videoPosition,handleVideoPosition,handleBlur, leftSettin
             label='Bottom'
             placeholder='Bottom'
             type="text"
-            name="bottom"
+            name="vbottom"
             onChange={e => handleVideoPosition(e.currentTarget.value, 'bottom')}
             onBlur={e => handleBlur}
             value={videoPosition.bottom}
             />
-          <Slider color="grey" name="bottom" value={videoPosition.bottom} primary settings={bottomSettings} />
+          <Slider color="grey" name="vbottom" value={videoPosition.bottom} primary settings={bottomSettings} />
         </>
    }
      </div>
@@ -581,7 +526,6 @@ const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration
 
           </div>
          <div style={{width:'25vw'}}>
-           <Header inverted as="h6">Image Position</Header>
            {(stage.scene_type  === 5 || stage.scene_type  === 6) &&
              <PicturePosition
                picturePosition={picturePosition}

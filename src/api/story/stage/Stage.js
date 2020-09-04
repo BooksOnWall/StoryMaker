@@ -1228,6 +1228,9 @@ class stage extends Component {
     videoPosition.right =0;
     videoPosition.top =0;
     videoPosition.bottom =0;
+    videoPosition.x =0;
+    videoPosition.y =0;
+    videoPosition.z =0;
     videoPosition.mode= value;
     this.setState({videoPosition});
   }
@@ -1286,6 +1289,22 @@ class stage extends Component {
     if(field === 'bottom') {
       picturePosition.top = 0;
       picturePosition.y = picturePosition.bottom;
+    }
+    if(field === 'x') {
+      if(value > 0) {
+        picturePosition.left = value;
+        picturePosition.right = 0;
+      } else {
+        picturePosition.right = -value;
+      }
+    }
+    if(field === 'y') {
+      if(value > 0) {
+        picturePosition.top = value;
+        picturePosition.bottom = 0;
+      } else {
+        picturePosition.bottom = -value;
+      }
     }
     this.setState({picturePosition});
   }
