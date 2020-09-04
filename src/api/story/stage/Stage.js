@@ -35,7 +35,7 @@ import StageMap from '../map/stageMap';
 import LogReport from '../logReport';
 import { Slider } from "react-semantic-ui-range";
 import Portal from '../../../assets/images/portal.jpg';
-import Editor3d from './3dEditor';
+import Editor3d from '../Editor3d/Editor3d';
 const stageOptions = [
   { key: 'Point', value: 'Point', text: 'Geo Point' },
   { key: 'Linestring', value: 'Linestring', text: 'Line String' }
@@ -75,7 +75,7 @@ const PIV = ({dimension, picture, video, videoPosition, picturePosition, handleP
       }
     </div>
     {video &&
-      <div style={{width: '45vw', marginLeft: meters2pixels(videoPosition.left), marginTop: meters2pixels(videoPosition.top), marginRight: meters2pixels(videoPosition.right), marginBottom: meters2pixels(videoPosition.bottom)}} className="draggable">
+      <div style={{maxWidth: '45vw', marginLeft: meters2pixels(videoPosition.left), marginTop: meters2pixels(videoPosition.top), marginRight: meters2pixels(videoPosition.right), marginBottom: meters2pixels(videoPosition.bottom)}} className="draggable">
         <ReactPlayer
           playsinline={true}
           playing={video.autoplay}
@@ -194,16 +194,18 @@ const PAV = ({dimension, picture, video, videoPosition, picturePosition, handleP
 }
 const WallCanvas = ({dimension, picture, video, videoPosition, picturePosition, handlePositionChange, savePosition, sceneType}) =>  {
   const meters2pixels = (meters) => (meters*30);
-  const display = (videoPosition.mode === 'left' || videoPosition.mode === 'right') ? 'flex' : 'block';
-  const alignItems = (videoPosition.mode === 'left' || videoPosition.mode === 'right') ? 'flex-end' : 'start';
-  const justifyContent = (videoPosition.mode === 'left' || videoPosition.mode === 'right') ? 'initial' : 'center';
+  let display = (videoPosition.mode === 'left' || videoPosition.mode === 'right') ? 'flex' : 'block';
+  let alignItems = (videoPosition.mode === 'left' || videoPosition.mode === 'right') ? 'flex-end' : 'start';
+  let justifyContent = (videoPosition.mode === 'left' || videoPosition.mode === 'right') ? 'initial' : 'center';
+  justifyContent = (sceneType === 7) ? 'center' : justifyContent;
+  alignItems = (sceneType === 7) ? 'stretch' : alignItems;
   return (
-    <Segment style={{justifyContent: justifyContent, alignItems: alignItems, minHeight: '35vh', display: display, flexWrap: 'wrap'}}>
+    <Segment style={{justifyContent: justifyContent, alignItems: alignItems, minHeight: '35vh', display: display, flexWrap: 'wrap', padding: 0}}>
       {(sceneType === 1) && <VIP meters2pixels={meters2pixels} alignItems={alignItems} dimension={dimension} picture={picture} video={video} videoPosition={videoPosition} picturePosition={picturePosition} handlePositionChange={handlePositionChange} savePosition={savePosition} sceneType={sceneType}/>}
       {(sceneType === 2  || sceneType === 3) && <PAV meters2pixels={meters2pixels} alignItems={alignItems} dimension={dimension} picture={picture} video={video} videoPosition={videoPosition} picturePosition={picturePosition} handlePositionChange={handlePositionChange} savePosition={savePosition} sceneType={sceneType}/>}
       {(sceneType === 5 || sceneType === 6) && <PIV meters2pixels={meters2pixels} alignItems={alignItems} dimension={dimension} picture={picture} video={video} videoPosition={videoPosition} picturePosition={picturePosition} handlePositionChange={handlePositionChange} savePosition={savePosition} sceneType={sceneType}/>}
       {(sceneType === 4) && <Image src={Portal} style={{maxWidth: '70vw', maxHeight: '30vh'}}/>}
-      {(sceneType === 7) && <Editor3d  style={{maxWidth: '70vw', maxHeight: '30vh'}}/>}
+      {(sceneType === 7) && <Editor3d  />}
     </Segment>
   );
 };
