@@ -111,10 +111,18 @@ const PIV = ({dimension, picture, video, videoPosition, picturePosition, handleP
     </>);
 }
 const VIP = ({dimension, picture, video, videoPosition, picturePosition, handlePositionChange, savePosition, sceneType, meters2pixels, alignItems}) => {
+  const ratioIze = (value, width, height) => {
+    let ratio = (height/width);
+    value = value.split("vh")[0];
+    console.log('value', value);
+    console.log('ratio', ratio);
+    console.log('res', (value * ratio));
+    return (value * ratio)+'vh';
+  }
   return (
     <>
-    <Image src={picture.src} style={{position: 'absolute', bottom: '0vh', maxHeight: '35vh', zIndex: 998, width: meters2pixels(picturePosition.width), height: meters2pixels(picturePosition.height) }}/>
-      <div style={{position: 'absolute', bottom: '0vh', maxHeight: '35vh', zIndex: 999,width: meters2pixels(videoPosition.width), height: meters2pixels(videoPosition.height) }}>
+    <Image src={picture.src} style={{position: 'absolute', bottom: '0vh', maxHeight: '35vh', minHeight: '35vh', minWidth : ratioIze('35vh', picturePosition.width, picturePosition.height ), zIndex: 998, width: meters2pixels(picturePosition.width), height: meters2pixels(picturePosition.height) }}/>
+      <div style={{position: 'absolute', bottom: '0vh', maxHeight: '35vh', zIndex: 999,width: ratioIze('35vh', picturePosition.width, picturePosition.height ), height: '35vh' }}>
         <ReactPlayer
           playsinline={true}
           playing={video.autoplay}
@@ -124,15 +132,15 @@ const VIP = ({dimension, picture, video, videoPosition, picturePosition, handleP
           muted={false}
           controls={true}
           loop={video.loop}
-          width={meters2pixels(videoPosition.width)}
-          height={meters2pixels(videoPosition.height)}
+          width={ratioIze('35vh', picturePosition.width, picturePosition.height )}
+          height="35vh"
           pip={true}
           seeking="true"
           config={{file: {
             attributes:  {
               crossOrigin: 'anonymous',
-              width: meters2pixels(videoPosition.width),
-              height: meters2pixels(videoPosition.height)
+              width: ratioIze('35vh', picturePosition.width, picturePosition.height ),
+              height: '35vh'
             },
             forceVideo: true
           }
