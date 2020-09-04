@@ -153,6 +153,9 @@ class stage extends Component {
         videoPosition: {
           width: 5,
           height: 4,
+          x: 0,
+          y: 0,
+          z: 0,
           top: 0,
           left: 0,
           right: 0,
@@ -163,6 +166,9 @@ class stage extends Component {
         picturePosition: {
           width: 5,
           height: 4,
+          x: 0,
+          y: 0,
+          z: 0,
           top: 0,
           left: 0,
           right: 0,
@@ -204,6 +210,48 @@ class stage extends Component {
           max: 20,
           step: .01,
           onChange: value => this.handleVideoPosition(value, 'width')
+        },
+        xSettings: {
+          start: 0,
+          min: -10,
+          max: 10,
+          step: .01,
+          onChange: value => this.handleVideoPosition(value, 'x')
+        },
+        ySettings: {
+          start: 0,
+          min: -10,
+          max: 10,
+          step: .01,
+          onChange: value => this.handleVideoPosition(value, 'y')
+        },
+        zSettings: {
+          start: 0,
+          min: -10,
+          max: 10,
+          step: .01,
+          onChange: value => this.handleVideoPosition(value, 'z')
+        },
+        xpictureSettings: {
+          start: 0,
+          min: -10,
+          max: 10,
+          step: .01,
+          onChange: value => this.handlePicturePosition(value, 'x')
+        },
+        ypictureSettings: {
+          start: 0,
+          min: -10,
+          max: 10,
+          step: .01,
+          onChange: value => this.handlePicturePosition(value, 'y')
+        },
+        zpictureSettings: {
+          start: 0,
+          min: -10,
+          max: 10,
+          step: .01,
+          onChange: value => this.handlePicturePosition(value, 'z')
         },
         pwidthSettings : {
           start: 0,
@@ -1186,11 +1234,59 @@ class stage extends Component {
   handleVideoPosition = (value, field ) => {
     let {videoPosition} = this.state;
     videoPosition[field] = value;
+    if(field === 'left') {
+      videoPosition.right = 0;
+      videoPosition.x = videoPosition.left;
+    }
+    if(field === 'right') {
+      videoPosition.left = 0;
+      videoPosition.x = -videoPosition.right;
+    }
+    if(field === 'top') {
+      videoPosition.bottom = 0;
+      videoPosition.y = videoPosition.top;
+    }
+    if(field === 'bottom') {
+      videoPosition.top = 0;
+      videoPosition.y = -videoPosition.bottom;
+    }
+    if(field === 'x') {
+      if(value > 0) {
+        videoPosition.left = value;
+        videoPosition.right = 0;
+      } else {
+        videoPosition.right = -value;
+      }
+    }
+    if(field === 'y') {
+      if(value > 0) {
+        videoPosition.top = value;
+        videoPosition.bottom = 0;
+      } else {
+        videoPosition.bottom = -value;
+      }
+    }
     this.setState({videoPosition});
   }
   handlePicturePosition = (value, field ) => {
     let {picturePosition} = this.state;
     picturePosition[field] = value;
+    if(field === 'left') {
+      picturePosition.right = 0;
+      picturePosition.x = (-picturePosition.left);
+    }
+    if(field === 'right') {
+      picturePosition.left = 0;
+      picturePosition.x = picturePosition.right;
+    }
+    if(field === 'top') {
+      picturePosition.bottom = 0;
+      picturePosition.y = picturePosition.top;
+    }
+    if(field === 'bottom') {
+      picturePosition.top = 0;
+      picturePosition.y = picturePosition.bottom;
+    }
     this.setState({picturePosition});
   }
   toggleArType = () => this.setState({open: !this.state.open})
@@ -1279,7 +1375,10 @@ class stage extends Component {
 
 
   editStage = () => {
-    let { animation, duration, open , stage, videoPosition, picturePosition, leftSettings, rightSettings, topSettings, bottomSettings, pIndex, widthSettings, heightSettings, pwidthSettings, pheightSettings} = this.state;
+    let { animation, duration, open , stage, videoPosition, picturePosition, leftSettings, rightSettings, topSettings, bottomSettings, pIndex, widthSettings, heightSettings, pwidthSettings, pheightSettings, xSettings, ySettings, zSettings, xpictureSettings, ypictureSettings, zpictureSettings} = this.state;
+
+
+
     return (
           <Formik
             enableReinitialize={true}
@@ -1416,34 +1515,40 @@ class stage extends Component {
                   options={sceneOptions}
                   defaultValue={values.scene_type}
                   />
-                <StageEditor
-                  stage={stage}
-                  videoPosition={videoPosition}
-                  picturePosition={picturePosition}
-                  animation={animation}
-                  duration={duration}
-                  open={open}
-                  pIndex={pIndex}
-                  widthSettings={widthSettings}
-                  pwidthSettings={pwidthSettings}
-                  heightSettings={heightSettings}
-                  pheightSettings={pheightSettings}
-                  switchArType={this.switchArType}
-                  switchPicture={this.switchPicture}
-                  saveVideoposition={this.saveVideoposition}
-                  toggleArType={this.toggleArType}
-                  handlePicturePosition={this.handlePicturePosition}
-                  handleVideoPosition={this.handleVideoPosition}
-                  switchVideoPosition={this.switchVideoPosition}
-                  handleBlur={this.handleBlur}
-                  leftSettings={leftSettings}
-                  rightSettings={rightSettings}
-                  topSettings={topSettings}
-                  bottomSettings={bottomSettings}
-                />
+                  {errors.scene_type && touched.scene_type && errors.scene_type}
+                  <StageEditor
+                    stage={stage}
+                    videoPosition={videoPosition}
+                    picturePosition={picturePosition}
+                    animation={animation}
+                    duration={duration}
+                    open={open}
+                    pIndex={pIndex}
+                    widthSettings={widthSettings}
+                    pwidthSettings={pwidthSettings}
+                    heightSettings={heightSettings}
+                    pheightSettings={pheightSettings}
+                    xSettings={xSettings}
+                    ySettings={ySettings}
+                    zSettings={zSettings}
+                    xpictureSettings={xpictureSettings}
+                    ypictureSettings={ypictureSettings}
+                    zpictureSettings={zpictureSettings}
+                    switchArType={this.switchArType}
+                    switchPicture={this.switchPicture}
+                    saveVideoposition={this.saveVideoposition}
+                    toggleArType={this.toggleArType}
+                    handlePicturePosition={this.handlePicturePosition}
+                    handleVideoPosition={this.handleVideoPosition}
+                    switchVideoPosition={this.switchVideoPosition}
+                    handleBlur={this.handleBlur}
+                    leftSettings={leftSettings}
+                    rightSettings={rightSettings}
+                    topSettings={topSettings}
+                    bottomSettings={bottomSettings}
+                  />
 
 
-                {errors.scene_type && touched.scene_type && errors.scene_type}
                 <Divider />
                 <Button onClick={handleSubmit} floated='right' primary  size='large' type="submit" disabled={isSubmitting}>
                   {(this.state.mode === 'create') ? 'Create' : 'Update'}
@@ -1749,7 +1854,7 @@ class stage extends Component {
         console.log({error});
       });
     } catch(e) {
-
+      console.log(e.message);
     }
 
   }
@@ -1808,13 +1913,13 @@ class stage extends Component {
             {(this.state.ssid === 0) ?
               <Segment.Group horizontal style={{height: '70vh'}}>
                 <Segment style={{height: 'inherit', width: '150px'}}>{this.editStage()}</Segment>
-                <Segment style={{height: 'inherit'}}>{(this.state.ssid === 0 ) ? <StageMap height="70vh" sid={this.state.sid} mode={this.state.mode} setStageLocation={this.setStageLocation} stageLocation={this.state.stage.stageLocation} geometry={this.props.geometry} viewport={this.props.viewport}
-                /> : ''}</Segment>
+                <Segment style={{height: 'inherit'}}>{(this.state.ssid === 0 ) ? <StageMap height="70vh" sid={this.state.sid} mode={this.state.mode} setStageLocation={this.setStageLocation} stageLocation={this.state.stage.stageLocation} geometry={this.props.geometry} viewport={this.props.viewport} />
+                : '' } </Segment>
               </Segment.Group>
             : ''}
 
             {/* Update stage and reality augmented control board */}
-            {(this.state.stages) ? <StageBoard
+            {(this.state.stages) ? (<StageBoard
               history={this.props.history}
               tasks={this.state.tasks}
               onDrop={this.onDrop}
@@ -1852,14 +1957,14 @@ class stage extends Component {
               handleTopShowClick={this.handleTopShowClick}
               handleTopSidebarHide={this.handleTopSidebarHide}
               exportStage={this.exportStage}
-              />
-            : ''
-                }
+              />)
+            : '' }
         </Dimmer.Dimmable>
         </Segment>
         </Container>
       );
   }
 }
+
 
 export default withRouter(stage);

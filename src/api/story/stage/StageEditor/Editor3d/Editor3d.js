@@ -80,7 +80,7 @@ function Birds() {
     const bird = ['Stork', 'Parrot', 'Flamingo'][Math.round(Math.random() * 2)]
     let speed = bird === 'Stork' ? 0.5 : bird === 'Flamingo' ? 2 : 5
     let factor = bird === 'Stork' ? 0.5 + Math.random() : bird === 'Flamingo' ? 0.25 + Math.random() : 1 + Math.random() - 0.5
-    return <Bird key={i} position={[x, y, z]} rotation={[0, x > 0 ? Math.PI : 0, 0]} speed={speed} factor={factor} url={`./${bird}.glb`} />
+    return <Bird key={i} position={[x, y, z]} rotation={[0, x > 0 ? Math.PI : 0, 0]} speed={speed} factor={factor} url={`${bird}.glb`} />
   })
 }
 
@@ -92,7 +92,7 @@ class Editor3d extends Component {
   render() {
     return (
 
-      <Canvas id="Editor3dCanvas" width="1000" height="500" style={{background: '#041830'}} camera={{ position: [2, 2, 2] }}>
+      <Canvas id="Editor3dCanvas" width="1000" height="500" style={{background: '#041830', zIndex: 1000 }} camera={{ position: [2, 2, 2] }}>
       <Controls />
         <ambientLight intensity={2} />
         <pointLight position={[40, 40, 40]} />
