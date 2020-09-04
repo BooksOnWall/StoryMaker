@@ -24,7 +24,7 @@ const sceneOptions = [
 ];
 const PIV = ({dimension, picture, video, videoPosition, picturePosition, handlePositionChange, savePosition, sceneType, meters2pixels, alignItems}) => {
   return (<>
-    <div style={{position: 'absolute', left: meters2pixels(picturePosition.left), bottom: meters2pixels(picturePosition.bottom), minHeight: meters2pixels(picturePosition.height), minWidth: meters2pixels(picturePosition.width), zIndex: 1001}}>
+    <div style={{position: 'absolute',alignSelf: 'center', minHeight: meters2pixels(picturePosition.height), minWidth: meters2pixels(picturePosition.width), zIndex: 1003}}>
       {dimension && picture && (videoPosition.mode === "left" || videoPosition.mode === "top")  &&
         <div style={{width: meters2pixels(picturePosition.width), height:meters2pixels(picturePosition.height) , alignSelf: alignItems, marginTop: picturePosition.top, marginBottom: picturePosition.bottom}}>
           <Image style={{width: meters2pixels(picturePosition.width), height:meters2pixels(picturePosition.height)}} src={picture.src} />
@@ -32,7 +32,7 @@ const PIV = ({dimension, picture, video, videoPosition, picturePosition, handleP
       }
     </div>
     {video &&
-      <div style={{maxWidth: '50vw', maxHeight: '35vh', marginLeft: meters2pixels(videoPosition.left), marginTop: meters2pixels(videoPosition.top), marginRight: meters2pixels(videoPosition.right), marginBottom: meters2pixels(videoPosition.bottom)}}>
+      <div style={{zIndex: 999, maxWidth: '50vw', maxHeight: '35vh', marginLeft: meters2pixels(videoPosition.left), marginTop: meters2pixels(videoPosition.top), marginRight: meters2pixels(videoPosition.right), marginBottom: meters2pixels(videoPosition.bottom)}}>
         <video src={video.src} width={meters2pixels(picturePosition.width)} height={meters2pixels(picturePosition.height)}  style={{maxHeight: '35vh'}}/>
       </div>
     }
@@ -47,37 +47,11 @@ const VIP = ({dimension, picture, video, videoPosition, picturePosition, handleP
     console.log('res', (value * ratio));
     return (value * ratio)+'vh';
   }
-  //*   <ReactPlayer
-  //     playsinline={true}
-  //     playing={video.autoplay}
-  //     preload="true"
-  //     light={false}
-  //     name={video.name}
-  //     muted={false}
-  //     controls={true}
-  //     loop={video.loop}
-  //     width={ratioIze('35vh', picturePosition.width, picturePosition.height )}
-  //     height="35vh"
-  //     pip={true}
-  //     seeking="true"
-  //     config={{file: {
-  //       attributes:  {
-  //         crossOrigin: 'anonymous',
-  //         width: ratioIze('35vh', picturePosition.width, picturePosition.height ),
-  //         height: '35vh'
-  //       },
-  //       forceVideo: true
-  //     }
-  //   }}
-  //
-  //   id={"video_position" }
-  //   key={"vid_position" }
-  //   url={video.src}
-  //* />
+
   return (
     <>
-    <Image src={picture.src} style={{position: 'absolute', bottom: '0vh', maxHeight: '35vh', minHeight: '35vh', minWidth : ratioIze('35vh', picturePosition.width, picturePosition.height ), zIndex: 998, width: meters2pixels(picturePosition.width), height: meters2pixels(picturePosition.height) }}/>
-      <div style={{position: 'absolute', bottom: '0vh', maxHeight: '35vh', zIndex: 999,width: ratioIze('35vh', picturePosition.width, picturePosition.height ), height: '35vh' }}>
+      <Image src={picture.src} style={{position: 'relative', maxHeight: '35vh', minHeight: '35vh', minWidth : ratioIze('35vh', picturePosition.width, picturePosition.height ), zIndex: 998, width: meters2pixels(picturePosition.width), height: meters2pixels(picturePosition.height) }}/>
+      <div style={{ maxHeight: '35vh', zIndex: 999, width: ratioIze('35vh', picturePosition.width, picturePosition.height ), height: '35vh' }}>
           <video src={video.src} width={meters2pixels(picturePosition.width)} height={meters2pixels(picturePosition.height)}  />
       </div>
       </>
@@ -105,9 +79,9 @@ const PAV = ({dimension, picture, video, videoPosition, picturePosition, handleP
 }
 const WallCanvas = ({dimension, picture, video, videoPosition, picturePosition, handlePositionChange, savePosition, sceneType}) =>  {
   const meters2pixels = (meters) => (meters*30);
-  let display = (videoPosition.mode === 'left' || videoPosition.mode === 'right') ? 'flex' : 'block';
+  let display = (videoPosition.mode === 'left' || videoPosition.mode === 'right') ? 'flex' : 'flex';
   let alignItems = (videoPosition.mode === 'left' || videoPosition.mode === 'right') ? 'center' : 'center';
-  let justifyContent = (videoPosition.mode === 'left' || videoPosition.mode === 'right') ? 'initial' : 'center';
+  let justifyContent = (videoPosition.mode === 'left' || videoPosition.mode === 'right') ? 'center' : 'center';
   justifyContent = (sceneType === 7) ? 'center' : justifyContent;
   alignItems = (sceneType === 7) ? 'stretch' : alignItems;
   return (
