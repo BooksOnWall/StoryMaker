@@ -8,6 +8,10 @@ body{
     padding: 0 !important;
     margin: 0 !important;
 }
+video {
+  object-fit: fill;
+  
+}
 #root {
   /* background-color: '#6435c9'; */
 }

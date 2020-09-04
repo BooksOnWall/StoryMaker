@@ -87,7 +87,7 @@ const PAV = ({dimension, picture, video, videoPosition, picturePosition, handleP
   return (<>
     {dimension && picture && (videoPosition.mode === "left" || videoPosition.mode === "top")  &&
       <div style={{width: meters2pixels(picturePosition.width), height: meters2pixels(picturePosition.height), alignSelf: alignItems, marginTop: picturePosition.top, marginBottom: picturePosition.bottom}}>
-        <Image style={{width: meters2pixels(picturePosition.width), height: meters2pixels(picturePosition.height)}} src={picture.src} />
+        <Image style={{width: meters2pixels(picturePosition.width), height: meters2pixels(picturePosition.height)}} src={picture.src}/>
       </div>
     }
     {video &&
