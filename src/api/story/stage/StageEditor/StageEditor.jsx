@@ -50,7 +50,7 @@ const VIP = ({dimension, picture, video, videoPosition, picturePosition, handleP
 
   return (
     <>
-      <Image src={picture.src} style={{position: 'relative', maxHeight: '35vh', minHeight: '35vh', minWidth : ratioIze('35vh', picturePosition.width, picturePosition.height ), zIndex: 998, width: meters2pixels(picturePosition.width), height: meters2pixels(picturePosition.height) }}/>
+      <Image src={picture.src} style={{position: 'absolute', maxHeight: '35vh', minHeight: '35vh', minWidth : ratioIze('35vh', picturePosition.width, picturePosition.height ), zIndex: 998, width: meters2pixels(picturePosition.width), height: meters2pixels(picturePosition.height) }}/>
       <div style={{ maxHeight: '35vh', zIndex: 999, width: ratioIze('35vh', picturePosition.width, picturePosition.height ), height: '35vh' }}>
           <video src={video.src} width={meters2pixels(picturePosition.width)} height={meters2pixels(picturePosition.height)}  />
       </div>
