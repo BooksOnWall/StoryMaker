@@ -1288,6 +1288,7 @@ class stage extends Component {
         videoPosition.right = 0;
       } else {
         videoPosition.right = -value;
+        videoPosition.left = 0;
       }
     }
     if(field === 'y') {
@@ -1295,6 +1296,7 @@ class stage extends Component {
         videoPosition.top = value;
         videoPosition.bottom = 0;
       } else {
+        videoPosition.top = 0;
         videoPosition.bottom = -value;
       }
     }
@@ -1305,11 +1307,11 @@ class stage extends Component {
     picturePosition[field] = value;
     if(field === 'left') {
       picturePosition.right = 0;
-      picturePosition.x = (-picturePosition.left);
+      picturePosition.x = -picturePosition.left;
     }
     if(field === 'right') {
       picturePosition.left = 0;
-      picturePosition.x = picturePosition.right;
+      picturePosition.x = -picturePosition.right;
     }
     if(field === 'top') {
       picturePosition.bottom = 0;
@@ -1317,13 +1319,14 @@ class stage extends Component {
     }
     if(field === 'bottom') {
       picturePosition.top = 0;
-      picturePosition.y = picturePosition.bottom;
+      picturePosition.y = -picturePosition.bottom;
     }
     if(field === 'x') {
       if(value > 0) {
         picturePosition.left = value;
         picturePosition.right = 0;
       } else {
+        picturePosition.left = 0;
         picturePosition.right = -value;
       }
     }
@@ -1332,6 +1335,7 @@ class stage extends Component {
         picturePosition.top = value;
         picturePosition.bottom = 0;
       } else {
+        picturePosition.top = 0;
         picturePosition.bottom = -value;
       }
     }

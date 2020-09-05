@@ -10,7 +10,7 @@ body{
 }
 video {
   object-fit: fill;
-  
+
 }
 #root {
   /* background-color: '#6435c9'; */
@@ -18,6 +18,11 @@ video {
 #Editor3dCanvas , #Editor3dCanvas canvas {
   width: 100%;
   height: 100%;
+}
+#videoConfig input {
+  width: 40px !important;
+  text-align: center;
+  border: 1px dashed #99FF00 !important;
 }
 @font-face {
   font-family: "ATypewriterForMe";
