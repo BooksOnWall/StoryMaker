@@ -25,20 +25,24 @@ const sceneOptions = [
   { key: 7, value: 7, text: '3D Scene' }
 ];
 const PIV = ({dimension, picture, video, videoPosition, picturePosition, handlePositionChange, savePosition, sceneType, meters2pixels, alignItems}) => {
-
+  // video fill the whole screen and image is centered , positions apply from this state
   let pictureRatio = {
       width: (100 - ((videoPosition.width - picturePosition.width) / videoPosition.width)*100)+'%',
       height: (100 - ((videoPosition.height - picturePosition.height) / videoPosition.height)*100)+'%',
   };
+  const percentUnit = (value,direction) => {
+    const percent = (direction === "left" || direction === "right") ? (((videoPosition.width - value)/videoPosition.width)*50) : (((videoPosition.height - value)/videoPosition.height)*50);
+    return percent;
+  }
   console.log('ratio',pictureRatio);
 
   return (<>
 
     {video &&
-      <div id="videoRefPIV" style={{zIndex: 999, maxWidth: 'inherit', maxHeight: '35vh'}}>
+      <div id="videoRefPIV" style={{zIndex: 999, maxWidth: '35vh', maxHeight: '35vh'}}>
         {dimension && picture && (videoPosition.mode === "left" || videoPosition.mode === "top")  &&
-          <div style={{position: 'absolute', width: '100%', height: '100%', alignSelf: alignItems, display: 'flex', flexDirection: 'column', justifyContent: 'center', marginTop: picturePosition.bottom, marginBottom: picturePosition.top}}>
-            <Image style={{opacity: .75, alignSelf: alignItems, width: pictureRatio.width, height: pictureRatio.height, maxHeight: '35vh'}} src={picture.src} />
+          <div style={{position: 'absolute', width: '100%', height: '100%', alignSelf: alignItems, display: 'flex', flexDirection: 'column', justifyContent: 'center',  maxWidth: '35vh', paddingLeft: percentUnit(videoPosition.left), paddingRight: percentUnit(videoPosition.right), paddingTop: percentUnit(videoPosition.bottom), paddingBottom: percentUnit(videoPosition.top)}}>
+            <Image style={{position: 'relative', opacity: .75, alignSelf: alignItems,  width: pictureRatio.width, height: pictureRatio.height, maxHeight: '35vh',}} src={picture.src} />
           </div>
         }
         <video  src={video.src} width={meters2pixels(picturePosition.width)} height={meters2pixels(picturePosition.height)}  style={{maxHeight: '35vh'}}/>
@@ -83,7 +87,7 @@ const PAV = ({dimension, picture, video, videoPosition, picturePosition, handleP
   </>)
 }
 const WallCanvas = ({dimension, picture, video, videoPosition, picturePosition, handlePositionChange, savePosition, sceneType}) =>  {
-  const meters2pixels = (meters) => (meters*30);
+  const meters2pixels = (meters) => (meters*40);
   let display = (videoPosition.mode === 'left' || videoPosition.mode === 'right') ? 'flex' : 'flex';
   let alignItems = (videoPosition.mode === 'left' || videoPosition.mode === 'right') ? 'center' : 'center';
   let justifyContent = (videoPosition.mode === 'left' || videoPosition.mode === 'right') ? 'center' : 'center';
@@ -185,7 +189,6 @@ const PicturePosition = ({picturePosition, handlePicturePosition, pleftSettings,
         />
       <Slider color="grey" name="px" value={picturePosition.x} primary settings={xpictureSettings} />
 
-
       <Input
         fluid
         inverted
@@ -199,7 +202,6 @@ const PicturePosition = ({picturePosition, handlePicturePosition, pleftSettings,
         value={picturePosition.y}
         />
       <Slider color="grey" name="py" value={picturePosition.y} primary settings={ypictureSettings} />
-
 
       <Input
         fluid
