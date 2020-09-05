@@ -26,28 +26,23 @@ const sceneOptions = [
 ];
 const PIV = ({dimension, picture, video, videoPosition, picturePosition, handlePositionChange, savePosition, sceneType, meters2pixels, alignItems}) => {
 
-  const pictureRatio = (videoPosition, picturePosition, maxHeight) => {
-
-    const ratio = {
-      width: (videoPosition.width / videoPosition.height) * picturePosition.width,
-      height: (videoPosition.width / videoPosition.height) * picturePosition.height,
-    }
-    return ratio;
-  }
-  console.log('ratio',pictureRatio(videoPosition, picturePosition, '35vh'));
+  let pictureRatio = {
+      width: (100 - ((videoPosition.width - picturePosition.width) / videoPosition.width)*100)+'%',
+      height: (100 - ((videoPosition.height - picturePosition.height) / videoPosition.height)*100)+'%',
+  };
+  console.log('ratio',pictureRatio);
 
   return (<>
-    <div style={{position: 'absolute',alignSelf: 'center', minHeight: meters2pixels(picturePosition.height), minWidth: meters2pixels(picturePosition.width) ,  zIndex: 1003}}>
-      {dimension && picture && (videoPosition.mode === "left" || videoPosition.mode === "top")  &&
-        <div style={{position: 'absolute', width: meters2pixels(picturePosition.width), height:meters2pixels(picturePosition.height) , alignSelf: alignItems, marginTop: picturePosition.top, marginBottom: picturePosition.bottom}}>
-          <Image style={{width: meters2pixels(picturePosition.width), height:meters2pixels(picturePosition.height)}} src={picture.src} />
-        </div>
-      }
-    </div>
+
     {video &&
-      <div id="videoRefPIV" style={{zIndex: 999, maxWidth: '35vw', maxHeight: '35vh', marginLeft: meters2pixels(videoPosition.left), marginTop: meters2pixels(videoPosition.top), marginRight: meters2pixels(videoPosition.right), marginBottom: meters2pixels(videoPosition.bottom)}}>
+      <div id="videoRefPIV" style={{zIndex: 999, maxWidth: 'inherit', maxHeight: '35vh'}}>
+        {dimension && picture && (videoPosition.mode === "left" || videoPosition.mode === "top")  &&
+          <div style={{position: 'absolute', width: '100%', height: '100%', alignSelf: alignItems, display: 'flex', flexDirection: 'column', justifyContent: 'center', marginTop: picturePosition.bottom, marginBottom: picturePosition.top}}>
+            <Image style={{opacity: .75, alignSelf: alignItems, width: pictureRatio.width, height: pictureRatio.height, maxHeight: '35vh'}} src={picture.src} />
+          </div>
+        }
         <video  src={video.src} width={meters2pixels(picturePosition.width)} height={meters2pixels(picturePosition.height)}  style={{maxHeight: '35vh'}}/>
-      </div>
+    </div>
     }
     </>);
 }
