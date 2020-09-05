@@ -12,6 +12,7 @@
     "draft-js": "^0.11.0",
     "draft-js-export-html": "^1.4.1",
     "draftjs-to-html": "^0.8.4",
+    "drei": "^1.4.0-beta.0",
     "formik": "^1.5.8",
     "fs": "^0.0.1-security",
     "gsap": "^2.1.3",

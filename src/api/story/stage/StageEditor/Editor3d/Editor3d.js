@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import React, { Suspense, Component, useEffect, useRef, useState } from 'react';
 import { Canvas, useLoader, useFrame } from 'react-three-fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { draco } from "drei";
 import Plane from "./Plane";
 import Text from "./Text";
 import Controls from "./Controls";
@@ -38,19 +39,20 @@ function Jumbo() {
   useFrame(({ clock }) => (ref.current.rotation.x = ref.current.rotation.y = ref.current.rotation.z = Math.sin(clock.getElapsedTime()) * 0.3));
   return (
     <group ref={ref}>
-      <Text hAlign="left" position={[0, 4.2, 0]} children="Books" />
-      <Text hAlign="left" position={[0, 0, 0]} children="On" />
-      <Text hAlign="left" position={[0, -4.2, 0]} children="Wall" />
-      <Text hAlign="left" position={[12, 0, 0]} children="3D" size={3} />
-      <Text hAlign="left" position={[16.5, -4.2, 0]} children="Editor" />
+      <Text hAlign="left" position={[-1, 5, 0]} children="BOOKS" />
+      <Text hAlign="left" position={[0, 0, 0]} children="ON" />
+      <Text hAlign="left" position={[0, -4.2, 0]} children="WALL" />
+      <Text hAlign="left" position={[30, 7, 0]} children="3D" size={3} />
+      <Text hAlign="left" position={[30, -4.2, 0]} children="EDITOR" />
     </group>
   )
 }
 
 function Bird({ speed, factor, url, ...props }) {
-  const { nodes, materials, animations } = useLoader(GLTFLoader, url)
-  const group = useRef()
-  const [mixer] = useState(() => new THREE.AnimationMixer())
+
+  const { nodes, materials, animations } = useLoader(GLTFLoader, '/'+url, draco());
+  const group = useRef();
+  const [mixer] = useState(() => new THREE.AnimationMixer());
   useEffect(() => void mixer.clipAction(animations[0], group.current).play(), [animations,mixer])
   useFrame((state, delta) => {
     group.current.rotation.y += Math.sin((delta * factor) / 2) * Math.cos((delta * factor) / 2) * 1.5
@@ -92,11 +94,10 @@ class Editor3d extends Component {
   render() {
     return (
 
-      <Canvas id="Editor3dCanvas" width="1000" height="500" style={{background: '#041830', zIndex: 1000 }} camera={{ position: [2, 2, 2] }}>
+      <Canvas id="Editor3dCanvas"  style={{background: '#041830', zIndex: 1000 }} camera={{ position: [0, 0, 35] }}>
       <Controls />
         <ambientLight intensity={2} />
         <pointLight position={[40, 40, 40]} />
-        <fog attach="fog" args={["#041830", 5, 10]} />
         <spotLight intensity={0.8} position={[300, 300, 400]} />
         <Box />
         <Suspense fallback={null}>

@@ -43,6 +43,7 @@ const PIV = ({dimension, picture, video, videoPosition, picturePosition, handleP
         {dimension && picture && (videoPosition.mode === "left" || videoPosition.mode === "top")  &&
           <div style={{position: 'absolute', width: '100%', height: '100%', alignSelf: alignItems, display: 'flex', flexDirection: 'column', justifyContent: 'center',  maxWidth: '35vh', paddingLeft: percentUnit(videoPosition.left), paddingRight: percentUnit(videoPosition.right), paddingTop: percentUnit(videoPosition.bottom), paddingBottom: percentUnit(videoPosition.top)}}>
             <Image style={{position: 'relative', opacity: .75, alignSelf: alignItems,  width: pictureRatio.width, height: pictureRatio.height, maxHeight: '35vh',}} src={picture.src} />
+
           </div>
         }
         <video  src={video.src} width={meters2pixels(picturePosition.width)} height={meters2pixels(picturePosition.height)}  style={{maxHeight: '35vh'}}/>
@@ -62,6 +63,7 @@ const VIP = ({dimension, picture, video, videoPosition, picturePosition, handleP
       <Image src={picture.src} style={{position: 'absolute', maxHeight: '35vh', minHeight: '35vh', minWidth : ratioIze('35vh', picturePosition.width, picturePosition.height ), zIndex: 998, width: meters2pixels(picturePosition.width), height: meters2pixels(picturePosition.height) }}/>
       <div style={{ maxHeight: '35vh', zIndex: 999, width: ratioIze('35vh', picturePosition.width, picturePosition.height ), height: '35vh' }}>
           <video src={video.src} width={meters2pixels(picturePosition.width)} height={meters2pixels(picturePosition.height)}  />
+
       </div>
       </>
   );
@@ -71,16 +73,19 @@ const PAV = ({dimension, picture, video, videoPosition, picturePosition, handleP
     {dimension && picture && (videoPosition.mode === "left" || videoPosition.mode === "top")  &&
       <div style={{zIndex: 1001, width: meters2pixels(picturePosition.width), height: meters2pixels(picturePosition.height), alignSelf: alignItems, marginTop: picturePosition.bottom, marginBottom: picturePosition.top}}>
         <Image style={{width: meters2pixels(picturePosition.width), height: meters2pixels(picturePosition.height)}} src={picture.src}/>
+
       </div>
     }
     {video &&
       <div style={{zIndex: 1002, width: meters2pixels(videoPosition.width), height: meters2pixels(videoPosition.height),  marginLeft: meters2pixels(videoPosition.left), marginTop: meters2pixels(videoPosition.bottom), marginRight: meters2pixels(videoPosition.right), marginBottom: meters2pixels(videoPosition.top)}} className="draggable">
+
         <video src={video.src} width={meters2pixels(picturePosition.width)} height={meters2pixels(picturePosition.height)}  />
       </div>
 
     }
     {dimension && picture && (videoPosition.mode === "right" || videoPosition.mode === "bottom" ) &&
       <div style={{zIndex: 1001, width: meters2pixels(picturePosition.width),height: meters2pixels(picturePosition.height), alignSelf: alignItems, marginTop: picturePosition.bottom, marginBottom: picturePosition.top}} className="draggable">
+      
         <Image style={{width: meters2pixels(picturePosition.width),height: meters2pixels(picturePosition.height)}} src={picture.src} />
       </div>
     }
