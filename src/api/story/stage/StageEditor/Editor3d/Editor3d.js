@@ -23,7 +23,7 @@ function Box(props) {
     <mesh
       {...props}
       ref={mesh}
-      scale={active ? [1.5, 1.5, 1.5] : [1, 1, 1]}
+      scale={active ? [10, 10, 10] : [5, 5, 5]}
       onClick={(e) => setActive(!active)}
       onPointerOver={(e) => setHover(true)}
       onPointerOut={(e) => setHover(false)}>
@@ -39,11 +39,11 @@ function Jumbo() {
   useFrame(({ clock }) => (ref.current.rotation.x = ref.current.rotation.y = ref.current.rotation.z = Math.sin(clock.getElapsedTime()) * 0.3));
   return (
     <group ref={ref}>
-      <Text hAlign="left" position={[-1, 5, 0]} children="BOOKS" />
-      <Text hAlign="left" position={[0, 0, 0]} children="ON" />
-      <Text hAlign="left" position={[0, -4.2, 0]} children="WALL" />
-      <Text hAlign="left" position={[30, 7, 0]} children="3D" size={3} />
-      <Text hAlign="left" position={[30, -4.2, 0]} children="EDITOR" />
+      <Text hAlign="left" position={[-5, 10, -5]} children="BOOKS" />
+      <Text hAlign="left" position={[-10, 10, -5]} children="ON" />
+      <Text hAlign="left" position={[-5, 5, -5]} children="WALL" />
+      <Text hAlign="left" position={[30, 17, -5]} children="3D" size={3} />
+      <Text hAlign="left" position={[30, 7, -5]} children="EDITOR" />
     </group>
   )
 }
@@ -94,7 +94,7 @@ class Editor3d extends Component {
   render() {
     return (
 
-      <Canvas id="Editor3dCanvas"  style={{background: '#041830', zIndex: 1000 }} camera={{ position: [0, 0, 35] }}>
+      <Canvas id="Editor3dCanvas"  style={{background: '#041830', zIndex: 1000 }} camera={{ position: [0, 10, 35] }}>
       <Controls />
         <ambientLight intensity={2} />
         <pointLight position={[40, 40, 40]} />
@@ -105,7 +105,7 @@ class Editor3d extends Component {
           <Birds />
         </Suspense>
         <Plane />
-        <gridHelper args={[10, 10, "blue", "hotpink"]} />
+        <gridHelper args={[40, 40, "blue", "hotpink"]} />
       </Canvas>
     )
   }
