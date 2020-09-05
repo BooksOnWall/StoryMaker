@@ -211,6 +211,13 @@ class stage extends Component {
           step: .01,
           onChange: value => this.handleVideoPosition(value, 'width')
         },
+        heightSettings : {
+          start: 0,
+          min: 0,
+          max: 20,
+          step: .01,
+          onChange: value => this.handleVideoPosition(value, 'height')
+        },
         xSettings: {
           start: 0,
           min: -10,
@@ -260,19 +267,41 @@ class stage extends Component {
           step: .01,
           onChange: value => this.handlePicturePosition(value, 'width')
         },
-        heightSettings : {
-          start: 0,
-          min: 0,
-          max: 20,
-          step: .01,
-          onChange: value => this.handleVideoPosition(value, 'height')
-        },
+
         pheightSettings : {
           start: 0,
           min: 0,
           max: 20,
           step: .01,
           onChange: value => this.handlePicturePosition(value, 'height')
+        },
+        pleftSettings : {
+          start: 0,
+          min: 0,
+          max: 10,
+          step: .01,
+          onChange: value => this.handlePicturePosition(value, 'left')
+        },
+        prightSettings : {
+          start: 0,
+          min: 0,
+          max: 10,
+          step: .01,
+          onChange: value => this.handlePicturePosition(value, 'right')
+        },
+        ptopSettings : {
+          start: 0,
+          min: 0,
+          max: 10,
+          step: .01,
+          onChange: value => this.handlePicturePosition(value, 'top')
+        },
+        pbottomSettings : {
+          start: 0,
+          min: 0,
+          max: 10,
+          step: .01,
+          onChange: value => this.handlePicturePosition(value, 'bottom')
         },
         pIndex: 0,
         preflightModal: false,
@@ -1394,7 +1423,32 @@ class stage extends Component {
 
 
   editStage = () => {
-    let { animation, duration, open , stage, videoPosition, picturePosition, leftSettings, rightSettings, topSettings, bottomSettings, pIndex, widthSettings, heightSettings, pwidthSettings, pheightSettings, xSettings, ySettings, zSettings, xpictureSettings, ypictureSettings, zpictureSettings} = this.state;
+    let {
+      animation,
+      duration,
+      open ,
+      stage,
+      videoPosition,
+      picturePosition,
+      leftSettings,
+      rightSettings,
+      topSettings,
+      bottomSettings,
+      pIndex,
+      widthSettings,
+      heightSettings,
+      pwidthSettings,
+      pheightSettings,
+      pleftSettings,
+      prightSettings,
+      ptopSettings,
+      pbottomSettings,
+      xSettings,
+      ySettings,
+      zSettings,
+      xpictureSettings,
+      ypictureSettings,
+      zpictureSettings} = this.state;
 
 
 
@@ -1565,6 +1619,10 @@ class stage extends Component {
                     rightSettings={rightSettings}
                     topSettings={topSettings}
                     bottomSettings={bottomSettings}
+                    pleftSettings={pleftSettings}
+                    prightSettings={prightSettings}
+                    ptopSettings={ptopSettings}
+                    pbottomSettings={pbottomSettings}
                   />
 
 
