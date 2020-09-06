@@ -101,7 +101,7 @@ const VIP = ({dimension, picture, video, videoPosition, picturePosition, handleP
 }
 const PAV = ({dimension, picture, video, videoPosition, picturePosition, handlePositionChange, savePositions, sceneType, meters2pixels, alignItems}) => {
   return (<>
-    {dimension && picture && (videoPosition.mode === "left" || videoPosition.mode === "top")  &&
+    {picture && (videoPosition.mode === "left" || videoPosition.mode === "top")  &&
       <div style={{zIndex: 1001, width: meters2pixels(picturePosition.width), height: meters2pixels(picturePosition.height), alignSelf: alignItems, marginTop: picturePosition.bottom, marginBottom: picturePosition.top}}>
         <Image style={{width: meters2pixels(picturePosition.width), height: meters2pixels(picturePosition.height)}} src={picture.src}/>
 
