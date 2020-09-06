@@ -436,7 +436,7 @@ const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration
     p.value = i;
       return p;
   }): null;
-  console.log('scene_type',stage.scene_type);
+  
   return (
     <TransitionablePortal
      open={open}
@@ -592,9 +592,8 @@ class StageEditor extends Component {
 
 
   render() {
-
     let { animation, duration, open , stage, videoPosition, picturePosition, leftSettings, rightSettings, topSettings, bottomSettings,pleftSettings, prightSettings, ptopSettings, pbottomSettings, pIndex, widthSettings, heightSettings, pwidthSettings, pheightSettings, xSettings, ySettings, zSettings, xpictureSettings, ypictureSettings, zpictureSettings} = this.props;
-    console.log('picturePosition', picturePosition);
+
     return (
       <VideoConfig
         stage={stage}

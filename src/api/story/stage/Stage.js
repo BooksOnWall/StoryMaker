@@ -493,7 +493,7 @@ class stage extends Component {
   onDrop = async (ev, cat) => {
     // move object from category
     try {
-      console.log('drop');
+
       let id = ev.dataTransfer.getData("id");
       let obj ={};
       let newObj={};
@@ -1849,7 +1849,7 @@ class stage extends Component {
               },
 
             });
-            console.log(data.scene_options.pictures[0]);
+
             this.setState({
               initialSValues: data,
               picturePosition: data.scene_options.pictures[this.state.pIndex],
@@ -1864,7 +1864,7 @@ class stage extends Component {
             this.mergeTasks('onZoneEnter', data.onZoneEnter);
             this.mergeTasks('onPictureMatch', data.onPictureMatch);
             this.mergeTasks('onZoneLeave', data.onZoneLeave);
-            console.log(this.state.picturePosition);
+
             return data;
           } else {
             console.log('No Data received from the server');
