@@ -1906,7 +1906,6 @@ class stage extends Component {
                 mode: 'left' //
               }));
               let videos = data.onPictureMatch.map((p,i) => (p.type === 'video') ? ({
-
                 width: 5,
                 height: 4,
                 x: 0,
@@ -1923,6 +1922,7 @@ class stage extends Component {
               stage.scene_options.pictures = pictures;
               stage.scene_options.videos = videos;
               this.setState({stage});
+              data.scene_options = stage.scene_options;
             }
             this.setState({
               initialSValues: data,
