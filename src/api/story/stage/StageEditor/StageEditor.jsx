@@ -44,6 +44,7 @@ const PIV = ({dimension, picture, video, videoPosition, picturePosition, handleP
     if (direction === 'height') {
       percent = (((videoPosition.height - value)/videoPosition.height)*100);
     }
+    percent =  (percent === 0) ? '100%' : percent;
     return percent;
   };
   const pstyle = {
@@ -71,7 +72,7 @@ const PIV = ({dimension, picture, video, videoPosition, picturePosition, handleP
 
     {video &&
       <div id="videoRefPIV" style={{zIndex: 999, maxWidth: '45vh', maxHeight: '45vh'}}>
-        {dimension && picture && (videoPosition.mode === "left" || videoPosition.mode === "top")  &&
+        {picture  &&
           <div style={{position: 'absolute', width: percentUnit(picturePosition.width, 'width')+'%', height: percentUnit(picturePosition.height, 'height')+'%', alignSelf: alignItems, display: 'flex', flexDirection: 'column', justifyContent: 'center',  maxWidth: '45vh'}}>
             <Image style={pstyle} src={picture.src} />
           </div>
@@ -488,9 +489,10 @@ const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration
              type="select"
              onChange={(e, {value}) => switchVideoPosition(e, value, 'video_position')}
              onBlur={e => handleBlur}
-             defaultValue= {(stage.scene_type === 3 && picturePosition.videoPosition) ? picturePosition.videoPosition.mode : videoPosition.mode}
+             value= {(stage.scene_type === 3 && picturePosition.videoPosition) ? picturePosition.videoPosition.mode : videoPosition.mode}
              />
          }
+         {(picturePosition.videoPosition) ? console.log(picturePosition.videoPosition.mode) : ''}
          <Select
            inverted
            transparent

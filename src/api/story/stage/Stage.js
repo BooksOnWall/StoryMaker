@@ -1272,7 +1272,7 @@ class stage extends Component {
   switchPicture = (e, value, name) => {
     // save picturePosition
     let {picturePosition, videoPosition, stage, pIndex} = this.state;
-  
+
     if (stage.scene_type === 3) {
       picturePosition.videoPosition = videoPosition;
     }
@@ -1304,6 +1304,7 @@ class stage extends Component {
       rotateAngle: 0,
       mode: 'bottom'
     }) : videoPosition;
+
     this.setState({pIndex: value, stage, picturePosition: defaultPosition, videoPosition: vp});
 
   }
