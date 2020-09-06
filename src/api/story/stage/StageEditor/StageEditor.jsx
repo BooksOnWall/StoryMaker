@@ -31,22 +31,52 @@ const PIV = ({dimension, picture, video, videoPosition, picturePosition, handleP
       height: (100 - ((videoPosition.height - picturePosition.height) / videoPosition.height)*100)+'%',
   };
   const percentUnit = (value,direction) => {
-    const percent = (direction === "left" || direction === "right") ? (((videoPosition.width - value)/videoPosition.width)*50) : (((videoPosition.height - value)/videoPosition.height)*50);
+    let percent ='';
+    if (direction === 'left' || direction === 'right') {
+      percent = (((videoPosition.width - value)/videoPosition.width)*100);
+    }
+    if (direction === 'top' || direction === 'bottom') {
+      percent = (((videoPosition.height - value)/videoPosition.height)*100);
+    }
+    if (direction === 'width') {
+      percent = (((videoPosition.width - value)/videoPosition.width)*100);
+    }
+    if (direction === 'height') {
+      percent = (((videoPosition.height - value)/videoPosition.height)*100);
+    }
     return percent;
+  };
+  const pstyle = {
+      position: 'absolute',
+      opacity: .75,
+      alignSelf: alignItems,
+      width: pictureRatio.width,
+      height: pictureRatio.height,
+      maxHeight: '45vh'
+    };
+  if(picturePosition.left > 0) {
+    pstyle.left = percentUnit(picturePosition.left, 'left');
   }
-  console.log('ratio',pictureRatio);
+  if(picturePosition.right > 0) {
+    pstyle.right = percentUnit(picturePosition.right, 'right');
+  }
+  if (picturePosition.top > 0) {
+    pstyle.top = percentUnit(picturePosition.top, 'top') ;
+  }
+  if (picturePosition.bottom > 0) {
+    pstyle.bottom = percentUnit(picturePosition.bottom, 'bottom') ;
+  }
 
   return (<>
 
     {video &&
-      <div id="videoRefPIV" style={{zIndex: 999, maxWidth: '45vh', maxHeight: '35vh'}}>
+      <div id="videoRefPIV" style={{zIndex: 999, maxWidth: '45vh', maxHeight: '45vh'}}>
         {dimension && picture && (videoPosition.mode === "left" || videoPosition.mode === "top")  &&
-          <div style={{position: 'absolute', width: '100%', height: '100%', alignSelf: alignItems, display: 'flex', flexDirection: 'column', justifyContent: 'center',  maxWidth: '35vh', paddingLeft: percentUnit(videoPosition.left), paddingRight: percentUnit(videoPosition.right), paddingTop: percentUnit(videoPosition.bottom), paddingBottom: percentUnit(videoPosition.top)}}>
-            <Image style={{position: 'relative', opacity: .75, alignSelf: alignItems,  width: pictureRatio.width, height: pictureRatio.height, maxHeight: '35vh',}} src={picture.src} />
-
+          <div style={{position: 'absolute', width: percentUnit(picturePosition.width, 'width')+'%', height: percentUnit(picturePosition.height, 'height')+'%', alignSelf: alignItems, display: 'flex', flexDirection: 'column', justifyContent: 'center',  maxWidth: '45vh'}}>
+            <Image style={pstyle} src={picture.src} />
           </div>
         }
-        <video  src={video.src} width={meters2pixels(picturePosition.width)} height={meters2pixels(picturePosition.height)}  style={{maxHeight: '35vh'}}/>
+        <video  src={video.src} width={pictureRatio.width} height={pictureRatio.height}  style={{maxHeight: '45vh'}}/>
     </div>
     }
     </>);
@@ -60,8 +90,8 @@ const VIP = ({dimension, picture, video, videoPosition, picturePosition, handleP
 
   return (
     <>
-      <Image src={picture.src} style={{position: 'absolute', maxHeight: '35vh', minHeight: '35vh', minWidth : ratioIze('35vh', picturePosition.width, picturePosition.height ), zIndex: 998, width: meters2pixels(picturePosition.width), height: meters2pixels(picturePosition.height) }}/>
-      <div style={{ maxHeight: '35vh', zIndex: 999, width: ratioIze('35vh', picturePosition.width, picturePosition.height ), height: '35vh' }}>
+      <Image src={picture.src} style={{position: 'absolute', maxHeight: '45vh', minHeight: '45vh', minWidth : ratioIze('45vh', picturePosition.width, picturePosition.height ), zIndex: 998, width: meters2pixels(picturePosition.width), height: meters2pixels(picturePosition.height) }}/>
+      <div style={{ maxHeight: '45vh', zIndex: 999, width: ratioIze('45vh', picturePosition.width, picturePosition.height ), height: '45vh' }}>
           <video src={video.src} width={meters2pixels(picturePosition.width)} height={meters2pixels(picturePosition.height)}  />
 
       </div>
@@ -99,7 +129,7 @@ const WallCanvas = ({dimension, picture, video, videoPosition, picturePosition, 
   justifyContent = (sceneType === 7) ? 'center' : justifyContent;
   alignItems = (sceneType === 7) ? 'stretch' : alignItems;
   return (
-    <Segment style={{height: '45vh',justifyContent: justifyContent, alignItems: alignItems, minHeight: '35vh', display: display, flexWrap: 'wrap', padding: 0, backgroundImage: `url(${Wall})`}}>
+    <Segment style={{height: '45vh',justifyContent: justifyContent, alignItems: alignItems, minHeight: '45vh', display: display, flexWrap: 'wrap', padding: 0, backgroundImage: `url(${Wall})`}}>
       {(sceneType === 1) && <VIP meters2pixels={meters2pixels} alignItems={alignItems} dimension={dimension} picture={picture} video={video} videoPosition={videoPosition} picturePosition={picturePosition} handlePositionChange={handlePositionChange} savePosition={savePosition} sceneType={sceneType}/>}
       {(sceneType === 2  || sceneType === 3) && <PAV meters2pixels={meters2pixels} alignItems={alignItems} dimension={dimension} picture={picture} video={video} videoPosition={videoPosition} picturePosition={picturePosition} handlePositionChange={handlePositionChange} savePosition={savePosition} sceneType={sceneType}/>}
       {(sceneType === 5 || sceneType === 6) && <PIV meters2pixels={meters2pixels} alignItems={alignItems} dimension={dimension} picture={picture} video={video} videoPosition={videoPosition} picturePosition={picturePosition} handlePositionChange={handlePositionChange} savePosition={savePosition} sceneType={sceneType}/>}
