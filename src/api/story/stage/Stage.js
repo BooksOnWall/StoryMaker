@@ -1328,7 +1328,7 @@ class stage extends Component {
     }
     if(field === 'right') {
       picturePosition.left = 0;
-      picturePosition.x = -picturePosition.right;
+      picturePosition.x = picturePosition.right;
     }
     if(field === 'top') {
       picturePosition.bottom = 0;
