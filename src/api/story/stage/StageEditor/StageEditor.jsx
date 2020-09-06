@@ -436,7 +436,7 @@ const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration
     p.value = i;
       return p;
   }): null;
-  
+
   return (
     <TransitionablePortal
      open={open}
@@ -469,6 +469,7 @@ const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration
              options={pictures}
              name="pictures"
              label='Pictures'
+             style={{zIndex: 2003}}
              type="select"
              onChange={(e, {value}) => switchPicture(e, value, 'picture_switch')}
              onBlur={e => handleBlur}
@@ -483,6 +484,7 @@ const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration
              options={positionOptions}
              name="videoPosition"
              label='Video Position'
+             style={{zIndex: 2003}}
              type="select"
              onChange={(e, {value}) => switchVideoPosition(e, value, 'video_position')}
              onBlur={e => handleBlur}
@@ -514,7 +516,7 @@ const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration
            />
        }
 
-       <Segment inverted style={{width:'100%',display: 'flex', justifyContent: 'space-around',flexWrap: 'wrap'}}>
+       <Segment inverted style={{zIndex: 1005, width:'100%',display: 'flex', justifyContent: 'space-around',flexWrap: 'wrap'}}>
          <div  style={{width:'25%'}}>
             <PictureSize
               picturePosition={picturePosition}

@@ -1266,7 +1266,26 @@ class stage extends Component {
     return this.handleChange(e, value, name);
   }
   switchPicture = (e, value, name) => {
-    this.setState({pIndex: value});
+    // save picturePosition
+    let {picturePosition, stage, pIndex} = this.state;
+    console.log('previous position',picturePosition);
+    console.log('scene_options',stage.scene_options);
+    stage.scene_options.pictures[pIndex] = picturePosition;
+    const defaultPosition = (stage.scene_options.pictures[value]) ? stage.scene_options.pictures[value] : {
+      width: 5,
+      height: 4,
+      x: 0,
+      y: 0,
+      z: 0,
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      rotateAngle: 0,
+      mode: 'left' // display video according to its position vs picture
+    };
+    this.setState({pIndex: value, stage: stage, picturePosition: defaultPosition});
+    console.log(this.state.picturePosition);
   }
   switchVideoPosition = (e, value, name) => {
     let {videoPosition} = this.state;
