@@ -1205,6 +1205,8 @@ class stage extends Component {
   updateStage = async () => {
     try {
       // set StageEditor picture , video and 3d scene
+      // need to be modified for multi images purpose
+      const {scene_type, pIndex} = this.state;
       const scene_options = {
         // need to be improved with many pictures and many videos
         pictures: [this.state.picturePosition],
