@@ -1206,10 +1206,12 @@ class stage extends Component {
     try {
       // set StageEditor picture , video and 3d scene
       // need to be modified for multi images purpose
-      const {scene_type, pIndex} = this.state;
+      const {pIndex} = this.state;
+      let pictures = this.state.stage.scene_options.pictures;
+      pictures[pIndex] = this.state.picturePosition;
       const scene_options = {
         // need to be improved with many pictures and many videos
-        pictures: [this.state.picturePosition],
+        pictures: pictures,
         videos: [this.state.videoPosition],
         scene3d: [],
       };
