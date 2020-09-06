@@ -1906,6 +1906,7 @@ class stage extends Component {
                 rotateAngle: 0,
                 mode: 'left' //
               }));
+              console.log('pictures', pictures);
               let videos = data.onPictureMatch.map((p,i) => (p.type === 'video') ? ({
                 width: 5,
                 height: 4,
@@ -1919,11 +1920,14 @@ class stage extends Component {
                 rotateAngle: 0,
                 mode: 'left' //
               }) : '');
+              console.log('videos', videos);
               let stage = data;
+              stage.scene_options = {};
               stage.scene_options['pictures'] = pictures;
               stage.scene_options['videos'] = videos;
               this.setState({stage});
               data.scene_options = stage.scene_options;
+              console.log(' stage.scene_options',  stage.scene_options);
             }
             this.setState({
               initialSValues: data,
