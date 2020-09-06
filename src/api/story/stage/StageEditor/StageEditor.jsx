@@ -39,7 +39,7 @@ const PIV = ({dimension, picture, video, videoPosition, picturePosition, handleP
   return (<>
 
     {video &&
-      <div id="videoRefPIV" style={{zIndex: 999, maxWidth: '35vh', maxHeight: '35vh'}}>
+      <div id="videoRefPIV" style={{zIndex: 999, maxWidth: '45vh', maxHeight: '35vh'}}>
         {dimension && picture && (videoPosition.mode === "left" || videoPosition.mode === "top")  &&
           <div style={{position: 'absolute', width: '100%', height: '100%', alignSelf: alignItems, display: 'flex', flexDirection: 'column', justifyContent: 'center',  maxWidth: '35vh', paddingLeft: percentUnit(videoPosition.left), paddingRight: percentUnit(videoPosition.right), paddingTop: percentUnit(videoPosition.bottom), paddingBottom: percentUnit(videoPosition.top)}}>
             <Image style={{position: 'relative', opacity: .75, alignSelf: alignItems,  width: pictureRatio.width, height: pictureRatio.height, maxHeight: '35vh',}} src={picture.src} />
@@ -85,7 +85,7 @@ const PAV = ({dimension, picture, video, videoPosition, picturePosition, handleP
     }
     {dimension && picture && (videoPosition.mode === "right" || videoPosition.mode === "bottom" ) &&
       <div style={{zIndex: 1001, width: meters2pixels(picturePosition.width),height: meters2pixels(picturePosition.height), alignSelf: alignItems, marginTop: picturePosition.bottom, marginBottom: picturePosition.top}} className="draggable">
-      
+
         <Image style={{width: meters2pixels(picturePosition.width),height: meters2pixels(picturePosition.height)}} src={picture.src} />
       </div>
     }
