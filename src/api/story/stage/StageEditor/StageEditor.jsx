@@ -24,7 +24,7 @@ const sceneOptions = [
   { key: 6, value: 6, text: 'Pictures inside Video' },
   { key: 7, value: 7, text: '3D Scene' }
 ];
-const PIV = ({dimension, picture, video, videoPosition, picturePosition, handlePositionChange, savePosition, sceneType, meters2pixels, alignItems}) => {
+const PIV = ({dimension, picture, video, videoPosition, picturePosition, handlePositionChange, savePositions, sceneType, meters2pixels, alignItems}) => {
   // video fill the whole screen and image is centered , positions apply from this state
   let pictureRatio = {
       width: (100 - ((videoPosition.width - picturePosition.width) / videoPosition.width)*100)+'%',
@@ -81,7 +81,7 @@ const PIV = ({dimension, picture, video, videoPosition, picturePosition, handleP
     }
     </>);
 }
-const VIP = ({dimension, picture, video, videoPosition, picturePosition, handlePositionChange, savePosition, sceneType, meters2pixels, alignItems}) => {
+const VIP = ({dimension, picture, video, videoPosition, picturePosition, handlePositionChange, savePositions, sceneType, meters2pixels, alignItems}) => {
   const ratioIze = (value, width, height) => {
     let ratio = (height/width);
     value = value.split("vh")[0];
@@ -98,7 +98,7 @@ const VIP = ({dimension, picture, video, videoPosition, picturePosition, handleP
       </>
   );
 }
-const PAV = ({dimension, picture, video, videoPosition, picturePosition, handlePositionChange, savePosition, sceneType, meters2pixels, alignItems}) => {
+const PAV = ({dimension, picture, video, videoPosition, picturePosition, handlePositionChange, savePositions, sceneType, meters2pixels, alignItems}) => {
   return (<>
     {dimension && picture && (videoPosition.mode === "left" || videoPosition.mode === "top")  &&
       <div style={{zIndex: 1001, width: meters2pixels(picturePosition.width), height: meters2pixels(picturePosition.height), alignSelf: alignItems, marginTop: picturePosition.bottom, marginBottom: picturePosition.top}}>
@@ -121,7 +121,7 @@ const PAV = ({dimension, picture, video, videoPosition, picturePosition, handleP
     }
   </>)
 }
-const WallCanvas = ({dimension, picture, video, videoPosition, picturePosition, handlePositionChange, savePosition, sceneType}) =>  {
+const WallCanvas = ({dimension, picture, video, videoPosition, picturePosition, handlePositionChange, savePositions, sceneType}) =>  {
   const meters2pixels = (meters) => (meters*40);
   let display = (videoPosition.mode === 'left' || videoPosition.mode === 'right') ? 'flex' : 'flex';
   let alignItems = (videoPosition.mode === 'left' || videoPosition.mode === 'right') ? 'center' : 'center';
@@ -130,9 +130,9 @@ const WallCanvas = ({dimension, picture, video, videoPosition, picturePosition, 
   alignItems = (sceneType === 7) ? 'stretch' : alignItems;
   return (
     <Segment style={{height: '45vh',justifyContent: justifyContent, alignItems: alignItems, minHeight: '45vh', display: display, flexWrap: 'wrap', padding: 0, backgroundImage: `url(${Wall})`}}>
-      {(sceneType === 1) && <VIP meters2pixels={meters2pixels} alignItems={alignItems} dimension={dimension} picture={picture} video={video} videoPosition={videoPosition} picturePosition={picturePosition} handlePositionChange={handlePositionChange} savePosition={savePosition} sceneType={sceneType}/>}
-      {(sceneType === 2  || sceneType === 3) && <PAV meters2pixels={meters2pixels} alignItems={alignItems} dimension={dimension} picture={picture} video={video} videoPosition={videoPosition} picturePosition={picturePosition} handlePositionChange={handlePositionChange} savePosition={savePosition} sceneType={sceneType}/>}
-      {(sceneType === 5 || sceneType === 6) && <PIV meters2pixels={meters2pixels} alignItems={alignItems} dimension={dimension} picture={picture} video={video} videoPosition={videoPosition} picturePosition={picturePosition} handlePositionChange={handlePositionChange} savePosition={savePosition} sceneType={sceneType}/>}
+      {(sceneType === 1) && <VIP meters2pixels={meters2pixels} alignItems={alignItems} dimension={dimension} picture={picture} video={video} videoPosition={videoPosition} picturePosition={picturePosition} handlePositionChange={handlePositionChange} savePositions={savePositions} sceneType={sceneType}/>}
+      {(sceneType === 2  || sceneType === 3) && <PAV meters2pixels={meters2pixels} alignItems={alignItems} dimension={dimension} picture={picture} video={video} videoPosition={videoPosition} picturePosition={picturePosition} handlePositionChange={handlePositionChange} savePositions={savePositions} sceneType={sceneType}/>}
+      {(sceneType === 5 || sceneType === 6) && <PIV meters2pixels={meters2pixels} alignItems={alignItems} dimension={dimension} picture={picture} video={video} videoPosition={videoPosition} picturePosition={picturePosition} handlePositionChange={handlePositionChange} savePosition={savePositions} sceneType={sceneType}/>}
       {(sceneType === 4) && <Image src={Portal} style={{maxWidth: '70vw', maxHeight: '30vh'}}/>}
       {(sceneType === 7) && <Editor3d  />}
     </Segment>
@@ -171,7 +171,7 @@ const VideoSize = ({ conf, handleVideoPosition, handleBlur, widthSettings, heigh
         </>
     );
 }
-const PictureSize = ({conf, handlePicturePosition, handleBlur, pwidthSettings, pheightSettings}) => {
+const PictureSize = ({picturePosition, handlePicturePosition, handleBlur, pwidthSettings, pheightSettings}) => {
   return (
     <>
     <Header inverted as="h6">Image Dimension in meters</Header>
@@ -185,9 +185,9 @@ const PictureSize = ({conf, handlePicturePosition, handleBlur, pwidthSettings, p
        name="pwidth"
        onChange={e => handlePicturePosition(e.currentTarget.value, 'width')}
        onBlur={e => handleBlur}
-       value={conf.width}
+       value={picturePosition.width}
        />
-     <Slider color="grey" name="pwidth" value={conf.width} primary settings={pwidthSettings} />
+     <Slider color="grey" name="pwidth" value={picturePosition.width} primary settings={pwidthSettings} />
        <Input
          fluid
          inverted
@@ -198,9 +198,9 @@ const PictureSize = ({conf, handlePicturePosition, handleBlur, pwidthSettings, p
          name="pheight"
          onChange={e => handlePicturePosition(e.currentTarget.value, 'height')}
          onBlur={e => handleBlur}
-         value={conf.height}
+         value={picturePosition.height}
          />
-       <Slider color="grey" name="pheight" value={conf.height} primary settings={pheightSettings} />
+       <Slider color="grey" name="pheight" value={picturePosition.height} primary settings={pheightSettings} />
        </>
   );
 }
@@ -423,7 +423,7 @@ const VideoPosition = ({videoPosition,handleVideoPosition,handleBlur, leftSettin
    </>
   );
 }
-const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration, open, handleBlur, leftSettings, rightSettings, topSettings, bottomSettings, pleftSettings, prightSettings, ptopSettings, pbottomSettings, handleVideoPosition, handlePicturePosition, switchVideoPosition, switchPicture, toggleArType, switchArType, saveVideoposition, pIndex, widthSettings, heightSettings, pwidthSettings, pheightSettings, xSettings, ySettings, zSettings, xpictureSettings, ypictureSettings, zpictureSettings}) => {
+const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration, open, handleBlur, leftSettings, rightSettings, topSettings, bottomSettings, pleftSettings, prightSettings, ptopSettings, pbottomSettings, handleVideoPosition, handlePicturePosition, switchVideoPosition, switchPicture, toggleArType, switchArType, savePositions, pIndex, widthSettings, heightSettings, pwidthSettings, pheightSettings, xSettings, ySettings, zSettings, xpictureSettings, ypictureSettings, zpictureSettings}) => {
   const positionOptions = [
     { key: 'left', value: 'left', text: 'Left' },
     { key: 'right', value: 'right', text: 'Right' },
@@ -517,7 +517,7 @@ const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration
        <Segment inverted style={{width:'100%',display: 'flex', justifyContent: 'space-around',flexWrap: 'wrap'}}>
          <div  style={{width:'25%'}}>
             <PictureSize
-              conf={picturePosition}
+              picturePosition={picturePosition}
               handlePicturePosition={handlePicturePosition}
               handleBlur={handleBlur}
               pwidthSettings={pwidthSettings}
@@ -573,7 +573,7 @@ const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration
        </Segment>
          <Segment inverted  style={{display: 'flex', justifyContent: 'space-between',flexWrap: 'no-wrap'}}>
            <Button secondary onClick={e=> toggleArType()}>close</Button>
-           <Button primary onClick={e=> saveVideoposition()}>Save</Button>
+           <Button primary onClick={(e) => savePositions()}>Save</Button>
          </Segment>
        </Segment>
    </>
@@ -589,8 +589,12 @@ class StageEditor extends Component {
 
     }
   }
+
+
   render() {
+
     let { animation, duration, open , stage, videoPosition, picturePosition, leftSettings, rightSettings, topSettings, bottomSettings,pleftSettings, prightSettings, ptopSettings, pbottomSettings, pIndex, widthSettings, heightSettings, pwidthSettings, pheightSettings, xSettings, ySettings, zSettings, xpictureSettings, ypictureSettings, zpictureSettings} = this.props;
+    console.log('picturePosition', picturePosition);
     return (
       <VideoConfig
         stage={stage}
@@ -612,7 +616,7 @@ class StageEditor extends Component {
         zpictureSettings={zpictureSettings}
         switchArType={this.props.switchArType}
         switchPicture={this.props.switchPicture}
-        saveVideoposition={this.props.saveVideoposition}
+        savePositions={this.props.savePositions}
         toggleArType={this.props.toggleArType}
         handlePicturePosition={this.props.handlePicturePosition}
         handleVideoPosition={this.props.handleVideoPosition}

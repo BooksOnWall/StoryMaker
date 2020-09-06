@@ -125,6 +125,11 @@ class stage extends Component {
           percent: null,
           type: 'Point',
           scene_type: 0,
+          scene_options: {
+            pictures: [],
+            videos: [],
+            scene3d: [],
+          },
           geometry: {
             "type": "Point",
             "coordinates": [-56.1670182, -34.9022229  ]
@@ -578,6 +583,7 @@ class stage extends Component {
       onZoneLeave: this.state.stage.onZoneLeave,
       type: this.state.stage.type,
       scene_type: this.state.stage.scene_type,
+      scene_options: this.state.stage.scene_options,
       description: this.state.stage.description,
       geometry: {
         "type": "Point",
@@ -1118,6 +1124,7 @@ class stage extends Component {
         onZoneLeave: this.state.stage.onZoneLeave,
         type: this.state.stage.type,
         scene_type: this.state.stage.scene_type,
+        scene_options: this.state.stage.scene_options,
         description: this.state.stage.description,
         geometry: this.state.stage.geometry,
         stageLocation: lngLat
@@ -1170,6 +1177,7 @@ class stage extends Component {
           onZoneLeave: this.state.stage.onZoneLeave,
           type: this.state.stage.type,
           scene_type: this.state.stage.scene_type,
+          scene_options: this.state.stage.scene_options,
           stageOrder: this.state.stage.stageOrder,
           description: this.state.stage.description,
           geometry: this.state.stage.geometry,
@@ -1194,8 +1202,16 @@ class stage extends Component {
       console.log(e.message);
     }
   }
-  updateStage = async (values) => {
+  updateStage = async () => {
     try {
+      // set StageEditor picture , video and 3d scene
+      const scene_options = {
+        // need to be improved with many pictures and many videos
+        pictures: [this.state.picturePosition],
+        videos: [this.state.videoPosition],
+        scene3d: [],
+      };
+
       await fetch(this.state.stagesURI +'/'+ this.state.ssid, {
         method: 'post',
         credentials: 'same-origin',
@@ -1218,6 +1234,7 @@ class stage extends Component {
           onZoneLeave: this.state.stage.onZoneLeave,
           type: this.state.stage.type,
           scene_type: this.state.stage.scene_type,
+          scene_options: scene_options,
           stageOrder: this.state.stage.stageOrder,
           description: this.state.stage.description,
           geometry: this.state.stage.geometry,
@@ -1231,7 +1248,7 @@ class stage extends Component {
       .then(data => {
           if(data) {
             // redirect to user edit page
-            this.setState({topSidebarVisible: false});
+            this.setState({topSidebarVisible: false, open: false});
             this.props.history.push('/stories/' + this.state.sid + '/stages/'+this.state.ssid );
           }
       })
@@ -1364,6 +1381,7 @@ class stage extends Component {
         onZoneLeave: this.state.stage.onZoneLeave,
         type: (value && name === 'type') ? value : this.state.stage.type,
         scene_type: (value && name === 'scene_type') ? value : this.state.stage.scene_type,
+        scene_options: this.state.stage.scene_options,
         geometry: this.state.stage.geometry,
         stageLocation: (e.target.name === 'stageLocation') ? e.target.value : this.state.stage.stageLocation
       }
@@ -1398,6 +1416,7 @@ class stage extends Component {
           onZoneLeave: this.state.stage.onZoneLeave,
           type: this.state.stage.type,
           scene_type: this.state.stage.scene_type,
+          scene_options: this.state.stage.scene_options,
           description: desc,
           geometry: this.state.stage.geometry,
           stageLocation: this.state.stage.stageLocation
@@ -1613,7 +1632,7 @@ class stage extends Component {
                     zpictureSettings={zpictureSettings}
                     switchArType={this.switchArType}
                     switchPicture={this.switchPicture}
-                    saveVideoposition={this.saveVideoposition}
+                    savePositions={this.updateStage}
                     toggleArType={this.toggleArType}
                     handlePicturePosition={this.handlePicturePosition}
                     handleVideoPosition={this.handleVideoPosition}
@@ -1731,6 +1750,7 @@ class stage extends Component {
                     onZoneLeave: this.state.stage.onZoneLeave,
                     type: this.state.stage.type,
                     scene_type: this.state.stage.scene_type,
+                    scene_options: this.state.stage.scene_options,
                     description: this.state.stage.description,
                     geometry: this.state.stage.geometry,
                     stageLocation: Array.from(this.state.stage.geometry.coordinates)
@@ -1803,7 +1823,7 @@ class stage extends Component {
       })
       .then(data => {
           if(data) {
-            console.log(data);
+            console.log('stage', data);
             this.setState({
               stage: {
                 id: data.id,
@@ -1822,13 +1842,19 @@ class stage extends Component {
                 onZoneLeave: data.onZoneLeave,
                 type: data.type,
                 scene_type: data.scene_type,
+                scene_options: data.scene_options,
                 description: data.description,
                 geometry: data.geometry,
                 stageLocation: Array.from(data.geometry.coordinates)
-              }
-            });
+              },
 
-            this.setState({initialSValues: data});
+            });
+            console.log(data.scene_options.pictures[0]);
+            this.setState({
+              initialSValues: data,
+              picturePosition: data.scene_options.pictures[this.state.pIndex],
+              videoPosition: data.scene_options.videos[0]
+            });
             this.setState({loading: false});
             this.mergeTasks('Images', data.images);
             this.mergeTasks('Pictures', data.pictures);
@@ -1838,7 +1864,7 @@ class stage extends Component {
             this.mergeTasks('onZoneEnter', data.onZoneEnter);
             this.mergeTasks('onPictureMatch', data.onPictureMatch);
             this.mergeTasks('onZoneLeave', data.onZoneLeave);
-            console.log(data.pictures);
+            console.log(this.state.picturePosition);
             return data;
           } else {
             console.log('No Data received from the server');
