@@ -99,7 +99,7 @@ const WallCanvas = ({dimension, picture, video, videoPosition, picturePosition, 
   justifyContent = (sceneType === 7) ? 'center' : justifyContent;
   alignItems = (sceneType === 7) ? 'stretch' : alignItems;
   return (
-    <Segment style={{justifyContent: justifyContent, alignItems: alignItems, minHeight: '35vh', display: display, flexWrap: 'wrap', padding: 0, backgroundImage: `url(${Wall})`}}>
+    <Segment style={{height: '45vh',justifyContent: justifyContent, alignItems: alignItems, minHeight: '35vh', display: display, flexWrap: 'wrap', padding: 0, backgroundImage: `url(${Wall})`}}>
       {(sceneType === 1) && <VIP meters2pixels={meters2pixels} alignItems={alignItems} dimension={dimension} picture={picture} video={video} videoPosition={videoPosition} picturePosition={picturePosition} handlePositionChange={handlePositionChange} savePosition={savePosition} sceneType={sceneType}/>}
       {(sceneType === 2  || sceneType === 3) && <PAV meters2pixels={meters2pixels} alignItems={alignItems} dimension={dimension} picture={picture} video={video} videoPosition={videoPosition} picturePosition={picturePosition} handlePositionChange={handlePositionChange} savePosition={savePosition} sceneType={sceneType}/>}
       {(sceneType === 5 || sceneType === 6) && <PIV meters2pixels={meters2pixels} alignItems={alignItems} dimension={dimension} picture={picture} video={video} videoPosition={videoPosition} picturePosition={picturePosition} handlePositionChange={handlePositionChange} savePosition={savePosition} sceneType={sceneType}/>}
@@ -417,10 +417,10 @@ const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration
        inverted
        id="videoConfig"
        style={{
-         width: '80vw',
-         height: 'auto',
-         maxHeight: '70vh',
-         left: '10%',
+         width: '90vw',
+         height: '85vh',
+         maxHeight: '90vh',
+         left: '5vw',
          padding: 0,
          overflowY: 'auto',
          position: 'fixed',

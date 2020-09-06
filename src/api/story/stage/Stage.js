@@ -1890,10 +1890,13 @@ class stage extends Component {
         </Container>
         <Container className="desc transparent" inverted fluid key="back" style={{ padding:0 }}>
           <Form fluid style={{display: 'inherit', width: '100%' }}>
-            <Label fluid as='a' color='blue' image>
-              <Image src={picture.src} />
-              {picture.name}
-            </Label>
+              {picture &&
+              <Label fluid as='a' color='blue' image>
+                <Image src={picture.src} />
+                {picture.name}
+              </Label>}
+
+
             <Divider />
             <Label fluid as='a' color='violet'>MimeType: {picture.mimetype}</Label>
             <Label fluid as='a' color='green' >Size: {humanFileSize(picture.size)}</Label>
