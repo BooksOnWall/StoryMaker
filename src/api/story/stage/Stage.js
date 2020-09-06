@@ -1852,8 +1852,32 @@ class stage extends Component {
 
             this.setState({
               initialSValues: data,
-              picturePosition: data.scene_options.pictures[this.state.pIndex],
-              videoPosition: data.scene_options.videos[0]
+              picturePosition: (data.scene_options && data.scene_options.pictures ) ? data.scene_options.pictures[this.state.pIndex] : {
+                width: 5,
+                height: 4,
+                x: 0,
+                y: 0,
+                z: 0,
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                rotateAngle: 0,
+                mode: 'left' // display video according to its position vs picture
+              },
+              videoPosition: (data.scene_options && data.scene_options.videos) ? data.scene_options.videos[0] : {
+                width: 5,
+                height: 4,
+                x: 0,
+                y: 0,
+                z: 0,
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                rotateAngle: 0,
+                mode: 'left' // display video according to its position vs picture
+              }
             });
             this.setState({loading: false});
             this.mergeTasks('Images', data.images);
