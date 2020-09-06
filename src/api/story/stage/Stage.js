@@ -1891,7 +1891,8 @@ class stage extends Component {
               },
 
             });
-            if(!data.scene_options) {
+            console.log('scene_options', data.scene_options);
+            if(!data.scene_options || data.scene_options === null ) {
               let pictures = data.pictures.map((p,i) => ({
                 width: 5,
                 height: 4,
@@ -1918,9 +1919,9 @@ class stage extends Component {
                 rotateAngle: 0,
                 mode: 'left' //
               }) : '');
-              let stage = this.state.stage;
-              stage.scene_options.pictures = pictures;
-              stage.scene_options.videos = videos;
+              let stage = data;
+              stage.scene_options['pictures'] = pictures;
+              stage.scene_options['videos'] = videos;
               this.setState({stage});
               data.scene_options = stage.scene_options;
             }
