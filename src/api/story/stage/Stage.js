@@ -1271,8 +1271,13 @@ class stage extends Component {
   }
   switchPicture = (e, value, name) => {
     // save picturePosition
-    let {picturePosition, stage, pIndex} = this.state;
+    let {picturePosition, videoPosition, stage, pIndex} = this.state;
+  
+    if (stage.scene_type === 3) {
+      picturePosition.videoPosition = videoPosition;
+    }
     stage.scene_options.pictures[pIndex] = picturePosition;
+
     const defaultPosition = (stage.scene_options.pictures[value]) ? stage.scene_options.pictures[value] : {
       width: 5,
       height: 4,
@@ -1286,10 +1291,24 @@ class stage extends Component {
       rotateAngle: 0,
       mode: 'left' // display video according to its position vs picture
     };
-    this.setState({pIndex: value, stage: stage, picturePosition: defaultPosition});
+    const vp = (stage.scene_type === 3) ? ((stage.scene_options.pictures[value] && stage.scene_options.pictures[value].videoPosition) ? stage.scene_options.pictures[value].videoPosition : {
+      width: 5,
+      height: 4,
+      x: 0,
+      y: 0,
+      z: 0,
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      rotateAngle: 0,
+      mode: 'bottom'
+    }) : videoPosition;
+    this.setState({pIndex: value, stage, picturePosition: defaultPosition, videoPosition: vp});
 
   }
   switchVideoPosition = (e, value, name) => {
+    console.log('mode', value);
     let {videoPosition} = this.state;
     videoPosition.left =0;
     videoPosition.right =0;
@@ -1298,7 +1317,7 @@ class stage extends Component {
     videoPosition.x =0;
     videoPosition.y =0;
     videoPosition.z =0;
-    videoPosition.mode= value;
+    videoPosition.mode = value;
     this.setState({videoPosition});
   }
   handleVideoPosition = (value, field ) => {

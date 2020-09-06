@@ -488,7 +488,7 @@ const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration
              type="select"
              onChange={(e, {value}) => switchVideoPosition(e, value, 'video_position')}
              onBlur={e => handleBlur}
-             defaultValue={videoPosition.mode}
+             defaultValue= {(stage.scene_type === 3 && picturePosition.videoPosition) ? picturePosition.videoPosition.mode : videoPosition.mode}
              />
          }
          <Select
@@ -516,7 +516,7 @@ const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration
            />
        }
 
-       <Segment inverted style={{zIndex: 1005, width:'100%',display: 'flex', justifyContent: 'space-around',flexWrap: 'wrap'}}>
+       <Segment inverted style={{zIndex: 2003, width:'100%',display: 'flex', justifyContent: 'space-around',flexWrap: 'wrap'}}>
          <div  style={{width:'25%'}}>
             <PictureSize
               picturePosition={picturePosition}
