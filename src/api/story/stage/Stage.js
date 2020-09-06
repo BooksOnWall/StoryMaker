@@ -1208,7 +1208,7 @@ class stage extends Component {
       // need to be modified for multi images purpose
       const {pIndex, stage} = this.state;
       let pictures = (stage.scene_options.pictures) ? this.state.stage.scene_options.pictures : [];
-      // if pictures is empty then we populate with default data 
+      // if pictures is empty then we populate with default data
       pictures[pIndex] = this.state.picturePosition;
       const scene_options = {
         // need to be improved with many pictures and many videos
@@ -1891,7 +1891,39 @@ class stage extends Component {
               },
 
             });
+            if(!data.scene_options) {
+              let pictures = data.pictures.map((p,i) => ({
+                width: 5,
+                height: 4,
+                x: 0,
+                y: 0,
+                z: 0,
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                rotateAngle: 0,
+                mode: 'left' //
+              }));
+              let videos = data.onPictureMatch.map((p,i) => (p.type === 'video') ? ({
 
+                width: 5,
+                height: 4,
+                x: 0,
+                y: 0,
+                z: 0,
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                rotateAngle: 0,
+                mode: 'left' //
+              }) : '');
+              let stage = this.state.stage;
+              stage.scene_options.pictures = pictures;
+              stage.scene_options.videos = videos;
+              this.setState({stage});
+            }
             this.setState({
               initialSValues: data,
               picturePosition: (data.scene_options && data.scene_options.pictures ) ? data.scene_options.pictures[this.state.pIndex] : {
