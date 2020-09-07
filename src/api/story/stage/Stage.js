@@ -1267,7 +1267,7 @@ class stage extends Component {
   }
   handleBlur = () =>  true;
   switchArType = (e, value, name) => {
-    if(value !== 1 && this.state.pictures.length > 0 && this.state.onPictureMatch.length > 0) this.setState({open: true});
+    if(value !== 1 && this.state.pictures && this.state.pictures.length > 0 && this.state.onPictureMatch.length > 0) this.setState({open: true});
     return this.handleChange(e, value, name);
   }
   switchPicture = (e, value, name) => {
