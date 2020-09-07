@@ -1650,7 +1650,7 @@ class stage extends Component {
                   defaultValue={values.scene_type}
                   />
                   {errors.scene_type && touched.scene_type && errors.scene_type}
-                  {(stage.pictures.length > 0) && <StageEditor
+                  {(stage.pictures && stage.pictures.length > 0) && <StageEditor
                     stage={stage}
                     videoPosition={videoPosition}
                     picturePosition={picturePosition}
