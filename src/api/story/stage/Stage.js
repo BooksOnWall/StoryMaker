@@ -1267,7 +1267,7 @@ class stage extends Component {
   }
   handleBlur = () =>  true;
   switchArType = (e, value, name) => {
-    if(value !== 1) this.setState({open: true});
+    if(value !== 1 && this.state.pictures.length > 0 && this.state.onPictureMatch.length > 0) this.setState({open: true});
     return this.handleChange(e, value, name);
   }
   switchPicture = (e, value, name) => {
@@ -1654,7 +1654,7 @@ class stage extends Component {
                   defaultValue={values.scene_type}
                   />
                   {errors.scene_type && touched.scene_type && errors.scene_type}
-                  <StageEditor
+                  {(stage.pictures.length > 0) && <StageEditor
                     stage={stage}
                     videoPosition={videoPosition}
                     picturePosition={picturePosition}
@@ -1688,7 +1688,7 @@ class stage extends Component {
                     prightSettings={prightSettings}
                     ptopSettings={ptopSettings}
                     pbottomSettings={pbottomSettings}
-                  />
+                  />}
 
 
                 <Divider />

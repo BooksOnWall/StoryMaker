@@ -492,8 +492,7 @@ const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration
              value= {(stage.scene_type === 3 && picturePosition.videoPosition) ? picturePosition.videoPosition.mode : videoPosition.mode}
              />
          }
-         {(picturePosition.videoPosition) ? console.log(picturePosition.videoPosition.mode) : ''}
-         <Select
+          <Select
            inverted
            transparent
            placeholder='Ar Type'
