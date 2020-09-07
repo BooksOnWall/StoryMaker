@@ -1579,7 +1579,7 @@ class stage extends Component {
                   defaultValue={values.adress}
                   />
                 {errors.adress && touched.adress && errors.adress}
-                <Divider />
+                {/* <Divider />
                   <Input
                   fluid
                   inverted
@@ -1593,6 +1593,7 @@ class stage extends Component {
                   defaultValue={values.dimension}
                   />
                 {errors.dimension && touched.dimension && errors.dimension}
+                */}
                 <Divider />
                   <Input
                   fluid
@@ -1860,7 +1861,7 @@ class stage extends Component {
       })
       .then(data => {
           if(data) {
-            console.log('stage', data);
+
             this.setState({
               stage: {
                 id: data.id,
@@ -1886,7 +1887,7 @@ class stage extends Component {
               },
 
             });
-            console.log('scene_options', data.scene_options);
+
             if(!data.scene_options || data.scene_options === null ) {
               let pictures = data.pictures.map((p,i) => ({
                 width: 5,
@@ -1901,7 +1902,7 @@ class stage extends Component {
                 rotateAngle: 0,
                 mode: 'left' //
               }));
-              console.log('pictures', pictures);
+
               let videos = data.onPictureMatch.map((p,i) => (p.type === 'video') ? ({
                 width: 5,
                 height: 4,
@@ -1915,14 +1916,14 @@ class stage extends Component {
                 rotateAngle: 0,
                 mode: 'left' //
               }) : '');
-              console.log('videos', videos);
+
               let stage = data;
               stage.scene_options = {};
               stage.scene_options['pictures'] = pictures;
               stage.scene_options['videos'] = videos;
               this.setState({stage});
               data.scene_options = stage.scene_options;
-              console.log(' stage.scene_options',  stage.scene_options);
+
             }
             this.setState({
               initialSValues: data,
