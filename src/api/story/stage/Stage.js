@@ -1889,7 +1889,7 @@ class stage extends Component {
             });
 
             if(!data.scene_options || data.scene_options === null ) {
-              let pictures = data.pictures.map((p,i) => ({
+              let pictures = (data.pictures && data.pictures.length > 0 ) ? data.pictures.map((p,i) => ({
                 width: 5,
                 height: 4,
                 x: 0,
@@ -1901,9 +1901,9 @@ class stage extends Component {
                 bottom: 0,
                 rotateAngle: 0,
                 mode: 'left' //
-              }));
+              })) : [];
 
-              let videos = data.onPictureMatch.map((p,i) => (p.type === 'video') ? ({
+              let videos = (data.onPictureMatch && data.onPictureMatch.length >0) ? data.onPictureMatch.map((p,i) => (p.type === 'video') ? ({
                 width: 5,
                 height: 4,
                 x: 0,
@@ -1915,7 +1915,7 @@ class stage extends Component {
                 bottom: 0,
                 rotateAngle: 0,
                 mode: 'left' //
-              }) : '');
+              }) : '') : [];
 
               let stage = data;
               stage.scene_options = {};
