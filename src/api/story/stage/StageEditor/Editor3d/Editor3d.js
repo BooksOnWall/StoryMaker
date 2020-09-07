@@ -1,4 +1,3 @@
-import ReactDOM from 'react-dom';
 import * as THREE from 'three';
 import React, { Suspense, Component, useEffect, useRef, useState } from 'react';
 import { Canvas, useLoader, useFrame } from 'react-three-fiber';

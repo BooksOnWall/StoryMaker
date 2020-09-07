@@ -773,7 +773,7 @@ class storyMap extends Component {
                  label={<FormattedMessage id="app.story.color1" defaultMessage={'Primary story color'}/>}
                  icon='eyedropper'
                  iconposition='right'
-                 placeholder={<FormattedMessage id="app.story.color1" defaultMessage={'Primary'}/>}
+                 placeholder={<FormattedMessage id="app.story.color1" />}
                  type="text"
                  name="color1"
                  onChange={handleChange}

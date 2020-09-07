@@ -215,7 +215,7 @@ handleOnResult = event => {
   render() {
     const {stages,mapStyle, searchResultLayer, interactiveLayerIds,  loading} = this.state;
     const viewport = (this.state.viewport) ? this.state.viewport : this.props.viewport;
-    const geometry = (this.state.geometry) ? this.state.geometry :this.props.geometry;
+  
     return (
       <Segment  className="storyMap" style={{padding:0}} >
         <Dimmer.Dimmable as={Segment} blurring dimmed={this.state.loading}>
@@ -244,7 +244,7 @@ handleOnResult = event => {
                   position="top-left"
                 />
                 <DeckGL {...viewport} layers={[searchResultLayer]} />
-          
+
                 {stages &&
                   stages.map((stage,i) => (
                     <Marker key='stage' longitude={parseFloat(stage.geometry.coordinates[0])} latitude={parseFloat(stage.geometry.coordinates[1])}>

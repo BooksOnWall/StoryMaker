@@ -41,7 +41,7 @@ const img = {
 function BannerPreviews(props) {
   const [files, setFiles] = useState([]);
 
-  const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
 
     accept: 'image/png',
     minSize: 0,

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Divider,  Icon,  Menu, Segment } from 'semantic-ui-react';
+import { Icon,  Menu, Segment } from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
 
 class LeftSlideMenu extends Component {
@@ -25,7 +25,6 @@ class LeftSlideMenu extends Component {
  }
 
   render() {
-    const { activeIndex } = this.state;
     return (
       <Segment  fluid='true' style={{ padding: '0'}} >
         <Menu className='bwSidebarMenu' size='huge' primary='true' inverted vertical fluid style={{padding: 0}}>

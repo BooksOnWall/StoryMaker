@@ -9,7 +9,6 @@ import {
   Dimmer,
   Confirm,
   Button,
-  Modal,
   Grid,
   Header,
 } from 'semantic-ui-react';
@@ -366,7 +365,7 @@ class DragDrop extends Component {
                     visible={this.props.sidebarVisible}
                     >
                     <Segment.Group horizontal  >
-                        <Segment inverted fluid style={{maxWidth: '20vh'}}>
+                        <Segment inverted  style={{maxWidth: '20vh'}}>
                             <Button.Group  vertical>
                               <Button secondary name="Pictures" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Pictures') ? true : false }><FormattedMessage id="app.story.board.pictures" defaultMessage={`Pictures`}/></Button>
                               <Button secondary name="Videos" onClick={this.props.handleStageStep} positive={(this.props.stageStep === 'Videos') ? true : false }>Videos</Button>

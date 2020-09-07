@@ -40,7 +40,7 @@ const img = {
 function GalleryPreviews(props) {
   const [files, setFiles] = useState([]);
 
-  const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
 
     accept: 'image/*',
     minSize: 0,

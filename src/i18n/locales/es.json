@@ -1,170 +1,186 @@
 {
-	"app": {
-		"artist": {
-			"artistSteps": {
-				"artist": {
-					"bio": "Bio",
-					"edit": "Editar Artista",
-					"images": "Imágenes"
-				}
-			},
-			"delete": "Eliminar Artista",
-			"title": {
-				"create": "Crear Artista",
-				"edit": "Editar Artista"
-			}
-		},
-		"artists": {
-			"add": "Agregar Artista",
-			"title": "Artistas"
-		},
-		"home": {
-			"logged": "Ya estas adentro!",
-			"subtitle": "Este es el inicio",
-			"title": "BooksonWall",
-			"unlogged": "Debes ingresar con tu usuario y clave"
-		},
-		"stage": {
-			"storystage": {
-				"drag": "Arrastrar",
-				"export": "Exportar",
-				"import": "Importar",
-				"name": "Nombre",
-				"order": "Orden",
-				"type": "Tipo"
-			}
-		},
-		"story": {
-			"board": {
-				"description": "Descripción",
-				"destroy": "Destruir",
-				"dragimage": "Arrastra tu imagen aquí",
-				"export": "Exportar",
-				"images": "Imágenes",
-				"import": "Importar",
-				"location": "Locación",
-				"next": "Siguiente",
-				"onpicturematch": "Al Reconocer la imagen",
-				"onzoneenter": "Entrar a la Zona",
-				"onzoneleave": "Salir de la Zona",
-				"photo": "Foto",
-				"pictures": "Imagen RA",
-				"preview": "Previsualización",
-				"reset": "Resetear",
-				"stage": "Escena"
-			},
-			"create": "Crear cuento",
-			"delete": "Eliminar cuento",
-			"edit": "Editar cuento",
-			"map": {
-				"getmapinfo": "Obteniendo info",
-				"stagemap": {
-					"getmapinfo": "Obteniendo info"
-				}
-			},
-			"stage": {
-				"delete": "Eliminar escena",
-				"stageSteps": {
-					"augmentedReality": "Realidad aumentada",
-					"geoposition": "Localización",
-					"stage": "Escena"
-				},
-				"stageaudios": {
-					"files": "Has clic acá o arrastra un archivo para subirlo!"
-				},
-				"stageimages": {
-					"files": "Has clic acá o arrastra un archivo para subirlo!"
-				},
-				"stagepicture": {
-					"files": "Has clic acá o arrastra un archivo para subirlo!"
-				},
-				"stagevideos": {
-					"files": "Has clic acá o arrastra un archivo para subirlo!"
-				},
-				"title": {
-					"create": "Cuento: Crear escena",
-					"edit": "Cuento: Editar escena"
-				}
-			},
-			"stories": {
-				"addstory": "Añadir Cuento",
-				"getuser": "Obteniendo info",
-				"table": {
-					"artist": "Autor",
-					"city": "Ciudad",
-					"create": "Creado",
-					"id": "ID",
-					"state": "País",
-					"title": "Título",
-					"updated": "Última actualización"
-				}
-			}
-		},
-		"user": {
-			"create": "Crear usuario",
-			"created": "Creado",
-			"delete": "Borrar cuenta de usuario",
-			"edit": "Editar usuario",
-			"invalidEmail": "Email invalido",
-			"loading": "Obtener información del usuario",
-			"locale": "Selecciona tu idioma",
-			"login": "Acceder",
-			"logout": "Cerrar sesión",
-			"passwdtitle": "Cambiar Clave",
-			"profile": {
-				"myprofile": "Mi perfil",
-				"update": "Actualizar",
-				"userpreferences": "Preferencias"
-			},
-			"required": "Requerido",
-			"singup": "Acceder",
-			"theme": "Selecciona un tema",
-			"update": "Actualizar",
-			"user": {
-				"useravatar": {
-					"cancel": "Cancelar",
-					"file": "Escoge un archivo",
-					"height": "Altura del avatar",
-					"preview": {
-						"": "Previsualización"
-					},
-					"rotate": "Rotar",
-					"save": "Guardar",
-					"scale": "Redondear bordes",
-					"width": "Ancho del avatar",
-					"zoom": "Zoom"
-				}
-			},
-			"useredit": {
-				"email": "Correo",
-				"name": "Nombre",
-				"password": "Clave",
-				"repeatpassword": "Repetir clave"
-			},
-			"usersteps": {
-				"steps": {
-					"user": {
-						"avatar": "Avatar",
-						"password": "Clave",
-						"preferences": "Preferencias",
-						"title": "Editar usuario"
-					}
-				}
-			},
-			"wrongpassword": "Clave Invalida, repetir."
-		},
-		"userPrefs": {
-			"loading": "Obtener información del usuario"
-		},
-		"users": {
-			"active": "Activo",
-			"adduser": "Añadir usuario",
-			"created": "Creado",
-			"email": "Email",
-			"id": "Id",
-			"loading": "Obtener información del usuario",
-			"name": "Nombre",
-			"updated": "Actualizado"
-		}
-	}
+  "user": {
+    "logout": ""
+  },
+  "app": {
+    "users": {
+      "id": "Id",
+      "name": "Nombre",
+      "email": "Email",
+      "active": "Activo",
+      "adduser": "Añadir usuario",
+      "created": "Creado",
+      "loading": "Obtener información del usuario",
+      "updated": "Actualizado"
+    },
+    "user": {
+      "edit": "Editar usuario",
+      "login": "Acceder",
+      "theme": "Selecciona un tema",
+      "create": "Crear usuario",
+      "delete": "Borrar cuenta de usuario",
+      "locale": "Selecciona tu idioma",
+      "singup": "Acceder",
+      "update": "Actualizar",
+      "created": "Creado",
+      "loading": "Obtener información del usuario",
+      "required": "Requerido",
+      "passwdtitle": "Cambiar Clave",
+      "invalidEmail": "Email invalido",
+      "useredit": {
+        "name": "Nombre",
+        "email": "Correo",
+        "password": "Clave",
+        "repeatpassword": "Repetir clave"
+      },
+      "wrongpassword": "Clave Invalida, repetir.",
+      "profile": {
+        "update": "Actualizar",
+        "myprofile": "Mi perfil",
+        "userpreferences": "Preferencias"
+      },
+      "user": {
+        "useravatar": {
+          "file": "Escoge un archivo",
+          "save": "Guardar",
+          "zoom": "Zoom",
+          "width": "Ancho del avatar",
+          "cancel": "Cancelar",
+          "height": "Altura del avatar",
+          "rotate": "Rotar",
+          "scale": {
+            "x": "",
+            "y": ""
+          },
+          "preview": {
+            "": "Previsualización"
+          }
+        }
+      },
+      "usersteps": {
+        "steps": {
+          "user": {
+            "title": "Editar usuario",
+            "avatar": "Avatar",
+            "password": "Clave",
+            "preferences": "Preferencias"
+          }
+        }
+      }
+    },
+    "home": {
+      "title": "BooksonWall",
+      "logged": "Ya estas adentro!",
+      "subtitle": "Este es el inicio",
+      "unlogged": "Debes ingresar con tu usuario y clave"
+    },
+    "story": {
+      "city": "",
+      "edit": "Editar cuento",
+      "state": "",
+      "title": "",
+      "banner": "",
+      "color1": "",
+      "color2": "",
+      "color3": "",
+      "create": "Crear cuento",
+      "delete": "Eliminar cuento",
+      "gallery": "",
+      "board": {
+        "edit": "",
+        "next": "Siguiente",
+        "reset": "Resetear",
+        "stage": "Escena",
+        "export": "Exportar",
+        "images": "Imágenes",
+        "import": "Importar",
+        "destroy": "Destruir",
+        "preview": "Previsualización",
+        "pictures": "Imagen RA",
+        "onzoneenter": "Entrar a la Zona",
+        "onzoneleave": "Salir de la Zona",
+        "onpicturematch": "Al Reconocer la imagen"
+      },
+      "map": {
+        "preview": "",
+        "savetheme": "",
+        "getmapinfo": "Obteniendo info",
+        "savemappref": "",
+        "stagemap": {
+          "getmapinfo": "Obteniendo info"
+        }
+      },
+      "stage": {
+        "delete": "Eliminar escena",
+        "title": {
+          "edit": "Cuento: Editar escena",
+          "create": "Cuento: Crear escena"
+        },
+        "stageSteps": {
+          "stage": "Escena",
+          "geoposition": "Localización",
+          "augmentedReality": "Realidad aumentada"
+        },
+        "stageaudios": {
+          "files": "Has clic acá o arrastra un archivo para subirlo!"
+        },
+        "stageimages": {
+          "files": "Has clic acá o arrastra un archivo para subirlo!"
+        },
+        "stagevideos": {
+          "files": "Has clic acá o arrastra un archivo para subirlo!"
+        },
+        "stagepicture": {
+          "files": "Has clic acá o arrastra un archivo para subirlo!"
+        }
+      },
+      "stories": {
+        "getuser": "Obteniendo info",
+        "table": {
+          "id": "ID",
+          "city": "Ciudad",
+          "state": "País",
+          "title": "Título",
+          "artist": "Autor",
+          "create": "Creado",
+          "updated": "Última actualización",
+          "progress": ""
+        }
+      }
+    },
+    "artist": {
+      "name": "",
+      "email": "",
+      "delete": "Eliminar Artista",
+      "title": {
+        "edit": "Editar Artista",
+        "create": "Crear Artista"
+      },
+      "artistSteps": {
+        "artist": {
+          "bio": "Bio",
+          "edit": "Editar Artista",
+          "images": "Imágenes"
+        }
+      }
+    },
+    "artists": {
+      "title": "Artistas"
+    },
+    "userPrefs": {
+      "loading": "Obtener información del usuario"
+    },
+    "stage": {
+      "storystage": {
+        "drag": "Arrastrar",
+        "name": "Nombre",
+        "type": "Tipo",
+        "order": "Orden",
+        "export": "Exportar",
+        "import": "Importar",
+        "addstage": "",
+        "progress": ""
+      }
+    }
+  }
 }

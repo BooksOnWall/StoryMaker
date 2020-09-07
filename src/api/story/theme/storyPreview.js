@@ -1,17 +1,14 @@
 import React, {Component} from 'react';
 import {
-  Segment,
   Form,
-  Image,
   Header,
-  List,
   Icon,
   Modal,
   Select,
   Rail,
   Button,
 } from 'semantic-ui-react';
-import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
+import ReactHtmlParser from 'react-html-parser';
 import CustomIcon from "../../../utils/Icon";
 
 export default class storyPreview extends Component {

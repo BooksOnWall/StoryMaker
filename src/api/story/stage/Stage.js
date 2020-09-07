@@ -22,7 +22,6 @@ import {
   Dimmer,
   Loader,
   Divider,
-  TransitionablePortal,
 } from 'semantic-ui-react';
 import {  FormattedMessage } from 'react-intl';
 import { Formik } from 'formik';
@@ -1623,11 +1622,9 @@ class stage extends Component {
                   />
                 {errors.stagelocation && touched.stagelocation && errors.stagelocation}
                 <Divider />
-                <Label size='large' className='label inverted' fluid >Stage type</Label>
+                <Label size='large' className='label inverted' >Stage type</Label>
                 <Select
                   fluid
-                  inverted
-                  transparent
                   placeholder='Stage type'
                   label='Stage type'
                   type="select"
@@ -1639,11 +1636,9 @@ class stage extends Component {
                   />
                 {errors.stagetype && touched.stagetype && errors.stagetype}
                 <Divider />
-                <Label size='large' className='label inverted' fluid >Ar Scene type</Label>
+                <Label size='large' className='label inverted'  >Ar Scene type</Label>
                 <Select
                   fluid
-                  inverted
-                  transparent
                   placeholder='Ar Scene type'
                   label='Ar Scene type'
                   type="select"
@@ -1985,14 +1980,14 @@ class stage extends Component {
 
   setStageDescription = () => (
     <ReactCardFlip id="stageDesc" style={{backgroundColor: 'transparent', height: 'auto', width: '100%'}}  isFlipped={this.state.descLock} flipDirection="vertical">
-          <Container className="desc" inverted fluid key="front" style={{ padding:0 }}>
+          <Container className="desc" fluid key="front" style={{ padding:0 }}>
             <Form>
             {this.state.stage.description}
             </Form>
           </Container>
-          <Container className="desc transparent" inverted fluid key="back" style={{ padding:0 }}>
+          <Container className="desc transparent"  fluid key="back" style={{ padding:0 }}>
 
-            <Form fluid style={{display: 'inherit', width: '100%' }}>
+            <Form style={{display: 'inherit', width: '100%' }}>
               <TextArea
                 rows={2}
                 id="StageDesc"
