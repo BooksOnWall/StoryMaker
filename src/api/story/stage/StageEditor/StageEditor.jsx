@@ -3,6 +3,7 @@ import {
   Select,
   Input,
   Button,
+  Icon,
   Header,
   Segment,
   Image,
@@ -49,7 +50,6 @@ const PIV = ({dimension, picture, video, videoPosition, picturePosition, handleP
   };
   const pstyle = {
       position: 'absolute',
-      opacity: .75,
       alignSelf: alignItems,
       width: pictureRatio.width,
       height: pictureRatio.height,
@@ -77,7 +77,9 @@ const PIV = ({dimension, picture, video, videoPosition, picturePosition, handleP
             <Image style={pstyle} src={picture.src} />
           </div>
         }
-        <video  src={video.src} width={pictureRatio.width} height={pictureRatio.height}  style={{maxHeight: '45vh'}}/>
+        <video  style={{width: pictureRatio.width, height:pictureRatio.height,  opacity: '.55', maxHeight: '45vh', zIndex: 1000}}>
+          <source src={video.src} type="video/mp4" />
+        </video>
     </div>
     }
     </>);
@@ -99,7 +101,7 @@ const VIP = ({dimension, picture, video, videoPosition, picturePosition, handleP
       </>
   );
 }
-const PAV = ({dimension, picture, video, videoPosition, picturePosition, handlePositionChange, savePositions, sceneType, meters2pixels, alignItems}) => {
+const PAV = ({picture, video, videoPosition, picturePosition, handlePositionChange, savePositions, sceneType, meters2pixels, alignItems}) => {
   return (<>
     {picture && (videoPosition.mode === "left" || videoPosition.mode === "top")  &&
       <div style={{zIndex: 1001, width: meters2pixels(picturePosition.width), height: meters2pixels(picturePosition.height), alignSelf: alignItems, marginTop: picturePosition.bottom, marginBottom: picturePosition.top}}>
@@ -114,7 +116,7 @@ const PAV = ({dimension, picture, video, videoPosition, picturePosition, handleP
       </div>
 
     }
-    {dimension && picture && (videoPosition.mode === "right" || videoPosition.mode === "bottom" ) &&
+    {picture && (videoPosition.mode === "right" || videoPosition.mode === "bottom" ) &&
       <div style={{zIndex: 1001, width: meters2pixels(picturePosition.width),height: meters2pixels(picturePosition.height), alignSelf: alignItems, marginTop: picturePosition.bottom, marginBottom: picturePosition.top}} className="draggable">
 
         <Image style={{width: meters2pixels(picturePosition.width),height: meters2pixels(picturePosition.height)}} src={picture.src} />
@@ -424,7 +426,7 @@ const VideoPosition = ({videoPosition,handleVideoPosition,handleBlur, leftSettin
    </>
   );
 }
-const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration, open, handleBlur, leftSettings, rightSettings, topSettings, bottomSettings, pleftSettings, prightSettings, ptopSettings, pbottomSettings, handleVideoPosition, handlePicturePosition, switchVideoPosition, switchPicture, toggleArType, switchArType, savePositions, pIndex, widthSettings, heightSettings, pwidthSettings, pheightSettings, xSettings, ySettings, zSettings, xpictureSettings, ypictureSettings, zpictureSettings}) => {
+const VideoConfig = ({resetSceneOptions,stage, videoPosition, picturePosition, animation, duration, open, handleBlur, leftSettings, rightSettings, topSettings, bottomSettings, pleftSettings, prightSettings, ptopSettings, pbottomSettings, handleVideoPosition, handlePicturePosition, switchVideoPosition, switchPicture, toggleArType, switchArType, savePositions, pIndex, widthSettings, heightSettings, pwidthSettings, pheightSettings, xSettings, ySettings, zSettings, xpictureSettings, ypictureSettings, zpictureSettings}) => {
   const positionOptions = [
     { key: 'left', value: 'left', text: 'Left' },
     { key: 'right', value: 'right', text: 'Right' },
@@ -460,12 +462,12 @@ const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration
        }}
      >
        <Header as="h5" style={{display: 'flex', justifyContent: 'space-between',flexWrap: 'no-wrap', padding: '1vh', paddingBottom: 0}}>Stage configuration editor
-
+         <Button inverted basic compact onClick={e => resetSceneOptions()} ><Icon name="erase" />Reset</Button>
 
          {pictures && (stage.scene_type === 3  || stage.scene_type === 6 ) &&
            <Select
              inverted
-             transparent
+
              placeholder='Picture'
              options={pictures}
              name="pictures"
@@ -480,7 +482,7 @@ const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration
          {(stage.scene_type === 2  || stage.scene_type === 3) &&
            <Select
              inverted
-             transparent
+
              placeholder='Video position'
              options={positionOptions}
              name="videoPosition"
@@ -494,7 +496,7 @@ const VideoConfig = ({stage, videoPosition, picturePosition, animation, duration
          }
           <Select
            inverted
-           transparent
+
            placeholder='Ar Type'
            options={sceneOptions}
            name="arType"
@@ -613,6 +615,7 @@ class StageEditor extends Component {
         xSettings={xSettings}
         ySettings={ySettings}
         zSettings={zSettings}
+        resetSceneOptions={this.props.resetSceneOptions}
         xpictureSettings={xpictureSettings}
         ypictureSettings={ypictureSettings}
         zpictureSettings={zpictureSettings}

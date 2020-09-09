@@ -155,6 +155,7 @@ class stage extends Component {
         stageAudios: [],
         videoDefaultSize: '350',
         videoPosition: {
+          name: null,
           width: 5,
           height: 4,
           x: 0,
@@ -168,6 +169,7 @@ class stage extends Component {
           mode: 'left' // display video according to its position vs picture
         },
         picturePosition: {
+          name: null,
           width: 5,
           height: 4,
           x: 0,
@@ -394,6 +396,7 @@ class stage extends Component {
 
   }
   handleObjectDelete = async (e, t) => {
+    let {stage, videoPosition, picturePosition, pIndex} = this.state;
     try {
       let tasks= this.state.tasks;
       //close confirm modal
@@ -418,6 +421,14 @@ class stage extends Component {
           tasks = tasks.filter(function( obj ) {
             return obj.name !== t.name;
           });
+          // clean scene_options has to be cleaned fom server side to remove the image
+          // console.log(t.category);
+          // console.log(t.name);
+          // if(t.category === 'pictures') {
+          //   stage.scene_options.pictures = stage.scene_options.pictures.filter(function( obj ) {
+          //     return obj.name !== t.name;
+          //   });
+          // }
           this.setState({tasks: tasks});
           // reload stage
           return this.getStage();
@@ -592,11 +603,10 @@ class stage extends Component {
     }});
   }
   toggleObjectDimmed = (ev, id) => {
-    console.log(id);
+
     let ntasks = [];
     ntasks = this.state.tasks.filter((task) => {
       task.loading = (task.name === id) ? !task.loading : task.loading;
-
       return task;
     });
     console.log(ntasks);
@@ -604,7 +614,6 @@ class stage extends Component {
   }
   onDragOver = (ev) => {
       ev.preventDefault();
-
   }
   changePropFromObject = async (obj, prop, propValue) => {
     try {
@@ -806,7 +815,7 @@ class stage extends Component {
                         Size:
                         <Label.Detail>{humanFileSize(t.size)}</Label.Detail>
                       </Label>
-                      <Label as='a'  className="inverted">Url:
+                      <Label className="inverted">Url:
                         <Label.Detail><Button href={t.src}>Source</Button></Label.Detail>
                       </Label>
                     </Label.Group>
@@ -900,7 +909,7 @@ class stage extends Component {
                 <Dimmer active={t.loading} onClickOutside={this.handleHide} />
                 <ReactCardFlip style={{height: 'auto', backgroundColor: 'transparent' , width: 'inherit'}} isFlipped={t.isFlipped} flipDirection="vertical">
                   <Card className="fluid" style={{ backgroundColor: 'transparent' }} key="front">
-                  <Label  className="inverted" fluid>
+                  <Label  className="inverted" >
                     {t.name} <span className="right floated">{humanFileSize(t.size)}</span>
                   </Label>
                       <ReactPlayer
@@ -1275,10 +1284,13 @@ class stage extends Component {
 
     if (stage.scene_type === 3) {
       picturePosition.videoPosition = videoPosition;
+    } else {
+      picturePosition.videoPosition=null;
     }
     stage.scene_options.pictures[pIndex] = picturePosition;
 
     const defaultPosition = (stage.scene_options.pictures[value]) ? stage.scene_options.pictures[value] : {
+      name: stage.pictures[value].name,
       width: 5,
       height: 4,
       x: 0,
@@ -1292,6 +1304,7 @@ class stage extends Component {
       mode: 'left' // display video according to its position vs picture
     };
     const vp = (stage.scene_type === 3) ? ((stage.scene_options.pictures[value] && stage.scene_options.pictures[value].videoPosition) ? stage.scene_options.pictures[value].videoPosition : {
+      name: stage.videos[0].name,
       width: 5,
       height: 4,
       x: 0,
@@ -1309,7 +1322,6 @@ class stage extends Component {
 
   }
   switchVideoPosition = (e, value, name) => {
-    console.log('mode', value);
     let {videoPosition} = this.state;
     videoPosition.left =0;
     videoPosition.right =0;
@@ -1665,6 +1677,7 @@ class stage extends Component {
                     xSettings={xSettings}
                     ySettings={ySettings}
                     zSettings={zSettings}
+                    resetSceneOptions={this.resetSceneOptions}
                     xpictureSettings={xpictureSettings}
                     ypictureSettings={ypictureSettings}
                     zpictureSettings={zpictureSettings}
@@ -1890,6 +1903,7 @@ class stage extends Component {
 
             if(!data.scene_options || data.scene_options === null ) {
               let pictures = (data.pictures && data.pictures.length > 0 ) ? data.pictures.map((p,i) => ({
+                name: data.pictures[i].name,
                 width: 5,
                 height: 4,
                 x: 0,
@@ -1904,6 +1918,7 @@ class stage extends Component {
               })) : [];
 
               let videos = (data.onPictureMatch && data.onPictureMatch.length >0) ? data.onPictureMatch.map((p,i) => (p.type === 'video') ? ({
+                name: data.onPictureMatch[i].name,
                 width: 5,
                 height: 4,
                 x: 0,
@@ -1928,6 +1943,7 @@ class stage extends Component {
             this.setState({
               initialSValues: data,
               picturePosition: (data.scene_options && data.scene_options.pictures ) ? data.scene_options.pictures[this.state.pIndex] : {
+                name: data.pictures[this.state.pIndex].name,
                 width: 5,
                 height: 4,
                 x: 0,
@@ -1941,6 +1957,7 @@ class stage extends Component {
                 mode: 'left' // display video according to its position vs picture
               },
               videoPosition: (data.scene_options && data.scene_options.videos) ? data.scene_options.videos[0] : {
+                name: data.onPictureMatch[0].name,
                 width: 5,
                 height: 4,
                 x: 0,
@@ -1954,6 +1971,7 @@ class stage extends Component {
                 mode: 'left' // display video according to its position vs picture
               }
             });
+            console.log(data.scene_options);
             this.setState({loading: false});
             this.mergeTasks('Images', data.images);
             this.mergeTasks('Pictures', data.pictures);
@@ -1978,7 +1996,43 @@ class stage extends Component {
       console.log(e.message);
     }
   }
-
+  resetSceneOptions = () => {
+    let {pIndex, stage, videoPosition, picturePosition} = this.state;
+    picturePosition = {
+      name: stage.pictures[pIndex].name,
+      width: 5,
+      height: 4,
+      x: 0,
+      y: 0,
+      z: 0,
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      rotateAngle: 0,
+      mode: 'left'
+    }
+    videoPosition =  {
+      name: stage.onPictureMatch[0].name,
+      width: 5,
+      height: 4,
+      x: 0,
+      y: 0,
+      z: 0,
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      rotateAngle: 0,
+      mode: 'left'
+    };
+    stage.scene_options = {};
+    stage.scene_options.pictures = [];
+    stage.scene_options.videos = [];
+    stage.scene_options.scene3d = [];
+    console.log(stage.scene_options);
+    this.setState({stage, scene_options: stage.scene_options, videoPosition, picturePosition});
+  }
   setStageDescription = () => (
     <ReactCardFlip id="stageDesc" style={{backgroundColor: 'transparent', height: 'auto', width: '100%'}}  isFlipped={this.state.descLock} flipDirection="vertical">
           <Container className="desc" fluid key="front" style={{ padding:0 }}>

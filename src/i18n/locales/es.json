@@ -1,6 +1,6 @@
 {
   "user": {
-    "logout": ""
+    "logout": "Salir"
   },
   "app": {
     "users": {
@@ -49,8 +49,8 @@
           "height": "Altura del avatar",
           "rotate": "Rotar",
           "scale": {
-            "x": "",
-            "y": ""
+            "x": "x",
+            "y": "y"
           },
           "preview": {
             "": "Previsualización"
@@ -75,19 +75,19 @@
       "unlogged": "Debes ingresar con tu usuario y clave"
     },
     "story": {
-      "city": "",
+      "city": "Ciudad",
       "edit": "Editar cuento",
-      "state": "",
-      "title": "",
-      "banner": "",
-      "color1": "",
-      "color2": "",
-      "color3": "",
+      "state": "Estado",
+      "title": "Titulo",
+      "banner": "Banner",
+      "color1": "color1",
+      "color2": "color2",
+      "color3": "color3",
       "create": "Crear cuento",
       "delete": "Eliminar cuento",
-      "gallery": "",
+      "gallery": "Galleria",
       "board": {
-        "edit": "",
+        "edit": "Editar",
         "next": "Siguiente",
         "reset": "Resetear",
         "stage": "Escena",
@@ -102,10 +102,10 @@
         "onpicturematch": "Al Reconocer la imagen"
       },
       "map": {
-        "preview": "",
-        "savetheme": "",
+        "preview": "Prevista",
+        "savetheme": "Salvar theme",
         "getmapinfo": "Obteniendo info",
-        "savemappref": "",
+        "savemappref": "Salvar carta",
         "stagemap": {
           "getmapinfo": "Obteniendo info"
         }
@@ -144,13 +144,13 @@
           "artist": "Autor",
           "create": "Creado",
           "updated": "Última actualización",
-          "progress": ""
+          "progress": "Progress"
         }
       }
     },
     "artist": {
-      "name": "",
-      "email": "",
+      "name": "Nombre",
+      "email": "Email",
       "delete": "Eliminar Artista",
       "title": {
         "edit": "Editar Artista",
@@ -178,8 +178,8 @@
         "order": "Orden",
         "export": "Exportar",
         "import": "Importar",
-        "addstage": "",
-        "progress": ""
+        "addstage": "Anadir",
+        "progress": "Progress"
       }
     }
   }

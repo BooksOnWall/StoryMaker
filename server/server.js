@@ -848,6 +848,16 @@ const deleteStage = async (id, sid) => {
   rimraf.sync("./public/stories/" + sid + "/stages/" + id);
   return res;
 };
+const updateSceneOptionsFromStage = async ({ssid,sid , field, fieldValue}) => {
+    let list = await Stages.findAll({ where: {id : ssid, sid: sid }}).then(function(result){
+      result = result[0].get('scene_options');
+      result[field]= fieldValue;
+    });
+    return await Stages.update(
+      { 'scene_options': list},
+      { where: {id : ssid, sid: sid }}
+    );
+};
 const updateFieldFromStage = async ({ ssid, sid, field, fieldValue }) => {
   return await Stages.update(
     { [field]: fieldValue},
@@ -868,10 +878,26 @@ const removeObjectFromField = async ({ssid, sid, category, obj}) => {
       });
       return result;
     });
+
     let field = category;
     let fieldValue = list;
     //update category in db
     await updateFieldFromStage({ssid, sid, field, fieldValue });
+    // clean videoPosition and picturePosition
+    if(category === 'pictures') {
+      let pictures = await Stages.findAll({ where: {id : ssid, sid: sid }}).then(function(result){
+        //extract objects array list for this category
+
+        result = result[0].get('scene_options')[category].filter(function( pobj ) {
+          // remove object by name from array
+          pobj = (pobj.name) ? pobj : pobj[obj.type];
+          return pobj.name !== objName;
+        });
+        return result;
+      });
+      await updateSceneOptionsFromStage({ssid, sid, category, pictures });
+    }
+
   } catch(e) {
     console.log(e.message);
   }
