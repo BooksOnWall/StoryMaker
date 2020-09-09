@@ -73,13 +73,15 @@ const PIV = ({dimension, picture, video, videoPosition, picturePosition, handleP
     {video &&
       <div id="videoRefPIV" style={{zIndex: 999, maxWidth: '45vh', maxHeight: '45vh'}}>
         {picture  &&
-          <div style={{position: 'absolute', width: percentUnit(picturePosition.width, 'width')+'%', height: percentUnit(picturePosition.height, 'height')+'%', alignSelf: alignItems, display: 'flex', flexDirection: 'column', justifyContent: 'center',  maxWidth: '45vh'}}>
+          <div style={{osition: 'absolute', width: percentUnit(picturePosition.width, 'width')+'%', height: percentUnit(picturePosition.height, 'height')+'%', alignSelf: alignItems, display: 'flex', flexDirection: 'column', justifyContent: 'center',  maxWidth: '45vh'}}>
             <Image style={pstyle} src={picture.src} />
           </div>
         }
+
         <video  style={{width: pictureRatio.width, height:pictureRatio.height,  opacity: '.55', maxHeight: '45vh', zIndex: 1000}}>
           <source src={video.src} type="video/mp4" />
         </video>
+
     </div>
     }
     </>);
