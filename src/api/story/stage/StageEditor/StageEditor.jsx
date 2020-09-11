@@ -114,7 +114,7 @@ const PAV = ({picture, video, videoPosition, picturePosition, handlePositionChan
     {video &&
       <div style={{zIndex: 1002, width: meters2pixels(videoPosition.width), height: meters2pixels(videoPosition.height),  marginLeft: meters2pixels(videoPosition.left), marginTop: meters2pixels(videoPosition.bottom), marginRight: meters2pixels(videoPosition.right), marginBottom: meters2pixels(videoPosition.top)}} className="draggable">
 
-        <video src={video.src} width={meters2pixels(picturePosition.width)} height={meters2pixels(picturePosition.height)}  />
+        <video src={video.src} style={{width: '100%', height: '100%' , objectFit: 'cover'}}  />
       </div>
 
     }
