@@ -348,10 +348,10 @@ const getStories = async () => {
         {as: 'aa', model: Artists},
         {as: 'stages', model: Stages}
       ],
-      order: [
-            ['id', 'DESC'],
-            ['name', 'ASC'],
-      ],
+      // order: [
+      //       ['id', 'DESC'],
+      //       ['name', 'ASC'],
+      // ],
       nested: true })
       .then(stories => {
         if(stories && stories.length > 0) {
