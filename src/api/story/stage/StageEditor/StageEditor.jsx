@@ -97,8 +97,7 @@ const VIP = ({dimension, picture, video, videoPosition, picturePosition, handleP
     <>
       <Image src={picture.src} style={{position: 'absolute', maxHeight: '45vh', minHeight: '45vh', minWidth : ratioIze('45vh', picturePosition.width, picturePosition.height ), zIndex: 998, width: meters2pixels(picturePosition.width), height: meters2pixels(picturePosition.height) }}/>
       <div style={{ maxHeight: '45vh', zIndex: 999, width: ratioIze('45vh', picturePosition.width, picturePosition.height ), height: '45vh' }}>
-          <video src={video.src} width={meters2pixels(picturePosition.width)} height={meters2pixels(picturePosition.height)}  />
-
+          <video src={video.src} style={{opacity: .85,width: '100%', height: '100%' , objectFit: 'cover'}}   />
       </div>
       </>
   );
@@ -114,7 +113,7 @@ const PAV = ({picture, video, videoPosition, picturePosition, handlePositionChan
     {video &&
       <div style={{zIndex: 1002, width: meters2pixels(videoPosition.width), height: meters2pixels(videoPosition.height),  marginLeft: meters2pixels(videoPosition.left), marginTop: meters2pixels(videoPosition.bottom), marginRight: meters2pixels(videoPosition.right), marginBottom: meters2pixels(videoPosition.top)}} className="draggable">
 
-        <video src={video.src} style={{opacity: .85, width: '100%', height: '100%' , objectFit: 'fill'}}  />
+        <video src={video.src} style={{ width: meters2pixels(videoPosition.width), height: meters2pixels(videoPosition.height)}}  />
       </div>
 
     }
