@@ -97,7 +97,7 @@ const VIP = ({dimension, picture, video, videoPosition, picturePosition, handleP
     <>
       <Image src={picture.src} style={{position: 'absolute', maxHeight: '45vh', minHeight: '45vh', minWidth : ratioIze('45vh', picturePosition.width, picturePosition.height ), zIndex: 998, width: meters2pixels(picturePosition.width), height: meters2pixels(picturePosition.height) }}/>
       <div style={{ maxHeight: '45vh', zIndex: 999, width: ratioIze('45vh', picturePosition.width, picturePosition.height ), height: '45vh' }}>
-          <video src={video.src} style={{opacity: .85,width: '100%', height: '100%' , objectFit: 'cover'}}   />
+          <video src={video.src} style={{opacity: .5,width: '100%', height: '100%' , objectFit: 'cover'}}   />
       </div>
       </>
   );
