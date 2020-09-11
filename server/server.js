@@ -348,6 +348,10 @@ const getStories = async () => {
         {as: 'aa', model: Artists},
         {as: 'stages', model: Stages}
       ],
+      order: [
+            ['id', 'DESC'],
+            ['name', 'ASC'],
+      ],
       nested: true })
       .then(stories => {
         if(stories && stories.length > 0) {
@@ -356,6 +360,7 @@ const getStories = async () => {
             let err = 0;
             let total = 0;
             let stages = (story.stages) ? story.stages : null;
+            stages.sort((a, b) => (a.stageOrder > b.stageOrder) ? 1 : -1);
             //stages = stages.map(stage => stage.get({raw: true}));
             story = story.get({raw: true});
             story["stages"] = stages ;
