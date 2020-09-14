@@ -902,6 +902,20 @@ const removeObjectFromField = async ({ssid, sid, category, obj}) => {
       });
       await updateSceneOptionsFromStage({ssid, sid, category, pictures });
     }
+    if(category === 'onPictureMatch') {
+      let videos = await Stages.findAll({ where: {id : ssid, sid: sid }}).then(function(result){
+        //extract objects array list for this category
+        let category = 'videos';
+        result = result[0].get('scene_options')[category].filter(function( pobj ) {
+          // remove object by name from array
+          pobj = (pobj.name) ? pobj : pobj[obj.type];
+          return pobj.name !== objName;
+        });
+        return result;
+      });
+
+      await updateSceneOptionsFromStage({ssid, sid,category , videos });
+    }
 
   } catch(e) {
     console.log(e.message);
