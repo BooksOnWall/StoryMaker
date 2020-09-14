@@ -1899,9 +1899,11 @@ app.post('/stories/:storyId/stages/:stageId/uploadPictures', function (req, res,
               return image;
           })).then(images => {
               if(images && images.length > 0 ) {
+
                 updateFieldFromStage({ssid: ssid, sid: sid, field: 'pictures', fieldValue: images}).then(stage =>
                    res.json({ stage, pictures: images, msg: 'Stage updated successfully' })
                 );
+
               } else {
                 res.json({msg: 'Error image(s) are rejected'});
               }

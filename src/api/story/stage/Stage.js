@@ -1900,8 +1900,8 @@ class stage extends Component {
               },
 
             });
-
-            if(!data.scene_options || data.scene_options === null ) {
+            console.log(data.scene_options);
+            if(!data.scene_options || data.scene_options === null || (data.scene_options.pictures && data.scene_options.pictures.length === 0) || (data.scene_options.videos && data.scene_options.videos.length === 0) ) {
               let pictures = (data.pictures && data.pictures.length > 0 ) ? data.pictures.map((p,i) => ({
                 name: data.pictures[i].name,
                 width: 5,
@@ -1938,11 +1938,11 @@ class stage extends Component {
               stage.scene_options['videos'] = videos;
               this.setState({stage});
               data.scene_options = stage.scene_options;
-
             }
+            console.log(data.scene_options);
             this.setState({
               initialSValues: data,
-              picturePosition: (data.scene_options && data.scene_options.pictures ) ? data.scene_options.pictures[this.state.pIndex] : {
+              picturePosition: (data.scene_options && data.scene_options.pictures && data.scene_options.pictures.length === data.pictures.length ) ? data.scene_options.pictures[this.state.pIndex] : {
                 name: data.pictures[this.state.pIndex].name,
                 width: 5,
                 height: 4,
@@ -1956,7 +1956,7 @@ class stage extends Component {
                 rotateAngle: 0,
                 mode: 'left' // display video according to its position vs picture
               },
-              videoPosition: (data.scene_options && data.scene_options.videos) ? data.scene_options.videos[0] : {
+              videoPosition: (data.scene_options && data.scene_options.videos && data.scene_options.videos.length > 0  ) ? data.scene_options.videos[0] : {
                 name: data.onPictureMatch[0].name,
                 width: 5,
                 height: 4,
@@ -1971,7 +1971,7 @@ class stage extends Component {
                 mode: 'left' // display video according to its position vs picture
               }
             });
-            console.log(data.scene_options);
+
             this.setState({loading: false});
             this.mergeTasks('Images', data.images);
             this.mergeTasks('Pictures', data.pictures);
