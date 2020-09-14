@@ -165,7 +165,7 @@ class Stories extends Component {
                       <Table.Cell>{aa.name}</Table.Cell>
                       <Table.Cell>{state}</Table.Cell>
                       <Table.Cell>{city}</Table.Cell>
-                      <Table.Cell>{(active === 1) ? 'yes' : 'no'}</Table.Cell>
+                      <Table.Cell>{(active === true) ? 'yes' : 'no'}</Table.Cell>
                       <Table.Cell><Progress  percent={percent}  progress active indicating inverted /></Table.Cell>
                       <Table.Cell>{Moment(createdAt).format('LL')}</Table.Cell>
                       <Table.Cell>{Moment(updatedAt).format('LL')}</Table.Cell>
