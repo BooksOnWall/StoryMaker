@@ -376,6 +376,36 @@ const getStories = async () => {
     console.log(e.message);
   }
 }
+const getStoriesPublished = async () => {
+  try  {
+    return await Stories.findAll({
+      include: [
+        {as: 'aa', model: Artists},
+        {as: 'stages', model: Stages}
+      ],
+      where: {
+        active: 1
+      },
+      // order: [
+      //       ['id', 'DESC'],
+      //       ['name', 'ASC'],
+      // ],
+      nested: true })
+      .then(stories => {
+        if(stories && stories.length > 0) {
+          stories.map((story, index) => {
+            let stages = (story.stages) ? story.stages : null;
+            stages.sort((a, b) => (a.stageOrder > b.stageOrder) ? 1 : -1);
+            story = story.get({raw: true});
+            story["stages"] = stages ;
+            return story
+          });
+        return stories;
+      }});
+  } catch(e) {
+    console.log(e.message);
+  }
+}
 
 const createStory = async ({ title, state, city, sinopsys, credits, artist, geometry, viewport, active }) => {
   try {
@@ -1569,6 +1599,17 @@ app.get('/stories', async (req, res, next) => {
   //
   try {
     let stories = await getStories();
+    return res.json({ stories: stories, msg: 'Stories listed'});
+  } catch(e) {
+    console.log(e.message);
+  }
+});
+app.get('/storiesPublished', async (req, res, next) => {
+  // getStories
+  // func linked with artist and stages
+  //
+  try {
+    let stories = await getStoriesPublished();
     return res.json({ stories: stories, msg: 'Stories listed'});
   } catch(e) {
     console.log(e.message);
