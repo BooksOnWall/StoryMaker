@@ -1065,10 +1065,10 @@ if(hasbot) {
      bot.options.username = bot_informations.username;
      console.log("Server has initialized bot nickname. Nick: "+bot_informations.username);
      bot.telegram.sendMessage(chat_id,"BooksOnWall Server Started and Telegram Bot initialized. Nick: "+bot_informations.username+"", Extra.markdown());
-     bot.telegram.sendPhoto(chat_id, { url: 'https://api.booksonwall.art/patricie.jpg' });
-     bot.command('local', (ctx) => ctx.replyWithPhoto({ source: '/patricie.jpg' }))
-bot.command('stream', (ctx) => ctx.replyWithPhoto({ source: fs.createReadStream('/patricie.jpg') }))
-bot.command('buffer', (ctx) => ctx.replyWithPhoto({ source: fs.readFileSync('/patricie.jpg') }))
+     bot.telegram.sendPhoto(chat_id, { url: 'https://api.booksonwall.art/assets/patricie.jpg' });
+     bot.command('local', (ctx) => ctx.replyWithPhoto({ source: '/assets/patricie.jpg' }))
+bot.command('stream', (ctx) => ctx.replyWithPhoto({ source: fs.createReadStream('/assets/patricie.jpg') }))
+bot.command('buffer', (ctx) => ctx.replyWithPhoto({ source: fs.readFileSync('/assets/patricie.jpg') }))
  }).catch(function(err){
      console.log(err);
  });
