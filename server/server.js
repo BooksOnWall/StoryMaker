@@ -1064,7 +1064,8 @@ if(hasbot) {
   bot.telegram.getMe().then((bot_informations) => {
      bot.options.username = bot_informations.username;
      console.log("Server has initialized bot nickname. Nick: "+bot_informations.username);
-     bot.telegram.sendMessage(chat_id,"BooksOnWall Server Started and Telegram Bot initialized. Nick: "+bot_informations.username);
+     bot.telegram.sendMessage(chat_id,"BooksOnWall Server Started and Telegram Bot initialized. Nick: "+bot_informations.username+"", Extra.markdown());
+     bot.telegram.sendPhoto(chat_id, { source: '/patricie.jpg' });
      bot.command('local', (ctx) => ctx.replyWithPhoto({ source: '/patricie.jpg' }))
 bot.command('stream', (ctx) => ctx.replyWithPhoto({ source: fs.createReadStream('/patricie.jpg') }))
 bot.command('buffer', (ctx) => ctx.replyWithPhoto({ source: fs.readFileSync('/patricie.jpg') }))
@@ -1083,7 +1084,7 @@ bot.command('buffer', (ctx) => ctx.replyWithPhoto({ source: fs.readFileSync('/pa
   bot.start((ctx) => ctx.reply('Welcome'));
   bot.command('greeter', (ctx) => ctx.scene.enter('greeter'));
   bot.command('echo', (ctx) => ctx.scene.enter('echo'));
-  bot.on('message', (ctx) => ctx.reply('Try /echo or /greeter'));
+
   const commands = `You can control me by sending these commands:
 
   *From the channel*
