@@ -584,6 +584,9 @@ class storyStages extends Component {
                         <FormattedMessage id="app.stage.storystage.type" defaultMessage={`Type`} />
                       </Table.HeaderCell>
                       <Table.HeaderCell   >
+                        ID
+                      </Table.HeaderCell>
+                      <Table.HeaderCell   >
                         <FormattedMessage id="app.stage.storystage.drag" defaultMessage={`Drag`} />
                       </Table.HeaderCell>
                     </Table.Row>
@@ -595,6 +598,7 @@ class storyStages extends Component {
                         <Table.Cell>{name}</Table.Cell>
                         <Table.Cell><Progress percent={percent} progress active indicating inverted /></Table.Cell>
                         <Table.Cell>{type}</Table.Cell>
+                        <Table.Cell>{id}</Table.Cell>
                         <Table.Cell>{<a className="drag-handle" href="void(0)"><Icon name='sort'inverted color='black' /></a>}</Table.Cell>
                       </Table.Row>
                       ))}
