@@ -1860,89 +1860,95 @@ class stage extends Component {
       console.log(e.message);
     }
   }
-  setObjectsPosition = (stage) => {
-    let vids = (stage.onPictureMatch && stage.onPictureMatch.length > 0) ? stage.onPictureMatch.map((p,i) => (p.type === 'videos')): [];
-    console.log(vids);
-    console.log('scene_option from db',stage.scene_options);
-    // check if we have the same number of pictures than scene_options.pictures
-    if(!stage.pictures || stage.pictures.length === 0 ) {
-      stage.scene_options.pictures = [];
-    }
-    if(!vids || vids.length === 0 || stage.scene_options.videos.length !== stage.videos.length) {
-      stage.scene_options.videos = [];
+  setObjectsPosition = async (stage) => {
+    try {
+      console.log(stage.onPictureMatch);
+      let vids = (stage.onPictureMatch && stage.onPictureMatch.length > 0) ? stage.onPictureMatch.map((p,i) => (p.type === 'videos')): '';
+      console.log(vids);
+      console.log('scene_option from db',stage.scene_options);
+      // check if we have the same number of pictures than scene_options.pictures
+      if(!stage.pictures || stage.pictures.length === 0 ) {
+        stage.scene_options.pictures = [];
+      }
+      if(!vids || vids.length === 0 || stage.scene_options.videos.length !== stage.videos.length) {
+        stage.scene_options.videos = [];
+      }
+
+      if(!stage.scene_options || stage.scene_options === null ) {
+        let pictures = (stage.pictures && stage.pictures.length > 0 ) ? stageOptions.pictures.map((p,i) => ({
+          name: (p && p.name) ? p.name : null,
+          width: 5,
+          height: 4,
+          x: 0,
+          y: 0,
+          z: 0,
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          rotateAngle: 0,
+          mode: 'left' //
+        })) : [];
+        let videos=[];
+        if (vids) {
+          videos = vids.map((v,i) => (
+            {
+              name: (v && v.name) ? v.name: null ,
+              width: 5,
+              height: 4,
+              x: 0,
+              y: 0,
+              z: 0,
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              rotateAngle: 0,
+              mode: 'left' //
+            }
+          ));
+        }
+        console.log('pictures',pictures);
+        console.log('videos',videos);
+        stage.scene_options['pictures'] = pictures;
+        stage.scene_options['videos'] = videos;
+        this.setState({stage});
+      }
+      console.log('scene_options updated', stage.scene_options);
+      this.setState({
+        picturePosition: (stage.scene_options && stage.scene_options.pictures && stage.scene_options.pictures.length > 0 ) ? stage.scene_options.pictures[this.state.pIndex] : {
+          name: null,
+          width: 5,
+          height: 4,
+          x: 0,
+          y: 0,
+          z: 0,
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          rotateAngle: 0,
+          mode: 'left'
+        },
+        videoPosition: (stage.scene_options && stage.scene_options.videos && stage.scene_options.videos.length > 0  ) ? stage.scene_options.videos[0] : {
+          name: null,
+          width: 5,
+          height: 4,
+          x: 0,
+          y: 0,
+          z: 0,
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          rotateAngle: 0,
+          mode: 'left'
+        }
+      });
+    } catch(e) {
+      console.log(e);
     }
 
-    if(!stage.scene_options || stage.scene_options === null ) {
-      let pictures = (stage.pictures && stage.pictures.length > 0 ) ? stageOptions.pictures.map((p,i) => ({
-        name: (p && p.name) ? p.name : null,
-        width: 5,
-        height: 4,
-        x: 0,
-        y: 0,
-        z: 0,
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        rotateAngle: 0,
-        mode: 'left' //
-      })) : [];
-      let videos=[];
-      if (vids) {
-        videos = vids.map((v,i) => (
-          {
-            name: (v && v.name) ? v.name: null ,
-            width: 5,
-            height: 4,
-            x: 0,
-            y: 0,
-            z: 0,
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            rotateAngle: 0,
-            mode: 'left' //
-          }
-        ));
-      }
-      console.log('pictures',pictures);
-      console.log('videos',videos);
-      stage.scene_options['pictures'] = pictures;
-      stage.scene_options['videos'] = videos;
-      this.setState({stage});
-    }
-    console.log('scene_options updated', stage.scene_options);
-    this.setState({
-      picturePosition: (stage.scene_options && stage.scene_options.pictures && stage.scene_options.pictures.length > 0 ) ? stage.scene_options.pictures[this.state.pIndex] : {
-        name: null,
-        width: 5,
-        height: 4,
-        x: 0,
-        y: 0,
-        z: 0,
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        rotateAngle: 0,
-        mode: 'left'
-      },
-      videoPosition: (stage.scene_options && stage.scene_options.videos && stage.scene_options.videos.length > 0  ) ? stage.scene_options.videos[0] : {
-        name: null,
-        width: 5,
-        height: 4,
-        x: 0,
-        y: 0,
-        z: 0,
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        rotateAngle: 0,
-        mode: 'left'
-      }
-    });
   }
   getStage = async () => {
     this.setState({loading: true});
