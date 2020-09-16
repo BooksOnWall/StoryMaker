@@ -10,6 +10,8 @@ var morgan = require('morgan');
 const Extra = require('telegraf/extra');
 const session = require('telegraf/session');
 const { reply } = Telegraf;
+const Stage = require('telegraf/stage');
+const Scene = require('telegraf/scenes/base');
 const Tail = require('nodejs-tail');
 var sizeOf = require('image-size');
 var zip = require('express-easy-zip');
@@ -1033,21 +1035,42 @@ if(hasbot) {
   console.log('Books On Wall server stareted and Telegram Bot activated', hasbot);
   // set telegram bot y tetunnel before starting express
   //
+  const { enter, leave } = Stage
+
+  // Greeter scene
+  const greeterScene = new Scene('greeter')
+  greeterScene.enter((ctx) => ctx.reply('Hi'))
+  greeterScene.leave((ctx) => ctx.reply('Bye'))
+  greeterScene.hears('hi', enter('greeter'))
+  greeterScene.on('message', (ctx) => ctx.replyWithMarkdown('Send `hi`'))
+
+  // Echo scene
+  const echoScene = new Scene('echo')
+  echoScene.enter((ctx) => ctx.reply('echo scene'))
+  echoScene.leave((ctx) => ctx.reply('exiting echo scene'))
+  echoScene.command('back', leave())
+  echoScene.on('text', (ctx) => ctx.reply(ctx.message.text))
+  echoScene.on('message', (ctx) => ctx.reply('Only text messages please'))
 
   const sayYoMiddleware = ({ reply }, next) => reply('holla').then(() => next());
   const chat_id = '-389718132';
   const bot = new Telegraf(process.env.BOT_TOKEN);
-  // We can get bot nickname from bot informations. This is particularly useful for groups.
-  bot.telegram.getMe().then((bot_informations) => {
-      bot.options.username = bot_informations.username;
-      console.log("Server has initialized bot nickname. Nick: "+bot_informations.username);
-      bot.telegram.sendMessage(chat_id,"BooksOnWall Server Started and Telegram Bot initialized. Nick: "+bot_informations.username);
-  }).catch(function(err){
-      console.log(err);
-  });
+  const stage = new Stage([greeterScene, echoScene], { ttl: 10 });
+
+
   // // Register session middleware
   bot.use(session());
-
+  bot.use(stage.middleware());
+  bot.telegram.getMe().then((bot_informations) => {
+     bot.options.username = bot_informations.username;
+     console.log("Server has initialized bot nickname. Nick: "+bot_informations.username);
+     bot.telegram.sendMessage(chat_id,"BooksOnWall Server Started and Telegram Bot initialized. Nick: "+bot_informations.username);
+     bot.command('local', (ctx) => ctx.replyWithPhoto({ source: '/patricie.jpg' }))
+bot.command('stream', (ctx) => ctx.replyWithPhoto({ source: fs.createReadStream('/patricie.jpg') }))
+bot.command('buffer', (ctx) => ctx.replyWithPhoto({ source: fs.readFileSync('/patricie.jpg') }))
+ }).catch(function(err){
+     console.log(err);
+ });
   // Register logger middleware
   bot.use((ctx, next) => {
     const start = new Date()
@@ -1058,7 +1081,9 @@ if(hasbot) {
     });
   });
   bot.start((ctx) => ctx.reply('Welcome'));
-
+  bot.command('greeter', (ctx) => ctx.scene.enter('greeter'));
+  bot.command('echo', (ctx) => ctx.scene.enter('echo'));
+  bot.on('message', (ctx) => ctx.reply('Try /echo or /greeter'));
   const commands = `You can control me by sending these commands:
 
   *From the channel*
