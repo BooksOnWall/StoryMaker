@@ -1861,7 +1861,7 @@ class stage extends Component {
     }
   }
   setObjectsPosition = (stage) => {
-    let vids = stage.onPictureMatch.map((p,i) => (p.type === 'videos'));
+    let vids = (stage.onPictureMatch && stage.onPictureMatch.length > 0) ? stage.onPictureMatch.map((p,i) => (p.type === 'videos')): [];
     console.log(vids);
     console.log('scene_option from db',stage.scene_options);
     // check if we have the same number of pictures than scene_options.pictures
