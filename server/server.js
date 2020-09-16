@@ -1121,17 +1121,17 @@ bot.command('buffer', (ctx) => ctx.replyWithPhoto({ source: fs.readFileSync('/pa
   bot.command('album', (ctx) => {
     ctx.replyWithMediaGroup([
       {
-        media: 'AgADBAADXME4GxQXZAc6zcjjVhXkE9FAuxkABAIQ3xv265UJKGYEAAEC',
+        media: { source: '/patricie.jpg' },
         caption: 'From file_id',
         type: 'photo'
       },
       {
-        media: 'https://picsum.photos/200/500/',
+        media:  { source: fs.createReadStream('/patricie.jpg')},
         caption: 'From URL',
         type: 'photo'
       },
       {
-        media: { url: 'https://picsum.photos/200/300/?random' },
+        media: { source: fs.readFileSync('/patricie.jpg') },
         caption: 'From URL',
         type: 'photo'
       }
