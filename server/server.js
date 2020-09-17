@@ -1305,6 +1305,7 @@ app.get('/assets/stories/:storyId/design/banner/:name', function (req, res, next
 
   var options = {
     root: path ,
+    path: path ,
     dotfiles: 'deny',
     headers: {
       'x-timestamp': Date.now(),
