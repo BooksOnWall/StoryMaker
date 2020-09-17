@@ -1233,7 +1233,7 @@ app.get('/zip/:sid', function(req, res){
     });
 
 });
-app.get('/assets/:filename', function(req, res, next){
+app.get('/assets/bot/:filename', function(req, res, next){
   var fileName = req.params.name;
   var path = 'public/bot/';
   var options = {
