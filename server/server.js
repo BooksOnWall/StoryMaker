@@ -1064,7 +1064,7 @@ if(hasbot) {
   bot.telegram.getMe().then((bot_informations) => {
      bot.options.username = bot_informations.username;
      console.log("Server has initialized bot nickname. Nick: "+bot_informations.username);
-     bot.telegram.sendMessage(chat_id,"BooksOnWall Server Started and Telegram Bot initialized. Nick: "+bot_informations.username+"", Extra.markdown());
+     bot.telegram.sendMessage(chat_id,"BooksOnWall Server Started and Telegram Bot initialized. Nick: "+bot_informations.username+"![patricie](https://api.booksonwall.art/assets/bot/patricie.jpg)", Extra.markdown());
      bot.telegram.sendPhoto(chat_id, { url: 'https://api.booksonwall.art/assets/patricie.jpg' });
      bot.command('local', (ctx) => ctx.replyWithPhoto({ source: '/assets/patricie.jpg' }))
 bot.command('stream', (ctx) => ctx.replyWithPhoto({ source: fs.createReadStream('/assets/patricie.jpg') }))
