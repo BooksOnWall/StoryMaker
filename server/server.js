@@ -1064,11 +1064,11 @@ if(hasbot) {
   bot.telegram.getMe().then((bot_informations) => {
      bot.options.username = bot_informations.username;
      console.log("Server has initialized bot nickname. Nick: "+bot_informations.username);
-     bot.telegram.sendMessage(chat_id,"BooksOnWall Server Started and Telegram Bot initialized. Nick: "+bot_informations.username+"![patricie](https://api.booksonwall.art/assets/bot/patricie.jpg)", Extra.markdown());
-     bot.telegram.sendPhoto(chat_id, { url: 'https://api.booksonwall.art/assets/patricie.jpg' });
-     bot.command('local', (ctx) => ctx.replyWithPhoto({ source: '/assets/patricie.jpg' }))
-bot.command('stream', (ctx) => ctx.replyWithPhoto({ source: fs.createReadStream('/assets/patricie.jpg') }))
-bot.command('buffer', (ctx) => ctx.replyWithPhoto({ source: fs.readFileSync('/assets/patricie.jpg') }))
+     bot.telegram.sendMessage(chat_id,"BooksOnWall Server Started and Telegram Bot initialized. Nick: "+bot_informations.username+"", Extra.markdown());
+     //bot.telegram.sendPhoto(chat_id, { url: 'https://api.booksonwall.art/assets/bot/patricie.jpg' });
+     //bot.command('local', (ctx) => ctx.replyWithPhoto({ source: '/assets/bot/patricie.jpg' }))
+     //bot.command('stream', (ctx) => ctx.replyWithPhoto({ source: fs.createReadStream('/assets/bot/patricie.jpg') }))
+     //bot.command('buffer', (ctx) => ctx.replyWithPhoto({ source: fs.readFileSync('/assets/bot/patricie.jpg') }))
  }).catch(function(err){
      console.log(err);
  });
@@ -1122,17 +1122,17 @@ bot.command('buffer', (ctx) => ctx.replyWithPhoto({ source: fs.readFileSync('/as
   bot.command('album', (ctx) => {
     ctx.replyWithMediaGroup([
       {
-        media: { source: '/patricie.jpg' },
+        media: { source : 'public/bot/patricie.jpg' },
         caption: 'From file_id',
         type: 'photo'
       },
       {
-        media:  { source: fs.createReadStream('/patricie.jpg')},
+        media:  { source: fs.createReadStream('public/bot/patricie.jpg')},
         caption: 'From URL',
         type: 'photo'
       },
       {
-        media: { source: fs.readFileSync('/patricie.jpg') },
+        media: { source: fs.readFileSync('public/bot/patricie.jpg') },
         caption: 'From URL',
         type: 'photo'
       }
@@ -1235,8 +1235,8 @@ app.get('/zip/:sid', function(req, res){
 });
 app.get('/assets/bot/:filename', function(req, res, next){
 
-  var fileName = req.params.name;
-  var path = './public/bot/';
+  var fileName = req.params.filename;
+  var path = 'public/bot/';
   var options = {
     root: path ,
     dotfiles: 'deny',
@@ -1245,7 +1245,6 @@ app.get('/assets/bot/:filename', function(req, res, next){
       'x-sent': true
     }
   };
-  console.log(options);
   res.sendFile(fileName, options, function (err) {
     if (err) {
       next(err);
@@ -1305,7 +1304,6 @@ app.get('/assets/stories/:storyId/design/banner/:name', function (req, res, next
 
   var options = {
     root: path ,
-    path: path ,
     dotfiles: 'deny',
     headers: {
       'x-timestamp': Date.now(),
