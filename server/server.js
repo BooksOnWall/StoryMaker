@@ -1234,6 +1234,7 @@ app.get('/zip/:sid', function(req, res){
 
 });
 app.get('/assets/bot/:filename', function(req, res, next){
+
   var fileName = req.params.name;
   var path = 'public/bot/';
   var options = {
@@ -1243,7 +1244,8 @@ app.get('/assets/bot/:filename', function(req, res, next){
       'x-timestamp': Date.now(),
       'x-sent': true
     }
-  }
+  };
+  console.log(options);
   res.sendFile(fileName, options, function (err) {
     if (err) {
       next(err);
