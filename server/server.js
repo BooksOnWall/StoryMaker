@@ -1239,6 +1239,7 @@ app.get('/assets/bot/:filename', function(req, res, next){
   var path = 'public/bot/';
   var options = {
     root: path ,
+    path: path ,
     dotfiles: 'deny',
     headers: {
       'x-timestamp': Date.now(),
