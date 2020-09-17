@@ -1236,10 +1236,9 @@ app.get('/zip/:sid', function(req, res){
 app.get('/assets/bot/:filename', function(req, res, next){
 
   var fileName = req.params.name;
-  var path = 'public/bot/';
+  var path = './public/bot/';
   var options = {
     root: path ,
-    path: path ,
     dotfiles: 'deny',
     headers: {
       'x-timestamp': Date.now(),
@@ -1247,7 +1246,7 @@ app.get('/assets/bot/:filename', function(req, res, next){
     }
   };
   console.log(options);
-  res.sendFile(path, fileName, options, function (err) {
+  res.sendFile(fileName, options, function (err) {
     if (err) {
       next(err);
     } else {
