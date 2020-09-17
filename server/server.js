@@ -1233,7 +1233,25 @@ app.get('/zip/:sid', function(req, res){
     });
 
 });
-
+app.get('/assets/:filename', function(req, res){
+  var fileName = req.params.name;
+  var path = 'public/';
+  var options = {
+    root: path ,
+    dotfiles: 'deny',
+    headers: {
+      'x-timestamp': Date.now(),
+      'x-sent': true
+    }
+  }
+  res.sendFile(fileName, options, function (err) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log('Sent:', fileName)
+    }
+  })
+});
 app.get('/assets/users/:userId/:name', function (req, res, next) {
   var uid = req.params.userId;
   var fileName = req.params.name;
