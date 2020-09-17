@@ -1235,7 +1235,7 @@ app.get('/zip/:sid', function(req, res){
 });
 app.get('/assets/:filename', function(req, res, next){
   var fileName = req.params.name;
-  var path = 'public/';
+  var path = 'public/bot/';
   var options = {
     root: path ,
     dotfiles: 'deny',
