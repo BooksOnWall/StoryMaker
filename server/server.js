@@ -1233,7 +1233,7 @@ app.get('/zip/:sid', function(req, res){
     });
 
 });
-app.get('/assets/:filename', function(req, res){
+app.get('/assets/:filename', function(req, res, next){
   var fileName = req.params.name;
   var path = 'public/';
   var options = {
@@ -1246,7 +1246,7 @@ app.get('/assets/:filename', function(req, res){
   }
   res.sendFile(fileName, options, function (err) {
     if (err) {
-      console.log(err);
+      next(err);
     } else {
       console.log('Sent:', fileName)
     }
