@@ -1247,7 +1247,7 @@ app.get('/assets/bot/:filename', function(req, res, next){
     }
   };
   console.log(options);
-  res.sendFile(fileName, options, function (err) {
+  res.sendFile(path, fileName, options, function (err) {
     if (err) {
       next(err);
     } else {
