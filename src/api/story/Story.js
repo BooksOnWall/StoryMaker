@@ -69,6 +69,7 @@ class Story extends Component {
         bearing: 0,
       } : {},
       geometry: null,
+      openPublish: false,
       tesselate: null,
       stages: null,
       editorState: EditorState.createEmpty(),
@@ -85,6 +86,7 @@ class Story extends Component {
     };
 
     this.getStory = this.getStory.bind(this);
+    this.publish = this.publish.bind(this);
     this.updateStory = this.updateStory.bind(this);
     this.onSinoStateChange = this.onSinoStateChange.bind(this);
     this.onCreditStateChange = this.onCreditStateChange.bind(this);
@@ -97,6 +99,10 @@ class Story extends Component {
   show = (e) => {
     e.preventDefault();
     this.setState({ open: true })
+  }
+  showPublish = (e) => {
+    e.preventDefault();
+    this.setState({ openPublish: true })
   }
   setStoryLocation = (location) => {
     const geometry = {
@@ -125,6 +131,7 @@ class Story extends Component {
   }
   handleConfirm = () => this.setState({ open: false })
   handleCancel = () => this.setState({ open: false })
+  handleCancelPublish = () => this.setState({ openPublish: false })
   handleChange(e) {
     const target = e.target;
     let value = (target.type === 'checkbox') ? target.checked : target.value;
@@ -355,6 +362,33 @@ class Story extends Component {
       console.log(e.message);
     }
   }
+  async publish() {
+    this.setState({openPublish: false});
+    try {
+      console.log('Publish !!!');
+      await fetch(this.state.stories+'/'+this.state.sid+'/publish', {
+        method: 'get',
+        headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'}
+      })
+      .then(response => {
+        if (response && !response.ok) { throw new Error(response.statusText);}
+        return response.json();
+      })
+      .then(data => {
+          if(data) {
+            console.log('publish data', data);
+        } else {
+          console.log('No Data received from the server');
+        }
+      })
+      .catch((error) => {
+        // Your error is here!
+        console.log({error})
+      });
+    } catch(e) {
+      console.log(e);
+    }
+  }
   async getStory() {
     this.setState({loading: true});
     try {
@@ -386,7 +420,6 @@ class Story extends Component {
               pitch: (oviewport.pitch) ? oviewport.pitch: 0,
               bearing: (oviewport.bearing) ? oviewport.bearing : 0,
             };
-            console.log(viewport);
             this.setState({
               sid: story.id,
               title: story.title,
@@ -634,6 +667,19 @@ class Story extends Component {
                           />
                       </div>
                     ) : '' }
+                    <div>
+                      <Button onClick={this.showPublish} color='red' primary  size='large' type="submit" disabled={isSubmitting}>
+                        <FormattedMessage id="app.story.publish" defaultMessage={`Publish Story`}/>
+                      </Button>
+                      <Confirm
+                        open={this.state.openPublish}
+                        cancelButton='Never mind'
+                        content={'The version published will be: \n' + ((this.state.story && this.state.story.version) ? (this.state.story.version+1) : "1.0.0")}
+                        confirmButton="Publish Story"
+                        onCancel={this.handleCancelPublish}
+                        onConfirm={this.publish}
+                        />
+                    </div>
                   </Form>
                 )}
               </Formik>
