@@ -1910,7 +1910,7 @@ app.post('/stories/:storyId/gallery', function (req, res, next) {
 app.get('/stories/:storyId/publish', async function(req, res, next) {
   try {
     const sid = req.params.storyId;
-    const path = __dirname + '/public/stories/';
+    const path = './public/stories/';
     const exportPath = __dirname + '/public/export/stories/'+sid;
     const fileName = 'BooksOnWall_Story_'+ sid+'.zip';
     // check if dir exprtPath exist , if not create it
@@ -1924,7 +1924,19 @@ app.get('/stories/:storyId/publish', async function(req, res, next) {
     //zip.addLocalFile("/home/me/some_picture.png");
     //add local folder
     zip.addLocalFolder(path+sid, exportPath);
-    //var willSendthis = zip.toBuffer();
+    var zipEntries = zip.getEntries();
+    zipEntries.forEach(function(zipEntry) {
+	   //console.log(zipEntry.toString()); // outputs zip entries information
+      zipEntry.entryName = zipEntry.entryName.split(__dirname + '/public/export/stories/')[1];
+      return zipEntry;
+  	});
+    // zip.forEach(function(zipEntry) {
+    //   zipEntry.entryName = zipEntry.entryName.split(__dirname + '/public/export/stories/')[1];
+    //   console.log(zipEntry.entryName);
+    //   return zipEntry;
+    // });
+    console.log(zipEntries);
+
     zip.writeZip(exportPath+'/'+fileName);
 
     await getSize(exportPath+'/'+fileName, function(err, size) {
