@@ -54,6 +54,10 @@ module.exports.stories = {
     type: Sequelize.BOOLEAN,
     defaultValue: false
   },
+  zipsize :{
+    type: Sequelize.STRING(256),
+    defaultValue: ''
+  },
   version :{
     type: Sequelize.STRING(256),
     defaultValue: ''
