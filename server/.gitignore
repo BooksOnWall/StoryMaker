@@ -12,6 +12,8 @@
 .env
 #images and files
 /public/*
+*.zip
+*.gz
 
 # misc
 .DS_Store

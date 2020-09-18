@@ -54,4 +54,8 @@ module.exports.stories = {
     type: Sequelize.BOOLEAN,
     defaultValue: false
   },
+  version :{
+    type: Sequelize.STRING(256),
+    defaultValue: ''
+  },
 };
