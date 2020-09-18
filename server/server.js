@@ -1927,13 +1927,15 @@ app.get('/stories/:storyId/publish', async function(req, res, next) {
     //var willSendthis = zip.toBuffer();
     zip.writeZip(exportPath+'/'+fileName);
 
-    let size = await getSize(exportPath+'/'+fileName, function(err, size) {
+    await getSize(exportPath+'/'+fileName, function(err, size) {
       if (err) { throw err; }
-      return prettyBytes(size);
+      updateFieldFromStory({sid: sid, field: 'zipsize', fieldValue: prettyBytes(size)}).then((story) => {
+        console.log({  msg: 'Story published successfully, size:' + size });
+      });
     });
     //store version && active === 1 in db
     updateFieldFromStory({sid: sid, field: 'version', fieldValue: '1.0.0'}).then((story) => {
-      return res.json({  msg: 'Story published successfully, size:' + size })
+      return res.json({  msg: 'Story '+sid+' published successfully' });
     });
   } catch(e) {
     console.log(e.message);

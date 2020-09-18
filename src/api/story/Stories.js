@@ -140,6 +140,12 @@ class Stories extends Component {
                       Published
                     </Table.HeaderCell>
                     <Table.HeaderCell>
+                      Version
+                    </Table.HeaderCell>
+                    <Table.HeaderCell>
+                      Zip size
+                    </Table.HeaderCell>
+                    <Table.HeaderCell>
                       <FormattedMessage id="app.story.stories.table.progress"  defaultMessage={'Progress'} />
                     </Table.HeaderCell>
                     <Table.HeaderCell
@@ -158,7 +164,7 @@ class Stories extends Component {
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                  {_.map(data, ({ id, title, artist, state, city, active, createdAt, updatedAt, percent, aa }) => (
+                  {_.map(data, ({ id, version, zipsize, title, artist, state, city, active, createdAt, updatedAt, percent, aa }) => (
                     <Table.Row className='slide-out'  key={id} onClick={() => this.tableRowClickFunc({id})}>
                       <Table.Cell>{id}</Table.Cell>
                       <Table.Cell>{title}</Table.Cell>
@@ -166,6 +172,8 @@ class Stories extends Component {
                       <Table.Cell>{state}</Table.Cell>
                       <Table.Cell>{city}</Table.Cell>
                       <Table.Cell>{(active === true) ? 'yes' : 'no'}</Table.Cell>
+                      <Table.Cell>{version}</Table.Cell>
+                      <Table.Cell>{zipsize}</Table.Cell>
                       <Table.Cell><Progress  percent={percent}  progress active indicating inverted /></Table.Cell>
                       <Table.Cell>{Moment(createdAt).format('LL')}</Table.Cell>
                       <Table.Cell>{Moment(updatedAt).format('LL')}</Table.Cell>
