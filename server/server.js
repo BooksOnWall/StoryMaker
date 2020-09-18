@@ -14,7 +14,9 @@ const Stage = require('telegraf/stage');
 const Scene = require('telegraf/scenes/base');
 const Tail = require('nodejs-tail');
 var sizeOf = require('image-size');
+const zlib = require('zlib');
 var zip = require('express-easy-zip');
+var Zip = require("adm-zip");
 var tar = require('tar-fs');
 const prettyBytes = require('pretty-bytes');
 var getSize = require('get-folder-size');
@@ -1216,6 +1218,27 @@ if(hasbot) {
   // End telegram conf
 }
 app.use('/assets', express.static(__dirname + 'public', staticoptions));
+
+app.get('/download/:sid', function(req, res, next){
+  const sid = req.params.sid;
+  const path = __dirname + '/public/export/stories/';
+  const fileName = 'BooksOnWall_Story_'+ sid +'.zip';
+  var options = {
+    root: path+sid ,
+    dotfiles: 'deny',
+    headers: {
+      'x-timestamp': Date.now(),
+      'x-sent': true
+    }
+  };
+  res.sendFile(fileName, options, function (err) {
+    if (err) {
+      next(err);
+    } else {
+      console.log('Sent:', fileName)
+    }
+  });
+});
 app.get('/zip/:sid', function(req, res){
   const sid = req.params.sid;
   const path = __dirname + '/public/stories/';
@@ -1883,6 +1906,38 @@ app.post('/stories/:storyId/gallery', function (req, res, next) {
         // });
       }
     });
+});
+app.get('/stories/:storyId/publish', async function(req, res, next) {
+  try {
+    const sid = req.params.storyId;
+    const path = __dirname + '/public/stories/';
+    const exportPath = __dirname + '/public/export/stories/'+sid;
+    const fileName = 'BooksOnWall_Story_'+ sid+'.zip';
+    // check if dir exprtPath exist , if not create it
+    if (!fs.existsSync(exportPath)) {
+      // create directory banner
+      fs.mkdirSync(exportPath, 0o744);
+      console.log('Story export directory created successfully');
+    }
+    var zip = new Zip();
+    // add local file
+    //zip.addLocalFile("/home/me/some_picture.png");
+    //add local folder
+    zip.addLocalFolder(path+sid, exportPath);
+    //var willSendthis = zip.toBuffer();
+    zip.writeZip(exportPath+'/'+fileName);
+
+    let size = await getSize(exportPath+'/'+fileName, function(err, size) {
+      if (err) { throw err; }
+      return prettyBytes(size);
+    });
+    //store version && active === 1 in db
+    updateFieldFromStory({sid: sid, field: 'version', fieldValue: '1.0.0'}).then((story) => {
+      return res.json({  msg: 'Story published successfully, size:' + size })
+    });
+  } catch(e) {
+    console.log(e.message);
+  }
 });
 app.get('/stories/:storyId/map', function(req, res, next) {
   const sid = req.params.storyId;
