@@ -1247,6 +1247,7 @@ app.get('/download/:sid', async function(req, res, next){
     const path = __dirname + '/public/export/stories/';
     const fileName = 'BooksOnWall_Story_'+ sid +'.zip';
     var options = {
+      sid: sid,
       root: path+sid ,
       dotfiles: 'deny',
       headers: {
@@ -1256,13 +1257,13 @@ app.get('/download/:sid', async function(req, res, next){
     };
     // sid, ssid (optional), name, values (json), data (json)
 
-    await res.sendFile(fileName, options,sid,  async function (err) {
+    await res.sendFile(fileName, options,  async function (err) {
       try {
         if (err) {
           next(err);
         } else {
           console.log('Sent:', fileName)
-          return await createStat(sid,null,"download story", {story: sid, filename:fileName}, null);
+          await createStat(options.sid,null,"download story", {story: options.sid, filename:fileName}, null);
         }
       } catch(e) {
         console.log(e.message);
