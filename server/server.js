@@ -1584,6 +1584,24 @@ app.post('/register', function(req, res, next) {
       res.json({ user, msg: 'account created successfully' })
  );
 });
+// post stat fro app
+app.post('/stat', async function(req, res, next) {
+  const { name, sid, ssid , data } = req.body;
+  try {
+    const values = {
+      origin: req.headers,
+      ipInfo: req.ipInfo,
+    };
+    await createStat({sid,ssid,name,values,data}).then(stat => {
+      return res.json({ name, msg: name +' stat created successfully' });
+    });
+
+  } catch(e) {
+    console.log(e.message);
+  }
+
+
+});
 // register route create new user
 app.post('/users/0', function(req, res, next) {
   const { name, email, password, active } = req.body;
