@@ -1925,20 +1925,13 @@ app.get('/stories/:storyId/publish', async function(req, res, next) {
     //add local folder
     zip.addLocalFolder(path+sid, exportPath);
     var zipEntries = zip.getEntries();
+    // rewrite entryName
     zipEntries.forEach(function(zipEntry) {
 	   //console.log(zipEntry.toString()); // outputs zip entries information
       zipEntry.entryName = zipEntry.entryName.split(__dirname + '/public/export/stories/')[1];
       return zipEntry;
   	});
-    // zip.forEach(function(zipEntry) {
-    //   zipEntry.entryName = zipEntry.entryName.split(__dirname + '/public/export/stories/')[1];
-    //   console.log(zipEntry.entryName);
-    //   return zipEntry;
-    // });
-    console.log(zipEntries);
-
     zip.writeZip(exportPath+'/'+fileName);
-
     await getSize(exportPath+'/'+fileName, function(err, size) {
       if (err) { throw err; }
       updateFieldFromStory({sid: sid, field: 'zipsize', fieldValue: prettyBytes(size)}).then((story) => {
@@ -1946,7 +1939,7 @@ app.get('/stories/:storyId/publish', async function(req, res, next) {
       });
     });
     //store version && active === 1 in db
-    updateFieldFromStory({sid: sid, field: 'version', fieldValue: '1.0.0'}).then((story) => {
+    await updateFieldFromStory({sid: sid, field: 'version', fieldValue: '1.0.0'}).then((story) => {
       return res.json({  msg: 'Story '+sid+' published successfully' });
     });
   } catch(e) {
