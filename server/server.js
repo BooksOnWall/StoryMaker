@@ -1937,11 +1937,12 @@ app.get('/stories/:storyId/publish', async function(req, res, next) {
       updateFieldFromStory({sid: sid, field: 'zipsize', fieldValue: prettyBytes(size)}).then((story) => {
         console.log({  msg: 'Story published successfully, size:' + size });
       });
+      //store version && active === 1 in db
+      updateFieldFromStory({sid: sid, field: 'version', fieldValue: '1.0.0'}).then((story) => {
+        return res.json({  msg: 'Story '+sid+' published successfully' });
+      });
     });
-    //store version && active === 1 in db
-    await updateFieldFromStory({sid: sid, field: 'version', fieldValue: '1.0.0'}).then((story) => {
-      return res.json({  msg: 'Story '+sid+' published successfully' });
-    });
+
   } catch(e) {
     console.log(e.message);
   }
