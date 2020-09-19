@@ -1256,7 +1256,7 @@ app.get('/download/:sid', async function(req, res, next){
     };
     // sid, ssid (optional), name, values (json), data (json)
 
-    await res.sendFile(fileName, options, async function (err) {
+    await res.sendFile(fileName, options,sid,  async function (err) {
       try {
         if (err) {
           next(err);
