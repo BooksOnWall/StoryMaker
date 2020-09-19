@@ -1276,7 +1276,6 @@ app.get('/download/:sid', async function(req, res, next){
             filename:fileName,
           };
           const data = null;
-          console.log(values);
           await createStat({sid,ssid,name,values,data});
         }
       } catch(e) {
