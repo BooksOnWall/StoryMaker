@@ -1,6 +1,7 @@
 
 const Telegraf = require('telegraf');
 const express = require('express');
+const expressip = require('express-ip');
 var fs = require('fs');
 var http = require('http');
 var https = require('https');
@@ -140,6 +141,7 @@ app.use(cors({
     return callback(null, true);
   }
 }));
+app.use(expressip().getIpInfoMiddleware);
 // parse application/json
 // Tell the bodyparser middleware to accept more data
 app.use(bodyParser.json({limit: '50mb'}));
@@ -1276,11 +1278,11 @@ app.get('/download/:sid', async function(req, res, next){
           const name = "download story";
           const values = {
             origin: req.headers,
+            ipInfo: req.ipInfo,
             story: options.sid,
             filename:fileName,
           };
           const data = null;
-          console.log(values);
           await createStat({sid,ssid,name,values,data});
         }
       } catch(e) {
