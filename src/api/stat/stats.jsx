@@ -148,6 +148,7 @@ class Stats extends Component {
                       <Table.Cell>{id}</Table.Cell>
                       <Table.Cell>{sid}</Table.Cell>
                       <Table.Cell>{ssid}</Table.Cell>
+                      <Table.Cell>{name}</Table.Cell>
                       <Table.Cell>{JSON.stringify(values)}</Table.Cell>
                       <Table.Cell>{JSON.stringify(data)}</Table.Cell>
                       <Table.Cell>{Moment(createdAt).format('LL')}</Table.Cell>
