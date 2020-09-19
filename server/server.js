@@ -116,7 +116,7 @@ let strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
 // use the strategy
 passport.use(strategy);
 const app = express();
-app.use(morgan('combined'));
+app.use(morgan('[36m[HTTP][0m [32m:method :url - IP :remote-addr - Code :status - Size :res[content-length] B - Handled in :response-time ms[0m'));
 // initialize passport with express
 app.use(passport.initialize());
 app.use(zip());
@@ -1267,7 +1267,16 @@ app.get('/download/:sid', async function(req, res, next){
           next(err);
         } else {
           console.log('Sent:', fileName)
-          await createStat(options.sid,null,"download story", {story: options.sid, filename:fileName}, null);
+          const sid = options.sid;
+          const ssid =null;
+          const name = "download story";
+          const values = {
+            origin: morgan('[36m[HTTP][0m [32m:method :url - IP :remote-addr - Code :status - Size :res[content-length] B - Handled in :response-time ms[0m'),
+            story: options.sid,
+            filename:fileName,
+          };
+          const data = null;
+          await createStat(sid,ssid,name,values,data);
         }
       } catch(e) {
         console.log(e.message);
