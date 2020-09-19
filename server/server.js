@@ -184,6 +184,7 @@ const userPref = require('./conf/db/userPref');
 const artistsList = require('./conf/db/artists');
 const storiesList = require('./conf/db/stories');
 const stagesList = require('./conf/db/stages');
+const statsList = require('./conf/db/stats');
 // check the databse connection
 sequelize
   .authenticate()
@@ -227,12 +228,16 @@ const Artists = sequelize.define('artists', artistsList.artists);
 const Stories = sequelize.define('stories', storiesList.stories);
 // create Stages model
 const Stages = sequelize.define('stages', stagesList.stages);
+// stats model
+const Stats = sequelize.define('stats', statsList.stats);
 
 Stories.belongsTo(Artists, { as:'aa', foreignKey: 'artist', targetKey: 'id' });
 Artists.hasMany(Stories, { as: 'aa', foreignKey: 'artist', sourceKey: 'id'});
 
 Stages.belongsTo(Stories, { foreignKey: 'sid', targetKey: 'id' });
 Stories.hasMany(Stages, { foreignKey: 'sid', sourceKey: 'id'});
+
+//Stats.belongTo(Stories, { foreignKey: 'sid', targetKey: 'id' });
 
 // create table with artist model
 Artists.sync()
@@ -263,7 +268,10 @@ Artists.sync()
  })
  .catch(err => console.log('oooh,error creating database Artists , did you enter wrong database credentials?', err));
 
-
+ Stats.sync()
+  .then(() => {
+    console.log("Stats table created succesfully");
+ });
 
 // create some helper functions to work on the database
 const createUser = async ({ name, email, hash, active }) => {
