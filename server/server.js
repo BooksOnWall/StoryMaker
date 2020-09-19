@@ -1257,11 +1257,15 @@ app.get('/download/:sid', async function(req, res, next){
     // sid, ssid (optional), name, values (json), data (json)
 
     await res.sendFile(fileName, options, async function (err) {
-      if (err) {
-        next(err);
-      } else {
-        console.log('Sent:', fileName)
-        return res = await createStat(sid,null,"download story", {story: sid, filename:fileName}, null);
+      try {
+        if (err) {
+          next(err);
+        } else {
+          console.log('Sent:', fileName)
+          return await createStat(sid,null,"download story", {story: sid, filename:fileName}, null);
+        }
+      } catch(e) {
+        console.log(e.message);
       }
     });
   } catch(e) {
