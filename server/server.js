@@ -1260,8 +1260,8 @@ app.get('/download/:sid', async function(req, res, next){
       if (err) {
         next(err);
       } else {
-        await createStat(sid,null,"download story", {story: sid, filename:fileName}, null);
         console.log('Sent:', fileName)
+        return res = await createStat(sid,null,"download story", {story: sid, filename:fileName}, null);
       }
     });
   } catch(e) {
