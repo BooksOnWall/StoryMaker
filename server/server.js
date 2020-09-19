@@ -1241,28 +1241,33 @@ if(hasbot) {
 }
 app.use('/assets', express.static(__dirname + 'public', staticoptions));
 
-app.get('/download/:sid', function(req, res, next){
-  const sid = req.params.sid;
-  const path = __dirname + '/public/export/stories/';
-  const fileName = 'BooksOnWall_Story_'+ sid +'.zip';
-  var options = {
-    root: path+sid ,
-    dotfiles: 'deny',
-    headers: {
-      'x-timestamp': Date.now(),
-      'x-sent': true
-    }
-  };
-  // sid, ssid (optional), name, values (json), data (json)
+app.get('/download/:sid', async function(req, res, next){
+  try {
+    const sid = req.params.sid;
+    const path = __dirname + '/public/export/stories/';
+    const fileName = 'BooksOnWall_Story_'+ sid +'.zip';
+    var options = {
+      root: path+sid ,
+      dotfiles: 'deny',
+      headers: {
+        'x-timestamp': Date.now(),
+        'x-sent': true
+      }
+    };
+    // sid, ssid (optional), name, values (json), data (json)
 
-  res.sendFile(fileName, options, function (err) {
-    if (err) {
-      next(err);
-    } else {
-      createStat(sid,null,"download story", {story: sid, filename:fileName}, null);
-      console.log('Sent:', fileName)
-    }
-  });
+    await res.sendFile(fileName, options, async function (err) {
+      if (err) {
+        next(err);
+      } else {
+        await createStat(sid,null,"download story", {story: sid, filename:fileName}, null);
+        console.log('Sent:', fileName)
+      }
+    });
+  } catch(e) {
+    console.log(e.message);
+  }
+
 });
 app.get('/zip/:sid', function(req, res){
   const sid = req.params.sid;
