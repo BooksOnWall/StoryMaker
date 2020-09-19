@@ -69,6 +69,7 @@ class Story extends Component {
         bearing: 0,
       } : {},
       geometry: null,
+      processPublish: false,
       openPublish: false,
       tesselate: null,
       stages: null,
@@ -363,7 +364,7 @@ class Story extends Component {
     }
   }
   async publish() {
-    this.setState({openPublish: false});
+    this.setState({openPublish: false, processPublish: true});
     try {
       console.log('Publish !!!');
       await fetch(this.state.stories+'/'+this.state.sid+'/publish', {
@@ -376,7 +377,8 @@ class Story extends Component {
       })
       .then(data => {
           if(data) {
-            console.log('publish data', data);
+            console.log('publish data', data.msg);
+            this.setState({processPublish: false});
         } else {
           console.log('No Data received from the server');
         }
@@ -536,6 +538,7 @@ class Story extends Component {
     );
   }
   EditForm = () => {
+    const {processPublish, initialSValues} = this.state;
     return (
       <Segment placeholder className="story" inverted>
         <Grid columns={2} stackable textAlign='center'>
@@ -543,7 +546,7 @@ class Story extends Component {
             <Grid.Column>
               <Formik
                 enableReinitialize={true}
-                initialValues={this.state.initialSValues}
+                initialValues={initialSValues}
                 validate={values => {
                   let errors = {};
                   return errors;
@@ -668,7 +671,7 @@ class Story extends Component {
                       </div>
                     ) : '' }
                     <div>
-                      <Button onClick={this.showPublish} color='red' primary  size='large' type="submit" disabled={isSubmitting}>
+                      <Button onClick={this.showPublish} loading={processPublish} color='red' primary  size='large' type="submit" disabled={isSubmitting}>
                         <FormattedMessage id="app.story.publish" defaultMessage={`Publish Story`}/>
                       </Button>
                       <Confirm
