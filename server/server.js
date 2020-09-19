@@ -492,7 +492,7 @@ const createStat = async ({sid, ssid, name, values, data}) => {
   try {
     return await Stats.create({ sid, ssid, name, values, data });
   } catch(e) {
-    console.log(e.message);
+    console.log(e);
   }
 }
 const updateFieldFromStory = async ({ sid, field, fieldValue }) => {
@@ -1281,7 +1281,7 @@ app.get('/download/:sid', async function(req, res, next){
           };
           const data = null;
           console.log(values);
-          await createStat(sid,ssid,name,values,data);
+          await createStat({sid,ssid,name,values,data});
         }
       } catch(e) {
         console.log(e.message);
