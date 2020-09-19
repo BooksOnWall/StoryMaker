@@ -1254,11 +1254,12 @@ app.get('/download/:sid', function(req, res, next){
     }
   };
   // sid, ssid (optional), name, values (json), data (json)
-  createStat(sid,null,"download story", {story: sid, req}, null);
+
   res.sendFile(fileName, options, function (err) {
     if (err) {
       next(err);
     } else {
+      createStat(sid,null,"download story", {story: sid, filename:fileName}, null);
       console.log('Sent:', fileName)
     }
   });
