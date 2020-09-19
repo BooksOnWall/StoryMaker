@@ -184,6 +184,7 @@ const userPref = require('./conf/db/userPref');
 const artistsList = require('./conf/db/artists');
 const storiesList = require('./conf/db/stories');
 const stagesList = require('./conf/db/stages');
+const statsList = require('./conf/db/stats');
 // check the databse connection
 sequelize
   .authenticate()
@@ -227,12 +228,16 @@ const Artists = sequelize.define('artists', artistsList.artists);
 const Stories = sequelize.define('stories', storiesList.stories);
 // create Stages model
 const Stages = sequelize.define('stages', stagesList.stages);
+// stats model
+const Stats = sequelize.define('stats', statsList.stats);
 
 Stories.belongsTo(Artists, { as:'aa', foreignKey: 'artist', targetKey: 'id' });
 Artists.hasMany(Stories, { as: 'aa', foreignKey: 'artist', sourceKey: 'id'});
 
 Stages.belongsTo(Stories, { foreignKey: 'sid', targetKey: 'id' });
 Stories.hasMany(Stages, { foreignKey: 'sid', sourceKey: 'id'});
+
+//Stats.belongTo(Stories, { foreignKey: 'sid', targetKey: 'id' });
 
 // create table with artist model
 Artists.sync()
@@ -263,7 +268,10 @@ Artists.sync()
  })
  .catch(err => console.log('oooh,error creating database Artists , did you enter wrong database credentials?', err));
 
-
+ Stats.sync()
+  .then(() => {
+    console.log("Stats table created succesfully");
+ });
 
 // create some helper functions to work on the database
 const createUser = async ({ name, email, hash, active }) => {
@@ -410,7 +418,22 @@ const getStoriesPublished = async () => {
     console.log(e.message);
   }
 }
-
+const getStats = async () => {
+  try  {
+    return await Stats.findAll({
+      nested: true })
+      .then(stats => {
+        if(stats && stats.length > 0) {
+          stats.map((stat, index) => {
+            stat = stat.get({raw: true});
+            return stat;
+          });
+        return stats;
+      }});
+  } catch(e) {
+    console.log(e.message);
+  }
+}
 const createStory = async ({ title, state, city, sinopsys, credits, artist, geometry, viewport, active }) => {
   try {
     let res = await Stories.create({ title, state, city, sinopsys, credits, artist, geometry, viewport, active });
@@ -465,6 +488,9 @@ const getStory = async obj => {
   }
 
 };
+const createStat = async ({sid, ssid, name, values, data}) => {
+  return await Stats.create({ sid, ssid, name, values, data });
+}
 const updateFieldFromStory = async ({ sid, field, fieldValue }) => {
   return await Stories.update(
     { [field]: fieldValue},
@@ -1231,6 +1257,8 @@ app.get('/download/:sid', function(req, res, next){
       'x-sent': true
     }
   };
+  // sid, ssid (optional), name, values (json), data (json)
+  createStat(sid,null,"download story", {story: sid, req}, null);
   res.sendFile(fileName, options, function (err) {
     if (err) {
       next(err);
@@ -1672,6 +1700,18 @@ app.get('/stories', async (req, res, next) => {
   try {
     let stories = await getStories();
     return res.json({ stories: stories, msg: 'Stories listed'});
+  } catch(e) {
+    console.log(e.message);
+  }
+});
+// stats URI requests
+app.get('/stats', async (req, res, next) => {
+  // getStats
+  //
+  try {
+    let stats = await getStats();
+    console.log(stats);
+    return res.json({ stats: stats, msg: 'Stats listed'});
   } catch(e) {
     console.log(e.message);
   }

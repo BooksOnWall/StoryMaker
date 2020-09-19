@@ -23,6 +23,7 @@ import Artist from './api/artist/Artist';
 import Stories from './api/story/Stories';
 import Story from './api/story/Story';
 import Stage from './api/story/stage/Stage';
+import Stats from './api/stat/stats';
 
 
 import Profile from './api/user/Profile';
@@ -214,6 +215,7 @@ class App extends Component {
                                           <PrivateRoute path="/users/:id"  state={this.state} component={User} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
                                           <PrivateRoute exact path="/artists" component={Artists} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
                                           <PrivateRoute path="/artists/:id"   component={Artist} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
+                                          <PrivateRoute exact path="/stats"   component={Stats} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
                                           <PrivateRoute exact path="/stories"   component={Stories} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
                                           <PrivateRoute exact path="/stories/:id"  component={Story} childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
                                           <PrivateRoute exact path="/stories/:id/sinopsys"  component={Story} step="Sinopsys" childProps={childProps} user={user} locale={locale} theme={theme} authenticated={user.authenticated} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
