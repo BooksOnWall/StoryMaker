@@ -1592,6 +1592,7 @@ app.post('/stat', async function(req, res, next) {
       origin: req.headers,
       ipInfo: req.ipInfo,
     };
+    console.log(values);
     await createStat({sid,ssid,name,values,data}).then(stat => {
       return res.json({ name, msg: name +' stat created successfully' });
     });

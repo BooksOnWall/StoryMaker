@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 module.exports.stats = {
   sid: {
     type: Sequelize.INTEGER,
-    allowNull: false,
+    allowNull: true,
     references: {
         model: 'stories',
         key: 'id'
