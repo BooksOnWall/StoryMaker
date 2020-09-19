@@ -489,7 +489,11 @@ const getStory = async obj => {
 
 };
 const createStat = async ({sid, ssid, name, values, data}) => {
-  return await Stats.create({ sid, ssid, name, values, data });
+  try {
+    return await Stats.create({ sid, ssid, name, values, data });
+  } catch(e) {
+    console.log(e.message);
+  }
 }
 const updateFieldFromStory = async ({ sid, field, fieldValue }) => {
   return await Stories.update(
@@ -1272,6 +1276,7 @@ app.get('/download/:sid', async function(req, res, next){
             filename:fileName,
           };
           const data = null;
+          console.log(values);
           await createStat(sid,ssid,name,values,data);
         }
       } catch(e) {
