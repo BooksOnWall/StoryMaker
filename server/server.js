@@ -1271,7 +1271,7 @@ app.get('/download/:sid', async function(req, res, next){
           const ssid =null;
           const name = "download story";
           const values = {
-            origin: morgan('[36m[HTTP][0m [32m:method :url - IP :remote-addr - Code :status - Size :res[content-length] B - Handled in :response-time ms[0m'),
+            origin: req.headers,
             story: options.sid,
             filename:fileName,
           };
