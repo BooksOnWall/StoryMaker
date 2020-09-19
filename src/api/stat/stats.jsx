@@ -38,6 +38,7 @@ class Stats extends Component {
     })
     .then(data => {
         if(data) {
+          console.log(data);
           this.setState({data: data.stats, loading: false});
         } else {
           console.log('No Data received from the server');

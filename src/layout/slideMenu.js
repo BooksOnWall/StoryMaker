@@ -41,7 +41,7 @@ class LeftSlideMenu extends Component {
                 <Icon size='large' name='book' /><span className='text'>Stories</span>
               </Menu.Item>
               <Menu.Item name='stats' active={this.state.activeItem === 'stats'} onClick={this.handleItemClick} as={Link} to='/stats'  >
-                <Icon size='large' name='chart' /><span className='text'>Stats</span>
+                <Icon size='large' name='chart pie' /><span className='text'>Stats</span>
               </Menu.Item>
               <Menu.Item name='logout' className='logout' active={this.state.activeItem === 'logout'} onClick={this.handleItemClick} as={Link} to='/logout' >
                 <Icon name='log out' /><span className='text'>Logout</span>

@@ -418,7 +418,22 @@ const getStoriesPublished = async () => {
     console.log(e.message);
   }
 }
-
+const getStats = async () => {
+  try  {
+    return await Stats.findAll({
+      nested: true })
+      .then(stats => {
+        if(stats && stats.length > 0) {
+          stats.map((stat, index) => {
+            stat = stat.get({raw: true});
+            return stat;
+          });
+        return stats;
+      }});
+  } catch(e) {
+    console.log(e.message);
+  }
+}
 const createStory = async ({ title, state, city, sinopsys, credits, artist, geometry, viewport, active }) => {
   try {
     let res = await Stories.create({ title, state, city, sinopsys, credits, artist, geometry, viewport, active });
@@ -473,6 +488,9 @@ const getStory = async obj => {
   }
 
 };
+const createStat = async ({sid, ssid, name, values, data}) => {
+  return await Stats.create({ sid, ssid, name, values, data });
+}
 const updateFieldFromStory = async ({ sid, field, fieldValue }) => {
   return await Stories.update(
     { [field]: fieldValue},
@@ -1235,6 +1253,8 @@ app.get('/download/:sid', function(req, res, next){
       'x-sent': true
     }
   };
+  // sid, ssid (optional), name, values (json), data (json)
+  createStat(sid,null,"download story", {story: sid, req}, null);
   res.sendFile(fileName, options, function (err) {
     if (err) {
       next(err);
@@ -1676,6 +1696,18 @@ app.get('/stories', async (req, res, next) => {
   try {
     let stories = await getStories();
     return res.json({ stories: stories, msg: 'Stories listed'});
+  } catch(e) {
+    console.log(e.message);
+  }
+});
+// stats URI requests
+app.get('/stats', async (req, res, next) => {
+  // getStats
+  //
+  try {
+    let stats = await getStats();
+    console.log(stats);
+    return res.json({ stats: stats, msg: 'Stats listed'});
   } catch(e) {
     console.log(e.message);
   }
