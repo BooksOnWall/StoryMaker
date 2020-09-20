@@ -15,6 +15,10 @@ video {
 #root {
   /* background-color: '#6435c9'; */
 }
+.htmlList pre {
+  max-height: inherit;
+  max-width: inherit;
+}
 #Editor3dCanvas , #Editor3dCanvas canvas {
   width: 100%;
   height: 100%;

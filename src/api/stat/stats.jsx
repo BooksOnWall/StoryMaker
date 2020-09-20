@@ -150,7 +150,7 @@ class Stats extends Component {
                       <Table.Cell>{sid}</Table.Cell>
                       <Table.Cell>{ssid}</Table.Cell>
                       <Table.Cell>{name}</Table.Cell>
-                      <Table.Cell>{<JSONPretty style={{maxHeight: '10vh', maxWidth: '25vw'}} data={values} ></JSONPretty>}</Table.Cell>
+                      <Table.Cell>{<JSONPretty className="htmlList" style={{maxHeight: '10vh', maxWidth: '25vw'}} data={values} ></JSONPretty>}</Table.Cell>
                       <Table.Cell>{<JSONPretty style={{maxHeight: '10vh', maxWidth: '25vw'}} data={data} ></JSONPretty>}</Table.Cell>
                       <Table.Cell>{Moment(createdAt).format('LL')}</Table.Cell>
                       <Table.Cell>{Moment(updatedAt).format('LL')}</Table.Cell>
