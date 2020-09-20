@@ -36,6 +36,7 @@
     "react-icomoon": "^2.0.3",
     "react-icons": "^3.7.0",
     "react-intl": "^2.9.0",
+    "react-json-pretty": "^2.2.0",
     "react-map-gl": "^5.2.3",
     "react-map-gl-geocoder": "^2.0.11",
     "react-player": "^1.12.0",
