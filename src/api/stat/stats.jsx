@@ -80,7 +80,7 @@ class Stats extends Component {
     });
   }
   tableRowClickFunc(story) {
-    return this.props.history.push('/stats/'+story.id);
+    //return this.props.history.push('/stats/'+story.id);
   }
   render() {
     const { column, data, direction } = this.state;
