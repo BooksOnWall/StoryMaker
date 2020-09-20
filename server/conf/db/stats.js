@@ -22,7 +22,7 @@ module.exports.stats = {
     unique: false,
   },
   uniqueId: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
     allowNull: true,
     unique: false
   },
