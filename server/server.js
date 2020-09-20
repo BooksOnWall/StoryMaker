@@ -1286,6 +1286,7 @@ app.get('/download/:sid', async function(req, res, next){
             origin: req.headers,
             ipInfo: req.ipInfo,
             story: options.sid,
+            uniqueId: options.uniqueId,
             filename:fileName,
           };
           const data = null;
@@ -1601,8 +1602,8 @@ app.post('/stat', async function(req, res, next) {
     const values = {
       origin: req.headers,
       ipInfo: req.ipInfo,
+      uniqueId: uniqueId,
     };
-    console.log(values);
     await createStat({sid,ssid,name,uniqueId, values,data}).then(stat => {
       return res.json({ name, msg: name +' stat created successfully' });
     });
