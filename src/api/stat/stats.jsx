@@ -3,7 +3,8 @@ import { Progress, Container, Dimmer, Loader, Segment, Header, Table, Icon, Butt
 import Moment from 'moment';
 import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
-
+import JSONPretty from 'react-json-pretty';
+import 'react-json-pretty/themes/monikai.css';
 import _ from 'lodash';
 
 class Stats extends Component {
@@ -149,8 +150,8 @@ class Stats extends Component {
                       <Table.Cell>{sid}</Table.Cell>
                       <Table.Cell>{ssid}</Table.Cell>
                       <Table.Cell>{name}</Table.Cell>
-                      <Table.Cell>{JSON.stringify(values)}</Table.Cell>
-                      <Table.Cell>{JSON.stringify(data)}</Table.Cell>
+                      <Table.Cell>{<JSONPretty data={values} ></JSONPretty>}</Table.Cell>
+                      <Table.Cell>{<JSONPretty data={data} ></JSONPretty>}</Table.Cell>
                       <Table.Cell>{Moment(createdAt).format('LL')}</Table.Cell>
                       <Table.Cell>{Moment(updatedAt).format('LL')}</Table.Cell>
                     </Table.Row>
