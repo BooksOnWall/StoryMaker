@@ -1252,7 +1252,7 @@ if(hasbot) {
 }
 app.use('/assets', express.static(__dirname + 'public', staticoptions));
 
-app.post('/download/:sid', async function(req, res, next){
+app.get('/download/:sid', async function(req, res, next){
   try {
     const sid = req.params.sid;
     const {name, ssid, uniqueId, values, data} = req.body;
@@ -1262,7 +1262,7 @@ app.post('/download/:sid', async function(req, res, next){
       sid: sid,
       ssid: ssid,
       uniqueId: uniqueId,
-      name: name,
+      name: (name) ? name : "Download story",
       data: data,
       values: values,
       root: path+sid ,
