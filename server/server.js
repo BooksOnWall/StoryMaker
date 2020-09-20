@@ -1252,17 +1252,19 @@ if(hasbot) {
 }
 app.use('/assets', express.static(__dirname + 'public', staticoptions));
 
-app.get('/download/:sid', async function(req, res, next){
+app.post('/download/:sid', async function(req, res, next){
   try {
     const sid = req.params.sid;
-    const ssid = req.body.ssid;
-    const uniqueId = req.body.uniqueId;
+    const {name, ssid, uniqueId, values, data} = req.body;
     const path = __dirname + '/public/export/stories/';
     const fileName = 'BooksOnWall_Story_'+ sid +'.zip';
     var options = {
       sid: sid,
       ssid: ssid,
       uniqueId: uniqueId,
+      name: name,
+      data: data,
+      values: values,
       root: path+sid ,
       dotfiles: 'deny',
       headers: {
@@ -1281,7 +1283,8 @@ app.get('/download/:sid', async function(req, res, next){
           const sid = options.sid;
           const ssid = options.ssid;
           const uniqueId = options.uniqueId;
-          const name = "Download story";
+          const data = options.data;
+          const name = options.name; //"Download story";
           const values = {
             origin: req.headers,
             ipInfo: req.ipInfo,
@@ -1289,7 +1292,6 @@ app.get('/download/:sid', async function(req, res, next){
             uniqueId: options.uniqueId,
             filename:fileName,
           };
-          const data = null;
           await createStat({sid,ssid,name,uniqueId,values,data});
         }
       } catch(e) {
