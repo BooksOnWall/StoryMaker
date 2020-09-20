@@ -21,6 +21,11 @@ module.exports.stats = {
     allowNull: false,
     unique: false,
   },
+  uniqueId: {
+    type: Sequelize.INTEGER,
+    allowNull: true,
+    unique: false
+  },
   values: {
     type: Sequelize.JSON,
     allowNull: true,

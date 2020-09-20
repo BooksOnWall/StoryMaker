@@ -491,9 +491,9 @@ const getStory = async obj => {
   }
 
 };
-const createStat = async ({sid, ssid, name, values, data}) => {
+const createStat = async ({sid, ssid, name,uniqueId, values, data}) => {
   try {
-    return await Stats.create({ sid, ssid, name, values, data });
+    return await Stats.create({ sid, ssid, name, uniqueId, values, data });
   } catch(e) {
     console.log(e);
   }
@@ -1591,14 +1591,14 @@ app.post('/register', function(req, res, next) {
 });
 // post stat fro app
 app.post('/stat', async function(req, res, next) {
-  const { name, sid, ssid , data } = req.body;
+  const { name, sid, ssid ,uniqueId, data } = req.body;
   try {
     const values = {
       origin: req.headers,
       ipInfo: req.ipInfo,
     };
     console.log(values);
-    await createStat({sid,ssid,name,values,data}).then(stat => {
+    await createStat({sid,ssid,name,uniqueId, values,data}).then(stat => {
       return res.json({ name, msg: name +' stat created successfully' });
     });
 
