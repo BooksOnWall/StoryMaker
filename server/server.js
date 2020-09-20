@@ -1156,7 +1156,7 @@ if(hasbot) {
 
   bot.hears('patricie', (ctx) => {
 	ctx.reply('Subito Presto !!!');
-  	ctx.replyWithPhoto({source: fs.createReadStream('public/bot/patricie.jpg')}, {caption: 'Yo Patricie'})	
+  	ctx.replyWithPhoto({source: fs.createReadStream('public/bot/patricie.jpg')}, {caption: 'Yo Patricie'})
   });
   bot.command('album', (ctx) => {
     ctx.replyWithMediaGroup([
@@ -1276,7 +1276,7 @@ app.get('/download/:sid', async function(req, res, next){
           console.log('Sent:', fileName)
           const sid = options.sid;
           const ssid =null;
-          const name = "download story";
+          const name = "Download story";
           const values = {
             origin: req.headers,
             ipInfo: req.ipInfo,
