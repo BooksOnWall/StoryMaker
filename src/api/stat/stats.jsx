@@ -124,10 +124,10 @@ class Stats extends Component {
                       Name
                     </Table.HeaderCell>
                     <Table.HeaderCell>
-                      Values
+                      MetaData From Server
                     </Table.HeaderCell>
                     <Table.HeaderCell>
-                      Data
+                      MetaData From Mobile
                     </Table.HeaderCell>
                     <Table.HeaderCell
                       sorted={column === 'createdAt' ? direction : null}
