@@ -150,8 +150,8 @@ class Stats extends Component {
                       <Table.Cell>{sid}</Table.Cell>
                       <Table.Cell>{ssid}</Table.Cell>
                       <Table.Cell>{name}</Table.Cell>
-                      <Table.Cell>{<JSONPretty data={values} ></JSONPretty>}</Table.Cell>
-                      <Table.Cell>{<JSONPretty data={data} ></JSONPretty>}</Table.Cell>
+                      <Table.Cell>{<JSONPretty style={{width: '30%'}} data={values} ></JSONPretty>}</Table.Cell>
+                      <Table.Cell>{<JSONPretty style={{width: '30%'}} data={data} ></JSONPretty>}</Table.Cell>
                       <Table.Cell>{Moment(createdAt).format('LL')}</Table.Cell>
                       <Table.Cell>{Moment(updatedAt).format('LL')}</Table.Cell>
                     </Table.Row>
