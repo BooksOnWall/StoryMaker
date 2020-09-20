@@ -123,6 +123,12 @@ class Stats extends Component {
                       >
                       Name
                     </Table.HeaderCell>
+                    <Table.HeaderCell
+                      sorted={column === 'uniqueId' ? direction : null}
+                      onClick={this.handleSort('uniqueId')}
+                      >
+                      Unique Id
+                    </Table.HeaderCell>
                     <Table.HeaderCell>
                       MetaData From Server
                     </Table.HeaderCell>
@@ -144,12 +150,13 @@ class Stats extends Component {
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                  {_.map(data, ({ id, sid, ssid, name, values, data, createdAt, updatedAt }) => (
+                  {_.map(data, ({ id, sid, ssid, name,uniqueId, values, data, createdAt, updatedAt }) => (
                     <Table.Row className='slide-out'  key={id} onClick={() => this.tableRowClickFunc({id})}>
                       <Table.Cell>{id}</Table.Cell>
                       <Table.Cell>{sid}</Table.Cell>
                       <Table.Cell>{ssid}</Table.Cell>
                       <Table.Cell>{name}</Table.Cell>
+                      <Table.Cell>{uniqueId}</Table.Cell>
                       <Table.Cell>{<JSONPretty className="htmlList" style={{maxHeight: '10vh', maxWidth: '25vw'}} data={values} ></JSONPretty>}</Table.Cell>
                       <Table.Cell>{<JSONPretty className="htmlList" style={{maxHeight: '10vh', maxWidth: '25vw'}} data={data} ></JSONPretty>}</Table.Cell>
                       <Table.Cell>{Moment(createdAt).format('LL')}</Table.Cell>
