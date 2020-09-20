@@ -491,7 +491,7 @@ const getStory = async obj => {
   }
 
 };
-const createStat = async ({sid, ssid, name,uniqueId, values, data}) => {
+const createStat = async ({sid, ssid, name, uniqueId, values, data}) => {
   try {
     return await Stats.create({ sid, ssid, name, uniqueId, values, data });
   } catch(e) {
@@ -1255,10 +1255,14 @@ app.use('/assets', express.static(__dirname + 'public', staticoptions));
 app.get('/download/:sid', async function(req, res, next){
   try {
     const sid = req.params.sid;
+    const ssid = req.body.ssid;
+    const uniqueId = req.body.uniqueId;
     const path = __dirname + '/public/export/stories/';
     const fileName = 'BooksOnWall_Story_'+ sid +'.zip';
     var options = {
       sid: sid,
+      ssid: ssid,
+      uniqueId: uniqueId,
       root: path+sid ,
       dotfiles: 'deny',
       headers: {
@@ -1275,7 +1279,8 @@ app.get('/download/:sid', async function(req, res, next){
         } else {
           console.log('Sent:', fileName)
           const sid = options.sid;
-          const ssid =null;
+          const ssid = options.ssid;
+          const uniqueId = options.uniqueId;
           const name = "Download story";
           const values = {
             origin: req.headers,
@@ -1284,7 +1289,7 @@ app.get('/download/:sid', async function(req, res, next){
             filename:fileName,
           };
           const data = null;
-          await createStat({sid,ssid,name,values,data});
+          await createStat({sid,ssid,name,uniqueId,values,data});
         }
       } catch(e) {
         console.log(e.message);
