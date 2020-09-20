@@ -423,7 +423,7 @@ const getStoriesPublished = async () => {
 const getStats = async () => {
   try  {
     return await Stats.findAll({
-      order: ['stats','id', 'DESC'],
+      order: [['ID', 'DESC']],
       nested: true })
       .then(stats => {
         if(stats && stats.length > 0) {
