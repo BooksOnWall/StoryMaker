@@ -153,7 +153,7 @@ class Stats extends Component {
                       <Table.Cell>{uniqueId}</Table.Cell>
                       <Table.Cell>{<JSONPretty className="htmlList" style={{maxHeight: '10vh', maxWidth: '25vw'}} data={values} ></JSONPretty>}</Table.Cell>
                       <Table.Cell>{<JSONPretty className="htmlList" style={{maxHeight: '10vh', maxWidth: '25vw'}} data={data} ></JSONPretty>}</Table.Cell>
-                      <Table.Cell>{Moment(createdAt).format('l h:mm:ss')}</Table.Cell>
+                      <Table.Cell>{Moment(createdAt).format('l hh:mm:ss')}</Table.Cell>
                     </Table.Row>
                   ))}
                 </Table.Body>
