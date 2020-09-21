@@ -141,12 +141,6 @@ class Stats extends Component {
                       >
                       <FormattedMessage id="app.story.stats.table.create"  defaultMessage={'Created'} />
                     </Table.HeaderCell>
-                    <Table.HeaderCell
-                      sorted={column === 'updatedAt' ? direction : null}
-                      onClick={this.handleSort('updatedAt')}
-                      >
-                      <FormattedMessage id="app.story.stats.table.updated"  defaultMessage={'Updated'} />
-                      </Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
@@ -159,8 +153,7 @@ class Stats extends Component {
                       <Table.Cell>{uniqueId}</Table.Cell>
                       <Table.Cell>{<JSONPretty className="htmlList" style={{maxHeight: '10vh', maxWidth: '25vw'}} data={values} ></JSONPretty>}</Table.Cell>
                       <Table.Cell>{<JSONPretty className="htmlList" style={{maxHeight: '10vh', maxWidth: '25vw'}} data={data} ></JSONPretty>}</Table.Cell>
-                      <Table.Cell>{Moment(createdAt).format('LL')}</Table.Cell>
-                      <Table.Cell>{Moment(updatedAt).format('LL')}</Table.Cell>
+                      <Table.Cell>{Moment(createdAt).format('l h:mm:ss')}</Table.Cell>
                     </Table.Row>
                   ))}
                 </Table.Body>
