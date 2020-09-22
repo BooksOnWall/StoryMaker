@@ -1390,7 +1390,6 @@ app.get('/assets/artists/:artistId/:name', function (req, res, next) {
 app.get('/assets/stories/:storyId/design/banner/:name', function (req, res, next) {
   var sid = req.params.storyId;
   var fileName = req.params.name;
-
   var path = './public/stories/' + sid + '/design/banner/';
 
   var options = {
@@ -1924,18 +1923,8 @@ app.get('/stories/:storyId/theme', function(req, res, next) {
 //Uploading single file banner
 app.post('/stories/:storyId/banner', function (req, res, next) {
   const sid = req.params.storyId;
-  const path = './public/stories/'+sid+'/design/banner';
+  const path = __dirname + '/public/stories/'+sid+'/design/banner';
   // check if directory banner exist delete it and if not create it
-  if (!fs.existsSync(path)) {
-    // create directory banner
-    fs.mkdirSync(path, 0o744);
-    console.log('Stories design banner directory created successfully')
-  } else {
-    //remove and recreate directory banner
-    rimraf(path,function (e) {
-      fs.mkdirSync(path, 0o744);
-    });
-  }
   var storage = multer.diskStorage({
       destination: function(req, file, cb){
         cb(null, path);
@@ -1943,8 +1932,11 @@ app.post('/stories/:storyId/banner', function (req, res, next) {
       filename: function (req, file, cb) {
         cb(null, file.originalname);
       }
-    });
-    var upload = multer({ storage : storage}).any();
+  });
+  var upload = multer({ storage : storage}).any();
+  if (!fs.existsSync(path)) {
+    // create directory banner
+    fs.mkdirSync(path, 0o744, true);
     upload(req,res,function(err) {
         if(err) {
           return res.end("Error uploading file." + err);
@@ -1953,22 +1945,28 @@ app.post('/stories/:storyId/banner', function (req, res, next) {
           return res.json({ story: sid, msg: 'banner uploaded  successfully' })
         }
     });
+
+  } else {
+    //remove and recreate directory banner
+    rimraf(path,function (e) {
+      console.log('Stories design banner directory deleted successfully')
+      fs.mkdirSync(path, 0o744, true);
+      upload(req,res,function(err) {
+          if(err) {
+            return res.end("Error uploading file." + err);
+          } else {
+            // update db
+            return res.json({ story: sid, msg: 'banner uploaded  successfully' })
+          }
+      });
+    });
+  }
 });
 //Uploading multiple files
 app.post('/stories/:storyId/gallery', function (req, res, next) {
   let sid = req.params.storyId;
-  const path = './public/stories/'+sid+'/design/gallery';
+  const path = __dirname + '/public/stories/'+sid+'/design/gallery';
   // delete folder recursively
-  if (fs.existsSync(path)) {
-    rimraf(path, function (e) {
-      fs.mkdirSync(path, 0o744);
-    });
-  } else {
-    fs.mkdirSync(path, 0o744);
-    console.log('Stories design gallery directory created successfully')
-  }
-  // check if file exist
-
   var storage = multer.diskStorage({
       destination: function(req, file, cb){
         cb(null, path );
@@ -1977,7 +1975,36 @@ app.post('/stories/:storyId/gallery', function (req, res, next) {
         cb(null, file.originalname);
       }
     });
-    var upload = multer({ storage : storage}).any();
+  var upload = multer({ storage : storage}).any();
+  if (fs.existsSync(path)) {
+    rimraf(path, function (e) {
+      fs.mkdirSync(path, 0o744, true);
+      upload(req,res,function(err) {
+        if(err) {
+          return res.end("Error uploading file." + err);
+        } else {
+          let images=[];
+           req.files.forEach( function(file) {
+             console.log('file', file);
+             images.push({
+                 'name': file.originalname,
+                 'size': file.size,
+                 'type': file.mimetype,
+                 'path': 'assets/stories/'+ sid + '/design/gallery/' + file.originalname,
+                 'src': serverUrl + 'assets/stories/'+ sid + '/design/gallery/' + file.originalname
+             });
+            });
+            console.log('gallery',images);
+          // updateGalleryThemeFromStory({sid: sid, field: 'design_options', fieldParam: 'gallery', fieldValue: images}).then((story) => {
+          //   //bot.telegram.sendMessage(chat_id,sid + " " + ssid + "Stage updated successfully");
+
+            return res.json({  msg: 'Story gallery theme updated successfully' })
+          // });
+        }
+      });
+    });
+  } else {
+    fs.mkdirSync(path, 0o744, true);
     upload(req,res,function(err) {
       if(err) {
         return res.end("Error uploading file." + err);
@@ -2001,6 +2028,12 @@ app.post('/stories/:storyId/gallery', function (req, res, next) {
         // });
       }
     });
+    console.log('Stories design gallery directory created successfully')
+  }
+  // check if file exist
+
+
+
 });
 app.get('/stories/:storyId/publish', async function(req, res, next) {
   try {

@@ -177,6 +177,75 @@ class storyMap extends Component {
     this.getStory = this.getStory.bind(this);
     this.saveTheme = this.saveTheme.bind(this);
   };
+  uploadObjects = async (e, objType) => {
+      //objType === [images, videos, pictures, audios]
+      let loadingState = objType.toLowerCase() + 'Loading';
+      console.log(loadingState);
+      let stageObject = 'stage'+[objType];
+      let objectName = objType.toLowerCase();
+
+      this.setState({ [loadingState] : true});
+      let objects = this.state[stageObject];
+
+      let url=null;
+      switch(objType) {
+        case 'Banners':
+        url=this.state.storyBannerUploadUrl;
+        break;
+        case 'Gallery':
+        url=this.state.storyGalleryUploadUrl;
+        break;
+        default:
+        break;
+      }
+      if (objects  && objects.length > 0) {
+        try {
+          let sobjects =[];
+
+          Array.from(objects).forEach(file => {
+            sobjects.push({
+              object : {
+                'name': file.name,
+                'size': file.size,
+                'type': file.type,
+                'src': 'images/stories/'+ this.state.sid + '/stages/' + this.state.ssid + '/' + objectName + '/' + file.name
+              }
+            });
+          });
+          let files = JSON.stringify(objects);
+          let formData = new FormData();
+          for(var x = 0; x < objects.length; x++) {
+            formData.append('file', objects[x]);
+          };
+          await fetch(url, {
+            method: 'POST',
+            headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin'},
+            files: files,
+            body: formData
+          })
+          .then(response => {
+            if (response && !response.ok) { throw new Error(response.statusText);}
+            return response.json();
+          })
+          .then(data => {
+              if(data) {
+
+
+              } else {
+                console.log('No Data received from the server');
+              }
+          })
+          .catch((error) => {
+            // Your error is here!
+            console.log({error})
+          });
+        } catch(e) {
+          console.log(e.message);
+        }
+      }
+      //this.setState({ [loadingState] : false});
+      console.log(objects);
+  }
   getStory = async () => {
     this.setState({loading: true});
     try {
