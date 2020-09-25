@@ -23,7 +23,8 @@ const sceneOptions = [
   { key: 4, value: 4, text: 'Portal' },
   { key: 5, value: 5, text: 'Picture inside Video' },
   { key: 6, value: 6, text: 'Pictures inside Video' },
-  { key: 7, value: 7, text: '3D Scene' }
+  { key: 7, value: 7, text: '3D Scene' },
+  { key: 8, value: 8, text: 'GPS Scene' },
 ];
 const PIV = ({dimension, picture, video, videoPosition, picturePosition, handlePositionChange, savePositions, sceneType, meters2pixels, alignItems}) => {
   // video fill the whole screen and image is centered , positions apply from this state
