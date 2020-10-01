@@ -1873,7 +1873,7 @@ class stage extends Component {
       if(!stage.pictures || stage.pictures.length === 0 ) {
         stage.scene_options.pictures = [];
       }
-      if(!vids || vids.length === 0 || stage.scene_options.videos.length !== stage.videos.length) {
+      if(!vids || vids.length === 0 ) {
         stage.scene_options.videos = [];
       }
 
@@ -1993,9 +1993,9 @@ class stage extends Component {
               },
 
             });
-            console.log('data', data);
+            console.log('getStage', data);
 
-            this.setState({initialSValues: data,loading: false });
+            this.setState({initialSValues: data,loading: false, });
 
             this.mergeTasks('Images', data.images);
             this.mergeTasks('Pictures', data.pictures);
