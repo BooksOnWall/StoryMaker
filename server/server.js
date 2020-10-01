@@ -1154,10 +1154,10 @@ if(hasbot) {
 
   bot.hears('hi', (ctx) => ctx.reply('Hey there'));
 
-  bot.hears('patricie', (ctx) => {
-	ctx.reply('Subito Presto !!!');
-  	ctx.replyWithPhoto({source: fs.createReadStream('public/bot/patricie.jpg')}, {caption: 'Yo Patricie'})
-  });
+ // bot.hears('patricie', (ctx) => {
+//	ctx.reply('Subito Presto !!!');
+ // 	ctx.replyWithPhoto({source: fs.createReadStream('public/bot/patricie.jpg')}, {caption: 'Yo Patricie'})
+//  });
   bot.command('album', (ctx) => {
     ctx.replyWithMediaGroup([
       {
