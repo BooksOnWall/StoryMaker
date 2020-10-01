@@ -1227,7 +1227,7 @@ class stage extends Component {
         videos: videos,
         scene3d: [],
       };
-
+      console.log(scene_options);
       await fetch(this.state.stagesURI +'/'+ this.state.ssid, {
         method: 'post',
         credentials: 'same-origin',
