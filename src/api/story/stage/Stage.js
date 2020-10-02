@@ -1337,7 +1337,8 @@ class stage extends Component {
     this.setState({videoPosition});
   }
   handleVideoPosition = (value, field ) => {
-    let {videoPosition} = this.state;
+    let {videoPosition, stage} = this.state;
+    if (videoPosition.name === null ) videoPosition.name = stage['onPictureMatch'][0].name;
     videoPosition[field] = value;
     if(field === 'left') {
       videoPosition.right = 0;
