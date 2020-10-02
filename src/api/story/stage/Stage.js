@@ -1864,9 +1864,10 @@ class stage extends Component {
     }
   }
   setObjectsPosition = async (stage) => {
+    const {pIndex} = this.state;
     try {
       console.log(stage.onPictureMatch);
-      let vids = (stage.onPictureMatch && stage.onPictureMatch !== null  && stage.onPictureMatch.length > 0) ? stage.onPictureMatch.filter((p,i) => (p.type === 'videos')) : null;
+      let vids = (stage.onPictureMatch && stage.onPictureMatch !== null  && stage.onPictureMatch.length > 0) ? stage.onPictureMatch.filter((p,i) => (p.type === 'video')) : null;
       console.log(vids);
       console.log('scene_option from db',stage.scene_options);
       // check if we have the same number of pictures than scene_options.pictures
@@ -1878,7 +1879,7 @@ class stage extends Component {
       }
 
       if(!stage.scene_options || stage.scene_options === null ) {
-        let pictures = (stage.pictures && stage.pictures.length > 0 ) ? stageOptions.pictures.map((p,i) => ({
+        let pictures = (stage.pictures && stage.pictures.length > 0 ) ? stage.pictures.map((p,i) => ({
           name: (p && p.name) ? p.name : null,
           width: 5,
           height: 4,
@@ -1917,9 +1918,9 @@ class stage extends Component {
         stage.scene_options['videos'] = videos;
         this.setState({stage});
       }
-      console.log('scene_options updated', stage.scene_options);
+      console.log('scene_options video updated', stage.scene_options);
       this.setState({
-        picturePosition: (stage.scene_options && stage.scene_options.pictures && stage.scene_options.pictures.length > 0 ) ? stage.scene_options.pictures[this.state.pIndex] : {
+        picturePosition: (stage.scene_options && stage.scene_options.pictures && stage.scene_options.pictures.length > 0 ) ? stage.scene_options.pictures[pIndex] : {
           name: null,
           width: 5,
           height: 4,
@@ -1933,7 +1934,7 @@ class stage extends Component {
           rotateAngle: 0,
           mode: 'left'
         },
-        videoPosition: (stage.scene_options && stage.scene_options.videos && stage.scene_options.videos.length > 0  ) ? stage.scene_options.videos[0] : {
+        videoPosition: (stage.scene_options && stage.scene_options.videos && stage.scene_options.videos.length > 0  ) ? stage.scene_options.videos[pIndex] : {
           name: null,
           width: 5,
           height: 4,
@@ -1948,6 +1949,7 @@ class stage extends Component {
           mode: 'left'
         }
       });
+      console.log('videoPosition updated', this.state.videoPosition);
     } catch(e) {
       console.log(e);
     }
