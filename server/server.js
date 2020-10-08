@@ -789,7 +789,8 @@ const checkPreFlight =  (obj) => {
         // pictures match min/max pictures count
         check = (obj.pictures && obj.pictures.length >= 1 && obj.pictures.length <= 5) ? {ssid: obj.id, category: 'pictures', condition: 'Pictures number must be between 1 and 5 ' , check: true} : {ssid: obj.id, category: 'pictures', condition: 'Pictures number must be between 1 and 5 ' , check: false,  error:  'Pictures count: ' + (obj.pictures) ? obj.pictures.length : 'null'};
         log.push(check);
-        check = (obj.pictures && obj.pictures.length >= 1 && obj.pictures[0].rank && obj.pictures[0].rank >= 75 ) ? {ssid: obj.id, category: 'pictures', condition: 'Pictures arcore ImgRank must be at least 75 : Current value is '+ obj.pictures[0].rank , check: true} : {ssid: obj.id, category: 'pictures', condition: 'Pictures arcore ImgRank must be at least 75  : Current value is '+ obj.pictures[0].rank , check: false,  error:  'Pictures rank: ' + (obj.pictures) ? obj.pictures[0].rank : 'null'};
+        // pictures rank
+        check = (obj.pictures && obj.pictures.length > 0 && obj.pictures[0].rank && obj.pictures[0].rank >= 75 ) ? {ssid: obj.id, category: 'pictures', condition: 'Pictures arcore ImgRank must be at least 75 : Current value is '+ obj.pictures[0].rank , check: true} : {ssid: obj.id, category: 'pictures', condition: 'Pictures arcore ImgRank must be at least 75  : Current value is '+ obj.pictures[0].rank , check: false,  error:  'Pictures rank: ' + (obj.pictures) ? obj.pictures[0].rank : 'null'};
         log.push(check);
       } else {
         //error
