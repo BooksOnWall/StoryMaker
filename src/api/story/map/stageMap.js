@@ -3,6 +3,10 @@ import {
   Segment,
   Dimmer,
   Loader,
+  Input,
+  Form,
+  Icon,
+  Button,
 } from 'semantic-ui-react';
 
 import MapGL, {Marker, Popup, FlyToInterpolator} from 'react-map-gl';
@@ -14,10 +18,19 @@ import * as d3 from 'd3-ease';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MAP_STYLE from './map-style-basic-v8.json';
 import StagePin from './stagePin';
-
+import { JsonEditor as Editor } from 'jsoneditor-react';
+import 'jsoneditor-react/es/editor.min.css';
 let MapboxAccessToken = process.env.REACT_APP_MAT;
 
+const Coordinates = ({position, handlePosition}) => {
+  return (
+    <Editor
+        value={position}
+        onChange={(e) => handlePosition(e)}
+    />
 
+  );
+}
 class stageMap extends Component {
   constructor(props) {
     super(props);
@@ -86,6 +99,12 @@ class stageMap extends Component {
   }
   toggleLoading(val) {
     this.setState({loading: val});
+  }
+  handlePosition = (e) => {
+    const position = e;
+    this.setState({stagePosition: position});
+    this.renderStageMarker(position);
+    this.props.setStageLocation(position);
   }
   onClickMap = (map, evt) => {
     this.setState({stagePosition: map.lngLat});
@@ -187,6 +206,7 @@ handleOnResult = event => {
         <Dimmer.Dimmable as={Segment} blurring dimmed={this.state.loading}>
           <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
             <Loader active={loading} >Get map info</Loader>
+            <Coordinates handlePosition={this.handlePosition} position={this.props.stageLocation}/>
             <MapGL
               {...viewport}
               width="inherit"
