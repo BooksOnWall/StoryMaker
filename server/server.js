@@ -787,7 +787,7 @@ const checkPreFlight =  (obj) => {
         check = (maxWidth <= 2000 && maxHeight <= 2000) ? {ssid: obj.id, category: 'pictures', condition: 'Picture dimension cannot be more than 2000x2000' , check: true} : {ssid: obj.id, category: 'pictures', condition: 'Picture dimension cannot be more than 2000x2000  ' , check: false,  error: err };
         log.push(check);
         // pictures match min/max pictures count
-        check = (obj.pictures && obj.pictures.length >= 5 && obj.pictures.length <= 10) ? {ssid: obj.id, category: 'pictures', condition: 'Pictures number must be between 5 and 10 ' , check: true} : {ssid: obj.id, category: 'pictures', condition: 'Pictures number must be between 5 and 10 ' , check: false,  error:  'Pictures count: ' + (obj.pictures) ? obj.pictures.length : 'null'};
+        check = (obj.pictures && obj.pictures.length >= 1 && obj.pictures.length <= 5) ? {ssid: obj.id, category: 'pictures', condition: 'Pictures number must be between 1 and 5 ' , check: true} : {ssid: obj.id, category: 'pictures', condition: 'Pictures number must be between 1 and 5 ' , check: false,  error:  'Pictures count: ' + (obj.pictures) ? obj.pictures.length : 'null'};
         log.push(check);
       } else {
         //error

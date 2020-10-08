@@ -28,7 +28,6 @@ const Coordinates = ({position, handlePosition}) => {
         value={position}
         onChange={(e) => handlePosition(e)}
     />
-
   );
 }
 class stageMap extends Component {
