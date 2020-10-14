@@ -1912,7 +1912,7 @@ class stage extends Component {
             }
           ));
         }
-
+        if(!stage.scene_options) stage.scene_options= {};
         stage.scene_options['pictures'] = pictures;
         stage.scene_options['videos'] = videos;
         this.setState({stage});
