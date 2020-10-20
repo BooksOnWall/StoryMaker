@@ -1320,6 +1320,7 @@ app.get('/zip/:sid', function(req, res){
       filename: 'BooksOnWall_Story_'+ sid +'.zip'
     }).then(function(obj, bot, chat_id){
       console.log('Story id: '+ sid +' Zip size', prettyBytes(obj.size));
+      console.log('Error zip files ignored ', obj.ignored);
       if (obj.ignored && obj.ignored.length !== 0) console.log('Ignored Files', obj.ignored);
     })
     .catch(function(err){
