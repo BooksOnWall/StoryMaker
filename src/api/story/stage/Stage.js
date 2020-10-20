@@ -1867,10 +1867,9 @@ class stage extends Component {
   setObjectsPosition = async (stage) => {
     const {pIndex} = this.state;
     try {
-      console.log(stage.onPictureMatch);
+
       let vids = (stage.onPictureMatch && stage.onPictureMatch !== null  && stage.onPictureMatch.length > 0) ? stage.onPictureMatch.filter((p,i) => (p.type === 'video')) : null;
-      console.log(vids);
-      console.log('scene_option from db',stage.scene_options);
+
       // check if we have the same number of pictures than scene_options.pictures
       if(!stage.pictures || stage.pictures.length === 0 ) {
         stage.scene_options.pictures = [];
@@ -1913,13 +1912,12 @@ class stage extends Component {
             }
           ));
         }
-        console.log('pictures',pictures);
-        console.log('videos',videos);
+        if(!stage.scene_options) stage.scene_options= {};
         stage.scene_options['pictures'] = pictures;
         stage.scene_options['videos'] = videos;
         this.setState({stage});
       }
-      console.log('scene_options video updated', stage.scene_options);
+
       this.setState({
         picturePosition: (stage.scene_options && stage.scene_options.pictures && stage.scene_options.pictures.length > 0 ) ? stage.scene_options.pictures[pIndex] : {
           name: null,
