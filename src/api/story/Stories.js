@@ -30,7 +30,9 @@ class Stories extends Component {
     this.setState({loading: true});
     await fetch(this.state.stories, {
       method: 'get',
-      headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'}
+      'Access-Control-Allow-Origin': '*',
+      credentials: 'same-origin',
+      'Content-Type':'application/json'
     })
     .then(response => {
       if (response && !response.ok) { throw new Error(response.statusText);}
