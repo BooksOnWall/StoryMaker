@@ -1,0 +1,90 @@
+html {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.navbar a {
+ text-decoration: none;
+ align-self: flex-end;
+}
+.navbar {padding: 10px 30px 0 0 }
+.navbar a:hover {
+}
+input#name, input#email, input#subject, input#combo-box-demo, input#subjectTextField {
+  border: 0px solid transparent;
+}
+.hLCrav{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center
+}
+.rnc {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  background: transparent !important;
+  border-radius: 3px !important;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.rnc-row {
+  display: flex;
+  align-items: stretch;
+  margin: 0 0 10px 0;
+}
+
+.rnc-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 0 0 0 10px;
+}
+
+.rnc-canvas {
+  box-sizing: border-box;
+  background-color: #fff;
+  border-radius: 3px !important;
+}
+
+.rnc-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  background: transparent !important;
+  color: inherit;
+  border: none;
+  padding: 0;
+  width: 25px;
+  height: 20px;
+  box-sizing: border-box;
+  border-radius: 3px !important;
+}
+.rnc-button:hover {
+  background: rgba(255,255,255, 0.5) !important ;
+}
+
+.rnc-button svg {
+  width: 1em;
+  height: 1em;
+  fill: #fff !important;
+}
+
+.hLCrav .rnc-input {
+  border: 2px solid #fff !important;
+  padding: 10px 6px;
+  font-size: inherit;
+  font-family: inherit;
+  border-radius: 3px !important;
+  background: transparent;
+  color: #fff !important;
+}
