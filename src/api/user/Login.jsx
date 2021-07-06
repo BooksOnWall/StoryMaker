@@ -127,7 +127,7 @@ const loginTraductions = defineMessages({
         }}
       >
           <div className={classes.paper}>
-  
+
             <Typography color="textSecondary" variant="h6" component="h2">{messages.login.title}</Typography>
             <TextField
               color="secondary"
@@ -188,7 +188,7 @@ const loginTraductions = defineMessages({
 
   login = async () => {
     const { apiURL, email, password } = this.state;
-    const fetchURL = apiURL + '/auth/local';
+    const fetchURL = apiURL + '/login';
     this.setState({loading: true});
     console.log(email);
     console.log(password);

@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "StageMaker",
+  "name": "StageMaker let you create augmented reality scenes",
   "icons": [
     {
       "src": "favicon.ico",
