@@ -8,6 +8,9 @@ import {
     makeStyles
 } from '@material-ui/core';
 extend({ OrbitControls });
+
+const Fab = loadable(() => import('../template/menu'));
+
 const useStyles = makeStyles((theme) => ({
 root: {
   with: '100vw',
@@ -39,6 +42,7 @@ const HomePage = () => {
   const classes = useStyles();
   return (
     <Box className={classes.root}>
+    <Fab />
     <Canvas shadowMap  camera={{ position: [2, 2, 2] }}>
       <Controls />
       <Plane />
