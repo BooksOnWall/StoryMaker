@@ -1,31 +1,50 @@
-import React from 'react';
-import { Canvas } from '@react-three/fiber';
-import { editable as e, configure } from 'react-three-editable';
-// Import your previously exported state
-import editableState from '../utils/default_editableState.json';
+import React, { Suspense } from 'react';
+import { Canvas, extend, useThree } from '@react-three/fiber';
+import { OrbitControls, Environment } from '@react-three/drei';
 
-const bind = configure({
-  // Enables persistence in development so your edits aren't discarded when you close the browser window
-  enablePersistence: true,
-  // Useful if you use r3e in multiple projects
-  localStorageNamespace: 'StageMaker',
-});
-const HomePage = () => (
-  <Canvas onCreated={bind({ state: editableState })}>
-      <ambientLight intensity={0.5} />
-      {/* Mark objects as editable. */}
-      {/* Properties in the code are used as initial values and reset points in the editor. */}
-      <e.spotLight
-        position={[10, 10, 10]}
-        angle={0.15}
-        penumbra={1}
-        uniqueName="Spotlight"
-      />
-      <e.pointLight uniqueName="PointLight" />
-      <e.mesh uniqueName="Box">
-        <boxBufferGeometry />
-        <meshStandardMaterial color="orange" />
-      </e.mesh>
+import loadable from '@loadable/component';
+import {
+  Box,
+    makeStyles
+} from '@material-ui/core';
+extend({ OrbitControls });
+const useStyles = makeStyles((theme) => ({
+root: {
+  with: '100vw',
+  height: '100vh',
+  margin: 0,
+  padding: 0,
+  overflow: 'hidden',
+  background: '#041830',
+},
+}));
+const Plane = () => (
+  <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.5, 0]} receiveShadow>
+    <planeBufferGeometry attach="geometry" args={[20, 20]} />
+    <meshBasicMaterial attach="material" color="#082444" />
+  </mesh>
+);
+const Controls = () => {
+  const { camera, gl } = useThree();
+  return (
+    <OrbitControls
+      enableZoom={false}
+      maxPolarAngle={Math.PI / 3}
+      minPolarAngle={Math.PI / 3}
+      args={[camera, gl.domElement]}
+     />
+  )
+}
+const HomePage = () => {
+  const classes = useStyles();
+  return (
+    <Box className={classes.root}>
+    <Canvas shadowMap  camera={{ position: [2, 2, 2] }}>
+      <Controls />
+      <Plane />
+      <gridHelper />
     </Canvas>
-)
+    </Box>
+  )
+}
 export default HomePage;
