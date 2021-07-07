@@ -151,14 +151,6 @@ let theme = createTheme(adaptV4Theme({
         borderBottomColor: '#FF9900',
       }
     },
-    MuiSpeedDialAction :{
-      staticTooltipLabel: {
-        styleOverrides: {
-          backgroundColor: 'transparent',
-          color: '#FFF',
-        }
-      }
-    },
     MuiDivider: {
       styleOverrides: {
         backgroundColor: "#FEFEFE"
@@ -171,6 +163,19 @@ let theme = createTheme(adaptV4Theme({
             fontFamily: '"Roboto Condensed", Helvetica, Arial, sans-serif',
         }
       }
+    },
+    MuiSpeedDialAction:{
+      styleOverrides: {
+        backgroundColor: 'transparent',
+        color: '#FFF',
+      },
+      '&.MuiSpeedDialAction-staticTooltipLabel': {
+        styleOverrides: {
+          backgroundColor: 'transparent',
+          color: '#FFF',
+        }
+      }
+
     },
     MuiInputBase: {
       formControl:{

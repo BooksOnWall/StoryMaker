@@ -19,6 +19,10 @@ body {
 input#name, input#email, input#subject, input#combo-box-demo, input#subjectTextField {
   border: 0px solid transparent;
 }
+.MuiSpeedDialAction .MuiSpeedDialAction-staticTooltipLabel {
+  background-color: 'transparent !important';
+  color: '#FFF';
+}
 .hLCrav{
   display: flex;
   flex-direction: column;

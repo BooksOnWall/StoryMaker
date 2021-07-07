@@ -15,7 +15,7 @@
     "@material-ui/core": "^5.0.0",
     "@material-ui/icons": "^5.0.0",
     "@material-ui/lab": "^5.0.0",
-    "@material-ui/styles": "^4.11.4",
+    "@material-ui/styles": "^5.0.0",
     "@react-icons/all-files": "^4.1.0",
     "@react-three/drei": "^7.0.1",
     "@react-three/fiber": "^7.0.1",
