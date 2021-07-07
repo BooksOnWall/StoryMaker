@@ -101,7 +101,7 @@ const Layers = ({toggleDrawer}) => {
         [classes.fullList]: anchor === 'top' || anchor === 'bottom',
       })}
       role="presentation"
-      //onClick={toggleDrawer(anchor, false)}
+      onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
     <TreeView
