@@ -11238,6 +11238,11 @@ thunky@^1.0.2:
   resolved "https://registry.yarnpkg.com/thunky/-/thunky-1.1.0.tgz#5abaf714a9405db0504732bbccd2cedd9ef9537d"
   integrity sha512-eHY7nBftgThBqOyHGVN+l8gF0BucP09fMo0oO/Lb0w1OF80dJv+lDVpXG60WMQvkcxAkNybKsrEIE3ZtKGmPrA==
 
+timeline-editor-react@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/timeline-editor-react/-/timeline-editor-react-1.0.2.tgz#58790bcfe32bebe6b92e3aa0ceb23c27de95419f"
+  integrity sha512-qM3PSZjToGVmUQCj/IBwai/xndWaEO86P2uQGYG+18f25Y8fsUt8qSDtA+rV4dIUHrI4c9usZ8HDBVfF1bM5Ag==
+
 timers-browserify@^2.0.4:
   version "2.0.12"
   resolved "https://registry.yarnpkg.com/timers-browserify/-/timers-browserify-2.0.12.tgz#44a45c11fbf407f34f97bccd1577c652361b00ee"

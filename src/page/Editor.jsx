@@ -24,7 +24,7 @@ import {
 extend({ OrbitControls });
 
 const Fab = loadable(() => import('../template/menu'));
-
+const Timeline = loadable(() => import('./Timeline'))
 const useStyles = makeStyles((theme) => ({
 root: {
   with: '100vw',
@@ -37,19 +37,22 @@ root: {
 left: {
   position: 'absolute',
   zIndex: 1007,
-  color: '#FFF'
+  color: '#FFF',
+  fontSize: 12,
 },
 right: {
   position: 'absolute',
   zIndex: 1007,
   right: 0,
-  color: '#FFF'
+  color: '#FFF',
+  fontSize: 12,
 },
 bottom: {
   position: 'absolute',
   zIndex: 1007,
   bottom: 0,
-  color: '#FFF'
+  color: '#FFF',
+  fontSize: 12,
 },
 logo:{
   top: 30,
@@ -137,9 +140,9 @@ const Editor = () => {
   );
   return (
     <>
-      <IconButton onClick={toggleDrawer('bottom', true)} className={classes.bottom}><ArrowDownwardIcon fontSize="small" color="primary"/>{"bottom"}</IconButton>
-      <IconButton onClick={toggleDrawer('left', true)} className={classes.left}><MenuOpenIcon fontSize="small" color="primary"/>{"left"}</IconButton>
-      <IconButton onClick={toggleDrawer('right', true)} className={classes.right}><MenuOpenIcon fontSize="small" color="primary"/>{"right"}</IconButton>
+      <IconButton onClick={toggleDrawer('bottom', true)} className={classes.bottom}><ArrowDownwardIcon fontSize="middle" color="primary"/>{"bottom"}</IconButton>
+      <IconButton onClick={toggleDrawer('left', true)} className={classes.left}><MenuOpenIcon fontSize="middle" color="primary"/>{"left"}</IconButton>
+      <IconButton onClick={toggleDrawer('right', true)} className={classes.right}><MenuOpenIcon fontSize="middle" color="primary"/>{"right"}</IconButton>
       <Box className={classes.root}>
         <Fab />
        {['left', 'right', 'bottom'].map((anchor) => (
@@ -150,7 +153,7 @@ const Editor = () => {
              onClose={toggleDrawer(anchor, false)}
              onOpen={toggleDrawer(anchor, true)}
            >
-             {list(anchor)}
+             {(anchor === "bottom") ? <Timeline /> : list(anchor)}
            </SwipeableDrawer>
          </React.Fragment>
        ))}

@@ -34,6 +34,7 @@
     "react-three-editor": "^2.2.1",
     "react-toastify": "^7.0.4",
     "three": "^0.129.0",
+    "timeline-editor-react": "^1.0.2",
     "web-vitals": "^1.0.1",
     "zustand": "^3.5.4"
   },

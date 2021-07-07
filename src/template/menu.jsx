@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
   speedDial: {
     position: 'absolute',
+    width: 12,
     zIndex: 1007,
     '&.MuiSpeedDial-directionUp, &.MuiSpeedDial-directionLeft': {
       bottom: theme.spacing(2),
@@ -48,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
       top: theme.spacing(2),
       left: theme.spacing(2),
     },
+
 
   },
 }));
