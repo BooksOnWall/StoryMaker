@@ -101,7 +101,7 @@ const Layers = ({toggleDrawer}) => {
         [classes.fullList]: anchor === 'top' || anchor === 'bottom',
       })}
       role="presentation"
-      onClick={toggleDrawer(anchor, false)}
+      //onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
     <TreeView
@@ -111,19 +111,19 @@ const Layers = ({toggleDrawer}) => {
       defaultExpandIcon={<PlusSquare />}
       defaultEndIcon={<CloseSquare />}
     >
-      <StyledTreeItem nodeId="1" label="Main">
-        <StyledTreeItem nodeId="2" label="Hello" />
-        <StyledTreeItem nodeId="3" label="Subtree with children">
-          <StyledTreeItem nodeId="6" label="Hello" />
-          <StyledTreeItem nodeId="7" label="Sub-subtree with children">
+      <StyledTreeItem nodeId="1" label="Layers">
+        <StyledTreeItem nodeId="2" label="Lights" />
+        <StyledTreeItem nodeId="3" label="Cameras">
+          <StyledTreeItem nodeId="6" label="Default" />
+          <StyledTreeItem nodeId="7" label="Perpective">
             <StyledTreeItem nodeId="9" label="Child 1" />
             <StyledTreeItem nodeId="10" label="Child 2" />
             <StyledTreeItem nodeId="11" label="Child 3" />
           </StyledTreeItem>
-          <StyledTreeItem nodeId="8" label="Hello" />
         </StyledTreeItem>
-        <StyledTreeItem nodeId="4" label="World" />
-        <StyledTreeItem nodeId="5" label="Something something" />
+        <StyledTreeItem nodeId="8" label="Object 1" />
+        <StyledTreeItem nodeId="4" label="Object 2" />
+        <StyledTreeItem nodeId="5" label="Object 3" />
       </StyledTreeItem>
     </TreeView>
     </div>

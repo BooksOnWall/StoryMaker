@@ -28,6 +28,7 @@ const Drawers = ({state, toggleDrawer}) => {
       <React.Fragment key={"left"}>
         <SwipeableDrawer
           anchor={"left"}
+          variant="persistent"
           open={state.left}
           onClose={toggleDrawer("left", false)}
           onOpen={toggleDrawer("left", true)}
@@ -39,6 +40,7 @@ const Drawers = ({state, toggleDrawer}) => {
       <React.Fragment key={"right"}>
         <SwipeableDrawer
           anchor={"right"}
+          variant="persistent"
           open={state.right}
           onClose={toggleDrawer("right", false)}
           onOpen={toggleDrawer("right", true)}

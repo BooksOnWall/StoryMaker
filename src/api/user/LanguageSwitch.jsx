@@ -14,14 +14,17 @@ const languageOptions = [
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // backgroundColor: theme.palette.primar,
+    backgroundColor: 'transparent',
   },
   list:{
+    position: 'absolute',
+    top: 0,
+    right: '4vh',
     margin: 0,
     padding: 0,
   },
   menulist:{
-    marginTop: 64,
+    marginTop: 0,
     marginLeft: -11,
     padding: 0,
   },
@@ -42,6 +45,7 @@ const useStyles = makeStyles((theme) => ({
 menuItemText:{
 },
 menuList: {
+
   padding: 0,
   margin: 5,
 },
