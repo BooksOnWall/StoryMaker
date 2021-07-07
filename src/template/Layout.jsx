@@ -13,6 +13,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 import ScrollIntoViewIfNeeded from 'react-scroll-into-view-if-needed';
 import './layout.css';
 
@@ -131,6 +133,15 @@ const Layout = ({ children, switchLang, locale, history, allMessages }) => {
     fixedHeight: {
       height: 240,
     },
+    left: {
+      float: 'left'
+    },
+    right: {
+      float: 'right'
+    },
+    bottom: {
+
+    },
     logo:{
       top: 30,
       maxHeight: 90,
@@ -208,13 +219,16 @@ const Layout = ({ children, switchLang, locale, history, allMessages }) => {
 
       <Box className={classes.root}>
         <CssBaseline />
+      {/**
+
         <ScrollIntoViewIfNeeded active={top} options={{behavior: 'smooth', scrollMode: 'if-needed'}}>
-        <AppBar elevation={0}  color="transparent"  position="absolute" className={clsx(classes.appBar)}>
-          <Toolbar variant="regular" disableGutters className={classes.toolbar}>
-            <Header locale={locale} allMessages={allMessages} switchLang={switchLang} history={history}/>
-          </Toolbar>
-        </AppBar>
-        </ScrollIntoViewIfNeeded>
+         <AppBar elevation={0}  color="transparent"  position="absolute" className={clsx(classes.appBar)}>
+           <Toolbar variant="regular" disableGutters className={classes.toolbar}>
+             <Header locale={locale} allMessages={allMessages} switchLang={switchLang} history={history}/>
+           </Toolbar>
+         </AppBar>
+         </ScrollIntoViewIfNeeded>
+      **/}
 
         <main className={classes.content}>
             {children}

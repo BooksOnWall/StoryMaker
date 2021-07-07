@@ -149,6 +149,12 @@ overrides: {
     borderBottomStyle: 'solid',
     borderBottomColor: '#FF9900',
   },
+  MuiSpeedDialAction :{
+    staticTooltipLabel: {
+      backgroundColor: 'transparent',
+      color: '#FFF',
+    }
+  },
   MuiDivider: {
     backgroundColor: "#FEFEFE"
   },

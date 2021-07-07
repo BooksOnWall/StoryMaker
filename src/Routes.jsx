@@ -4,11 +4,11 @@ import {
   Route
 } from "react-router-dom";
 import loadable from '@loadable/component';
-const Home = loadable(() => import('./page/HomePage'));
+const Editor = loadable(() => import('./page/Editor'));
 
 const Routes = ({messages, history, locale}) => (
     <Switch>
-      <Route exact path="/"> <Home history={history} /> </Route>
+      <Route exact path="/"> <Editor history={history} /> </Route>
     </Switch>
 );
 export default Routes
