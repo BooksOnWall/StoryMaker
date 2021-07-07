@@ -1,15 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
 
 import {
-    Avatar,
-    AppBar,
-    Toolbar,
     Popper,
     Grow,
     Paper,
     MenuList,
     Button,
-    IconButton,
     Menu,
     ClickAwayListener,
     MenuItem,
@@ -19,7 +15,6 @@ import {
   } from '@material-ui/core';
 
 import { defineMessages, FormattedMessage, injectIntl } from 'react-intl';
-import logo from '../assets/images/logo.svg';
 import LanguageSwitch from '../api/user/LanguageSwitch';
 import Login from '../api/user/Login';
 import Auth from '../api/user/Auth';
@@ -108,6 +103,15 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: 'noWrap',
     justifyContent: 'space-between',
     width: '100vw'
+  },
+  userMenu: {
+    position: 'absolute',
+    top: 0,
+    right: '7vw',
+    zIndex: 1005,
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'top'
   },
   menuWrapp:{
     display: 'flex',
@@ -224,11 +228,7 @@ const MainMenu = ({history, allMessages, switchLang, goTo,connectOptions, conten
   return (
     <>
     {isSmall &&
-      <AppBar elevation={0} id="appbar-mobile" color="transparent" >
-        <Toolbar elevation={0}  className={classes.toolbar} disableGutters variant='regular' >
-          <IconButton className={classes.logoMobile} value='home' onClick={(e)=> loadPage('/')} edge="start"  color="inherit" aria-label="menu">
-            <Avatar alt="logo" src={logo} />
-          </IconButton>
+          <>
           <LanguageSwitch langs={langs} history={history} allMessages={allMessages} messages={messages} locale={locale} switchLang={switchLang} className={classes.lenguageSwitch} />
           {Auth.isUserAuthenticated()
               ?
@@ -257,22 +257,15 @@ const MainMenu = ({history, allMessages, switchLang, goTo,connectOptions, conten
             handleMenuItemClick={(e, i, m, n) => navigate(e,i,m,n)}
             />
            </Box>
-        </Toolbar>
-      </AppBar>
+           </>
     }
 
     {!isSmall &&
-      <AppBar elevation={0} id="appbar-web" position="relative" color="transparent"  >
-        <Toolbar style={{display: 'flex', justifyContent: 'space-between',}}>
-          <IconButton className={classes.logo} value='home' onClick={(e)=> loadPage('/')} edge="start"  color="inherit" aria-label="menu">
-            <Avatar className={classes.logoIcon}   alt="logo" src={logo} />
-          </IconButton>
-          <Box style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center',}}>
+          <Box className={classes.userMenu} >
           <LanguageSwitch langs={langs} history={history} allMessages={allMessages} messages={messages} locale={locale} switchLang={switchLang} className={classes.lenguageSwitch} />
           {Auth.isUserAuthenticated()
               ?
               <>
-
               <MenuBranch
                 primary="Admin"
                 secondary={adminMenu}
@@ -284,8 +277,6 @@ const MainMenu = ({history, allMessages, switchLang, goTo,connectOptions, conten
             : <Login messages={messages} history={history}/>
            }
            </Box>
-        </Toolbar>
-      </AppBar>
     }
     </>
   )
@@ -369,7 +360,6 @@ const TopMenu = ({intl, pathvalue, hash, authenticated, switchLang, locale , his
         history={history}
         adminMenu={adminMenu}
         messages={messages}
-
         allMessages={allMessages}
         langs={langs}
         loadPage={loadPage}

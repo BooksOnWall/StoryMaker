@@ -1,6 +1,5 @@
 import React, {useState, useLayoutEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
-import clsx from "clsx";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import Header from './Header';
@@ -8,14 +7,9 @@ import Footer from './Footer';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import { theme } from '../theme/theme';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
-import MenuOpenIcon from '@material-ui/icons/MenuOpen';
-import ScrollIntoViewIfNeeded from 'react-scroll-into-view-if-needed';
 import './layout.css';
 
 
@@ -219,17 +213,7 @@ const Layout = ({ children, switchLang, locale, history, allMessages }) => {
 
       <Box className={classes.root}>
         <CssBaseline />
-      {/**
-
-        <ScrollIntoViewIfNeeded active={top} options={{behavior: 'smooth', scrollMode: 'if-needed'}}>
-         <AppBar elevation={0}  color="transparent"  position="absolute" className={clsx(classes.appBar)}>
-           <Toolbar variant="regular" disableGutters className={classes.toolbar}>
-             <Header locale={locale} allMessages={allMessages} switchLang={switchLang} history={history}/>
-           </Toolbar>
-         </AppBar>
-         </ScrollIntoViewIfNeeded>
-      **/}
-
+        <Header locale={locale} allMessages={allMessages} switchLang={switchLang} history={history}/>
         <main className={classes.content}>
             {children}
         </main>

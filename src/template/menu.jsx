@@ -1,17 +1,18 @@
 import React , {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Backdrop from '@material-ui/core/Backdrop';
 import SpeedDial from '@material-ui/lab/SpeedDial';
-import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
+import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
+import PublishIcon from '@material-ui/icons/Publish';
+import TuneIcon from '@material-ui/icons/Tune';
+import MovieIcon from '@material-ui/icons/Movie';
 import FileCopyIcon from '@material-ui/icons/FileCopyOutlined';
 import SaveIcon from '@material-ui/icons/Save';
-import PrintIcon from '@material-ui/icons/Print';
 import ShareIcon from '@material-ui/icons/Share';
-import FavoriteIcon from '@material-ui/icons/Favorite';
+import TranslateIcon from '@material-ui/icons/Translate';
 import logo from '../assets/images/logo.svg';
 
 const useStyles = makeStyles((theme) => ({
@@ -55,11 +56,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const actions = [
-  { icon: <FileCopyIcon color="secondary"/>, name: 'New' },
-  { icon: <SaveIcon color="secondary"/>, name: 'Timeline' },
-  { icon: <SaveIcon color="secondary"/>, name: 'Configure' },
+  { icon: <CreateNewFolderIcon color="secondary"/>, name: 'New' },
+  { icon: <MovieIcon color="secondary"/>, name: 'Timeline' },
+  { icon: <TuneIcon color="secondary"/>, name: 'Configure' },
+  { icon: <TranslateIcon color="secondary"/>, name: 'Translate' },
   { icon: <SaveIcon color="secondary"/>, name: 'Save' },
-  { icon: <PrintIcon color="secondary"/>, name: 'Publish' },
+  { icon: <FileCopyIcon color="secondary"/>, name: 'Duplicate' },
+  { icon: <PublishIcon color="secondary"/>, name: 'Publish' },
   { icon: <ShareIcon color="secondary"/>, name: 'Share' },
 ];
   const Menu = () => {

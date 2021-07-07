@@ -3,11 +3,10 @@ import { Canvas, extend, useThree } from '@react-three/fiber';
 import { OrbitControls, Environment } from '@react-three/drei';
 import clsx from "clsx";
 import IconButton from '@material-ui/core/IconButton';
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import Button from '@material-ui/core/Button';
+import MovieIcon from '@material-ui/icons/Movie';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
@@ -24,7 +23,8 @@ import {
 extend({ OrbitControls });
 
 const Fab = loadable(() => import('../template/menu'));
-const Timeline = loadable(() => import('./Timeline'))
+const Drawers = loadable(() => import('./Drawers'));
+
 const useStyles = makeStyles((theme) => ({
 root: {
   with: '100vw',
@@ -106,57 +106,19 @@ const Editor = () => {
     if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
-
     setState({ ...state, [anchor]: open });
   };
 
-  const list = (anchor) => (
-    <div
-      className={clsx(classes.list, {
-        [classes.fullList]: anchor === 'top' || anchor === 'bottom',
-      })}
-      role="presentation"
-      onClick={toggleDrawer(anchor, false)}
-      onKeyDown={toggleDrawer(anchor, false)}
-    >
-      <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-    </div>
-  );
+
   return (
     <>
-      <IconButton onClick={toggleDrawer('bottom', true)} className={classes.bottom}><ArrowDownwardIcon fontSize="middle" color="primary"/>{"bottom"}</IconButton>
+      <IconButton onClick={toggleDrawer('bottom', true)} className={classes.bottom}><MovieIcon fontSize="middle" color="primary"/><ArrowDownwardIcon fontSize="middle" color="primary"/>{"Timeline"}</IconButton>
       <IconButton onClick={toggleDrawer('left', true)} className={classes.left}><MenuOpenIcon fontSize="middle" color="primary"/>{"left"}</IconButton>
       <IconButton onClick={toggleDrawer('right', true)} className={classes.right}><MenuOpenIcon fontSize="middle" color="primary"/>{"right"}</IconButton>
       <Box className={classes.root}>
         <Fab />
-       {['left', 'right', 'bottom'].map((anchor) => (
-         <React.Fragment key={anchor}>
-           <SwipeableDrawer
-             anchor={anchor}
-             open={state[anchor]}
-             onClose={toggleDrawer(anchor, false)}
-             onOpen={toggleDrawer(anchor, true)}
-           >
-             {(anchor === "bottom") ? <Timeline /> : list(anchor)}
-           </SwipeableDrawer>
-         </React.Fragment>
-       ))}
+        <Drawers state={state} toggleDrawer={toggleDrawer}/>
+
         <Canvas shadowMap  camera={{ position: [2, 2, 2] }}>
           <Controls />
           <Plane />
