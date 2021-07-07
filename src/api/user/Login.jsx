@@ -9,9 +9,11 @@ import {
   Button,
   ButtonGroup,
   IconButton,
-  makeStyles,
   Typography,
   Backdrop } from '@material-ui/core';
+
+import {makeStyles} from '@material-ui/styles';
+
 import { defineMessages, injectIntl } from 'react-intl';
 import Auth from './Auth';
 
@@ -24,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
   },
   paper: {
-    background: theme.palette.primary.mainGradient,
+    // background: theme.palette.primary.mainGradient,
     position: 'relative',
     width: '50vw',
     maxHeight: '40vh',
@@ -36,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     margin: '2vh',
     flexDirection: 'column',
     flexWrap: 'no-wrap',
-    boxShadow: theme.shadows[1],
+    // boxShadow: theme.shadows[1],
     padding: 40,
     borderRadius: 15,
     overflow: 'hidden'
@@ -110,7 +112,7 @@ const loginTraductions = defineMessages({
             onClick={handleOpen}
             className={classes.menuItem}
             >
-            <IconButton className={classes.menuItemButton}><AccountCircleIcon className={classes.menuItemIcon} fontSize="large"/></IconButton>
+            <IconButton className={classes.menuItemButton}><AccountCircleIcon color="secondary" className={classes.menuItemIcon} fontSize="large"/></IconButton>
           </ListItem>
         </List>
       <Modal

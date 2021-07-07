@@ -4,7 +4,7 @@ import {
   Route
 } from "react-router-dom";
 import loadable from '@loadable/component';
-const Editor = loadable(() => import('./page/Editor'));
+const Editor = loadable(() => import('./components/Editor'));
 
 const Routes = ({messages, history, locale}) => (
     <Switch>

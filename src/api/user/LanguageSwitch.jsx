@@ -1,5 +1,6 @@
 import React, {useState} from "react";
-import {List, ListItem, Menu, makeStyles, MenuItem, IconButton} from '@material-ui/core';
+import {List, ListItem, Menu, MenuItem, IconButton} from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
 import { CircleFlag } from 'react-circle-flags';
 import { useLocation } from 'react-router-dom';
 
@@ -13,7 +14,7 @@ const languageOptions = [
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: theme.palette.primar,
+    // backgroundColor: theme.palette.primar,
   },
   list:{
     margin: 0,

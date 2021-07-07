@@ -9,10 +9,10 @@ import {
     Menu,
     ClickAwayListener,
     MenuItem,
-    makeStyles,
     Box,
     Typography
   } from '@material-ui/core';
+import {makeStyles} from '@material-ui/styles';
 
 import { defineMessages, FormattedMessage, injectIntl } from 'react-intl';
 import LanguageSwitch from '../api/user/LanguageSwitch';
@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
   menuItem: {
     borderRadius: 6,
-    color: theme.palette.secondary.contrastText,
+    // color: theme.palette.secondary.contrastText,
     fontWeight: 700,
     textTransform: 'uppercase',
     margin: 3,
@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 6,
     fontWeight: 700,
     background: 'rgba(0, 0, 0,  .1)',
-    color: theme.palette.secondary.contrastText,
+    // color: theme.palette.secondary.contrastText,
     '&:hover': {
         background: 'rgba(0, 0, 0, 0.03)',
         color:  "#000"

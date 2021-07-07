@@ -1,10 +1,10 @@
 import React , {useState} from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/styles';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Backdrop from '@material-ui/core/Backdrop';
-import SpeedDial from '@material-ui/lab/SpeedDial';
-import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
+import SpeedDial from '@material-ui/core/SpeedDial';
+import SpeedDialAction from '@material-ui/core/SpeedDialAction';
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
 import PublishIcon from '@material-ui/icons/Publish';
 import TuneIcon from '@material-ui/icons/Tune';
@@ -43,12 +43,12 @@ const useStyles = makeStyles((theme) => ({
     width: 12,
     zIndex: 1007,
     '&.MuiSpeedDial-directionUp, &.MuiSpeedDial-directionLeft': {
-      bottom: theme.spacing(2),
-      right: theme.spacing(2),
+      // bottom: theme.spacing(2),
+      // right: theme.spacing(2),
     },
     '&.MuiSpeedDial-directionDown, &.MuiSpeedDial-directionRight': {
-      top: theme.spacing(2),
-      left: theme.spacing(2),
+      // top: theme.spacing(2),
+      // left: theme.spacing(2),
     },
 
 

@@ -1,7 +1,7 @@
 import React  from 'react';
 import clsx from "clsx";
 import loadable from '@loadable/component';
-import { makeStyles } from '@material-ui/core';
+import {makeStyles} from '@material-ui/styles';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
@@ -12,6 +12,7 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 
 const Timeline = loadable(() => import('./Timeline'));
+const Layers = loadable(() => import('./Layers'));
 
 
 const useStyles = makeStyles((theme) => ({
@@ -27,34 +28,6 @@ root: {
 
 const Drawers = ({state, toggleDrawer}) => {
   const classes = useStyles();
-  const list = (anchor) => (
-    <div
-      className={clsx(classes.list, {
-        [classes.fullList]: anchor === 'top' || anchor === 'bottom',
-      })}
-      role="presentation"
-      onClick={toggleDrawer(anchor, false)}
-      onKeyDown={toggleDrawer(anchor, false)}
-    >
-      <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-    </div>
-  );
   return (
     <>
       {/** left drawer **/}
@@ -65,7 +38,7 @@ const Drawers = ({state, toggleDrawer}) => {
           onClose={toggleDrawer("left", false)}
           onOpen={toggleDrawer("left", true)}
         >
-          {list("left")}
+          <Layers toggleDrawer={toggleDrawer}/>
         </SwipeableDrawer>
       </React.Fragment>
       {/** right drawer **/}
@@ -76,7 +49,7 @@ const Drawers = ({state, toggleDrawer}) => {
           onClose={toggleDrawer("right", false)}
           onOpen={toggleDrawer("right", true)}
         >
-          {list("right")}
+          <div>toto</div>
         </SwipeableDrawer>
       </React.Fragment>
       {/** bottom drawer **/}
@@ -87,7 +60,7 @@ const Drawers = ({state, toggleDrawer}) => {
           onClose={toggleDrawer("bottom", false)}
           onOpen={toggleDrawer("bottom", true)}
         >
-          <Timeline />
+          <Timeline toggleDrawer={toggleDrawer} />
         </SwipeableDrawer>
       </React.Fragment>
     </>

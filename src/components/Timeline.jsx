@@ -39,5 +39,5 @@ function onUpdateFrames(frames) {
     //TODO: deal with frames
 }
 
-const TimelineTab = () => <Timeline layers={layers} frames={frames} onUpdateFrames={onUpdateFrames}/>;
+const TimelineTab = ({toggleDrawer}) => <Timeline layers={layers} frames={frames} onUpdateFrames={onUpdateFrames}/>;
 export default TimelineTab;

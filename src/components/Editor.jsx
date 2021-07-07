@@ -1,25 +1,15 @@
 import React, { Suspense, useState } from 'react';
 import { Canvas, extend, useThree } from '@react-three/fiber';
 import { OrbitControls, Environment } from '@react-three/drei';
-import clsx from "clsx";
 import IconButton from '@material-ui/core/IconButton';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import MenuOpenIcon from '@material-ui/icons/MenuOpen';
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import MovieIcon from '@material-ui/icons/Movie';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
-
 import loadable from '@loadable/component';
 import {
-  Box,
-    makeStyles
+  Box
 } from '@material-ui/core';
+import {makeStyles} from '@material-ui/styles';
 extend({ OrbitControls });
 
 const Fab = loadable(() => import('../template/menu'));
@@ -69,12 +59,7 @@ drawer: {
   left: 0,
   justifyContent: 'space-between'
 },
-list: {
-  width: 250,
-},
-fullList: {
-  width: 'auto',
-},
+
 }));
 const Plane = () => (
   <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.5, 0]} receiveShadow>
@@ -112,13 +97,12 @@ const Editor = () => {
 
   return (
     <>
-      <IconButton onClick={toggleDrawer('bottom', true)} className={classes.bottom}><MovieIcon fontSize="middle" color="primary"/><ArrowDownwardIcon fontSize="middle" color="primary"/>{"Timeline"}</IconButton>
-      <IconButton onClick={toggleDrawer('left', true)} className={classes.left}><MenuOpenIcon fontSize="middle" color="primary"/>{"left"}</IconButton>
-      <IconButton onClick={toggleDrawer('right', true)} className={classes.right}><MenuOpenIcon fontSize="middle" color="primary"/>{"right"}</IconButton>
+      <IconButton onClick={toggleDrawer('bottom', true)} className={classes.bottom} style={{position: 'absolute', bottom: 0}}><MovieIcon fontSize="large" color="primary"/><ArrowDownwardIcon fontSize="large" color="primary"/>{"Timeline"}</IconButton>
+      <IconButton onClick={toggleDrawer('left', true)} className={classes.left} style={{position: 'absolute', left: 0}}><MenuOpenIcon fontSize="large" color="primary"/>{"left"}</IconButton>
+      <IconButton onClick={toggleDrawer('right', true)} className={classes.right} style={{position: 'absolute', right: 0}}><MenuOpenIcon fontSize="large" color="primary"/>{"right"}</IconButton>
       <Box className={classes.root}>
         <Fab />
         <Drawers state={state} toggleDrawer={toggleDrawer}/>
-
         <Canvas shadowMap  camera={{ position: [2, 2, 2] }}>
           <Controls />
           <Plane />

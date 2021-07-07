@@ -4,7 +4,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import Header from './Header';
 import Footer from './Footer';
-import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
+import { ThemeProvider } from '@material-ui/core/styles';
 import { theme } from '../theme/theme';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Box from '@material-ui/core/Box';
@@ -34,40 +35,6 @@ const Layout = ({ children, switchLang, locale, history, allMessages }) => {
       flexDirection: 'column',
       background: 'transparent'
     },
-    toolbar: {
-      minWidth: 350,
-      width: '100vw',
-      background: 'transparent',
-      minHeight: 150
-    },
-    toolbarIcon: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'flex-end',
-      padding: '0 8px',
-      ...theme.mixins.toolbar,
-    },
-    appBar: {
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-      flexWrap: 'noWrap',
-      overflow: 'inherit',
-      width: '100vw',
-      background: 'transparent',
-      zIndex: theme.zIndex.drawer + 1,
-      transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-      }),
-    },
-    appBarShift: {
-      transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-    },
     menuButton: {
       marginRight: 36,
     },
@@ -77,7 +44,6 @@ const Layout = ({ children, switchLang, locale, history, allMessages }) => {
     title: {
       flexGrow: 1,
     },
-    appBarSpacer: theme.mixins.toolbar,
     content: {
       flexGrow: 1,
       width: '100vw',
@@ -88,7 +54,7 @@ const Layout = ({ children, switchLang, locale, history, allMessages }) => {
       padding: 0,
     },
     wrapper: {
-      paddingTop: theme.spacing(0),
+      // paddingTop: theme.spacing(0),
       paddingBottom: 0,
       margin:'0',
       width: '100vw'
@@ -119,7 +85,7 @@ const Layout = ({ children, switchLang, locale, history, allMessages }) => {
       marginTop: 130,
     },
     paper: {
-      padding: theme.spacing(2),
+      // padding: theme.spacing(2),
       display: 'flex',
       overflow: 'auto',
       flexDirection: 'column',
