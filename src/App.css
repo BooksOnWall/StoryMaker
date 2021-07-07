@@ -23,7 +23,10 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
-
+.MuiSpeedDialAction .MuiSpeedDialAction-staticTooltipLabel {
+  background-color: transparent !important;
+  color: #FFF;
+}
 .App-link {
   color: #61dafb;
 }

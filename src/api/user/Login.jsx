@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
   },
   paper: {
-    // background: theme.palette.primary.mainGradient,
+    background: theme.palette.primary.mainGradient,
     position: 'relative',
     width: '50vw',
     maxHeight: '40vh',
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     margin: '2vh',
     flexDirection: 'column',
     flexWrap: 'no-wrap',
-    // boxShadow: theme.shadows[1],
+    boxShadow: theme.shadows[1],
     padding: 40,
     borderRadius: 15,
     overflow: 'hidden'
@@ -53,6 +53,8 @@ const useStyles = makeStyles((theme) => ({
       background: 'rgba(0, 0, 0, 0)',
     },
     menuItemButton:{
+      position: 'absolute',
+      top: 0,
       padding:0,
       margin: 0,
       '&:hover':{
@@ -112,7 +114,7 @@ const loginTraductions = defineMessages({
             onClick={handleOpen}
             className={classes.menuItem}
             >
-            <IconButton className={classes.menuItemButton}><AccountCircleIcon color="secondary" className={classes.menuItemIcon} fontSize="large"/></IconButton>
+            <IconButton className={classes.menuItemButton} style={{position: 'absolute', top: 0, right: '1vw'}}><AccountCircleIcon color="secondary" className={classes.menuItemIcon} fontSize="large"/></IconButton>
           </ListItem>
         </List>
       <Modal

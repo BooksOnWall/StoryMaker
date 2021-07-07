@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   logo:{
-    position: 'absoute',
+    position: 'absolute',
     zIndex: '1006',
     padding: 0,
     marginTop: 0,
@@ -43,12 +43,12 @@ const useStyles = makeStyles((theme) => ({
     width: 12,
     zIndex: 1007,
     '&.MuiSpeedDial-directionUp, &.MuiSpeedDial-directionLeft': {
-      // bottom: theme.spacing(2),
-      // right: theme.spacing(2),
+      bottom: theme.spacing(2),
+      right: theme.spacing(2),
     },
     '&.MuiSpeedDial-directionDown, &.MuiSpeedDial-directionRight': {
-      // top: theme.spacing(2),
-      // left: theme.spacing(2),
+      top: theme.spacing(2),
+      left: theme.spacing(2),
     },
 
 
@@ -91,7 +91,7 @@ const actions = [
         hidden={hidden}
         direction={'down'}
         icon={<IconButton className={classes.logo} edge="start"  color="primary" aria-label="menu">
-          <Avatar className={classes.logoIcon}   alt="logo" src={logo} />
+          <Avatar className={classes.logoIcon} alt="logo" src={logo} />
         </IconButton>}
         onClose={handleClose}
         onOpen={handleOpen}
