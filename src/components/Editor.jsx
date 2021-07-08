@@ -98,8 +98,8 @@ const Editor = () => {
   return (
     <>
       <IconButton onClick={toggleDrawer('bottom', true)} className={classes.bottom} style={{color: '#FFF', position: 'absolute', bottom: 0}}><MovieIcon fontSize="large" color="primary"/><ArrowDownwardIcon fontSize="large" color="primary"/>{"Timeline"}</IconButton>
-      <IconButton onClick={toggleDrawer('left', true)} className={classes.left} style={{color: '#FFF',position: 'absolute', left: 0}}><MenuOpenIcon fontSize="large" color="primary"/>{"left"}</IconButton>
-      <IconButton onClick={toggleDrawer('right', true)} className={classes.right} style={{color: '#FFF',position: 'absolute', right: 0}}><MenuOpenIcon fontSize="large" color="primary"/>{"right"}</IconButton>
+      <IconButton onClick={toggleDrawer('left', true)} className={classes.left} style={{color: '#FFF',position: 'absolute', left: 0}}><MenuOpenIcon fontSize="large" color="primary"/>{"Layers"}</IconButton>
+      <IconButton onClick={toggleDrawer('right', true)} className={classes.right} style={{color: '#FFF',position: 'absolute', right: 0}}><MenuOpenIcon fontSize="large" color="primary"/>{"Options"}</IconButton>
       <Box className={classes.root}>
         <Fab />
         <Drawers state={state} toggleDrawer={toggleDrawer}/>

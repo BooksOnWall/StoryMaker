@@ -7,7 +7,7 @@ import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 
 const Timeline = loadable(() => import('./Timeline'));
 const Layers = loadable(() => import('./Layers'));
-
+const Options = loadable(() => import('./Options'));
 
 const useStyles = makeStyles((theme) => ({
 root: {
@@ -25,18 +25,21 @@ const Drawers = ({state, toggleDrawer}) => {
   return (
     <>
       {/** left drawer **/}
+
       <React.Fragment key={"left"}>
         <SwipeableDrawer
           anchor={"left"}
-          variant="persistent"
+        //  variant="persistent"
           open={state.left}
           onClose={toggleDrawer("left", false)}
           onOpen={toggleDrawer("left", true)}
         >
-          <Layers toggleDrawer={toggleDrawer}/>
+            <Layers toggleDrawer={toggleDrawer}/>
         </SwipeableDrawer>
       </React.Fragment>
+
       {/** right drawer **/}
+
       <React.Fragment key={"right"}>
         <SwipeableDrawer
           anchor={"right"}
@@ -44,10 +47,12 @@ const Drawers = ({state, toggleDrawer}) => {
           onClose={toggleDrawer("right", false)}
           onOpen={toggleDrawer("right", true)}
         >
-          <div>toto</div>
+          <Options toggleDrawer={toggleDrawer}/>
         </SwipeableDrawer>
       </React.Fragment>
+
       {/** bottom drawer **/}
+
       <React.Fragment key={"bottom"}>
         <SwipeableDrawer
           anchor={"bottom"}
@@ -55,9 +60,10 @@ const Drawers = ({state, toggleDrawer}) => {
           onClose={toggleDrawer("bottom", false)}
           onOpen={toggleDrawer("bottom", true)}
         >
-          <Timeline toggleDrawer={toggleDrawer} />
+            <Timeline toggleDrawer={toggleDrawer} />
         </SwipeableDrawer>
       </React.Fragment>
+
     </>
   )
 }

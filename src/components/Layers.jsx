@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import { alpha } from '@material-ui/core/styles';
 import {makeStyles, withStyles} from '@material-ui/styles';
-
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import TreeView from '@material-ui/lab/TreeView';
 import TreeItem from '@material-ui/lab/TreeItem';
 import Collapse from '@material-ui/core/Collapse';
@@ -96,12 +96,13 @@ const Layers = ({toggleDrawer}) => {
   const classes= useStyles();
   const anchor = "left";
   return (
+    <ClickAwayListener onClickAway={() => toggleDrawer("left", false)}>
     <div
       className={clsx(classes.list, {
         [classes.fullList]: anchor === 'top' || anchor === 'bottom',
       })}
       role="presentation"
-      onClick={toggleDrawer(anchor, false)}
+      //onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
     <TreeView
@@ -127,6 +128,7 @@ const Layers = ({toggleDrawer}) => {
       </StyledTreeItem>
     </TreeView>
     </div>
+  </ClickAwayListener>
   )
 }
 export default Layers;
