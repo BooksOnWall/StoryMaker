@@ -33,7 +33,7 @@ const Layout = ({ children, switchLang, locale, history, allMessages }) => {
     root: {
       display: 'flex',
       flexDirection: 'column',
-      background: 'transparent'
+      backgroundColor: 'transparent'
     },
     menuButton: {
       marginRight: 36,
@@ -179,7 +179,6 @@ const Layout = ({ children, switchLang, locale, history, allMessages }) => {
 
       <Box className={classes.root}>
         <CssBaseline />
-        <Header locale={locale} allMessages={allMessages} switchLang={switchLang} history={history}/>
         <main className={classes.content}>
             {children}
         </main>
@@ -188,8 +187,6 @@ const Layout = ({ children, switchLang, locale, history, allMessages }) => {
             <ArrowUpwardIcon  className={classes.topBtnIcon} fontSize='medium' color="primary" />
           </IconButton>
         }
-
-        <Footer locale={locale} switchLang={switchLang} history={history}/>
       </Box>
   </ThemeProvider >
 )

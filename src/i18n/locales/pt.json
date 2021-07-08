@@ -1,74 +1,7 @@
 {
-  "collaborate": {
-    "create_new_story": "Vamos criar uma nova estória juntos na tua cidade. Ajuda-nos a financiar uma estória BooksOnWall e a promover em conjunto a cultura, o património, a identidade territorial e a inovação tecnológica.",
-    "fund_a_story": "Apoia a criação de um conto ",
-    "how": "Como se tornar um parceiro",
-    "join_us": "Associati",
-    "looking_for": "Uma ligação única com as indústrias criativas: criação literária, audiovisual, música, artes plásticas e visuais com a cidade e os seus conteúdos históricos, culturais e sociais.",
-    "read_more_btn": "Leia mais",
-    "strategic_partner": "Estamos à procura de parceiros estratégicos que queiram participar e contribuir para o crescimento da BooksOnWall.",
-    "title": "Juntos podemos valorizar re-imaginar a tua cidade, através da arte e das novas tecnologias.",
-    "we_are": "Somos uma comunidade de especialistas em arte, meios de comunicação e tecnologias contemporâneas",
-    "we_produce": "Produzimos, dirigimos e gerimos projectos de realidade alargada."
-  },
-  "connect": {
-    "adress": "Magallanes 1064, Montevideo, Uruguay.",
-    "keed_in_touch": "¡Liga-te à nossa rede!, estamos nas redes e também nos pode escrever, estamos ao seu serviço.",
-    "register": "Se quiser juntar-se a nós e colaborar em algum dos projectos, passe por aqui e entraremos em contacto com algumas ideias para participar.",
-    "we_are": "A nossa equipa de gestão de marca está sediada em Montevideo, Uruguai.  Também a comunidade tem actualmente referências em Portugal, Espanha, Egipto e Chile."
-  },
-  "contact": {
-    "contactUs": "¿falemos?",
-    "email": "Correio",
-    "name": "Nome e apelido",
-    "phone": "Número de telefone de contacto",
-    "send": "Enviar",
-    "subject": "Assunto\n"
-  },
-  "create": {
-    "community": "Comunidade",
-    "community_we_are": "Nós somos artistas que adoram trabalhar com outros artistas.",
-    "community_we_create": "Criamos estórias com percursos originais inspirados em vários elementos da cultura local. Cada estória requer a colaboração de numerosas profissões, tais como escritores, argumentistas, muralistas, escultores, designers gráficos, animadores, músicos, contadores de estórias, designers audiovisuais, comunicadores e gestores. Juntos processamos, desenhamos, criamos e optimizamos todo o tipo de conteúdos que compõem a experiência.",
-    "join_us": "Junte-se a nós",
-    "joinus_header": "¿Queres fazer parte de uma equipa de criadores multidisciplinares, inovadores e apaixonados? BooksOnWall é o seu lugar!",
-    "know_more": "saiba mais aqui",
-    "meet_comunity": "Conheça a comunidade",
-    "wokshop_header": "O mundo está cheio de histórias à espera de serem contadas e nós queremos fazê-lo de uma forma muito especial.",
-    "wokshop_subheader": "Vamos criar juntos uma estória aumentada!",
-    "workshop_by_step": "¿Você quer criar um conto na sua cidade? Podemos guiar e acompanhar o processo passo a passo, liga-te a nós.",
-    "workshop_stories": "Workshops para criar um conto BooksOnWall",
-    "your_place": "A comunidade de BooksOnWall é o seu lugar!"
-  },
-  "explore": {
-    "downloadDirect": "Booksonwall-AR - Android",
-    "header": "Vive uma estória através da arte urbana e de novas tecnologias!",
-    "subheader": "Descarrega \"BookSonWall APP\" para apreciar as histórias e experimentar a arte urbana e a realidade aumentada."
-  },
-  "faqs": {
-    "subtitle": "Aqui estão algumas perguntas com as suas respostas..."
-  },
   "footer": {
     "terms": "Termos e Condições",
     "thx_for_support_us": "Thx por nos apoiar"
-  },
-  "home": {
-    "create_togheter": "Vamos criar uma história fantástica",
-    "download_app": "Descarregar Booksonwall AR",
-    "download_app_btn": "Descarregar e iniciar a aventura",
-    "enjoy_btn": "Desfrute da experiência",
-    "enjoy_the_experience": "Desfruta de uma experiência hipermédia e vive uma estória através da arte urbana!",
-    "join_btn": "Junte-se a nós",
-    "know_btn": "Conheça a nossa comunidade",
-    "support_a_story_btn": "Apoiar uma história",
-    "take_a_tour": "¡Faz um percurso pela cidade com a aplicação BooksOnWall (link), desfruta de uma experiência hipermédia e vive uma estória através da arte urbana!",
-    "title": "Arte e cultura urbana",
-    "we_are": "Somos um colectivo artístico que conta estórias em todo o mundo. Ligamos as pessoas aos seus territórios e revalorizamos as suas próprias narrativas através da arte e de tecnologias digitais.",
-    "we_connect": "Ligamos as pessoas aos seus territórios e revalorizamos as suas próprias narrativas através da arte e de tecnologias digitais."
-  },
-  "info": {
-    "more_articles": "Mais artigos",
-    "we_are": "Somos é um colectivo interdisciplinar de criativos que contam histórias através da tecnologia digital e de bens culturais. Criámos a Booksonwall App que, com estímulos visuais e sonoros, interage com as pessoas, tornando-as parte das suas estórias, viajando pela cidade e visitando obras de arte urbana.",
-    "we_create": "Somos é um colectivo interdisciplinar de criativos que contam histórias através da tecnologia digital e de bens culturais. Criámos a Booksonwall App que, com estímulos visuais e sonoros, interage com as pessoas, tornando-as parte das suas estórias, viajando pela cidade e visitando obras de arte urbana."
   },
   "lang": {
     "english": "English",
@@ -85,65 +18,6 @@
     "title": "Acesso Comunitário"
   },
   "menu": {
-    "application": "Aplicação",
-    "applications": "Aplicações",
-    "article": "Articulo",
-    "articles": "Articulos",
-    "associate": "Junte-se",
-    "collaborate": "Vai colaborar",
-    "community": "Comunidade",
-    "connect": "¡Liga-te à nossa rede!",
-    "contact": "Contacto",
-    "content": "Conectar",
-    "create": "Cria",
-    "develop": "Desenvolver + inovar",
-    "download_app": "Descarrega BookSonWall AR",
-    "explore": "Explora",
-    "faqs": "Perguntas frequentes",
-    "history": "História",
-    "home": "Abertura",
-    "info": "Informação",
-    "joinus": "Junta-te a nós",
-    "login": "Conecte-se",
-    "manifest": "Manifesto",
-    "partner": "Parceiro",
-    "press": "Notícias",
-    "project": "Projecto",
-    "projects": "Projectos",
-    "register": "Registar",
-    "service": "Serviço",
-    "services": "Serviços",
-    "stories": "Histórias",
-    "story": "História",
-    "support": "Apoie uma história",
-    "terms": "Termos e Condições",
-    "workshop": "Workshop"
-  },
-  "page": {
-    "meet_the_comunity": "Conheça a comunidade"
-  },
-  "press": {
-    "branding": "logótipos",
-    "presentation": "apresentação",
-    "press_title": "Branding e imprensa realease",
-    "presskit": "kit de imprensa"
-  },
-  "projects": {
-    "complete": "Conclusão",
-    "project_stage": "Fase do projecto",
-    "read_more": "Leia mais",
-    "started": "Iniciado em"
-  },
-  "register": {
-    "register": "Inscreva-se e registe-se!",
-    "send": "enviar"
-  },
-  "stories": {
-    "by_booksonwall": "Por BooksOnWall",
-    "inmersive_storytelling": "Narração imersiva de histórias através da cidade e da arte urbana.",
-    "learn_how": "Aprender como",
-    "read_more_btn": "Leia mais",
-    "see_all": "ver tudo",
-    "story_about": "BooksOnWall Ar é uma biblioteca de histórias, contos ou narrativas imersivas que acontecem em todo o mundo e aqui estão algumas delas que pode experimentar com a aplicação. Esperamos também poder contar uma história na sua cidade em breve. Gostaria de criar uma?"
+    "home": "Abertura"
   }
 }

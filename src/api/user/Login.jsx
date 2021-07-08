@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
   modal: {
     display: 'flex',
     alignItems: 'center',
+    zIndex: 1007,
     justifyContent: 'center',
   },
   paper: {
@@ -47,20 +48,22 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 15,
     overflow: 'hidden'
   },
-    menuItem:{
-      padding: 0,
-      margin: '0',
-      background: 'rgba(0, 0, 0, 0)',
-    },
-    menuItemButton:{
+  menuItem:{
+    zIndex: 1007,
+    display: 'block',
+    position: 'absolute',
+    top: 0,
+    right: 5,
+    padding: 0,
+    margin: '0',
+    background: 'rgba(0, 0, 0, 0)',
+  },
+  menuItemButton:{
+      zIndex: 1007,
+      display: 'block',
       position: 'absolute',
-      top: 0,
       padding:0,
-      margin: 0,
-      '&:hover':{
-        padding: 0
-      }
-    },
+  },
   input: {
     margin: 20,
     minWidth: '300px'
@@ -103,20 +106,10 @@ const loginTraductions = defineMessages({
   const handleClose = () => {
     setOpen(false);
   };
+  console.log(messages);
    return (
      <>
-        <List component="nav" aria-label="Connect" className="nav">
-          <ListItem
-            value="Login"
-            aria-haspopup="true"
-            aria-controls="connect"
-            aria-label="Login"
-            onClick={handleOpen}
-            className={classes.menuItem}
-            >
-            <IconButton className={classes.menuItemButton} style={{position: 'absolute', top: 0, right: '1vw'}}><AccountCircleIcon color="secondary" className={classes.menuItemIcon} fontSize="large"/></IconButton>
-          </ListItem>
-        </List>
+      <IconButton onClick={handleOpen} className={classes.menuItemButton} style={{position: 'absolute',right: '25vw' }}><AccountCircleIcon color="secondary" className={classes.menuItemIcon} fontSize="large"/></IconButton>
       <Modal
         disableEnforceFocus
         aria-labelledby="spring-modal-title"
@@ -165,7 +158,7 @@ const loginTraductions = defineMessages({
           </div>
       </Modal>
     </>
-   );
+  );
  };
  class Login extends Component {
   constructor(props) {
@@ -194,9 +187,6 @@ const loginTraductions = defineMessages({
     const { apiURL, email, password } = this.state;
     const fetchURL = apiURL + '/login';
     this.setState({loading: true});
-    console.log(email);
-    console.log(password);
-    console.log("URL",fetchURL );
     let form= {
         "identifier": email,
         "password": password

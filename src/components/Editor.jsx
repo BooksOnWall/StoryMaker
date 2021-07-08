@@ -14,7 +14,8 @@ extend({ OrbitControls });
 
 const Fab = loadable(() => import('../template/Fab'));
 const Drawers = loadable(() => import('./Drawers'));
-
+const Login = loadable(() => import('../api/user/Login'));
+const LanguageSwitch = loadable(() => import('../api/user/LanguageSwitch'))
 const useStyles = makeStyles((theme) => ({
 root: {
   with: '100vw',
@@ -28,14 +29,14 @@ left: {
   position: 'absolute',
   zIndex: 1007,
   color: '#FFF',
-  fontSize: 12,
+  fontSize: 8,
 },
 right: {
   position: 'absolute',
   zIndex: 1007,
   right: 0,
   color: '#FFF',
-  fontSize: 12,
+  fontSize: 8,
 },
 bottom: {
   position: 'absolute',
@@ -46,9 +47,8 @@ bottom: {
 },
 logo:{
   top: 30,
-  maxHeight: 90,
-  position: 'fixed',
-  zIndex: 999999,
+  fontSize: 12,
+  maxHeight: 60,
 },
 drawer: {
   backgroundColor: 'transparent',
@@ -78,7 +78,7 @@ const Controls = () => {
      />
   )
 }
-const Editor = () => {
+const Editor = ({messages, history, locale, switchLang, allMessages}) => {
   const classes = useStyles();
   const [state, setState] = useState({
     top: false,
@@ -86,7 +86,7 @@ const Editor = () => {
     bottom: false,
     right: false,
   });
-
+  console.log('editor', switchLang);
   const toggleDrawer = (anchor, open) => (event) => {
     console.log('anchor', anchor);
     console.log('open', open);
@@ -96,12 +96,15 @@ const Editor = () => {
     setState({ ...state, [anchor]: open });
   };
 
-
   return (
     <>
-      <IconButton onClick={toggleDrawer('bottom', true)} className={classes.bottom} style={{color: '#FFF', position: 'absolute', bottom: 0}}><MovieIcon fontSize="large" color="primary"/><ArrowDownwardIcon fontSize="large" color="primary"/>{"Timeline"}</IconButton>
-      <IconButton onClick={toggleDrawer('left', true)} className={classes.left} style={{color: '#FFF',position: 'absolute', left: 0}}><MenuOpenIcon fontSize="large" color="primary"/>{"Layers"}</IconButton>
-      <IconButton onClick={toggleDrawer('right', true)} className={classes.right} style={{color: '#FFF',position: 'absolute', right: 0}}><MenuOpenIcon fontSize="large" color="primary"/>{"Options"}</IconButton>
+    <Box style={{display: 'block', top: 0, left: 0, width: 0, height: 0, position: 'abolute', zIndex: '1000', backgroundColor: 'transparent'}}>
+      <Login messages={messages} history={history}/>
+      <LanguageSwitch  switchLang={switchLang} history={history} allMessages={allMessages} messages={messages} locale={locale} className={classes.lenguageSwitch} />
+      <IconButton onClick={toggleDrawer('bottom', true)} className={classes.bottom} style={{fontSize: 9, color: '#FFF', position: 'absolute', bottom: 0}}><MovieIcon fontSize="large" color="primary"/><ArrowDownwardIcon fontSize="large" color="primary"/>{"Timeline"}</IconButton>
+      <IconButton onClick={toggleDrawer('left', true)} className={classes.left} style={{zIndex: 1007, fontSize: 12, color: '#FFF',position: 'absolute', left: 0}}><MenuOpenIcon fontSize="small" color="primary"/>{"Layers"}</IconButton>
+      <IconButton onClick={toggleDrawer('right', true)} className={classes.right} style={{fontSize: 12, color: '#FFF',position: 'absolute', right: 0}}><MenuOpenIcon fontSize="small" color="primary"/>{"Options"}</IconButton>
+    </Box>
       <Box className={classes.root}>
         <Fab toggleDrawer={toggleDrawer}/>
         <Drawers state={state} toggleDrawer={toggleDrawer}/>

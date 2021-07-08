@@ -6,9 +6,11 @@ import {
 import loadable from '@loadable/component';
 const Editor = loadable(() => import('./components/Editor'));
 
-const Routes = ({messages, history, locale}) => (
+const Routes = ({switchLang, messages, history, locale}) => {
+  console.log('routes', switchLang);
+  return (
     <Switch>
-      <Route exact path="/"> <Editor history={history} /> </Route>
+      <Route exact path="/"> <Editor switchLang={switchLang} messages={messages[locale]} allMessages={messages} history={history} locale={locale} /> </Route>
     </Switch>
-);
+)};
 export default Routes

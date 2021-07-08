@@ -98,14 +98,16 @@ const App = () => {
       }
     }
   }
+  console.log('app'+switchLang);
   return (
     <IntlProvider key={locale} locale={locale} messages={messages[locale]}>
-      <Router>
+      <Router >
         <Route render={({ location, history }) => {
           checkLang(location.pathname);
+          console.log('app',switchLang);
           return (
-            <Layout locale={locale} allMessages={messages} switchLang={switchLang} history={history}>
-              <Routes messages={messages} history={history} locale={locale}/>
+            <Layout locale={locale} history={history}>
+              <Routes switchLang={switchLang} messages={messages} history={history} locale={locale}/>
             </Layout>
           );
         }}/>

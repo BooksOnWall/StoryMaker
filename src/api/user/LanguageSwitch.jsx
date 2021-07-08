@@ -3,6 +3,7 @@ import {List, ListItem, Menu, MenuItem, IconButton} from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { CircleFlag } from 'react-circle-flags';
 import { useLocation } from 'react-router-dom';
+import {useIntl} from 'react-intl';
 
 const languageOptions = [
   'en',
@@ -17,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: 'transparent',
   },
   list:{
+    display: 'block',
     position: 'absolute',
     top: 0,
     right: '4vh',
@@ -32,31 +34,38 @@ const useStyles = makeStyles((theme) => ({
     padding: 8,
     margin: '0 5px 0 15px',
     background: 'rgba(0, 0, 0, 0)',
-},
+  },
   menuItemItem: {
+    display: 'block',
     padding: 15
   },
   menuItemButton:{
+    zIndex: 1002,
+    position: 'absolute',
+    top: 0,
+    left: '8vw',
     padding:0,
   },
   menuItemIcon:{
 
   },
-menuItemText:{
-},
-menuList: {
+  menuItemText:{
+  },
+  menuList: {
 
-  padding: 0,
-  margin: 5,
-},
-menuIcon:{
-}
+    padding: 0,
+    margin: 5,
+  },
+  menuIcon:{
+  }
 }));
 
-const LanguageSwitch = ({locale, switchLang, messages, history, allMessages}) => {
+const LanguageSwitch = ({switchLang, history, allMessages, messages, locale}) => {
+  console.log(switchLang);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const {pathname, hash} = useLocation();
+
   const translatePath = (pathname, hash, newLang) => {
     let pathKey = null;
     let hashKey = null;
@@ -86,18 +95,7 @@ const LanguageSwitch = ({locale, switchLang, messages, history, allMessages}) =>
 
   return (
     <>
-
-    <List className={classes.list} disablePadding component="nav" aria-label="Language">
-      <ListItem
-        aria-haspopup="true"
-        aria-controls="Language"
-        aria-label="Languages"
-        className={classes.menuItem}
-        >
-          <IconButton className={classes.menuItemButton} onClick={handleClickListItem}><CircleFlag  className={classes.menuItemIcon} fontSize="large" countryCode={ (locale !== "en") ? locale : "gb" } height="30"/></IconButton>
-      </ListItem>
-    </List>
-
+    <IconButton className={classes.menuItemButton} style={{position: 'absolute',left: '25vw' }} onClick={handleClickListItem}><CircleFlag  className={classes.menuItemIcon}  fontSize="large" countryCode={ (locale !== "en") ? locale : "gb" } height="30"/></IconButton>
     <Menu
       id="Language"
       anchorEl={anchorEl}
