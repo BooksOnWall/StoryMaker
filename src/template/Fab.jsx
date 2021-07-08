@@ -55,21 +55,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const actions = [
-  { icon: <CreateNewFolderIcon color="secondary"/>, name: 'New' },
-  { icon: <MovieIcon color="secondary"/>, name: 'Timeline' },
-  { icon: <TuneIcon color="secondary"/>, name: 'Configure' },
-  { icon: <TranslateIcon color="secondary"/>, name: 'Translate' },
-  { icon: <SaveIcon color="secondary"/>, name: 'Save' },
-  { icon: <FileCopyIcon color="secondary"/>, name: 'Duplicate' },
-  { icon: <PublishIcon color="secondary"/>, name: 'Publish' },
-  { icon: <ShareIcon color="secondary"/>, name: 'Share' },
-];
-  const Menu = () => {
+
+  const Fab = ({toggleDrawer}) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
-
+  const actions = [
+    { icon: <CreateNewFolderIcon color="secondary"/>, name: 'New' },
+    { icon: <MovieIcon color="secondary"/>, name: 'Timeline' , drawer: 'bottom', open: 'true'},
+    { icon: <TuneIcon color="secondary"/>, name: 'Configure' },
+    { icon: <TranslateIcon color="secondary"/>, name: 'Translate' },
+    { icon: <SaveIcon color="secondary"/>, name: 'Save' },
+    { icon: <FileCopyIcon color="secondary"/>, name: 'Duplicate' },
+    { icon: <PublishIcon color="secondary"/>, name: 'Publish' },
+    { icon: <ShareIcon color="secondary"/>, name: 'Share' },
+  ];
   const handleVisibility = () => {
     setHidden((prevHidden) => !prevHidden);
   };
@@ -81,7 +81,13 @@ const actions = [
   const handleClose = () => {
     setOpen(false);
   };
-
+  const handleActionClick = ({e, func, param1, param2}) => {
+    if (typeof func === 'function') {
+      console.log(param1, param2);
+      return toggleDrawer('bottom', true);
+    }
+    handleClose();
+  }
   return (
     <div className={classes.root}>
       <Backdrop open={open} />
@@ -103,11 +109,11 @@ const actions = [
             icon={action.icon}
             tooltipTitle={action.name}
             tooltipOpen
-            onClick={handleClose}
+            onClick={toggleDrawer(action.drawer, action.open)}
           />
         ))}
       </SpeedDial>
     </div>
   );
 }
-export default Menu
+export default Fab

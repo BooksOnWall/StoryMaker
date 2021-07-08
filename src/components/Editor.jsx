@@ -12,7 +12,7 @@ import {
 import {makeStyles} from '@material-ui/styles';
 extend({ OrbitControls });
 
-const Fab = loadable(() => import('../template/menu'));
+const Fab = loadable(() => import('../template/Fab'));
 const Drawers = loadable(() => import('./Drawers'));
 
 const useStyles = makeStyles((theme) => ({
@@ -88,6 +88,8 @@ const Editor = () => {
   });
 
   const toggleDrawer = (anchor, open) => (event) => {
+    console.log('anchor', anchor);
+    console.log('open', open);
     if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
@@ -101,7 +103,7 @@ const Editor = () => {
       <IconButton onClick={toggleDrawer('left', true)} className={classes.left} style={{color: '#FFF',position: 'absolute', left: 0}}><MenuOpenIcon fontSize="large" color="primary"/>{"Layers"}</IconButton>
       <IconButton onClick={toggleDrawer('right', true)} className={classes.right} style={{color: '#FFF',position: 'absolute', right: 0}}><MenuOpenIcon fontSize="large" color="primary"/>{"Options"}</IconButton>
       <Box className={classes.root}>
-        <Fab />
+        <Fab toggleDrawer={toggleDrawer}/>
         <Drawers state={state} toggleDrawer={toggleDrawer}/>
         <Canvas shadowMap  camera={{ position: [2, 2, 2] }}>
           <Controls />
