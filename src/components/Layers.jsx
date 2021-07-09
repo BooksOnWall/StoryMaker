@@ -1,4 +1,4 @@
-import React , {useState} from "react";
+import React  from "react";
 import clsx from "clsx";
 import PropTypes from 'prop-types';
 import SvgIcon from '@material-ui/core/SvgIcon';
@@ -95,12 +95,6 @@ fullList: {
 }));
 const Layers = ({toggleDrawer}) => {
   const classes= useStyles();
-  const [state, setState]= useState({
-      treeData: [
-        { title: 'Chicken', children: [{ title: 'Egg' }] },
-        { title: 'Fish', children: [{ title: 'fingerline' }] },
-      ]
-    });
   const anchor = "left";
 
   return (

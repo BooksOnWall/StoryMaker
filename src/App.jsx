@@ -1,13 +1,8 @@
 import React, {useState} from "react";
 import {
   BrowserRouter as Router,
-  Switch,
   Route,
-  Link
 } from "react-router-dom";
-import {Helmet} from "react-helmet";
-import { ToastContainer } from 'react-toastify';
-import { useHistory } from "react-router-dom";
 import { IntlProvider } from "react-intl";
 import loadable from '@loadable/component';
 

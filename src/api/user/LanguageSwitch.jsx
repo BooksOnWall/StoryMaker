@@ -1,9 +1,9 @@
 import React, {useState} from "react";
-import {List, ListItem, Menu, MenuItem, IconButton} from '@material-ui/core';
+import {Menu, MenuItem, IconButton} from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { CircleFlag } from 'react-circle-flags';
 import { useLocation } from 'react-router-dom';
-import {useIntl} from 'react-intl';
+
 
 const languageOptions = [
   'en',

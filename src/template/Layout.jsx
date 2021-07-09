@@ -2,8 +2,6 @@ import React, {useState, useLayoutEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
-import Header from './Header';
-import Footer from './Footer';
 import { makeStyles } from '@material-ui/styles';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { theme } from '../theme/theme';

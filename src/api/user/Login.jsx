@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 
 import {
-  List,
-  ListItem,
   Modal,
   Divider,
   TextField,
