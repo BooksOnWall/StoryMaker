@@ -1,23 +1,11 @@
 {
-  "footer": {
-    "terms": "Terms",
-    "thx_for_support_us": "Thx for supporting us"
-  },
-  "lang": {
-    "english": "English",
-    "french": "French",
-    "italian": "Italian",
-    "portuguese": "Portuguese",
-    "spanish": "Spanish"
-  },
   "login": {
     "cancel": "Cancel",
     "email": "Email",
     "login": "Go!",
     "password": "Password",
+    "recover": "Lost Password",
+    "register": "Register",
     "title": "Login"
-  },
-  "menu": {
-    "home": "Home"
   }
 }

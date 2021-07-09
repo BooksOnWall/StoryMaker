@@ -1,23 +1,11 @@
 {
-  "footer": {
-    "terms": "Conditions d'utilisation",
-    "thx_for_support_us": "Merci de nous soutenir"
-  },
-  "lang": {
-    "english": "Anglais",
-    "french": "Français",
-    "italian": "Italien",
-    "portuguese": "Portuguais",
-    "spanish": "Espagnol"
-  },
   "login": {
     "cancel": "Annuler",
     "email": "e-mail",
     "login": "Allez-y!",
     "password": "Mot de passe",
+    "recover": "Mot de passe oublié",
+    "register": "Enregistrez vous",
     "title": "Connexion à la communauté"
-  },
-  "menu": {
-    "home": "Accueil"
   }
 }

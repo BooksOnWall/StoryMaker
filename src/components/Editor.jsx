@@ -29,10 +29,12 @@ left: {
   position: 'absolute',
   zIndex: 1007,
   color: '#FFF',
+  transform: 'rotate(90deg)',
   fontSize: 8,
 },
 right: {
   position: 'absolute',
+  transform: 'rotate(-90deg)',
   zIndex: 1007,
   right: 0,
   color: '#FFF',
@@ -102,8 +104,8 @@ const Editor = ({messages, history, locale, switchLang, allMessages}) => {
       <Login messages={messages} history={history}/>
       <LanguageSwitch  switchLang={switchLang} history={history} allMessages={allMessages} messages={messages} locale={locale} className={classes.lenguageSwitch} />
       <IconButton onClick={toggleDrawer('bottom', true)} className={classes.bottom} style={{fontSize: 9, color: '#FFF', position: 'absolute', bottom: 0}}><MovieIcon fontSize="large" color="primary"/><ArrowDownwardIcon fontSize="large" color="primary"/>{"Timeline"}</IconButton>
-      <IconButton onClick={toggleDrawer('left', true)} className={classes.left} style={{zIndex: 1007, fontSize: 12, color: '#FFF',position: 'absolute', left: 0}}><MenuOpenIcon fontSize="small" color="primary"/>{"Layers"}</IconButton>
-      <IconButton onClick={toggleDrawer('right', true)} className={classes.right} style={{fontSize: 12, color: '#FFF',position: 'absolute', right: 0}}><MenuOpenIcon fontSize="small" color="primary"/>{"Options"}</IconButton>
+      <IconButton onClick={toggleDrawer('left', true)} className={classes.left} style={{zIndex: 1007, fontSize: 12, color: '#FFF',position: 'absolute', top: 0, left: 0,paddingTop: 50 }}><MenuOpenIcon fontSize="small" color="primary"/>{"Layers"}</IconButton>
+      <IconButton onClick={toggleDrawer('right', true)} className={classes.right} style={{fontSize: 12, color: '#FFF',position: 'absolute', right: 0 ,paddingTop: 50}}><MenuOpenIcon fontSize="small" color="primary"/>{"Options"}</IconButton>
     </Box>
       <Box className={classes.root}>
         <Fab toggleDrawer={toggleDrawer}/>

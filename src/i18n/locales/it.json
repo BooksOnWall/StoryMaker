@@ -1,23 +1,11 @@
 {
-  "footer": {
-    "terms": "Termini e condizioni",
-    "thx_for_support_us": "Grazie per averci sostenuto"
-  },
-  "lang": {
-    "english": "English",
-    "french": "French",
-    "italian": "Italian",
-    "portuguese": "Português",
-    "spanish": "Español"
-  },
   "login": {
     "cancel": "cancellare",
     "email": "e-mail",
     "login": "Vai!",
     "password": "Password",
+    "recover": "Password persa",
+    "register": "Registra",
     "title": "Accesso alla comunità"
-  },
-  "menu": {
-    "home": "homepage"
   }
 }

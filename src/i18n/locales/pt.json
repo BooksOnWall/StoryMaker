@@ -1,23 +1,11 @@
 {
-  "footer": {
-    "terms": "Termos e Condições",
-    "thx_for_support_us": "Thx por nos apoiar"
-  },
-  "lang": {
-    "english": "English",
-    "french": "French",
-    "italian": "Italian",
-    "portuguese": "Português",
-    "spanish": "Español"
-  },
   "login": {
     "cancel": "Cancelar",
     "email": "e-mail",
     "login": "Vá!",
     "password": "Senha",
+    "recover": "Palavra-passe perdida",
+    "register": "Registe-se",
     "title": "Acesso Comunitário"
-  },
-  "menu": {
-    "home": "Abertura"
   }
 }

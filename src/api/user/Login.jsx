@@ -92,6 +92,14 @@ const loginTraductions = defineMessages({
     id: 'login.cancel',
     defaultMessage: 'Cancel',
   },
+  register: {
+    id: 'login.register',
+    defaultMessage: 'Register',
+  },
+  recover: {
+    id: 'login.recover',
+    defaultMessage: 'Lost Password',
+  },
 });
  const  LoginModal = ({values ,email, password, messages, handleChange, handleSubmit, login }) => {
    const classes = useStyles();
@@ -152,6 +160,10 @@ const loginTraductions = defineMessages({
             <ButtonGroup className={classes.buttonGroup}>
             <Button elevation={1} variant="contained" color="primary" onClick={login}>{messages.login.login}</Button>
             <Button elevation={1} variant="contained" color="primary" onClick={handleClose}>{messages.login.cancel}</Button>
+            </ButtonGroup>
+            <ButtonGroup className={classes.buttonGroup}>
+            <Button elevation={1} variant="contained" color="primary" onClick={login}>{messages.login.recover}</Button>
+            <Button elevation={1} variant="contained" color="primary" onClick={handleClose}>{messages.login.register}</Button>
             </ButtonGroup>
           </div>
       </Modal>
