@@ -7,5 +7,15 @@
     "recover": "Lost Password",
     "register": "Register",
     "title": "Login"
+  },
+  "menu": {
+    "configure": "Configure",
+    "duplicate": "Duplicate",
+    "new": "New",
+    "publish": "Publish",
+    "save": "Save",
+    "share": "Share",
+    "timeline": "Timeline",
+    "translate": "Translate"
   }
 }

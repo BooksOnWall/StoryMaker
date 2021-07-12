@@ -7,5 +7,15 @@
     "recover": "Password persa",
     "register": "Registra",
     "title": "Accesso alla comunità"
+  },
+  "menu": {
+    "configure": "Configurare",
+    "duplicate": "Duplico",
+    "new": "Nuovo",
+    "publish": "Pubblica",
+    "save": "Salva",
+    "share": "Condividi",
+    "timeline": "Timeline",
+    "translate": "Traduci"
   }
 }

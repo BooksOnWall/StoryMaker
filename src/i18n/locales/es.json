@@ -7,5 +7,15 @@
     "recover": "Contraseña perdida",
     "register": "Registro",
     "title": "Acceso a la comunidad"
+  },
+  "menu": {
+    "configure": "Configurar",
+    "duplicate": "Duplicado",
+    "new": "Nuevo",
+    "publish": "Publicar",
+    "save": "Guardar",
+    "share": "Compartilhar",
+    "timeline": "Línea de tiempo",
+    "translate": "Traducir"
   }
 }

@@ -10,12 +10,51 @@ import {
   Box
 } from '@material-ui/core';
 import {makeStyles} from '@material-ui/styles';
+import { defineMessages, injectIntl } from 'react-intl';
+import useKeyboardShortcut from 'use-keyboard-shortcut';
 extend({ OrbitControls });
 
 const Fab = loadable(() => import('../template/Fab'));
 const Drawers = loadable(() => import('./Drawers'));
 const Login = loadable(() => import('../api/user/Login'));
-const LanguageSwitch = loadable(() => import('../api/user/LanguageSwitch'))
+const LanguageSwitch = loadable(() => import('../api/user/LanguageSwitch'));
+
+
+const editorTraductions = defineMessages({
+  new: {
+    id: 'menu.new',
+    defaultMessage: 'New',
+  },
+  timeline: {
+    id: 'menu.timeline',
+    defaultMessage: 'Timeline',
+  },
+  configure: {
+    id: 'menu.configure',
+    defaultMessage: 'Configure',
+  },
+  translate: {
+    id: 'menu.translate',
+    defaultMessage: 'Translate',
+  },
+  save: {
+    id: 'menu.save',
+    defaultMessage: 'Save',
+  },
+  duplicate: {
+    id: 'menu.duplicate',
+    defaultMessage: 'Duplicate',
+  },
+  publish: {
+    id: 'menu.publish',
+    defaultMessage: 'Publish',
+  },
+  share: {
+    id: 'menu.share',
+    defaultMessage: 'Share',
+  },
+});
+
 const useStyles = makeStyles((theme) => ({
 root: {
   with: '100vw',
@@ -81,6 +120,7 @@ const Controls = () => {
   )
 }
 const Editor = ({messages, history, locale, switchLang, allMessages}) => {
+  
   const classes = useStyles();
   const [state, setState] = useState({
     top: false,
@@ -97,7 +137,22 @@ const Editor = ({messages, history, locale, switchLang, allMessages}) => {
     }
     setState({ ...state, [anchor]: open });
   };
-
+  document.addEventListener("keydown", function(e) {
+    // https://keycode.info/
+    // ctrl + t
+    console.log(e.keyCode);
+    if (e.keyCode === 84 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+      e.preventDefault();
+      console.log('press ctrl + t')
+      // Process event...
+    }
+    // ctrl + n
+    if (e.keyCode === 17 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+      e.preventDefault();
+      console.log('press ctrl + s')
+      // Process event...
+    }
+  }, false);
   return (
     <>
     <Box style={{display: 'block', top: 0, left: 0, width: 0, height: 0, position: 'abolute', zIndex: '1000', backgroundColor: 'transparent'}}>
@@ -119,4 +174,4 @@ const Editor = ({messages, history, locale, switchLang, allMessages}) => {
     </>
   )
 }
-export default Editor;
+export default injectIntl(Editor);

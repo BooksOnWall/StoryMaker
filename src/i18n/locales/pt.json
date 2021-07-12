@@ -7,5 +7,15 @@
     "recover": "Palavra-passe perdida",
     "register": "Registe-se",
     "title": "Acesso Comunitário"
+  },
+  "menu": {
+    "configure": "Configuração",
+    "duplicate": "Duplicado",
+    "new": "Novo",
+    "publish": "Publicar",
+    "save": "Guardar",
+    "share": "Partilhar",
+    "timeline": "Linha do tempo",
+    "translate": "Traduzir"
   }
 }

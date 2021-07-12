@@ -7,5 +7,15 @@
     "recover": "Mot de passe oublié",
     "register": "Enregistrez vous",
     "title": "Connexion à la communauté"
+  },
+  "menu": {
+    "configure": "Configurer",
+    "duplicate": "Dupliquer",
+    "new": "Nouveau",
+    "publish": "Publier",
+    "save": "Sauver",
+    "share": "Partager",
+    "timeline": "Timeline",
+    "translate": "Traduire"
   }
 }
