@@ -13,6 +13,9 @@ import FileCopyIcon from '@material-ui/icons/FileCopyOutlined';
 import SaveIcon from '@material-ui/icons/Save';
 import ShareIcon from '@material-ui/icons/Share';
 import TranslateIcon from '@material-ui/icons/Translate';
+import LayersIcon from '@material-ui/icons/Layers';
+import PermDataSettingIcon from '@material-ui/icons/PermDataSetting';
+
 import logo from '../assets/images/logo.svg';
 
 const useStyles = makeStyles((theme) => ({
@@ -56,19 +59,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-  const Fab = ({toggleDrawer}) => {
+  const Fab = ({toggleDrawer, messages}) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
   const actions = [
-    { icon: <CreateNewFolderIcon color="secondary"/>, name: 'New' },
-    { icon: <MovieIcon color="secondary"/>, name: 'Timeline' , drawer: 'bottom', open: 'true'},
-    { icon: <TuneIcon color="secondary"/>, name: 'Configure' },
-    { icon: <TranslateIcon color="secondary"/>, name: 'Translate' },
-    { icon: <SaveIcon color="secondary"/>, name: 'Save' },
-    { icon: <FileCopyIcon color="secondary"/>, name: 'Duplicate' },
-    { icon: <PublishIcon color="secondary"/>, name: 'Publish' },
-    { icon: <ShareIcon color="secondary"/>, name: 'Share' },
+    { icon: <CreateNewFolderIcon color="secondary"/>, name: messages.menu.new },
+    { icon: <LayersIcon color="secondary"/>, name: messages.menu.layers, drawer: 'left', open: 'true'},
+    { icon: <MovieIcon color="secondary"/>, name: messages.menu.timeline, drawer: 'bottom', open: 'true'},
+    { icon: <PermDataSettingIcon color="secondary"/>, name: messages.menu.options, drawer: 'right', open: 'true'},
+    { icon: <TuneIcon color="secondary"/>, name: messages.menu.configure },
+    { icon: <TranslateIcon color="secondary"/>, name: messages.menu.translate },
+    { icon: <SaveIcon color="secondary"/>, name: messages.menu.save },
+    { icon: <FileCopyIcon color="secondary"/>, name: messages.menu.duplicate },
+    { icon: <PublishIcon color="secondary"/>, name: messages.menu.publish },
+    { icon: <ShareIcon color="secondary"/>, name: messages.menu.share},
   ];
   const handleVisibility = () => {
     setHidden((prevHidden) => !prevHidden);

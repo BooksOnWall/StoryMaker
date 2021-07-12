@@ -11,11 +11,13 @@
   "menu": {
     "configure": "Configurar",
     "duplicate": "Duplicado",
+    "layers": "Layers",
     "new": "Nuevo",
+    "options": "Opciones",
     "publish": "Publicar",
     "save": "Guardar",
     "share": "Compartilhar",
-    "timeline": "Línea de tiempo",
+    "timeline": "Timeline",
     "translate": "Traducir"
   }
 }

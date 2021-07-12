@@ -11,7 +11,9 @@
   "menu": {
     "configure": "Configure",
     "duplicate": "Duplicate",
+    "layers": "Layers",
     "new": "New",
+    "options": "Options",
     "publish": "Publish",
     "save": "Save",
     "share": "Share",

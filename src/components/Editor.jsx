@@ -5,13 +5,14 @@ import IconButton from '@material-ui/core/IconButton';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 import MovieIcon from '@material-ui/icons/Movie';
+import HelpIcon from '@material-ui/icons/Help';
 import loadable from '@loadable/component';
 import {
   Box
 } from '@material-ui/core';
 import {makeStyles} from '@material-ui/styles';
 import { defineMessages, injectIntl } from 'react-intl';
-import useKeyboardShortcut from 'use-keyboard-shortcut';
+
 extend({ OrbitControls });
 
 const Fab = loadable(() => import('../template/Fab'));
@@ -24,6 +25,14 @@ const editorTraductions = defineMessages({
   new: {
     id: 'menu.new',
     defaultMessage: 'New',
+  },
+  layers: {
+    id: 'menu.layers',
+    defaultMessage: 'Layers',
+  },
+  options: {
+    id: 'menu.options',
+    defaultMessage: 'Options',
   },
   timeline: {
     id: 'menu.timeline',
@@ -120,7 +129,7 @@ const Controls = () => {
   )
 }
 const Editor = ({messages, history, locale, switchLang, allMessages}) => {
-  
+
   const classes = useStyles();
   const [state, setState] = useState({
     top: false,
@@ -158,12 +167,13 @@ const Editor = ({messages, history, locale, switchLang, allMessages}) => {
     <Box style={{display: 'block', top: 0, left: 0, width: 0, height: 0, position: 'abolute', zIndex: '1000', backgroundColor: 'transparent'}}>
       <Login messages={messages} history={history}/>
       <LanguageSwitch  switchLang={switchLang} history={history} allMessages={allMessages} messages={messages} locale={locale} className={classes.lenguageSwitch} />
-      <IconButton onClick={toggleDrawer('bottom', true)} className={classes.bottom} style={{fontSize: 9, color: '#FFF', position: 'absolute', bottom: 0}}><MovieIcon fontSize="large" color="primary"/><ArrowDownwardIcon fontSize="large" color="primary"/>{"Timeline"}</IconButton>
-      <IconButton onClick={toggleDrawer('left', true)} className={classes.left} style={{zIndex: 1007, fontSize: 12, color: '#FFF',position: 'absolute', top: 0, left: 0,paddingTop: 50 }}><MenuOpenIcon fontSize="small" color="primary"/>{"Layers"}</IconButton>
-      <IconButton onClick={toggleDrawer('right', true)} className={classes.right} style={{fontSize: 12, color: '#FFF',position: 'absolute', right: 0 ,paddingTop: 50}}><MenuOpenIcon fontSize="small" color="primary"/>{"Options"}</IconButton>
+      <IconButton onClick={toggleDrawer('bottom', true)} className={classes.bottom} style={{fontSize: 9, color: '#FFF', position: 'absolute', bottom: 0}}><MovieIcon fontSize="large" color="primary"/><ArrowDownwardIcon fontSize="large" color="primary"/>{messages.menu.timeline}</IconButton>
+      <IconButton onClick={toggleDrawer('left', true)} className={classes.left} style={{zIndex: 1007, fontSize: 12, color: '#FFF',position: 'absolute', top: 0, left: 0,paddingTop: 50 }}><MenuOpenIcon fontSize="small" color="primary"/>{messages.menu.layers}</IconButton>
+      <IconButton onClick={toggleDrawer('right', true)} className={classes.right} style={{fontSize: 12, color: '#FFF',position: 'absolute', right: 0 ,paddingTop: 50}}><MenuOpenIcon fontSize="small" color="primary"/>{messages.menu.options}</IconButton>
+      <IconButton  className={classes.help} style={{fontSize: 12, color: '#FFF',position: 'absolute', right: '4vw'}}><HelpIcon fontSize="large" color="primary"/></IconButton>
     </Box>
       <Box className={classes.root}>
-        <Fab toggleDrawer={toggleDrawer}/>
+        <Fab toggleDrawer={toggleDrawer} messages={messages}/>
         <Drawers state={state} toggleDrawer={toggleDrawer}/>
         <Canvas shadowMap  camera={{ position: [2, 2, 2] }}>
           <Controls />
