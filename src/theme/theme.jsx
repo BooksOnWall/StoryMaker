@@ -184,7 +184,80 @@ let theme = createTheme(adaptV4Theme({
           fontFamily: '"Roboto Condensed", Helvetica, Arial, sans-serif',
         }
       }
-    }
+    },
+    MuiMenu: {
+      styleOverrides: {
+        // Name of the slot
+        root: {
+          backgroundColor: 'transparent',
+        },
+        list: {
+          backgroundColor: 'transparent',
+        },
+        paper: {
+          // Some CSS
+          backgroundColor: 'transparent',
+          fontSize: '1em',
+          color: '#FFF'
+        },
+      },
+    },
+    MuiList: {
+      styleOverrides: {
+        // Name of the slot
+        root: {
+          // Some CSS
+          backgroundColor: 'transparent',
+          fontSize: '1em',
+          color: '#FFF'
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        // Name of the slot
+        root: {
+          // Some CSS
+          backgroundColor: 'transparent',
+          fontSize: '1em',
+          color: '#FFF',
+        },
+      },
+    },
+    MuiPopover: {
+      styleOverrides: {
+        // Name of the slot
+        root: {
+          backgroundColor: 'transparent',
+        },
+        paper: {
+          // Some CSS
+          backgroundColor: 'transparent',
+          fontSize: '1em',
+          color: '#FFF'
+        },
+      },
+    },
+    MuiMenuItem: {
+      styleOverrides: {
+        // Name of the slot
+        root: {
+          // Some CSS
+          backgroundColor: 'transparent',
+          fontSize: '1em',
+          color: '#FFF'
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        // Name of the slot
+        root: {
+          // Some CSS
+          fontSize: '1rem',
+        },
+      },
+    },
   },
   shape:{
     borderRadius: 4

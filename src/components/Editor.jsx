@@ -6,6 +6,7 @@ import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 import MovieIcon from '@material-ui/icons/Movie';
 import HelpIcon from '@material-ui/icons/Help';
+
 import loadable from '@loadable/component';
 import {
   Box
@@ -16,6 +17,7 @@ import { defineMessages, injectIntl } from 'react-intl';
 extend({ OrbitControls });
 
 const Fab = loadable(() => import('./Fab'));
+const Events = loadable(() => import('./Events'));
 const Drawers = loadable(() => import('./Drawers'));
 const Login = loadable(() => import('../api/user/Login'));
 const LanguageSwitch = loadable(() => import('../api/user/LanguageSwitch'));
@@ -172,6 +174,7 @@ const Editor = ({messages, history, locale, switchLang, allMessages}) => {
       <IconButton onClick={toggleDrawer('left', true)} className={classes.left} style={{zIndex: 1007, fontSize: 12, color: '#FFF',position: 'absolute', top: 0, left: 0,paddingTop: 50 }}><MenuOpenIcon fontSize="small" color="primary"/>{messages.menu.layers}</IconButton>
       <IconButton onClick={toggleDrawer('right', true)} className={classes.right} style={{fontSize: 12, color: '#FFF',position: 'absolute', right: 0 ,paddingTop: 50}}><MenuOpenIcon fontSize="small" color="primary"/>{messages.menu.options}</IconButton>
       <IconButton className={classes.help} style={{fontSize: 12, color: '#FFF',position: 'absolute', right: '8vw'}}><HelpIcon fontSize="large" color="primary"/></IconButton>
+      <Events messages={messages}/>
     </Box>
       <Box className={classes.root}>
 
