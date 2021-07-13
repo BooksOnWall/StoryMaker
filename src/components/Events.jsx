@@ -16,16 +16,16 @@ const useStyles = makeStyles((theme) => ({
     color: '#FFFFFF',
     backgroundColor: 'transparent',
     margin: 0,
-    fontSize: 8,
+    fontSize: 10,
   },
   eventMenu: {
     backgroundColor: 'transparent',
     color: '#FFF',
-    fontSize: 8,
+    fontSize: 10,
   },
   eventItem: {
     backgroundColor: 'transparent',
-    fontSize: 8,
+    fontSize: 10,
   }
 }));
 const options = [
@@ -58,7 +58,7 @@ const Events = ({messages}) => {
 
   return (
       <div className={classes.root} style={{zIndex: 1001, backgroundColor: 'transparent',color: '#FFF',position: 'absolute', left: '10vw'}}>
-      <IconButton onClick={handleClickListItem} className={classes.events} style={{color: '#FFF', fontSize: 8}}><EventSeatIcon fontSize="large" color="primary"/>{options[selectedIndex]}</IconButton>
+      <IconButton onClick={handleClickListItem} className={classes.events} style={{color: '#FFF', fontSize: 14}}><EventSeatIcon fontSize="large" color="primary"/>{options[selectedIndex]}</IconButton>
       <Menu
         id="lock-menu"
         anchorEl={anchorEl}
@@ -74,7 +74,7 @@ const Events = ({messages}) => {
             // disabled={index === 0}
             style={{background: 'transparent', color: '#FFF'}}
             selected={index === selectedIndex}
-            className={classes.MenuItem}
+            className={classes.eventItem}
             onClick={(event) => handleMenuItemClick(event, index)}
           >
             {option}

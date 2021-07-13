@@ -9,8 +9,12 @@
     "title": "Acesso Comunitário"
   },
   "menu": {
+    "about": "Sobre",
     "configure": "Configuração",
+    "contribute": "Contribua",
     "duplicate": "Duplicado",
+    "elements": "Elementos",
+    "events": "Eventos",
     "layers": "Layers",
     "new": "Novo",
     "options": "Opções",

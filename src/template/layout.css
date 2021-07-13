@@ -23,9 +23,10 @@ input#name, input#email, input#subject, input#combo-box-demo, input#subjectTextF
 span.MuiSpeedDialAction-staticTooltip span {
   background-color: transparent;
 }
-div.css-gx1uu9-MuiPaper-root-MuiMenu-paper-MuiPaper-root-MuiPopover-paper {
+div.css-gx1uu9-MuiPaper-root-MuiMenu-paper-MuiPaper-root-MuiPopover-paper, div.css-1kjg1cy-MuiPaper-root-MuiDialog-paper {
   background-color: transparent;
 }
+
 .hLCrav{
   display: flex;
   flex-direction: column;

@@ -9,8 +9,12 @@
     "title": "Accesso alla comunità"
   },
   "menu": {
+    "about": "Circa",
     "configure": "Configurare",
+    "contribute": "Contribuire",
     "duplicate": "Duplico",
+    "elements": "Elementi",
+    "events": "Eventi",
     "layers": "Layers",
     "new": "Nuovo",
     "options": "Opzioni",

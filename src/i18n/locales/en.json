@@ -9,8 +9,12 @@
     "title": "Login"
   },
   "menu": {
+    "about": "About",
     "configure": "Configure",
+    "contribute": "Contribute",
     "duplicate": "Duplicate",
+    "elements": "Elements",
+    "events": "Events",
     "layers": "Layers",
     "new": "New",
     "options": "Options",

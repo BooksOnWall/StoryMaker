@@ -5,7 +5,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 import MovieIcon from '@material-ui/icons/Movie';
-import HelpIcon from '@material-ui/icons/Help';
+
 
 import loadable from '@loadable/component';
 import {
@@ -17,6 +17,7 @@ import { defineMessages, injectIntl } from 'react-intl';
 extend({ OrbitControls });
 
 const Fab = loadable(() => import('./Fab'));
+const Help = loadable(() => import('./Help'));
 const Events = loadable(() => import('./Events'));
 const Drawers = loadable(() => import('./Drawers'));
 const Login = loadable(() => import('../api/user/Login'));
@@ -63,6 +64,22 @@ const editorTraductions = defineMessages({
   share: {
     id: 'menu.share',
     defaultMessage: 'Share',
+  },
+  elements: {
+    id: 'menu.elements',
+    defaultMessage: 'Elements',
+  },
+  contribute: {
+    id: 'menu.contribute',
+    defaultMessage: 'Contribute',
+  },
+  about: {
+    id: 'menu.about',
+    defaultMessage: 'About',
+  },
+  events: {
+    id: 'menu.events',
+    defaultMessage: 'Events',
   },
 });
 
@@ -167,14 +184,15 @@ const Editor = ({messages, history, locale, switchLang, allMessages}) => {
   return (
     <>
     <Box style={{display: 'block', top: 0, left: 0, width: 0, height: 0, position: 'abolute', zIndex: '1000', backgroundColor: 'transparent'}}>
-      <Login messages={messages} history={history}/>
+      <Events messages={messages} className={classes.events}/>
+      <Help  messages={messages} className={classes.help}/>
+      <Login messages={messages} className={classes.login} history={history}/>
       <Fab toggleDrawer={toggleDrawer} messages={messages}/>
       <LanguageSwitch  switchLang={switchLang} history={history} allMessages={allMessages} messages={messages} locale={locale} className={classes.lenguageSwitch} />
       <IconButton onClick={toggleDrawer('bottom', true)} className={classes.bottom} style={{fontSize: 9, color: '#FFF', position: 'absolute', bottom: 0}}><MovieIcon fontSize="large" color="primary"/><ArrowDownwardIcon fontSize="large" color="primary"/>{messages.menu.timeline}</IconButton>
       <IconButton onClick={toggleDrawer('left', true)} className={classes.left} style={{zIndex: 1007, fontSize: 12, color: '#FFF',position: 'absolute', top: 0, left: 0,paddingTop: 50 }}><MenuOpenIcon fontSize="small" color="primary"/>{messages.menu.layers}</IconButton>
       <IconButton onClick={toggleDrawer('right', true)} className={classes.right} style={{fontSize: 12, color: '#FFF',position: 'absolute', right: 0 ,paddingTop: 50}}><MenuOpenIcon fontSize="small" color="primary"/>{messages.menu.options}</IconButton>
-      <IconButton className={classes.help} style={{fontSize: 12, color: '#FFF',position: 'absolute', right: '8vw'}}><HelpIcon fontSize="large" color="primary"/></IconButton>
-      <Events messages={messages}/>
+
     </Box>
       <Box className={classes.root}>
 
