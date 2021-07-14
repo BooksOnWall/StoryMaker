@@ -13,12 +13,11 @@ import Draggable from 'react-draggable';
 import IconButton from '@material-ui/core/IconButton';
 import HelpIcon from '@material-ui/icons/Help';
 import { experimentalStyled as styled } from '@material-ui/core/styles';
-import ReactMarkdown from 'react-markdown';
+import md from './help/en/About.md';
+import Markdown from 'markdown-to-jsx';
 import { useIntl } from 'react-intl';
 import helpSummary from "../indexes/helpSummary";
-const Transition = forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+
 
 const PaperComponent = (props) => {
   return (
@@ -37,12 +36,14 @@ const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: 'rgba(255, 0, 0, 0.5)',
   color: theme.palette.text.secondary,
 }));
+
 const Help = ({messages, className}) => {
+
   const index = helpSummary(messages);
   const [open, setOpen] = useState(false);
   const [chapter, setChapter] = useState();
   const [selectedId, setSelectedId] = useState();
-  const [markdown, setMarkdown] = useState();
+  const [markdown, setMarkdown] = useState('');
   const [next, setNext] = useState();
   const [prev, setPrev] = useState();
   const handleClickOpen = () => {
@@ -56,19 +57,44 @@ const Help = ({messages, className}) => {
    setPrev();
    setSelectedId();
  };
- const handleChapter = (chapter) => {
-   setChapter(chapter);
-   setSelectedId((chapter) ? index.filter((c) => (c.name === chapter))[0].id : null);
-   const md = require('../help/'+locale+'/'+chapter+'.md');
-   // fetch(Md).then((response) => response.text()).then((text) => {
-   //   setMarkdown(text);
-   // })
-   fetch(md).then((response) => response.text()).then((text) => {
-     setMarkdown(text);
-   });
+ const load = async (path) => {
+   try {
+     console.log('path',path);
+     const file = import(path);
+     console.log('file',file);
+     const response = await fetch(file.default);
+     console.log('response',response);
+     return  await response.text();
+     // return await require(path).default;
+   } catch(e) {
+     console.log(e.message);
+   }
+ }
+ const handleChapter = async (chapter) => {
+   try {
+     setChapter(chapter);
+     setSelectedId((chapter) ? index.filter((c) => (c.name === chapter))[0].id : null);
+   } catch(e) {
+     console.log(e.message);
+   }
 
  };
+ // if(chapter) {
+ //   let md = load('help/'+locale+'/'+chapter+'.md');
+ //   console.log('md', md);
+ //   setMarkdown(md);
+ // } else setMarkdown();
  useEffect(()=> {
+   if(chapter) {
+     const mpath = require('./help/en/'+chapter+'.md');
+     fetch(mpath)
+    .then(response => {
+      return response.text()
+    })
+    .then(text => {
+      setMarkdown(text);
+    })
+   }
    if (selectedId && selectedId < (index.length -1) && index[(1+selectedId)]) {
      console.log('selectedId: ', selectedId);
      console.log('ici')
@@ -83,6 +109,7 @@ const Help = ({messages, className}) => {
      setPrev();
    }
  },[chapter, index, selectedId]);
+
   console.log('selectedId', selectedId);
   console.log('next', next);
   console.log('prev', prev);
@@ -93,7 +120,6 @@ const Help = ({messages, className}) => {
     <IconButton onClick={handleClickOpen} className={className} style={{fontSize: 12, color: '#FFF',position: 'absolute', zIndex: 1008, right: '8vw'}}><HelpIcon fontSize="large" color="primary"/></IconButton>
     <Dialog
         open={open}
-        TransitionComponent={Transition}
         keepMounted
         PaperComponent={PaperComponent}
         onClose={handleClose}
@@ -111,11 +137,21 @@ const Help = ({messages, className}) => {
             </Grid>
           {chapter &&
             <>
-
-            <DialogContentText >
               <h1>{chapter}</h1>
-              <ReactMarkdown children={markdown} />
-            </DialogContentText>
+              {markdown &&
+                <Markdown
+                  children={markdown}
+                  options={{
+                      disableParsingRawHTML: true,
+                      createElement(type, props, children) {
+                          return (
+                              <div className="parent">
+                                  {React.createElement(type, props, children)}
+                              </div>
+                          );
+                      },
+                  }} />
+              }
             </>
           }
         </DialogContent>
