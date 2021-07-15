@@ -13,11 +13,23 @@ import Draggable from 'react-draggable';
 import IconButton from '@material-ui/core/IconButton';
 import HelpIcon from '@material-ui/icons/Help';
 import { experimentalStyled as styled } from '@material-ui/core/styles';
-import md from './help/en/About.md';
+import {makeStyles} from '@material-ui/styles';
 import Markdown from 'markdown-to-jsx';
 import { useIntl } from 'react-intl';
 import helpSummary from "../indexes/helpSummary";
 
+const useStyles = makeStyles((theme) => ({
+  markdown: {
+    margin: 0,
+    padding: 10,
+    overflow: 'hidden',
+    color: '#FFF',
+    backgroundColor: 'transparent',
+  },
+  content: {
+    backgroundColor: 'rgba(255, 0, 0, 0.5)',
+  }
+}));
 
 const PaperComponent = (props) => {
   return (
@@ -33,12 +45,12 @@ const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(2),
   textAlign: 'center',
-  backgroundColor: 'rgba(255, 0, 0, 0.5)',
+  backgroundColor: 'rgba(255, 0, 255, 0.5)',
   color: theme.palette.text.secondary,
 }));
 
 const Help = ({messages, className}) => {
-
+  const classes = useStyles();
   const index = helpSummary(messages);
   const [open, setOpen] = useState(false);
   const [chapter, setChapter] = useState();
@@ -87,7 +99,7 @@ const Help = ({messages, className}) => {
  useEffect(()=> {
    if(chapter) {
      const mpath = require('./help/en/'+chapter+'.md');
-     fetch(mpath)
+     fetch(mpath.default)
     .then(response => {
       return response.text()
     })
@@ -96,8 +108,6 @@ const Help = ({messages, className}) => {
     })
    }
    if (selectedId && selectedId < (index.length -1) && index[(1+selectedId)]) {
-     console.log('selectedId: ', selectedId);
-     console.log('ici')
      setNext(index[(1+selectedId)].name);
    }
    if (selectedId && selectedId === 0) {
@@ -110,11 +120,6 @@ const Help = ({messages, className}) => {
    }
  },[chapter, index, selectedId]);
 
-  console.log('selectedId', selectedId);
-  console.log('next', next);
-  console.log('prev', prev);
-  console.log('chapter', chapter);
-  console.log('index length', index.length);
   return (
     <>
     <IconButton onClick={handleClickOpen} className={className} style={{fontSize: 12, color: '#FFF',position: 'absolute', zIndex: 1008, right: '8vw'}}><HelpIcon fontSize="large" color="primary"/></IconButton>
@@ -127,7 +132,7 @@ const Help = ({messages, className}) => {
         aria-describedby="help"
       >
         <DialogTitle style={{color: '#FFF', cursor: 'move'}} >{"Need Help ?"}</DialogTitle>
-        <DialogContent>
+        <DialogContent className={classes.content}>
           <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
             {!chapter && index && index.map((c,i) => (
               <Grid item style={{cursor: 'pointer'}} onClick={() => handleChapter(c.name)} xs={2} sm={4} md={4} key={i}>
@@ -137,7 +142,6 @@ const Help = ({messages, className}) => {
             </Grid>
           {chapter &&
             <>
-              <h1>{chapter}</h1>
               {markdown &&
                 <Markdown
                   children={markdown}
@@ -145,7 +149,7 @@ const Help = ({messages, className}) => {
                       disableParsingRawHTML: true,
                       createElement(type, props, children) {
                           return (
-                              <div className="parent">
+                              <div className={classes.markdown}>
                                   {React.createElement(type, props, children)}
                               </div>
                           );
