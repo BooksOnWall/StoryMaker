@@ -26,7 +26,10 @@ span.MuiSpeedDialAction-staticTooltip span {
 div.css-gx1uu9-MuiPaper-root-MuiMenu-paper-MuiPaper-root-MuiPopover-paper, div.css-1kjg1cy-MuiPaper-root-MuiDialog-paper {
   background-color: transparent;
 }
-
+div.css-1kjg1cy-MuiPaper-root-MuiDialog-paper {
+  width: 80vw;
+  max-width: 80vw;
+}
 .hLCrav{
   display: flex;
   flex-direction: column;

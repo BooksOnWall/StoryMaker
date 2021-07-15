@@ -31,16 +31,16 @@ Para cada evento tendrás:
 ### Documentación del usuario
 
 * [Eventos](Eventos)
-* [Capas](Capas)
-* [Timeline](Línea de tiempo)
+* [Layers](Layers)
+* [Timeline](Timeline)
 * [Opciones](Opciones)
-* [Artículos](Artículos)
+* [Elementos](Elementos)
 * [Traducir](Traducir)
 * [Configurar](Configurar)
 * [Save](Guardar)
 * [Duplicado](Duplicado)
 * [Publicar](Publicar)
-* [Acción](Acción)
+* [Compartilhar](Compartilhar)
 * [Contribuir](Contribuir)
 
 ### Developer documentation

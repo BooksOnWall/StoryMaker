@@ -12,7 +12,9 @@ import Slide from '@material-ui/core/Slide';
 import Draggable from 'react-draggable';
 import IconButton from '@material-ui/core/IconButton';
 import HelpIcon from '@material-ui/icons/Help';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { experimentalStyled as styled } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core/styles';
 import {makeStyles} from '@material-ui/styles';
 import Markdown from 'markdown-to-jsx';
 import { useIntl } from 'react-intl';
@@ -21,7 +23,7 @@ import helpSummary from "../indexes/helpSummary";
 const useStyles = makeStyles((theme) => ({
   markdown: {
     margin: 0,
-    padding: 10,
+    padding: 0,
     overflow: 'hidden',
     fontSize: '1em',
     color: '#FFF',
@@ -33,6 +35,14 @@ const useStyles = makeStyles((theme) => ({
   internalLink: {
     cursor: 'pointer',
     color: '#FF9900'
+  },
+  bottom: {
+    cursor: 'pointer',
+  },
+  p:{
+    margin: 0,
+    color: '#FFF',
+    padding: 0,
   },
   link: {
     cursor: 'pointer',
@@ -60,6 +70,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const Help = ({messages, className}) => {
   const classes = useStyles();
+  const theme = useTheme();
   const index = helpSummary(messages);
   const [open, setOpen] = useState(false);
   const [chapter, setChapter] = useState();
@@ -78,19 +89,7 @@ const Help = ({messages, className}) => {
    setPrev();
    setSelectedId();
  };
- const load = async (path) => {
-   try {
-     console.log('path',path);
-     const file = import(path);
-     console.log('file',file);
-     const response = await fetch(file.default);
-     console.log('response',response);
-     return  await response.text();
-     // return await require(path).default;
-   } catch(e) {
-     console.log(e.message);
-   }
- }
+
  const handleChapter = async (chapter) => {
    try {
      setChapter(chapter);
@@ -123,7 +122,7 @@ const Help = ({messages, className}) => {
      setPrev();
    }
  },[chapter, index, selectedId, locale]);
-
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   return (
     <>
     <IconButton onClick={handleClickOpen} className={className} style={{fontSize: 12, color: '#FFF',position: 'absolute', zIndex: 1008, right: '8vw'}}><HelpIcon fontSize="large" color="primary"/></IconButton>
@@ -132,11 +131,12 @@ const Help = ({messages, className}) => {
         keepMounted
         PaperComponent={PaperComponent}
         onClose={handleClose}
+        fullScreen={fullScreen}
         style={{backgroundColor: 'transparent'}}
         aria-describedby="help"
       >
         <DialogTitle style={{color: '#FFF', cursor: 'move'}} >{"Need Help ?"}</DialogTitle>
-        <DialogContent className={classes.content}>
+        <DialogContent className={classes.content} style={{width: '80vw'}}>
           <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
             {!chapter && index && index.map((c,i) => (
               <Grid item style={{cursor: 'pointer'}} onClick={() => handleChapter(c.name)} xs={2} sm={4} md={4} key={i}>
@@ -160,6 +160,18 @@ const Help = ({messages, className}) => {
                               p.onClick=()=>handleChapter(children[0])
                               p.className = classes.internalLink;
                             } else p.className = classes.link;
+                            return  React.createElement(type, p, children);
+                          }
+                          if(type === 'p') {
+                            // separate internal Links that use handleChapter and external ones that use href
+                            let p = props;
+                            p.className = classes.p;
+                            return  React.createElement(type, p, children);
+                          }
+                          if(type === 'li') {
+                            // separate internal Links that use handleChapter and external ones that use href
+                            let p = props;
+                            p.className = classes.li;
                             return  React.createElement(type, p, children);
                           }
                           return (
