@@ -75,7 +75,7 @@ const editorTraductions = defineMessages({
   },
   about: {
     id: 'menu.about',
-    defaultMessage: 'Start',
+    defaultMessage: 'Start here',
   },
   events: {
     id: 'menu.events',
