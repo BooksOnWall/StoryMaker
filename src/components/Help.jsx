@@ -91,14 +91,9 @@ const Help = ({messages, className}) => {
    }
 
  };
- // if(chapter) {
- //   let md = load('help/'+locale+'/'+chapter+'.md');
- //   console.log('md', md);
- //   setMarkdown(md);
- // } else setMarkdown();
  useEffect(()=> {
    if(chapter) {
-     const mpath = require('./help/en/'+chapter+'.md');
+     const mpath = require('./help/'+locale+'/'+chapter+'.md');
      fetch(mpath.default)
     .then(response => {
       return response.text()
@@ -118,7 +113,7 @@ const Help = ({messages, className}) => {
    } else {
      setPrev();
    }
- },[chapter, index, selectedId]);
+ },[chapter, index, selectedId, locale]);
 
   return (
     <>
