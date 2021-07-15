@@ -23,11 +23,20 @@ const useStyles = makeStyles((theme) => ({
     margin: 0,
     padding: 10,
     overflow: 'hidden',
+    fontSize: '1em',
     color: '#FFF',
     backgroundColor: 'transparent',
   },
   content: {
     backgroundColor: 'rgba(255, 0, 0, 0.5)',
+  },
+  internalLink: {
+    cursor: 'pointer',
+    color: '#FF9900'
+  },
+  link: {
+    cursor: 'pointer',
+    color: '#FF9900'
   }
 }));
 
@@ -143,6 +152,16 @@ const Help = ({messages, className}) => {
                   options={{
                       disableParsingRawHTML: true,
                       createElement(type, props, children) {
+                          if(type === 'a') {
+                            // separate internal Links that use handleChapter and external ones that use href
+                            let p = props;
+                            if(!props.href.includes('http')) {
+                              p.href=undefined;
+                              p.onClick=()=>handleChapter(children[0])
+                              p.className = classes.internalLink;
+                            } else p.className = classes.link;
+                            return  React.createElement(type, p, children);
+                          }
                           return (
                               <div className={classes.markdown}>
                                   {React.createElement(type, props, children)}
