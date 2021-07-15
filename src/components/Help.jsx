@@ -136,7 +136,7 @@ const Help = ({messages, className}) => {
         aria-describedby="help"
       >
         <DialogTitle style={{color: '#FFF', cursor: 'move'}} >{"Need Help ?"}</DialogTitle>
-        <DialogContent className={classes.content} style={{width: '80vw'}}>
+        <DialogContent className={classes.content} >
           <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
             {!chapter && index && index.map((c,i) => (
               <Grid item style={{cursor: 'pointer'}} onClick={() => handleChapter(c.name)} xs={2} sm={4} md={4} key={i}>
