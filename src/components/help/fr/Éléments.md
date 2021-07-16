@@ -224,16 +224,116 @@ Les Objets ont besoin de lumière pour être visible !
 
 ### Éléments de type texture
 #### image texture
+* VIRO API REF <ViroMaterials/>
+* ambientOcclusionTexture texture
+* blendMode ['None', 'Alpha', 'Add', 'Subtract', 'Multiply', 'Screen']
+* bloomThreshold ['None', 'Red', 'Green', 'Blue', 'Alpha', 'All']
+* colorWriteMask ['None', 'Red', 'Green', 'Blue', 'Alpha', 'All']
+* cullMode ['None', 'Back', 'Front']
+* diffuseColor
+* chromaKeyFilteringColor
+* diffuseIntensity 1.0
+* diffuseTexture uri:"http://example.org/myimage.png" | require('./image.png')
+* lightingModel ['Phong', 'Blinn', 'Lambert', 'Constant', 'PBR']
+* magnificationFilter ['Nearest', 'Linear']
+* metalness 1
+* metalnessTexture texture
+* minificationFilter ['Nearest', 'Linear']
+* mipFilter ['Nearest', 'Linear']
+* normalTexture uri:"http://example.org/myimage.png" | require('./image.png')
+* readsFromDepthBuffer true
+* roughness 1
+* roughnessTexture uri:"http://example.org/myimage.png" | require('./image.png')
+* shininess 1
+* specularTexture  uri:"http://example.org/myimage.png" | require('./image.png')
+* wrapS ['Clamp', 'Repeat', 'Mirror']
+* wrapT ['Clamp', 'Repeat', 'Mirror']
+* writesToDepthBuffer true
 
-[Référence]
+[Référence](https://docs.viromedia.com/docs/materials)
 
 #### video texture
+* VIRO API REF <ViroMaterialVideo />
+* RTF API REF ?
+* material
+* paused true
+* loop true
+* muted true
+* onBufferEnd event
+* onError event
+* onBufferStart event
+* onFinish event
+* onUpdateTime event
+* volume 0.8
 
-[Référence]
+[Référence](https://docs.viromedia.com/docs/viromaterialvideo)
 
 ### Éléments de type particule
 
-[Référence]
+```
+<ViroParticleEmitter
+  position={[0, 4.5, 0]}
+  duration={2000}
+  visible={true}
+  delay={0}
+  run={true}
+  loop={true}
+  fixedToEmitter={true}
+
+  image={{
+    source:require("./res/particle_snow.png"),                 
+    height:0.1,
+    width:0.1,
+    bloomThreshold:1.0
+  }}
+
+  spawnBehavior={{
+    particleLifetime:[4000,4000],
+    emissionRatePerSecond:[150, 200],
+    spawnVolume:{
+      shape:"box",
+      params:[20, 1, 20],
+      spawnOnSurface:false
+    },
+    maxParticles:800
+  }}
+
+  particleAppearance={{
+    opacity:{
+      initialRange:[0, 0],
+      factor:"time",
+      interpolation:[
+        {endValue:0.5, interval:[0,500]},
+        {endValue:1.0, interval:[4000,5000]}
+      ]
+    },
+
+    rotation:{
+      initialRange:[0, 360],
+      factor:"time",
+      interpolation:[
+        {endValue:1080, interval:[0,5000]},
+      ]
+    },
+
+    scale:{
+      initialRange:[[5,5,5], [10,10,10]],
+      factor:"time",
+      interpolation:[
+        {endValue:[3,3,3], interval:[0,4000]},
+        {endValue:[0,0,0], interval:[4000,5000]}
+      ]
+    },
+  }}
+
+  particlePhysics={{
+    velocity:{
+    initialRange:[[-2,-.5,0], [2,-3.5,0]]}
+  }}
+/>
+
+```
+[Référence](https://docs.viromedia.com/docs/viroparticleemitter)
 
 ### Éléments de type audio
 #### main audio
@@ -250,7 +350,7 @@ Les Objets ont besoin de lumière pour être visible !
 
 ### Éléments de type image
 
-[Référence]
+[Référence]()
 
 ### Éléments de type group
 #### Node

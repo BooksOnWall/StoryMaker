@@ -227,13 +227,118 @@ Gli oggetti hanno bisogno di luce per essere visibili!
 
 [Riferimento]
 
+### Éléments de type texture
+#### immagine texture
+* VIRO API REF <ViroMaterials/>
+* texture ambientOcclusionTexture
+* blendMode ['None', 'Alpha', 'Add', 'Subtract', 'Multiply', 'Screen']
+* bloomThreshold ['None', 'Red', 'Green', 'Blue', 'Alpha', 'All']
+* colorWriteMask ['None', 'Red', 'Green', 'Blue', 'Alpha', 'All']
+* cullMode ['None', 'Back', 'Front']
+* diffuseColor
+* chromaKeyFilteringColor
+* diffuseIntensity 1.0
+* diffuseTexture uri: "http://example.org/myimage.png" | require('./image.png')
+* lightingModel ['Phong', 'Blinn', 'Lambert', 'Constant', 'PBR']
+* magnificationFilter ['Nearest', 'Linear']
+* metalness 1
+* texture metalnessTexture
+* minificationFilter ['Nearest', 'Linear']
+* mipFilter ['Nearest', 'Linear']
+* normalTexture uri: "http://example.org/myimage.png" | require('./image.png')
+* readsFromDepthBuffer true
+* rugosità 1
+* roughnessTexture uri: "http://example.org/myimage.png" | require('./image.png')
+* lucentezza 1
+* specularTexture uri: "http://example.org/myimage.png" | require('./image.png')
+* wrapS ['Clamp', 'Repeat', 'Mirror']
+* wrapT ['Clamp', 'Repeat', 'Mirror']
+* writesToDepthBuffer true
+
+[Référence](https://docs.viromedia.com/docs/materials)
+
 #### video texture
+* VIRO API REF <ViroMaterialVideo />
+* RTF API REF ?
+* materiale
+* pausa vera
+* loop true
+* muto vero
+* evento onBufferEnd
+* Evento onError
+* Evento onBufferStart
+* Evento onFinish
+* Evento onUpdateTime
+* volume 0.8
 
-[Riferimento]
+[Référence](https://docs.viromedia.com/docs/viromaterialvideo)
 
-### Elementi di particelle
+### Éléments de type particule
 
-[Riferimento] ###
+```
+<ViroParticleEmitter
+  position={[0, 4.5, 0]}
+  duration={2000}
+  visible={vero}
+  delay={0}
+  run={vero}
+  loop={vero}
+  fixedToEmitter={true}
+
+  image={{
+    source:require("./res/particle_snow.png"),                 
+    altezza:0.1,
+    larghezza:0.1,
+    bloomThreshold:1.0
+  }}
+
+  spawnBehavior={{
+    particleLifetime:[4000,4000],
+    emissionRatePerSecond:[150, 200],
+    spawnVolume:{
+      shape: "box",
+      params:[20, 1, 20],
+      spawnOnSurface:false
+    },
+    maxParticles:800
+  }}
+
+  particleAppearance={{
+    opacità:{
+      initialRange:[0, 0],
+      fattore: "tempo",
+      interpolazione:[
+        {endValue:0.5, interval:[0,500]},
+        {endValue:1.0, interval:[4000,5000]}
+      ]
+    },
+
+    rotazione:{
+      initialRange:[0, 360],
+      fattore: "tempo",
+      interpolazione:[
+        {endValue:1080, interval:[0,5000]},
+      ]
+    },
+
+    scala:{
+      initialRange:[[5,5,5], [10,10,10]],
+      fattore:[[tempo]],
+      interpolazione:[
+        {endValue:[3,3,3], interval:[0,4000]},
+        {endValue:[0,0,0], interval:[4000,5000]}
+      ]
+    },
+  }}
+
+  particlePhysics={{
+    velocità:{
+    initialRange:[[-2,-.5,0], [2,-3.5,0]]}
+  }}
+/>
+
+```
+[Référence](https://docs.viromedia.com/docs/viroparticleemitter)
 
 ### Elementi audio
 #### audio principale
