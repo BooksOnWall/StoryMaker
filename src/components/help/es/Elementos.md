@@ -113,16 +113,31 @@ RTF API REF <Cámara/> * posición [x,y,z
 
 [Referencia](https://docs.viromedia.com/docs/viroorbitcamera)
 
-### Elementos de decoración
+### Éléments de type decor
 #### Cielo
-* RTF API REF ?
+* RTF API REF <Sky />
+* distancia 450000
+* sunPosition [x,y,z]
+* azimut 0.25
+* ...
 
-[Referencia]
+[Référence](https://github.com/pmndrs/drei#sky)
 
-#### Rejilla
-* RTF API REF ?
+#### Estrellas
+* RTF API REF <Stars />
+* radio 100
+* profundidad 50
+* recuento 5000
+* factor 4
+* saturación 0
+* fade true
 
-[Referencia]
+[Référence](https://github.com/pmndrs/drei#stars)
+
+#### Grid
+* RTF API REF <gridHelper />
+* args [10, 10, 'blanco', 'gris']
+[Referencia](https://threejs.org/docs/#api/en/helpers/GridHelper)
 
 ### Elementos del tipo de objeto
 Viro soporta la carga de modelos 3D en formatos FBX, GLTF y OBJ. Viro cargará la geometría, las texturas y los ajustes de iluminación del archivo. Para FBX, Viro cargará adicionalmente todas las animaciones esqueléticas instaladas. Los archivos OBJ se cargan directamente estableciendo el atributo source de <Viro3DObject>, mientras que los archivos FBX deben ser convertidos al formato VRX propio de Viro.

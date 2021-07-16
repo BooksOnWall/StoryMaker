@@ -115,14 +115,29 @@ The framing of your animation depends on the user's behavior.
 
 ### Decor elements
 #### Sky
-* RTF API REF ?
+* RTF API REF <Sky />
+* distance 450000
+* sunPosition [x,y,z]
+* azimuth 0.25
+* ...
 
-[Reference]
+[Reference](https://github.com/pmndrs/drei#sky)
+
+#### Stars
+* RTF API REF <Stars />
+* radius 100
+* depth 50
+* count 5000
+* factor 4
+* saturation 0
+* fade true
+
+[Reference](https://github.com/pmndrs/drei#stars)
 
 #### Grid
-* RTF API REF ?
-
-[Reference]
+* RTF API REF <gridHelper />
+* args [10, 10, 'white', 'gray']
+[Reference](https://threejs.org/docs/#api/en/helpers/GridHelper)
 
 ### Object type elements
 Viro supports loading 3D models in FBX, GLTF and OBJ formats. Viro will load the geometry, textures and lighting settings from the file. For FBX, Viro will additionally load all installed skeletal animations. OBJ files are loaded directly by setting the source attribute of <Viro3DObject>, while FBX files must be converted to Viro's own VRX format.

@@ -136,7 +136,7 @@ Le cadrage de votra animation depend donc du comportement de l'utilisateur.
 
 #### Grid
 * RTF API REF <gridHelper />
-* args [10, 10, `white`, `gray`]
+* args [10, 10, 'white', 'gray']
 [Référence](https://threejs.org/docs/#api/en/helpers/GridHelper)
 
 ### Éléments de type objet
