@@ -5,7 +5,7 @@ Il est a noter que le rendu des éléments est dépendant des moteurs 3D de rend
 
 ### Éléments de type lumière
 #### Lightning environement
-* VIRO API REF <Virolightingenvironment/>
+* VIRO API REF <ViroLightingEnvironment/>
 * RTF API REF ?
 * source uri:"http://example.org/myimage.hdr" | require('./myimage.hdr')
 * onLoadStart func
@@ -105,7 +105,7 @@ Le cadrage de votra animation depend donc du comportement de l'utilisateur.
 
 #### OrbitCamera
 * VIRO API REF <ViroOrbitCamera/>
-* RTF API REF ?
+* RTF API REF <PerspectiveCamera />
 * position [x,y,z]
 * focalPoint [x,y,z]
 * active true
@@ -115,14 +115,29 @@ Le cadrage de votra animation depend donc du comportement de l'utilisateur.
 
 ### Éléments de type decor
 #### Sky
-* RTF API REF ?
+* RTF API REF <Sky />
+* distance 450000
+* sunPosition [x,y,z]
+* azimuth 0.25
+* ...
 
-[Référence]
+[Référence](https://github.com/pmndrs/drei#sky)
+
+#### Stars
+* RTF API REF <Stars />
+* radius 100
+* depth 50
+* count 5000
+* factor 4
+* saturation 0
+* fade true
+
+[Référence](https://github.com/pmndrs/drei#stars)
 
 #### Grid
-* RTF API REF ?
-
-[Référence]
+* RTF API REF <gridHelper />
+* args [10, 10, `white`, `gray`]
+[Référence](https://threejs.org/docs/#api/en/helpers/GridHelper)
 
 ### Éléments de type objet
 Viro prend en charge le chargement de modèles 3D dans les formats FBX, GLTF et OBJ. Viro chargera la géométrie, les textures et les paramètres d'éclairage du fichier. Pour FBX, Viro chargera en plus toutes les animations squelettiques installées. Les fichiers OBJ sont chargés directement en définissant l'attribut source de <Viro3DObject>, tandis que les fichiers FBX doivent être convertis dans le format VRX propre à Viro.
@@ -240,6 +255,7 @@ Les Objets ont besoin de lumière pour être visible !
 ### Éléments de type group
 #### Node
 * VIRO API REF <ViroNode/>
+* RTF API REF <group />
 * position [x,y,z]
 * height 2
 * length 2

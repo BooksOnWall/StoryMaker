@@ -5,7 +5,7 @@ Deve-se notar que a renderização de elementos depende dos motores de renderiza
 
 ### Elementos relâmpagos
 #### Ambiente de relâmpagos
-* VIRO API REF <Virolightingenvironment/>
+* VIRO API REF <ViroLightingEnvironment/>
 * RTF API REF ?
 * fonte uri: "http://example.org/myimage.hdr" | require('./myimage.hdr')
 *OnLoadStart func

@@ -5,7 +5,7 @@ Va notato che il rendering degli elementi dipende dai motori di rendering 3D (we
 
 ### Elementi di fulmine
 #### Ambiente fulmineo
-* VIRO API REF <Virolightingenvironment/>
+* VIRO API REF <ViroLightingEnvironment/>
 * RTF API REF ?
 * fonte uri: "http://example.org/myimage.hdr" | require('./myimage.hdr')
 * func onLoadStart

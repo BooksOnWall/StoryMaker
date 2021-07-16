@@ -130,10 +130,10 @@ drawer: {
 },
 
 }));
-const Plane = () => (
+const Plane = ({args}) => (
   <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.5, 0]} receiveShadow>
-    <planeBufferGeometry attach="geometry" args={[20, 20]} />
-    <meshBasicMaterial attach="material" color="#082444" />
+    <planeBufferGeometry attach="geometry" args={args} />
+    <meshBasicMaterial attach="material" color={args[3]} />
   </mesh>
 );
 const Controls = () => {
@@ -197,10 +197,14 @@ const Editor = ({messages, history, locale, switchLang, allMessages}) => {
       <Box className={classes.root}>
 
         <Drawers state={state} toggleDrawer={toggleDrawer}/>
-        <Canvas shadowMap  camera={{ position: [2, 2, 2] }}>
+        <Canvas
+          pixelRatio={window.devicePixelRatio}
+          shadowMap
+          camera={{ position: [2, 2, 2] }}
+          >
           <Controls />
-          <Plane />
-          <gridHelper />
+          <Plane args={[10, 10, 'white', 'gray']}/>
+          <gridHelper args={[10, 10, 'white', 'gray']} />
         </Canvas>
       </Box>
     </>

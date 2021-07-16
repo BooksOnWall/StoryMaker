@@ -5,7 +5,7 @@ Hay que tener en cuenta que el renderizado de los elementos depende de los motor
 
 ### Elementos del rayo
 #### Entorno del rayo
-* VIRO API REF <Virolightingenvironment/>
+* VIRO API REF <ViroLightingEnvironment/>
 * RTF API REF ?
 * source uri: "http://example.org/myimage.hdr" | require('./myimage.hdr')
 * Func onLoadStart

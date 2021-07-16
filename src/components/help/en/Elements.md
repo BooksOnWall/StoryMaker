@@ -5,7 +5,7 @@ It should be noted that the rendering of elements is dependent on 3D rendering e
 
 ### Light elements
 #### Lightning environment
-* VIRO API REF <Virolightingenvironment/>
+* VIRO API REF <ViroLightingEnvironment/>
 * RTF API REF ?
 * source uri: "http://example.org/myimage.hdr" | require('./myimage.hdr')
 * onLoadStart func
