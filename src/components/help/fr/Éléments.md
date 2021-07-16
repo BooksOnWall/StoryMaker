@@ -4,8 +4,17 @@ Il est a noter que le rendu des éléments est dépendant des moteurs 3D de rend
 
 
 ### Éléments de type lumière
-#### SpotLight
+#### Lightning environement
+* VIRO API REF <Virolightingenvironment/>
+* source uri:"http://example.org/myimage.hdr" | require('./myimage.hdr')
+* onLoadStart func
+* onLoadEnd func
+* onError func
 
+[Référence](https://docs.viromedia.com/docs/virolightingenvironment)
+
+#### SpotLight:
+* VIRO API REF <ViroSpotLight/>
 * position [x,y,z]
 * color "#777777"
 * direction [x, y, z]
@@ -14,18 +23,48 @@ Il est a noter que le rendu des éléments est dépendant des moteurs 3D de rend
 * innerAngle 5
 * outerAngle 20
 
+[Référence](https://docs.viromedia.com/docs/virospotlight1)
+
 #### AmbientLight
+* VIRO API REF <ViroAmbientLight/>
 * color "#FF0000"
+* influenceBitMask "0x1"
+* intensity 1000
+* temperature "6500K"
+
+[Référence](https://docs.viromedia.com/docs/viroambientlight)
 
 #### DirectionalLight
+* VIRO API REF <ViroDirectionalLight/>
+* position [x,y,z]
 * color "#FFF"
-* direction
+* direction [x,y,z]
+* castShadow true
+* influenceBitMask "0x1"
+* intensity 1000
+* shadowBias 0.005
+* shadowFarZ 20
+* shadowNearZ 0.1
+* shadowOrthographicSize 20
+* shadowOrthographicPosition [x,y,z]
+* shadowMapSize	1024
+* shadowOpacity 1.0
+* temperature "6500K"
+
+[Référence](https://docs.viromedia.com/docs/virodirectionallight-1)
 
 #### OmniLight
+* VIRO API REF <ViroOmniLight/>
+* position [x,y,z]
 * color "#FFF"
 * position [x,y,z]
 * attenuationStartDistance 5
 * attenuationEndDistance 10
+* influenceBitMask "0x1"
+* intensity 1000
+* temperature "6500K"
+
+[Référence](https://docs.viromedia.com/docs/viroomnilight)
 
 #### Shadows
 Viro rend les ombres par shadow mapping, une technique où les silhouettes des objets sont rendues dans une image, et cette image est ensuite reprojetée sur l'écran. Viro génère des ombres pour toutes les lumières dont la propriété castsShadow est définie sur true.
@@ -42,17 +81,95 @@ En Realité virtuelle cela peut être les mouvements de la tête
 Le cadrage de votra animation depend donc du comportement de l'utilisateur.
 
 #### default camera
+* VIRO API REF <ViroCamera/>
+* position [x,y,z]
+* rotation [x,y,z]
+* active true
+* fielOfView 90
+* animation shape [{
+  ** name: anim1,
+  ** delay: 800,
+  ** loop: true,
+  ** onStart: func,
+  ** onfinish: func,
+  ** run true
+  }]
+
+[Référence](https://docs.viromedia.com/docs/virocamera)
+
+#### OrbitCamera
+* VIRO API REF <ViroOrbitCamera/>
+* position [x,y,z]
+* focalPoint [x,y,z]
+* active true
+* fielOfView 90
+
+[Référence](https://docs.viromedia.com/docs/viroorbitcamera)
 
 ### Éléments de type decor
 #### Sky
-
+[Référence]
 #### Grid
-
+[Référence]
 
 ### Éléments de type objet
 Viro prend en charge le chargement de modèles 3D dans les formats FBX, GLTF et OBJ. Viro chargera la géométrie, les textures et les paramètres d'éclairage du fichier. Pour FBX, Viro chargera en plus toutes les animations squelettiques installées. Les fichiers OBJ sont chargés directement en définissant l'attribut source de <Viro3DObject>, tandis que les fichiers FBX doivent être convertis dans le format VRX propre à Viro.
 
+#### Box
+* VIRO API REF <ViroBox/>
+* position [x,y,z]
+* height 2
+* length 2
+* width 2
+* materials ["boxside"]
+* animation shape [{
+  ** name: anim1,
+  ** delay: 800,
+  ** loop: true,
+  ** onStart: func,
+  ** onfinish: func,
+  ** run true
+  }]
+* highAccuracyEvents true
+* ignoreEventHandling false
+* lightReceivingBitMask .5
+* dragPlane shape {
+  ** planePoint
+  ** planeNormal
+  ** maxDIstance
+  }
+* ...
+
+[Référence](https://docs.viromedia.com/docs/virobox)
+
+#### Node
+* VIRO API REF <ViroNode/>
+* position [x,y,z]
+* height 2
+* length 2
+* width 2
+* materials ["boxside"]
+* animation shape [{
+  ** name: anim1,
+  ** delay: 800,
+  ** loop: true,
+  ** onStart: func,
+  ** onfinish: func,
+  ** run true
+  }]
+* highAccuracyEvents true
+* ignoreEventHandling false
+* lightReceivingBitMask .5
+* dragPlane shape {
+  ** planePoint
+  ** planeNormal
+  ** maxDIstance
+  }
+* ...
+
 #### Mesh
+
+[Référence]
 
 #### Fichier .obj
 
@@ -65,16 +182,33 @@ Viro prend en charge le chargement de modèles 3D dans les formats FBX, GLTF et 
 ### Éléments de type texture
 #### image texture
 
+[Référence]
+
 #### video texture
+
+[Référence]
 
 ### Éléments de type particule
 
+[Référence]
+
 ### Éléments de type audio
 #### main audio
+
+[Référence]
+
 #### audio spatialisation
+
+[Référence]
 
 ### Éléments de type video
 
+[Référence]
+
 ### Éléments de type image
 
+[Référence]
+
 ### Éléments de type group
+
+[Référence]
