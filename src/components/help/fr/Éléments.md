@@ -6,6 +6,7 @@ Il est a noter que le rendu des éléments est dépendant des moteurs 3D de rend
 ### Éléments de type lumière
 #### Lightning environement
 * VIRO API REF <Virolightingenvironment/>
+* RTF API REF ?
 * source uri:"http://example.org/myimage.hdr" | require('./myimage.hdr')
 * onLoadStart func
 * onLoadEnd func
@@ -15,6 +16,7 @@ Il est a noter que le rendu des éléments est dépendant des moteurs 3D de rend
 
 #### SpotLight:
 * VIRO API REF <ViroSpotLight/>
+* RTF API REF ?
 * position [x,y,z]
 * color "#777777"
 * direction [x, y, z]
@@ -27,6 +29,7 @@ Il est a noter que le rendu des éléments est dépendant des moteurs 3D de rend
 
 #### AmbientLight
 * VIRO API REF <ViroAmbientLight/>
+* RTF API REF ?
 * color "#FF0000"
 * influenceBitMask "0x1"
 * intensity 1000
@@ -36,6 +39,7 @@ Il est a noter que le rendu des éléments est dépendant des moteurs 3D de rend
 
 #### DirectionalLight
 * VIRO API REF <ViroDirectionalLight/>
+* RTF API REF ?
 * position [x,y,z]
 * color "#FFF"
 * direction [x,y,z]
@@ -54,6 +58,7 @@ Il est a noter que le rendu des éléments est dépendant des moteurs 3D de rend
 [Référence](https://docs.viromedia.com/docs/virodirectionallight-1)
 
 #### OmniLight
+* RTF API REF ?
 * VIRO API REF <ViroOmniLight/>
 * position [x,y,z]
 * color "#FFF"
@@ -82,23 +87,25 @@ Le cadrage de votra animation depend donc du comportement de l'utilisateur.
 
 #### default camera
 * VIRO API REF <ViroCamera/>
+* RTF API REF <Camera />
 * position [x,y,z]
 * rotation [x,y,z]
 * active true
 * fielOfView 90
 * animation shape [{
-  ** name: anim1,
-  ** delay: 800,
-  ** loop: true,
-  ** onStart: func,
-  ** onfinish: func,
-  ** run true
+** name: anim1,
+** delay: 800,
+** loop: true,
+** onStart: func,
+** onfinish: func,
+** run true
   }]
 
 [Référence](https://docs.viromedia.com/docs/virocamera)
 
 #### OrbitCamera
 * VIRO API REF <ViroOrbitCamera/>
+* RTF API REF ?
 * position [x,y,z]
 * focalPoint [x,y,z]
 * active true
@@ -108,8 +115,13 @@ Le cadrage de votra animation depend donc du comportement de l'utilisateur.
 
 ### Éléments de type decor
 #### Sky
+* RTF API REF ?
+
 [Référence]
+
 #### Grid
+* RTF API REF ?
+
 [Référence]
 
 ### Éléments de type objet
@@ -117,67 +129,83 @@ Viro prend en charge le chargement de modèles 3D dans les formats FBX, GLTF et 
 
 #### Box
 * VIRO API REF <ViroBox/>
+* RTF API REF <mesh />
 * position [x,y,z]
 * height 2
 * length 2
 * width 2
 * materials ["boxside"]
 * animation shape [{
-  ** name: anim1,
-  ** delay: 800,
-  ** loop: true,
-  ** onStart: func,
-  ** onfinish: func,
-  ** run true
+** name: anim1,
+** delay: 800,
+** loop: true,
+** onStart: func,
+** onfinish: func,
+** run true
   }]
 * highAccuracyEvents true
 * ignoreEventHandling false
 * lightReceivingBitMask .5
 * dragPlane shape {
-  ** planePoint
-  ** planeNormal
-  ** maxDIstance
+** planePoint
+** planeNormal
+** maxDIstance
   }
 * ...
 
 [Référence](https://docs.viromedia.com/docs/virobox)
 
-#### Node
-* VIRO API REF <ViroNode/>
-* position [x,y,z]
-* height 2
-* length 2
-* width 2
-* materials ["boxside"]
-* animation shape [{
-  ** name: anim1,
-  ** delay: 800,
-  ** loop: true,
-  ** onStart: func,
-  ** onfinish: func,
-  ** run true
-  }]
-* highAccuracyEvents true
-* ignoreEventHandling false
-* lightReceivingBitMask .5
-* dragPlane shape {
-  ** planePoint
-  ** planeNormal
-  ** maxDIstance
-  }
-* ...
+### Objects 3D
 
-#### Mesh
-
-[Référence]
+Les Objets ont besoin de lumière pour être visible !
 
 #### Fichier .obj
+* VIRO API REF <Viro3DObject/>
+* RTF API REF ?
+* position [x,y,z]
+* source require('./myObbject.obj')
+* resources [...textures]
+* highAccuracyEvents true
+* scale [x,y,z]
+* rotation[x,y,z]
+* type "OBJ"
+* transformBehaviors ["billboard"]
 
 #### Fichier .fbx
+* VIRO API REF <Viro3DObject/>
+* RTF API REF ?
+* position [x,y,z]
+* source require('./myObbject.fbx')
+* resources [...textures]
+* highAccuracyEvents true
+* scale [x,y,z]
+* rotation[x,y,z]
+* type "FBX"
+* transformBehaviors ["billboard"]
 
 #### Fichier .gltf
+* VIRO API REF <Viro3DObject/>
+* RTF API REF ?
+* position [x,y,z]
+* source require('./myObbject.gltf')
+* resources [...textures]
+* highAccuracyEvents true
+* scale [x,y,z]
+* rotation[x,y,z]
+* type "GLTF"
+* transformBehaviors ["billboard"]
 
 #### Fichier .vrx
+* VIRO API REF <Viro3DObject/>
+* RTF API REF ?
+* position [x,y,z]
+* source require('./myObbject.vrx')
+* resources [...textures]
+* highAccuracyEvents true
+* scale [x,y,z]
+* rotation[x,y,z]
+* type "VRX"
+* transformBehaviors ["billboard"]
 
 ### Éléments de type texture
 #### image texture
@@ -210,5 +238,29 @@ Viro prend en charge le chargement de modèles 3D dans les formats FBX, GLTF et 
 [Référence]
 
 ### Éléments de type group
+#### Node
+* VIRO API REF <ViroNode/>
+* position [x,y,z]
+* height 2
+* length 2
+* width 2
+* materials ["boxside"]
+* animation shape [{
+  ** name: anim1,
+  ** delay: 800,
+  ** loop: true,
+  ** onStart: func,
+  ** onfinish: func,
+  ** run true
+  }]
+* highAccuracyEvents true
+* ignoreEventHandling false
+* lightReceivingBitMask .5
+* dragPlane shape {
+  ** planePoint
+  ** planeNormal
+  ** maxDIstance
+  }
+* ...
 
 [Référence]
