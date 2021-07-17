@@ -5,7 +5,7 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 import { alpha } from '@material-ui/core/styles';
 import {makeStyles, withStyles} from '@material-ui/styles';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-
+import Draggable from 'react-draggable';
 import TreeView from '@material-ui/lab/TreeView';
 import TreeItem from '@material-ui/lab/TreeItem';
 import Collapse from '@material-ui/core/Collapse';
@@ -115,18 +115,28 @@ const Layers = ({toggleDrawer}) => {
       defaultEndIcon={<CloseSquare />}
     >
       <StyledTreeItem  nodeId="1" label="Layers">
-        <StyledTreeItem draggable={"true"} nodeId="2" label="Lights" />
-        <StyledTreeItem draggable={"true"} nodeId="3" label="Cameras">
-          <StyledTreeItem draggable={"true"} nodeId="6" label="Default" />
-          <StyledTreeItem draggable={"true"} nodeId="7" label="Perpective">
-            <StyledTreeItem draggable={"true"} nodeId="9" label="Child 1" />
-            <StyledTreeItem draggable={"true"} nodeId="10" label="Child 2" />
-            <StyledTreeItem draggable={"true"} nodeId="11" label="Child 3" />
+        <Draggable handle="#Lights" cancel={'[class*="MuiTreeItem-content"]'}>
+          <StyledTreeItem id="Lights" draggable={"true"} nodeId="2" label="Lights" />
+        </Draggable>
+        <Draggable handle="#Cameras" cancel={'[class*="MuiTreeItem-content"]'}>
+          <StyledTreeItem id="Cameras" draggable={"true"} nodeId="3" label="Cameras">
+            <StyledTreeItem draggable={"true"} nodeId="6" label="Default" />
+            <StyledTreeItem draggable={"true"} nodeId="7" label="Perpective">
+              <StyledTreeItem draggable={"true"} nodeId="9" label="Child 1" />
+              <StyledTreeItem draggable={"true"} nodeId="10" label="Child 2" />
+              <StyledTreeItem draggable={"true"} nodeId="11" label="Child 3" />
+            </StyledTreeItem>
           </StyledTreeItem>
-        </StyledTreeItem>
-        <StyledTreeItem draggable={"true"} nodeId="8" label="Object 1" />
-        <StyledTreeItem draggable={"true"} nodeId="4" label="Object 2" />
-        <StyledTreeItem draggable={"true"} nodeId="5" label="Object 3" />
+        </Draggable>
+        <Draggable handle="#Object 1" cancel={'[class*="MuiTreeItem-content"]'}>
+          <StyledTreeItem id ="Object 1" draggable={"true"} nodeId="8" label="Object 1" />
+        </Draggable>
+        <Draggable handle="Object 2" cancel={'[class*="MuiTreeItem-content"]'}>
+        <StyledTreeItem id="Object 2" draggable={"true"} nodeId="4" label="Object 2" />
+        </Draggable>
+        <Draggable handle="#Object 3" cancel={'[class*="MuiTreeItem-content"]'}>
+        <StyledTreeItem id="Object 3" draggable={"true"} nodeId="5" label="Object 3" />
+        </Draggable>
       </StyledTreeItem>
     </TreeView>
     </div>

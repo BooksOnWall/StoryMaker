@@ -1,4 +1,7 @@
 ## Elementos
+Los elementos son objetos (Cámaras de luz, Onjects 3D, Sonidos, Vídeos, Texturas, Generadores de partículas...) que se añaden durante un evento y que componen una animación.
+
+
 Algunos elementos, como los fondos, los cielos, etc., son perfectamente adecuados para la realidad virtual y no para la realidad aumentada.
 Hay que tener en cuenta que el renderizado de los elementos depende de los motores de renderizado 3D (webgl para StageMaker, arKit para ios, arCore para android).
 
@@ -92,20 +95,20 @@ RTF API REF <Cámara/> * posición [x,y,z
 * rotación [x,y,z]
 * activo verdadero
 * fielOfView 90
-* forma de animación [{
-** nombre: anim1,
-** retraso: 800,
-** bucle: verdadero,
-** onStart: func,
-** onfinish: func,
-** ejecutar verdadero
-  }]
+* animación
+ * nombre: anim1,
+ * retraso: 800,
+ * bucle: verdadero,
+ * onStart: func,
+ * onfinish: func,
+ * ejecutar verdadero
+
 
 [Referencia](https://docs.viromedia.com/docs/virocamera)
 
 #### OrbitCamera
 * VIRO API REF <ViroOrbitCamera/>
-* RTF API REF ?
+* RTF API REF <PerspectiveCamera />
 * posición [x,y,z]
 * focalPoint [x,y,z]
 * activo verdadero
@@ -113,28 +116,28 @@ RTF API REF <Cámara/> * posición [x,y,z
 
 [Referencia](https://docs.viromedia.com/docs/viroorbitcamera)
 
-### Éléments de type decor
+### Elementos de decoración
 #### Cielo
 * RTF API REF <Sky />
 * distancia 450000
 * sunPosition [x,y,z]
-* azimut 0.25
+* azimut 0,25
 * ...
 
-[Référence](https://github.com/pmndrs/drei#sky)
+[Referencia](https://github.com/pmndrs/drei#sky)
 
 #### Estrellas
 * RTF API REF <Stars />
 * radio 100
 * profundidad 50
-* recuento 5000
+* cuenta 5000
 * factor 4
 * saturación 0
 * fade true
 
-[Référence](https://github.com/pmndrs/drei#stars)
+[Referencia](https://github.com/pmndrs/drei#stars)
 
-#### Grid
+#### Rejilla
 * RTF API REF <gridHelper />
 * args [10, 10, 'blanco', 'gris']
 [Referencia](https://threejs.org/docs/#api/en/helpers/GridHelper)
@@ -150,22 +153,20 @@ Viro soporta la carga de modelos 3D en formatos FBX, GLTF y OBJ. Viro cargará l
 * longitud 2
 * ancho 2
 * materiales ["boxside"]
-* forma de animación [{
-** nombre: anim1,
-** retraso: 800,
-** bucle: verdadero,
-** onStart: func,
-** onfinish: func,
-** ejecutar verdadero
-  }]
+* animación
+ * nombre: anim1,
+ * retraso: 800,
+ * bucle: verdadero,
+ * onStart: func,
+ * onfinish: func,
+ * ejecutar verdadero
 * highAccuracyEvents true
 * ignoreEventHandling false
 * lightReceivingBitMask .5
-* forma dragPlane {
-** planePoint
-** planoNormal
-** maxDIstancia
-  }
+* dragPlane
+ * planePoint
+ * planeNormal
+ * maxDIstance
 * ...
 
 [Referencia](https://docs.viromedia.com/docs/virobox)
@@ -222,13 +223,13 @@ Los objetos necesitan luz para ser visibles.
 * tipo 'VRX
 * transformBehaviors ["cartelera"]
 
-### Éléments de type texture
+### Elementos de textura
 #### textura de la imagen
 * VIRO API REF <ViroMateriales/>
 * textura ambientOcclusionTexture
 * blendMode ['None', 'Alpha', 'Add', 'Subtract', 'Multiply', 'Screen']
-* bloomThreshold ['None', 'Red', 'Green', 'Blue', 'Alpha', 'All']
-* colorWriteMask ['None', 'Red', 'Green', 'Blue', 'Alpha', 'All']
+* bloomThreshold ['Ninguno', 'Rojo', 'Verde', 'Azul', 'Alfa', 'Todos']
+* colorWriteMask ['Ninguno', 'Rojo', 'Verde', 'Azul', 'Alfa', 'Todos']
 * cullMode ['None', 'Back', 'Front']
 * diffuseColor
 * chromaKeyFilteringColor
@@ -237,39 +238,38 @@ Los objetos necesitan luz para ser visibles.
 * lightingModel ['Phong', 'Blinn', 'Lambert', 'Constant', 'PBR']
 * magnificationFilter ['Nearest', 'Linear']
 * metalness 1
-* MetalnessTexture
+* textura metalnessTexture
 * minificationFilter ['Nearest', 'Linear']
 * mipFilter ['Nearest', 'Linear']
 * normalTexture uri: "http://example.org/myimage.png" | require('./image.png')
 * readsFromDepthBuffer true
 * Rugosidad 1
-* RugosidadTextura uri: "http://example.org/myimage.png" | require('./image.png')
-* shininess 1
+* roughnessTexture uri: "http://example.org/myimage.png" | require('./image.png')
+* brillo 1
 * specularTexture uri: "http://example.org/myimage.png" | require('./image.png')
 * wrapS ['Clamp', 'Repeat', 'Mirror']
 * wrapT ['Clamp', 'Repeat', 'Mirror']
 * writesToDepthBuffer true
 
-[Référence](https://docs.viromedia.com/docs/materials)
+[Referencia](https://docs.viromedia.com/docs/materials)
 
 #### textura de vídeo
 * VIRO API REF <ViroMaterialVideo />
 * RTF API REF ?
 * material
-* pausa true
-* loop true
-* muted true
+* pausa verdadera
+* bucle verdadero
+* silenciados verdaderos
 * evento onBufferEnd
-* Evento onError
-* Evento onBufferStart
-* Evento onFinish
+* evento onError
+* evento onBufferStart
+* evento onFinish
 * evento onUpdateTime
-* volumen 0.8
+* volumen 0,8
 
-[Référence](https://docs.viromedia.com/docs/viromaterialvideo)
+[Referencia](https://docs.viromedia.com/docs/viromaterialvideo)
 
-
-### Éléments de type particule
+### Elementos de typo particula
 #### ParticleEmitter
 * VIRO API REF <ViroParticleEmitter/>
 * RTF API REF ?
@@ -281,79 +281,78 @@ Los objetos necesitan luz para ser visibles.
 * loop true
 * fixedToEmitter true
 * imagen
-** source require('./particle_snow.png')
-** altura 0.1
-** anchura 0.1
-** bloomThreshold 1.0
+ * source require('./particle_snow.png')
+ * height 0.1
+ * width 0.1
+ * bloomThreshold 1.0
 * spawnBehavior
-** particleLifetime [4000,4000]
-** emissionRatePerSecond [150, 200]
-** spawnVolume
-*** shape "box"
-*** params [20, 1, 20]
-*** spawnOnSurface false
-** maxParticles 800
+ * particleLifetime [4000,4000]
+ * emissionRatePerSecond [150, 200]
+ * spawnVolume
+  * shape "box"
+  * params [20, 1, 20]
+  * spawnOnSurface false
+ * maxParticles 800
 * particleAppearance
-** opacidad
-*** initialRange [0, 0]
-*** factor "tiempo"
-*** interpolación [{Valor final:0,5, intervalo:[0,500]}, {Valor final:1,0, intervalo:[4000,5000]}]
-** rotación
-*** rango inicial [0, 360]
-*** factor: "tiempo",
-*** interpolación:[{endValue:1080, intervalo:[0,5000]}]
-** Escala
-*** initialRange [[5,5,5], [10,10,10]]
-*** factor "tiempo"
-*** interpolación [{endValue:[3,3,3], intervalo:[0,4000]}, {endValue:[0,0,0], intervalo:[4000,5000]}]
+ * opacidad
+  * initialRange [0, 0]
+  * factor "tiempo"
+  * interpolación [{endValue:0.5, intervalo:[0,500]}, {endValue:1.0, intervalo:[4000,5000]}]
+ * rotación
+  * initialRange [0, 360]
+  * factor: "tiempo",
+  * interpolación:[{endValue:1080, intervalo:[0,5000]}]
+ * escala
+  * initialRange [[5,5,5], [10,10,10]]
+  * factor "tiempo"
+  * interpolación [{endValue:[3,3,3], intervalo:[0,4000]}, {endValue:[0,0,0], intervalo:[4000,5000]}]
 * particlePhysics
-** Velocidad
-*** initialRange [[-2,-.5,0], [2,-3.5,0]]
+ * Velocidad
+  * initialRange [[-2,-.5,0], [2,-3.5,0]]
 
 
 [Référence](https://docs.viromedia.com/docs/viroparticleemitter)
 
-### Elementos de audio
+### Éléments de type audio
 #### audio principal
 
-[Referencia] ###
+[Referencia]
 
-#### audio espacial
+#### espacialización de audio
+
+[Referencia]()
+
+### Éléments de type video
 
 [Referencia]
 
-### Elementos de tipo vídeo
+### Elementos de tipo imagen
 
-[Referencia]
+[Referencia]()
 
-### Elementos de tipo de imagen
-
-[Referencia]
-
-### Group Items
+### Elementos de tipo grupo
 #### Nodo
 * VIRO API REF <ViroNode/>
+* RTF API REF <group/>
 * posición [x,y,z]
 * altura 2
 * longitud 2
-* ancho 2
+* anchura 2
 * materiales ["boxside"]
 * forma de animación [{
-  ** nombre: anim1,
-  ** retraso: 800,
-  ** bucle: verdadero,
-  ** onStart: func,
-  ** onfinish: func,
-  ** ejecutar verdadero
-  }]
+ * nombre: anim1,
+ * retraso: 800,
+ * loop: true,
+ * onStart: func,
+ * onfinish: func,
+ * run true
 * highAccuracyEvents true
 * ignoreEventHandling false
 * lightReceivingBitMask .5
-* forma dragPlane {
-  ** planePoint
-  ** planoNormal
-  ** maxDIstancia
-  }
+* dragPlane
+ * planePoint
+ * planeNormal
+ * maxDIstance
 * ...
 
-[Referencia]
+[Référence]

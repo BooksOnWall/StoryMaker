@@ -1,4 +1,7 @@
 ## Éléments
+Les éléments sont des objets ( Lumière  Cameras , Onjects 3D , Sons , Videos, Textures, Générateurs de particules ...) qui sont ajoutés lors d'un évènement et qui composent une animation.
+
+
 Certains éléments, comme des fonds , un ciel  peuvent parfaitement convenir a la realité virtuelle et non à la réalité augmentée.
 Il est a noter que le rendu des éléments est dépendant des moteurs 3D de rendu (webgl pour le StageMaker, arKit pour ios, arCore pour android).
 
@@ -92,14 +95,14 @@ Le cadrage de votra animation depend donc du comportement de l'utilisateur.
 * rotation [x,y,z]
 * active true
 * fielOfView 90
-* animation shape [{
-** name: anim1,
-** delay: 800,
-** loop: true,
-** onStart: func,
-** onfinish: func,
-** run true
-  }]
+* animation
+ * name: anim1,
+ * delay: 800,
+ * loop: true,
+ * onStart: func,
+ * onfinish: func,
+ * run true
+
 
 [Référence](https://docs.viromedia.com/docs/virocamera)
 
@@ -150,22 +153,20 @@ Viro prend en charge le chargement de modèles 3D dans les formats FBX, GLTF et 
 * length 2
 * width 2
 * materials ["boxside"]
-* animation shape [{
-** name: anim1,
-** delay: 800,
-** loop: true,
-** onStart: func,
-** onfinish: func,
-** run true
-  }]
+* animation
+ * name: anim1,
+ * delay: 800,
+ * loop: true,
+ * onStart: func,
+ * onfinish: func,
+ * run true
 * highAccuracyEvents true
 * ignoreEventHandling false
 * lightReceivingBitMask .5
-* dragPlane shape {
-** planePoint
-** planeNormal
-** maxDIstance
-  }
+* dragPlane
+ * planePoint
+ * planeNormal
+ * maxDIstance
 * ...
 
 [Référence](https://docs.viromedia.com/docs/virobox)
@@ -280,34 +281,34 @@ Les Objets ont besoin de lumière pour être visible !
 * loop true
 * fixedToEmitter true
 * image
-** source require('./particle_snow.png')
-** height 0.1
-** width 0.1
-** bloomThreshold 1.0
+ * source require('./particle_snow.png')
+ * height 0.1
+ * width 0.1
+ * bloomThreshold 1.0
 * spawnBehavior
-** particleLifetime [4000,4000]
-** emissionRatePerSecond [150, 200]
-** spawnVolume
-*** shape "box"
-*** params [20, 1, 20]
-*** spawnOnSurface false
-** maxParticles 800
+ * particleLifetime [4000,4000]
+ * emissionRatePerSecond [150, 200]
+ * spawnVolume
+  * shape "box"
+  * params [20, 1, 20]
+  * spawnOnSurface false
+ * maxParticles 800
 * particleAppearance
-** opacity
-*** initialRange [0, 0]
-*** factor "time"
-*** interpolation [{endValue:0.5, interval:[0,500]}, {endValue:1.0, interval:[4000,5000]}]
-** rotation
-*** initialRange [0, 360]
-*** factor:"time",
-*** interpolation:[{endValue:1080, interval:[0,5000]}]
-** scale
-*** initialRange [[5,5,5], [10,10,10]]
-*** factor "time"
-*** interpolation [{endValue:[3,3,3], interval:[0,4000]}, {endValue:[0,0,0], interval:[4000,5000]}]
+ * opacity
+  * initialRange [0, 0]
+  * factor "time"
+  * interpolation [{endValue:0.5, interval:[0,500]}, {endValue:1.0, interval:[4000,5000]}]
+ * rotation
+  * initialRange [0, 360]
+  * factor:"time",
+  * interpolation:[{endValue:1080, interval:[0,5000]}]
+ * scale
+  * initialRange [[5,5,5], [10,10,10]]
+  * factor "time"
+  * interpolation [{endValue:[3,3,3], interval:[0,4000]}, {endValue:[0,0,0], interval:[4000,5000]}]
 * particlePhysics
-** velocity
-*** initialRange [[-2,-.5,0], [2,-3.5,0]]
+ * velocity
+  * initialRange [[-2,-.5,0], [2,-3.5,0]]
 
 
 [Référence](https://docs.viromedia.com/docs/viroparticleemitter)
@@ -339,21 +340,19 @@ Les Objets ont besoin de lumière pour être visible !
 * width 2
 * materials ["boxside"]
 * animation shape [{
-  ** name: anim1,
-  ** delay: 800,
-  ** loop: true,
-  ** onStart: func,
-  ** onfinish: func,
-  ** run true
-  }]
+ * name: anim1,
+ * delay: 800,
+ * loop: true,
+ * onStart: func,
+ * onfinish: func,
+ * run true
 * highAccuracyEvents true
 * ignoreEventHandling false
 * lightReceivingBitMask .5
-* dragPlane shape {
-  ** planePoint
-  ** planeNormal
-  ** maxDIstance
-  }
+* dragPlane
+ * planePoint
+ * planeNormal
+ * maxDIstance
 * ...
 
 [Référence]

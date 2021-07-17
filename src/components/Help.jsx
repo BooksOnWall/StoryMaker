@@ -45,24 +45,23 @@ const useStyles = makeStyles((theme) => ({
     padding: 0,
   },
   li: {
-    display: 'grid',
-    gridGap: '1.75em',
     alignItems: 'start',
     fontSize: '1.5rem',
     lineHeight: 1.25,
-    marginRight: '1em',
-    color: '#FFF'
+    color: '#FFF',
+    '& em:after': {
+      mapfinRight: '1em',
+    },
+
   },
   ul: {
-    listStyle: 'none',
-    display: 'grid',
+    listStyleType: 'circle',
     width: '50vw',
-    gridGap: '1rem',
-    marginRight: '1em',
-    color: '#FFF'
+    color: '#FFF',
   },
   link: {
     cursor: 'pointer',
+    listStyleType: 'circle',
     color: '#FF9900'
   }
 }));
