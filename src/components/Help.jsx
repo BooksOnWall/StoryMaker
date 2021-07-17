@@ -44,6 +44,23 @@ const useStyles = makeStyles((theme) => ({
     color: '#FFF',
     padding: 0,
   },
+  li: {
+    display: 'grid',
+    gridGap: '1.75em',
+    alignItems: 'start',
+    fontSize: '1.5rem',
+    lineHeight: 1.25,
+    marginRight: '1em',
+    color: '#FFF'
+  },
+  ul: {
+    listStyle: 'none',
+    display: 'grid',
+    width: '50vw',
+    gridGap: '1rem',
+    marginRight: '1em',
+    color: '#FFF'
+  },
   link: {
     cursor: 'pointer',
     color: '#FF9900'
@@ -174,10 +191,14 @@ const Help = ({messages, className}) => {
                             p.className = classes.li;
                             return  React.createElement(type, p, children);
                           }
+                          if(type === 'ul' || type === 'ol') {
+                            // separate internal Links that use handleChapter and external ones that use href
+                            let p = props;
+                            p.className = classes.ul;
+                            return  React.createElement(type, p, children);
+                          }
                           return (
-                              <div className={classes.markdown}>
-                                  {React.createElement(type, props, children)}
-                              </div>
+                              React.createElement(type, props, children)
                           );
                       },
                   }} />
