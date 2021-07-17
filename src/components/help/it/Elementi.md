@@ -273,71 +273,50 @@ Gli oggetti hanno bisogno di luce per essere visibili!
 
 [Référence](https://docs.viromedia.com/docs/viromaterialvideo)
 
+
+
 ### Éléments de type particule
+#### ParticleEmitter
+* VIRO API REF <ViroParticleEmitter/>
+* RTF API REF ?
+* posizione [x,y,z]
+* durata 2000
+* visibile vero
+* ritardo 0
+* run true
+* loop true
+* fixedToEmitter true
+* immagine
+** sorgente require('./particle_snow.png')
+** Altezza 0.1
+** Larghezza 0.1
+** BloomThreshold 1.0
+* spawnBehavior
+** particleLifetime [4000,4000]
+** emissionRatePerSecond [150, 200]
+** spawnVolume
+*** forma "box"
+*** params [20, 1, 20]
+*** spawnOnSurface falso
+** maxParticles 800
+* particleAppearance
+** opacità
+*** initialRange [0, 0]
+*** fattore "tempo"
+*** interpolazione [{valore finale:0.5, intervallo:[0,500]}, {valore finale:1.0, intervallo:[4000,5000]}]
+** rotazione
+*** initialRange [0, 360]
+*** fattore: "tempo",
+*** interpolazione:[{endValue:1080, intervallo:[0,5000]}]
+** scala
+*** initialRange [[5,5,5], [10,10,10]]
+*** fattore "tempo"
+*** interpolazione [{endValue:[3,3,3], intervallo:[0,4000]}, {endValue:[0,0,0], intervallo:[4000,5000]}]
+* particlePhysics
+** velocità
+*** initialRange [[-2,-.5,0], [2,-3.5,0]]
 
-```
-<ViroParticleEmitter
-  position={[0, 4.5, 0]}
-  duration={2000}
-  visible={vero}
-  delay={0}
-  run={vero}
-  loop={vero}
-  fixedToEmitter={true}
 
-  image={{
-    source:require("./res/particle_snow.png"),                 
-    altezza:0.1,
-    larghezza:0.1,
-    bloomThreshold:1.0
-  }}
-
-  spawnBehavior={{
-    particleLifetime:[4000,4000],
-    emissionRatePerSecond:[150, 200],
-    spawnVolume:{
-      shape: "box",
-      params:[20, 1, 20],
-      spawnOnSurface:false
-    },
-    maxParticles:800
-  }}
-
-  particleAppearance={{
-    opacità:{
-      initialRange:[0, 0],
-      fattore: "tempo",
-      interpolazione:[
-        {endValue:0.5, interval:[0,500]},
-        {endValue:1.0, interval:[4000,5000]}
-      ]
-    },
-
-    rotazione:{
-      initialRange:[0, 360],
-      fattore: "tempo",
-      interpolazione:[
-        {endValue:1080, interval:[0,5000]},
-      ]
-    },
-
-    scala:{
-      initialRange:[[5,5,5], [10,10,10]],
-      fattore:[[tempo]],
-      interpolazione:[
-        {endValue:[3,3,3], interval:[0,4000]},
-        {endValue:[0,0,0], interval:[4000,5000]}
-      ]
-    },
-  }}
-
-  particlePhysics={{
-    velocità:{
-    initialRange:[[-2,-.5,0], [2,-3.5,0]]}
-  }}
-/>
-
-```
 [Référence](https://docs.viromedia.com/docs/viroparticleemitter)
 
 ### Elementi audio
