@@ -75,6 +75,7 @@ const useStyles = makeStyles((theme) => ({
   },
   menuItem: {
     padding: 0,
+    color: '#FF9900',
     margin: 0,
   },
   ul: {
@@ -114,23 +115,21 @@ const HelpMenu = (menu) => {
 
   return (
     <div className={classes.menu}>
-     <List dense={dense} style={{padding: 0, margin: 0}} className={classes.list}>
        {menu.menu.map((l,i) =>{
          return (
-           <ListItem className={classes.menuItem} style={{padding: 0, margin: 0}}>
-            <Button style={{padding: 0, margin: 0}}>{l.name}</Button>
+            <>
+            <Button className={classes.menuItem} style={{padding: 0, margin: 0, color: '#FF9900'}}>{l.name}</Button>
              {l.children.length > 0 &&
                <>
                <List style={{padding: 0, margin: 0}} dense={dense}>
-
                {l.children.map((ll,ii) => (
                  <ListItem style={{padding: 0, margin: 0}}>
-                  <Button style={{padding: 0, margin: 0}}>{ll.name}</Button>
+                  <Button className={classes.menuItem} style={{color: '#FF9900',padding: 0, margin: 0}}>{ll.name}</Button>
                    {ll.children.length > 0 &&
                      <List style={{padding: 0, margin: 0}} dense={dense}>
                       {ll.children.map((lll, iii) => (
                         <ListItem>
-                         <Button style={{padding: 0, margin: 0}}>{lll.name}</Button>
+                         <Button className={classes.menuItem} style={{color: '#FF9900', padding: 0, margin: 0}}>{lll.name}</Button>
                          {lll.children.length > 0 &&
                            <div>toto</div>
                          }
@@ -143,10 +142,9 @@ const HelpMenu = (menu) => {
                </List>
                </>
              }
-           </ListItem>
+             </>
          )
        })}
-     </List>
     </div>
   )
 }
