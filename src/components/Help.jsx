@@ -8,7 +8,15 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
+import Avatar from '@material-ui/core/Avatar';
+import FolderIcon from '@material-ui/icons/Folder';
+import DeleteIcon from '@material-ui/icons/Delete';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
 import Draggable from 'react-draggable';
 import IconButton from '@material-ui/core/IconButton';
 import HelpIcon from '@material-ui/icons/Help';
@@ -54,6 +62,21 @@ const useStyles = makeStyles((theme) => ({
     },
 
   },
+  menu: {
+    position: 'absolute',
+    right: 0,
+    zIndex: 1004,
+    top: '10vh'
+
+  },
+  list: {
+    padding: 0,
+    margin: 0,
+  },
+  menuItem: {
+    padding: 0,
+    margin: 0,
+  },
   ul: {
     listStyleType: 'circle',
     width: '50vw',
@@ -84,6 +107,49 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
+const HelpMenu = (menu) => {
+  const classes = useStyles();
+  const [dense, setDense] = useState(false);
+  const [secondary, setSecondary] = useState(false);
+
+  return (
+    <div className={classes.menu}>
+     <List dense={dense} style={{padding: 0, margin: 0}} className={classes.list}>
+       {menu.menu.map((l,i) =>{
+         return (
+           <ListItem className={classes.menuItem} style={{padding: 0, margin: 0}}>
+            <Button style={{padding: 0, margin: 0}}>{l.name}</Button>
+             {l.children.length > 0 &&
+               <>
+               <List style={{padding: 0, margin: 0}} dense={dense}>
+
+               {l.children.map((ll,ii) => (
+                 <ListItem style={{padding: 0, margin: 0}}>
+                  <Button style={{padding: 0, margin: 0}}>{ll.name}</Button>
+                   {ll.children.length > 0 &&
+                     <List style={{padding: 0, margin: 0}} dense={dense}>
+                      {ll.children.map((lll, iii) => (
+                        <ListItem>
+                         <Button style={{padding: 0, margin: 0}}>{lll.name}</Button>
+                         {lll.children.length > 0 &&
+                           <div>toto</div>
+                         }
+                         </ListItem>
+                      ))}
+                      </List>
+                   }
+                 </ListItem>
+               ))}
+               </List>
+               </>
+             }
+           </ListItem>
+         )
+       })}
+     </List>
+    </div>
+  )
+}
 const Help = ({messages, className}) => {
   const classes = useStyles();
   const theme = useTheme();
@@ -110,6 +176,7 @@ const Help = ({messages, className}) => {
  const handleChapter = async (chapter) => {
    try {
      setChapter(chapter);
+     setMenu([]);
      setSelectedId((chapter) ? index.filter((c) => (c.name === chapter))[0].id : null);
    } catch(e) {
      console.log(e.message);
@@ -128,7 +195,7 @@ const Help = ({messages, className}) => {
      break;
      case 1:
      // h2
-     m1Index = (m[m0Index].children.length === 0) ? 0 : (m[m0Index].children.length -1);
+     m1Index = (m[m0Index] && m[m0Index].children.length === 0) ? 0 : (m[m0Index].children.length -1);
      if(!m[m0Index].children[m1Index] || !m[m0Index].children.find((c) => (c.name === name))) m[m0Index].children.push({name, children:[]});
      break;
      case 2:
@@ -195,6 +262,8 @@ const Help = ({messages, className}) => {
           {chapter &&
             <>
               {markdown &&
+                <>
+                <HelpMenu menu={menu} />
                 <Markdown
                   children={markdown}
                   options={{
@@ -261,6 +330,7 @@ const Help = ({messages, className}) => {
                           );
                       },
                   }} />
+                  </>
               }
             </>
           }

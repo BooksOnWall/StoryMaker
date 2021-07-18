@@ -1,11 +1,11 @@
-## Comece aqui
+# Comece aqui
 StageMaker permite-lhe criar animações 2D ou 3D de Realidade Aumentada que podem ser vistas numa aplicação móvel criada com react-native e react-viro.
 
 Este website é uma aplicação gratuita, é livre de se registar e pode criar, publicar e ver a sua animação no seu telemóvel.
 
 StageMaker tira a ideia de [React Three Editable](https://github.com/AndrewPrifer/react-three-editable) de usar um formato r3f aberto para passar cenas, eventos, objectos e parâmetros de animação para a aplicação móvel.
 
-### Realidade aumentada
+## Realidade aumentada
 
 Contudo, mesmo que o react-viro nos permita conduzir os dois motores 3D de arkit (Apple) e arCore (Google), precisamos de um formato que nos permita recodificar cenas e animações de uma forma que seja suportada por:
 
@@ -14,11 +14,11 @@ Contudo, mesmo que o react-viro nos permita conduzir os dois motores 3D de arkit
 
 Assim, existem opções e comandos que só estão disponíveis para a Apple ou Google, ou porque não são implementados no arKit ou arCore, ou porque ainda não foram implementados no React-viro.   
 
-### Realidade virtual
+## Realidade virtual
 
 React-viro também permite utilizar os motores 3D dos telefones para a realidade virtual, em breve ser-lhe-ão propostos na configuração das cenas dos parâmetros e opções dedicadas a esta tarefa.
 
-#### Eventos, Camadas e Linha do Tempo
+### Eventos, Camadas e Linha do Tempo
 
 O StageMaker trabalha dividindo as animações em animações mais pequenas que são executadas em eventos específicos.
 
@@ -28,7 +28,7 @@ Para cada evento que terá:
 * Uma linha temporal na qual todos os elementos podem ser ajustados e os pontos-chave definidos e configurados.
 * um leitor de animação para reproduzir e pausar a animação, escolhendo diferentes modelos de renderização 3D  
 
-### Documentação do utilizador
+## Documentação do utilizador
 
 * [Eventos](Eventos)
 * [Camadas](Camadas)
@@ -43,13 +43,13 @@ Para cada evento que terá:
 * [Partilhar](Partilhar)
 * [Contribuir](Contribuir)
 
-#### Documentação do desenvolvedor
+### Documentação do desenvolvedor
 
-### Fontes
+## Fontes
 https://git.booksonwall.art
 https://github/booksonwall
 https://gitlab.com/booksonwall
 
-#### Licença
+### Licença
 afferoGPL para o código fonte das aplicações
 Criativo comum para o conteúdo
