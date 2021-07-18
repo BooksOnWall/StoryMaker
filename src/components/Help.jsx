@@ -64,9 +64,9 @@ const useStyles = makeStyles((theme) => ({
   },
   menu: {
     position: 'absolute',
-    right: 0,
+    right: '1vw',
     zIndex: 1004,
-    top: '10vh'
+    top: '0vh'
 
   },
   list: {
