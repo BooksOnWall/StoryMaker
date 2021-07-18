@@ -20,6 +20,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Draggable from 'react-draggable';
 import IconButton from '@material-ui/core/IconButton';
 import HelpIcon from '@material-ui/icons/Help';
+import ScrollIntoViewIfNeeded from 'react-scroll-into-view-if-needed';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { experimentalStyled as styled } from '@material-ui/core/styles';
 import { useTheme } from '@material-ui/core/styles';
@@ -108,7 +109,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const HelpMenu = (menu) => {
+const HelpMenu = (menu, scroll, handleScroll) => {
   const classes = useStyles();
   const [dense, setDense] = useState(false);
   const [secondary, setSecondary] = useState(false);
@@ -118,18 +119,18 @@ const HelpMenu = (menu) => {
        {menu.menu.map((l,i) =>{
          return (
             <>
-            <Button className={classes.menuItem} style={{padding: 0, margin: 0, color: '#FF9900'}}>{l.name}</Button>
+            <Button onClick={() => handleScroll(l.name)} className={classes.menuItem} style={{padding: 0, margin: 0, color: '#FF9900'}}>{l.name}</Button>
              {l.children.length > 0 &&
                <>
                <List style={{padding: 0, margin: 0}} dense={dense}>
                {l.children.map((ll,ii) => (
                  <ListItem style={{padding: 0, margin: 0}}>
-                  <Button className={classes.menuItem} style={{color: '#FF9900',padding: 0, margin: 0}}>{ll.name}</Button>
+                  <Button onClick={() => handleScroll(ll.name)} className={classes.menuItem} style={{color: '#FF9900',padding: 0, margin: 0}}>{ll.name}</Button>
                    {ll.children.length > 0 &&
                      <List style={{padding: 0, margin: 0}} dense={dense}>
                       {ll.children.map((lll, iii) => (
                         <ListItem>
-                         <Button className={classes.menuItem} style={{color: '#FF9900', padding: 0, margin: 0}}>{lll.name}</Button>
+                         <Button  onClick={() => handleScroll(lll.name)} className={classes.menuItem} style={{color: '#FF9900', padding: 0, margin: 0}}>{lll.name}</Button>
                          {lll.children.length > 0 &&
                            <div>toto</div>
                          }
@@ -234,8 +235,10 @@ const Help = ({messages, className}) => {
      setPrev();
    }
  },[chapter, index, selectedId, locale]);
+  const [scroll, setScroll] = useState();
+  const handleScroll = (name) => setScroll(name);
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
-  console.log('menu', menu)
+  console.log('scroll', scroll)
   return (
     <>
     <IconButton onClick={handleClickOpen} className={className} style={{fontSize: 12, color: '#FFF',position: 'absolute', zIndex: 1008, right: '8vw'}}><HelpIcon fontSize="large" color="primary"/></IconButton>
@@ -261,7 +264,7 @@ const Help = ({messages, className}) => {
             <>
               {markdown &&
                 <>
-                <HelpMenu menu={menu} />
+                <HelpMenu handleScroll={handleScroll} menu={menu} scroll={scroll}/>
                 <Markdown
                   children={markdown}
                   options={{
@@ -294,28 +297,32 @@ const Help = ({messages, className}) => {
                             let p = props;
                             handleMenu(children[0],0);
                             p.className = classes.h1;
-                            return  React.createElement(type, p, children);
+                            p.onClick= () => handleScroll(children[0]);
+                            return  <ScrollIntoViewIfNeeded scrollMode="if-needed" active={(scroll === children[0])}>{React.createElement(type, p, children)}</ScrollIntoViewIfNeeded>;
                           }
                           if(type === 'h2') {
                             // separate internal Links that use handleChapter and external ones that use href
                             let p = props;
                             handleMenu(children[0],1);
+                            p.onClick=handleScroll(children[0]);
                             p.className = classes.h2;
-                            return  React.createElement(type, p, children);
+                            return  <ScrollIntoViewIfNeeded scrollMode="if-needed" active={(scroll === children[0])}>{React.createElement(type, p, children)}</ScrollIntoViewIfNeeded>;
                           }
                           if(type === 'h3') {
                             // separate internal Links that use handleChapter and external ones that use href
                             let p = props;
                             handleMenu(children[0],2);
+                            p.onClick= () => handleScroll(children[0]);
                             p.className = classes.h3;
-                            return  React.createElement(type, p, children);
+                            return  <ScrollIntoViewIfNeeded scrollMode="if-needed" active={(scroll === children[0])}>{React.createElement(type, p, children)}</ScrollIntoViewIfNeeded>;
                           }
                           if(type === 'h4') {
                             // separate internal Links that use handleChapter and external ones that use href
                             let p = props;
                             handleMenu(children[0],3);
+                            p.onClick= () => handleScroll(children[0]);
                             p.className = classes.h4;
-                            return  React.createElement(type, p, children);
+                            return  <ScrollIntoViewIfNeeded scrollMode="if-needed" active={(scroll === children[0])}>{React.createElement(type, p, children)}</ScrollIntoViewIfNeeded>;
                           }
                           if(type === 'ul' || type === 'ol') {
                             // separate internal Links that use handleChapter and external ones that use href
