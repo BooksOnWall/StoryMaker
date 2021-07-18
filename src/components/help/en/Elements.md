@@ -1,4 +1,4 @@
-## Elements
+# Elements
 Elements are objects (Light Cameras, 3D Onjects, Sounds, Videos, Textures, Particle Generators ...) that are added during an event and that compose an animation.
 
 
@@ -6,8 +6,8 @@ Some elements, such as backgrounds, a sky can be perfectly suitable for virtual 
 It should be noted that the rendering of elements is dependent on 3D rendering engines (webgl for StageMaker, arKit for ios, arCore for android).
 
 
-### Light elements
-#### Lightning environment
+## Light elements
+### Lightning environment
 * VIRO API REF <ViroLightingEnvironment/>
 * RTF API REF ?
 * source uri: "http://example.org/myimage.hdr" | require('./myimage.hdr')
@@ -17,7 +17,7 @@ It should be noted that the rendering of elements is dependent on 3D rendering e
 
 [Reference](https://docs.viromedia.com/docs/virolightingenvironment)
 
-#### SpotLight:
+### SpotLight:
 * VIRO API REF <ViroSpotLight/>
 * RTF API REF ?
 * position [x,y,z]
@@ -30,7 +30,7 @@ It should be noted that the rendering of elements is dependent on 3D rendering e
 
 [Reference](https://docs.viromedia.com/docs/virospotlight1)
 
-#### AmbientLight
+### AmbientLight
 * VIRO API REF <ViroAmbientLight/>
 * RTF API REF ?
 * color "#FF0000"
@@ -40,7 +40,7 @@ It should be noted that the rendering of elements is dependent on 3D rendering e
 
 [Reference](https://docs.viromedia.com/docs/viroambientlight)
 
-#### DirectionalLight
+### DirectionalLight
 * VIRO API REF <ViroDirectionalLight/>
 * RTF API REF ?
 * position [x,y,z]
@@ -60,7 +60,7 @@ It should be noted that the rendering of elements is dependent on 3D rendering e
 
 [Reference](https://docs.viromedia.com/docs/virodirectionallight-1)
 
-#### OmniLight
+### OmniLight
 * RTF API REF ?
 * VIRO API REF <ViroOmniLight/>
 * position [x,y,z]
@@ -74,7 +74,7 @@ It should be noted that the rendering of elements is dependent on 3D rendering e
 
 [Reference](https://docs.viromedia.com/docs/viroomnilight)
 
-#### Shadows
+### Shadows
 Viro renders shadows by shadow mapping, a technique where the silhouettes of objects are rendered in an image, and this image is then reprojected on the screen. Viro generates shadows for all lights whose castsShadow property is set to true.
 
 Shadows are particularly important for AR, as they provide a visual clue to the real-world surface on which a virtual object rests. However, since casting shadows involves re-rendering the scene multiple times, it comes at a performance cost.
@@ -83,12 +83,12 @@ Shadows are only supported for directional lights and spotlights.
 
 [Reference](https://docs.viromedia.com/docs/3d-scene-lighting#shadows)
 
-### Camera elements
+## Camera elements
 The camera of the scene in augmented reality is modified by the camera of the phone.
 In Virtual Reality it can be the movements of the head
 The framing of your animation depends on the user's behavior.
 
-#### default camera
+### default camera
 * VIRO API REF <ViroCamera/>
 * RTF API REF <Camera />
 * position [x,y,z]
@@ -106,7 +106,7 @@ The framing of your animation depends on the user's behavior.
 
 [Reference](https://docs.viromedia.com/docs/virocamera)
 
-#### OrbitCamera
+### OrbitCamera
 * VIRO API REF <ViroOrbitCamera/>
 * RTF API REF <PerspectiveCamera />
 * position [x,y,z]
@@ -116,8 +116,8 @@ The framing of your animation depends on the user's behavior.
 
 [Reference](https://docs.viromedia.com/docs/viroorbitcamera)
 
-### Decor elements
-#### Sky
+## Decor elements
+### Sky
 * RTF API REF <Sky />
 * distance 450000
 * sunPosition [x,y,z]
@@ -126,7 +126,7 @@ The framing of your animation depends on the user's behavior.
 
 [Reference](https://github.com/pmndrs/drei#sky)
 
-#### Stars
+### Stars
 * RTF API REF <Stars />
 * radius 100
 * depth 50
@@ -137,15 +137,15 @@ The framing of your animation depends on the user's behavior.
 
 [Reference](https://github.com/pmndrs/drei#stars)
 
-#### Grid
+### Grid
 * RTF API REF <gridHelper />
 * args [10, 10, 'white', 'gray']
 [Reference](https://threejs.org/docs/#api/en/helpers/GridHelper)
 
-### Object type elements
+## Object type elements
 Viro supports loading 3D models in FBX, GLTF and OBJ formats. Viro will load the geometry, textures and lighting settings from the file. For FBX, Viro will additionally load all installed skeletal animations. OBJ files are loaded directly by setting the source attribute of <Viro3DObject>, while FBX files must be converted to Viro's own VRX format.
 
-#### Box
+### Box
 * VIRO API REF <ViroBox/>
 * RTF API REF <mesh />
 * position [x,y,z]
@@ -171,11 +171,11 @@ Viro supports loading 3D models in FBX, GLTF and OBJ formats. Viro will load the
 
 [Reference](https://docs.viromedia.com/docs/virobox)
 
-### 3D Objects
+## 3D Objects
 
 Objects need light to be visible !
 
-#### .obj file
+### .obj file
 * VIRO API REF <Viro3DObject/>
 * RTF API REF ?
 * position [x,y,z]
@@ -187,7 +187,7 @@ Objects need light to be visible !
 * type "OBJ"
 * transformBehaviors ["billboard"]
 
-#### .fbx file
+### .fbx file
 * VIRO API REF <Viro3DObject/>
 * RTF API REF ?
 * position [x,y,z]
@@ -199,7 +199,7 @@ Objects need light to be visible !
 * type "FBX"
 * transformBehaviors ["billboard"]
 
-#### .gltf file
+### .gltf file
 * VIRO API REF <Viro3DObject/>
 * RTF API REF ?
 * position [x,y,z]
@@ -211,7 +211,7 @@ Objects need light to be visible !
 * type "GLTF"
 * transformBehaviors ["billboard"]
 
-#### .vrx file
+### .vrx file
 * VIRO API REF <Viro3DObject/>
 * RTF API REF ?
 * position [x,y,z]
@@ -223,8 +223,8 @@ Objects need light to be visible !
 * type "VRX"
 * transformBehaviors ["billboard"]
 
-### Texture elements
-#### image texture
+## Texture elements
+### image texture
 * VIRO API REF <ViroMaterials/>
 * ambientOcclusionTexture texture
 * blendMode ['None', 'Alpha', 'Add', 'Subtract', 'Multiply', 'Screen']
@@ -253,7 +253,7 @@ Objects need light to be visible !
 
 [Reference](https://docs.viromedia.com/docs/materials)
 
-#### video texture
+### video texture
 * VIRO API REF <ViroMaterialVideo />
 * RTF API REF ?
 * material
@@ -269,8 +269,8 @@ Objects need light to be visible !
 
 [Reference](https://docs.viromedia.com/docs/viromaterialvideo)
 
-### Éléments de type particule
-#### Émetteur de particules
+## Éléments de type particule
+### Émetteur de particules
 * VIRO API REF <ViroParticleEmitter/>
 * RTF API REF ?
 * Position [x,y,z]
@@ -313,25 +313,25 @@ Objects need light to be visible !
 
 [Référence](https://docs.viromedia.com/docs/viroparticleemitter)
 
-### Éléments de type audio
-#### audio principal
+## Éléments de type audio
+### audio principal
 
 [Référence] ()
 
-#### spatialisation audio
+### spatialisation audio
 
 [Référence]
 
-### Éléments de type vidéo
+## Éléments de type vidéo
 
 [Référence]
 
-### Éléments de type image
+## Éléments de type image
 
 [Référence]()
 
-### Éléments de type group
-#### Nœud
+## Éléments de type group
+### Nœud
 * API VIRO REF <ViroNode/>
 * RTF API REF <groupe/>
 * Position [x,y,z]

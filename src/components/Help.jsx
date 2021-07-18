@@ -94,6 +94,7 @@ const Help = ({messages, className}) => {
   const [markdown, setMarkdown] = useState('');
   const [next, setNext] = useState();
   const [prev, setPrev] = useState();
+  const [menu, setMenu] = useState([]);
   const handleClickOpen = () => {
    setOpen(true);
  };
@@ -113,8 +114,38 @@ const Help = ({messages, className}) => {
    } catch(e) {
      console.log(e.message);
    }
-
  };
+ const handleMenu = (name, depth) => {
+   let m = menu;
+   let m1Index = undefined;
+   let m0Index = (m && m.length === 0) ? 0 : (m.length -1);
+   // Menu items start for index === O or h1
+   switch(depth) {
+
+     case 0:
+     // h1
+     if(!m.find((c) => (c.name === name))) m.push({name, children:[]});
+     break;
+     case 1:
+     // h2
+     m1Index = (m[m0Index].children.length === 0) ? 0 : (m[m0Index].children.length -1);
+     if(!m[m0Index].children[m1Index] || !m[m0Index].children.find((c) => (c.name === name))) m[m0Index].children.push({name, children:[]});
+     break;
+     case 2:
+     // h3
+     m1Index = (m[m0Index].children.length === 0) ? 0 : (m[m0Index].children.length -1);
+     if(!m[m0Index].children[m1Index].children && !m[m0Index].children[m1Index].children.find((c) => (c.name === name))) m[m0Index].children[m1Index].children.push({name, children:[]});
+     break;
+     case 3:
+     // h4
+     let m2Index = (m[m0Index].children[m1Index].length === 0) ? 0 : (m[m0Index].children[m1Index].length -1);
+     console.log('toto');
+     break;
+     default:
+     break;
+   }
+   setMenu(m);
+ }
  useEffect(()=> {
    if(chapter) {
      const mpath = require('./help/'+locale+'/'+chapter+'.md');
@@ -139,6 +170,7 @@ const Help = ({messages, className}) => {
    }
  },[chapter, index, selectedId, locale]);
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  console.log('menu', menu)
   return (
     <>
     <IconButton onClick={handleClickOpen} className={className} style={{fontSize: 12, color: '#FFF',position: 'absolute', zIndex: 1008, right: '8vw'}}><HelpIcon fontSize="large" color="primary"/></IconButton>
@@ -188,6 +220,34 @@ const Help = ({messages, className}) => {
                             // separate internal Links that use handleChapter and external ones that use href
                             let p = props;
                             p.className = classes.li;
+                            return  React.createElement(type, p, children);
+                          }
+                          if(type === 'h1') {
+                            // separate internal Links that use handleChapter and external ones that use href
+                            let p = props;
+                            handleMenu(children[0],0);
+                            p.className = classes.h1;
+                            return  React.createElement(type, p, children);
+                          }
+                          if(type === 'h2') {
+                            // separate internal Links that use handleChapter and external ones that use href
+                            let p = props;
+                            handleMenu(children[0],1);
+                            p.className = classes.h2;
+                            return  React.createElement(type, p, children);
+                          }
+                          if(type === 'h3') {
+                            // separate internal Links that use handleChapter and external ones that use href
+                            let p = props;
+                            handleMenu(children[0],2);
+                            p.className = classes.h3;
+                            return  React.createElement(type, p, children);
+                          }
+                          if(type === 'h4') {
+                            // separate internal Links that use handleChapter and external ones that use href
+                            let p = props;
+                            handleMenu(children[0],3);
+                            p.className = classes.h4;
                             return  React.createElement(type, p, children);
                           }
                           if(type === 'ul' || type === 'ol') {
