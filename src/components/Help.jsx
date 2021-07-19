@@ -255,7 +255,7 @@ const Help = ({messages, className}) => {
    }
  },[chapter, index, selectedId, locale]);
   useEffect(() => {
-    if(menu && menu[0]) setScrollName(menu[0].name);
+    if(menu && menu[0]) handleScroll({name: menu[0].name});
   }, [menu])
   const options = {behavior: 'smooth', scrollMode: 'if-needed'}
 
