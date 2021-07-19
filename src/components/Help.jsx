@@ -123,8 +123,6 @@ const HelpMenu = ({menu, handleScrollName}) => {
   const [secondary, setSecondary] = useState(false);
   const [open, setOpen] = useState(false);
   const handleClick = (name, i) => {
-    console.log('name', name);
-    console.log('i', i);
     handleScrollName({name});
     if(i === 0) setOpen(!open);
   }
@@ -132,21 +130,21 @@ const HelpMenu = ({menu, handleScrollName}) => {
     <div className={classes.menu}>
        {menu && menu.map((l,i) => (
             <>
-            <Button key={i} onClick={(e) => handleClick(l.name,i)} className={classes.menuItem} style={{padding: 0, margin: 0, color: '#FF9900'}}>{l.name}</Button>
+            <Button color="secondary" variant="contained" key={i} onClick={() => handleClick(l.name,i)} className={classes.menuItem} style={{padding: 0, margin: 0, color: '#FF9900'}}>{l.name}</Button>
              {l.children.length > 0 &&
                <>
                {open && (
-                 <TrapFocus open disableAutoFocus>
+                 <TrapFocus open={open} disableAutoFocus>
                    <Box tabIndex={-1} sx={{ mt: 1, p: 1 }}>
                      <List style={{padding: 0, margin: 0}} dense={dense}>
                      {l.children.map((ll,ii) => (
                        <ListItem key={ii} style={{padding: 0, margin: 0}}>
-                        <Button onClick={(e) => handleClick(ll.name)} className={classes.menuItem} style={{color: '#FF9900',padding: 0, margin: 0}}>{ll.name}</Button>
+                        <Button onClick={() => handleClick(ll.name)} className={classes.menuItem} style={{color: '#FF9900',padding: 0, margin: 0}}>{ll.name}</Button>
                             {ll.children.length > 0 &&
                               <List style={{padding: 0, margin: 0}} dense={dense}>
                                {ll.children.map((lll, iii) => (
                                  <ListItem key={iii} style={{padding: 0, margin: 0}}>
-                                  <Button  onClick={(e) => handleClick(lll.name)} className={classes.menuItem} style={{color: '#FF9900', padding: 0, margin: 0}}>{lll.name}</Button>
+                                  <Button  onClick={() => handleClick(lll.name)} className={classes.menuItem} style={{color: '#FF9900', padding: 0, margin: 0}}>{lll.name}</Button>
                                  </ListItem>
                                ))}
                                </List>
