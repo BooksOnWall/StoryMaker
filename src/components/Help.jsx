@@ -85,13 +85,10 @@ const useStyles = makeStyles((theme) => ({
     margin: 0,
   },
   home: {
-    position: 'relative',
-    left: 0,
-    float: 'left'
+
   },
   next: {
-    display: 'block',
-    float: 'right'
+
   },
   buttonGroup: {
       width: '100%',
@@ -100,8 +97,7 @@ const useStyles = makeStyles((theme) => ({
       justifyContent: 'space-between'
   },
   prev: {
-    position: 'relative',
-    left: '4vw',
+
   },
   ul: {
     listStyleType: 'circle',
@@ -140,7 +136,6 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const HelpMenu = ({menu, handleScrollName}) => {
   const classes = useStyles();
-  console.log('handleScrollName', handleScrollName);
   const [dense, setDense] = useState(false);
   const [secondary, setSecondary] = useState(false);
   const [open, setOpen] = useState(false);
@@ -148,6 +143,7 @@ const HelpMenu = ({menu, handleScrollName}) => {
     handleScrollName({name});
     if(i === 0) setOpen(!open);
   }
+  console.log('menu',menu);
   return (
     <div className={classes.menu}>
        {menu && menu.map((l,i) => (
@@ -166,7 +162,7 @@ const HelpMenu = ({menu, handleScrollName}) => {
                               <List style={{padding: 0, margin: 0}} dense={dense}>
                                {ll.children.map((lll, iii) => (
                                  <ListItem key={iii} style={{padding: 0, margin: 0}}>
-                                  <Button  onClick={() => handleClick(lll.name)} className={classes.menuItem} style={{color: '#FF9900', padding: 0, margin: 0}}>{lll.name}</Button>
+                                  <Button  onClick={() => handleClick(lll.name)} className={classes.menuItem} style={{color: '#000', padding: 0, margin: 0}}>{lll.name}</Button>
                                  </ListItem>
                                ))}
                                </List>
@@ -232,7 +228,7 @@ const Help = ({messages, className}) => {
    switch(depth) {
      case 0:
      // h1
-     if(!m.find((c) => (c.name === name))) m.push({name, children:[]});
+     if(!m.find((c) => (c.name === name))) m[0] = {name, children:[]};
      break;
      case 1:
      // h2
