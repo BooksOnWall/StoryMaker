@@ -21,6 +21,8 @@ import Draggable from 'react-draggable';
 import IconButton from '@material-ui/core/IconButton';
 import HelpIcon from '@material-ui/icons/Help';
 import ScrollIntoViewIfNeeded from 'react-scroll-into-view-if-needed';
+import Box from '@material-ui/core/Box';
+import TrapFocus from '@material-ui/core/Unstable_TrapFocus';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { experimentalStyled as styled } from '@material-ui/core/styles';
 import { useTheme } from '@material-ui/core/styles';
@@ -67,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     right: '1vw',
     zIndex: 1004,
-    top: '0vh'
+    top: 20
 
   },
   list: {
@@ -84,6 +86,10 @@ const useStyles = makeStyles((theme) => ({
     width: '50vw',
     color: '#FFF',
   },
+  h1: { color: '#FFF' },
+  h2: { color: '#FFF', marginLeft: '2vw' },
+  h3: { color: '#FFF', marginLeft: '4vw' },
+  h4: { color: '#FFF', marginLeft: '6vw' },
   link: {
     cursor: 'pointer',
     listStyleType: 'circle',
@@ -115,39 +121,46 @@ const HelpMenu = ({menu, handleScrollName}) => {
   console.log('handleScrollName', handleScrollName);
   const [dense, setDense] = useState(false);
   const [secondary, setSecondary] = useState(false);
-  const handleClick = (name) => {
+  const [open, setOpen] = useState(false);
+  const handleClick = (name, i) => {
     console.log('name', name);
+    console.log('i', i);
     handleScrollName({name});
+    if(i === 0) setOpen(!open);
   }
   return (
     <div className={classes.menu}>
-       {menu.map((l,i) =>{
-         return (
+       {menu && menu.map((l,i) => (
             <>
-            <Button key={i} onClick={(e) => handleClick(l.name)} className={classes.menuItem} style={{padding: 0, margin: 0, color: '#FF9900'}}>{l.name}</Button>
+            <Button key={i} onClick={(e) => handleClick(l.name,i)} className={classes.menuItem} style={{padding: 0, margin: 0, color: '#FF9900'}}>{l.name}</Button>
              {l.children.length > 0 &&
                <>
-               <List style={{padding: 0, margin: 0}} dense={dense}>
-               {l.children.map((ll,ii) => (
-                 <ListItem key={ii} style={{padding: 0, margin: 0}}>
-                  <Button onClick={(e) => handleClick(ll.name)} className={classes.menuItem} style={{color: '#FF9900',padding: 0, margin: 0}}>{ll.name}</Button>
-                   {ll.children.length > 0 &&
+               {open && (
+                 <TrapFocus open disableAutoFocus>
+                   <Box tabIndex={-1} sx={{ mt: 1, p: 1 }}>
                      <List style={{padding: 0, margin: 0}} dense={dense}>
-                      {ll.children.map((lll, iii) => (
-                        <ListItem key={iii} style={{padding: 0, margin: 0}}>
-                         <Button  onClick={(e) => handleClick(lll.name)} className={classes.menuItem} style={{color: '#FF9900', padding: 0, margin: 0}}>{lll.name}</Button>
-                        </ListItem>
-                      ))}
-                      </List>
-                   }
-                 </ListItem>
-               ))}
-               </List>
-               </>
-             }
-             </>
-         )
-       })}
+                     {l.children.map((ll,ii) => (
+                       <ListItem key={ii} style={{padding: 0, margin: 0}}>
+                        <Button onClick={(e) => handleClick(ll.name)} className={classes.menuItem} style={{color: '#FF9900',padding: 0, margin: 0}}>{ll.name}</Button>
+                            {ll.children.length > 0 &&
+                              <List style={{padding: 0, margin: 0}} dense={dense}>
+                               {ll.children.map((lll, iii) => (
+                                 <ListItem key={iii} style={{padding: 0, margin: 0}}>
+                                  <Button  onClick={(e) => handleClick(lll.name)} className={classes.menuItem} style={{color: '#FF9900', padding: 0, margin: 0}}>{lll.name}</Button>
+                                 </ListItem>
+                               ))}
+                               </List>
+                            }
+                          </ListItem>
+                     ))}
+                     </List>
+                     </Box>
+                  </TrapFocus>
+                )}
+                </>
+              }
+            </>
+          ))}
     </div>
   )
 }
@@ -174,6 +187,7 @@ const Help = ({messages, className}) => {
  const handleClose = () => {
    setOpen(false);
    setChapter();
+   setMenu([]);
    setNext();
    setPrev();
    setSelectedId();
