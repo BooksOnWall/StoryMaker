@@ -45,9 +45,12 @@ Per ogni evento avrete:
 
 ## Documentazione per sviluppatori
 
-## Fonti
+### Fonti
+
 https://git.booksonwall.art
+
 https://github/booksonwall
+
 https://gitlab.com/booksonwall
 
 ## Licenza

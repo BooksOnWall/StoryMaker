@@ -43,11 +43,14 @@ Para cada evento que terá:
 * [Partilhar](Partilhar)
 * [Contribuir](Contribuir)
 
-### Documentação do desenvolvedor
+## Documentação do desenvolvedor
 
-## Fontes
+### Fontes
+
 https://git.booksonwall.art
+
 https://github/booksonwall
+
 https://gitlab.com/booksonwall
 
 ### Licença

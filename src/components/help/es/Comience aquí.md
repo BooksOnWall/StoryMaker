@@ -45,11 +45,14 @@ Para cada evento tendrás:
 
 ## Developer documentation
 
-## Fuentes
+### Fuentes
+
 https://git.booksonwall.art
+
 https://github/booksonwall
+
 https://gitlab.com/booksonwall
 
-## Licencia
+### Licencia
 afferoGPL para el código fuente de las aplicaciones
 Creatividad común para los contenidos
