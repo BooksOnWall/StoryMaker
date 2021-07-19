@@ -20,6 +20,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Draggable from 'react-draggable';
 import IconButton from '@material-ui/core/IconButton';
 import HelpIcon from '@material-ui/icons/Help';
+import AppsIcon from '@material-ui/icons/Apps';
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import ScrollIntoViewIfNeeded from 'react-scroll-into-view-if-needed';
 import Box from '@material-ui/core/Box';
 import TrapFocus from '@material-ui/core/Unstable_TrapFocus';
@@ -81,6 +84,25 @@ const useStyles = makeStyles((theme) => ({
     color: '#FF9900',
     margin: 0,
   },
+  home: {
+    position: 'relative',
+    left: 0,
+    float: 'left'
+  },
+  next: {
+    display: 'block',
+    float: 'right'
+  },
+  buttonGroup: {
+      width: '100%',
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-between'
+  },
+  prev: {
+    position: 'relative',
+    left: '4vw',
+  },
   ul: {
     listStyleType: 'circle',
     width: '50vw',
@@ -130,7 +152,7 @@ const HelpMenu = ({menu, handleScrollName}) => {
     <div className={classes.menu}>
        {menu && menu.map((l,i) => (
             <>
-            <Button color="secondary" variant="contained" key={i} onClick={() => handleClick(l.name,i)} className={classes.menuItem} style={{padding: 0, margin: 0, color: '#FF9900'}}>{l.name}</Button>
+            <Button color="secondary" variant="contained" key={i} onClick={() => handleClick(l.name,i)} className={classes.menuItem} style={{padding: 0, margin: 0, color: '#FF9900'}}><HelpIcon />{l.name}</Button>
              {l.children.length > 0 &&
                <>
                {open && (
@@ -169,7 +191,7 @@ const Help = ({messages, className}) => {
   const [open, setOpen] = useState(false);
   const [chapter, setChapter] = useState();
   const [selectedId, setSelectedId] = useState();
-  const [markdown, setMarkdown] = useState('');
+  const [markdown, setMarkdown] = useState();
   const [next, setNext] = useState();
   const [prev, setPrev] = useState();
   const [menu, setMenu] = useState([]);
@@ -185,16 +207,16 @@ const Help = ({messages, className}) => {
  const handleClose = () => {
    setOpen(false);
    setChapter();
-   setMenu([]);
+   clearMenu();
    setNext();
    setPrev();
    setSelectedId();
  };
-
+ const clearMenu = () => setMenu([]);
  const handleChapter = async (chapter) => {
    try {
      setChapter(chapter);
-     setMenu([]);
+     clearMenu();
      setSelectedId((chapter) ? index.filter((c) => (c.name === chapter))[0].id : null);
    } catch(e) {
      console.log(e.message);
@@ -204,6 +226,7 @@ const Help = ({messages, className}) => {
  const handleMenu = (name, depth) => {
    let m = menu;
    let m1Index = undefined;
+   if(depth === 0) clearMenu();
    let m0Index = (m && m.length === 0) ? 0 : (m.length -1);
    // Menu items start for index === O or h1
    switch(depth) {
@@ -233,6 +256,7 @@ const Help = ({messages, className}) => {
  }
  useEffect(()=> {
    if(chapter) {
+
      const mpath = require('./help/'+locale+'/'+chapter+'.md');
      fetch(mpath.default)
     .then(response => {
@@ -315,17 +339,17 @@ const Help = ({messages, className}) => {
                           if(type === 'h1') {
                             // separate internal Links that use handleChapter and external ones that use href
                             let p = props;
-                            console.log(children[0])
+                            setScrollName(children[0]);
                             handleMenu(children[0],0);
                             p.className = classes.h1;
-                            p.onClick=()=>handleScroll(children[0]);
+                            p.onClick= () => handleScroll(children[0]);
                             return  <ScrollIntoViewIfNeeded options={options} active={true}>{React.createElement(type, p, children)}</ScrollIntoViewIfNeeded>;
                           }
                           if(type === 'h2') {
                             // separate internal Links that use handleChapter and external ones that use href
                             let p = props;
                             handleMenu(children[0],1);
-                            p.onClick=()=>handleScroll(children[0]);
+                            p.onClick= () => handleScroll(children[0]);
                             p.className = classes.h2;
                             return  <ScrollIntoViewIfNeeded options={options}  active={(scrollName === children[0])}>{ React.createElement(type, p, children) }</ScrollIntoViewIfNeeded>;
                           }
@@ -333,7 +357,7 @@ const Help = ({messages, className}) => {
                             // separate internal Links that use handleChapter and external ones that use href
                             let p = props;
                             handleMenu(children[0],2);
-                            p.onClick=()=>handleScroll(children[0]);
+                            p.onClick= () => handleScroll(children[0]);
                             p.className = classes.h3;
                             return  <ScrollIntoViewIfNeeded options={options} active={(scrollName === children[0])}>{React.createElement(type, p, children)}</ScrollIntoViewIfNeeded>;
                           }
@@ -341,7 +365,7 @@ const Help = ({messages, className}) => {
                             // separate internal Links that use handleChapter and external ones that use href
                             let p = props;
                             handleMenu(children[0],3);
-                            p.onClick=()=>handleScroll(children[0]);
+                            p.onClick= () => handleScroll(children[0]);
                             p.className = classes.h4;
                             return  <ScrollIntoViewIfNeeded options={options} active={(scrollName === children[0])}>{React.createElement(type, p, children)}</ScrollIntoViewIfNeeded>;
                           }
@@ -362,10 +386,10 @@ const Help = ({messages, className}) => {
           }
         </DialogContent>
         <DialogActions>
-        <ButtonGroup variant="contained" aria-label="outlined primary button group">
-          {chapter && <Button color="secondary" variant="contained" onClick={() => handleChapter()}>Summary</Button>}
-          {prev && <Button  color="secondary" variant="contained" onClick={() => handleChapter(prev)}>{prev}</Button>}
-          {next && <Button  color="secondary" variant="contained" onClick={() => handleChapter(next)}>{next}</Button>}
+        <ButtonGroup className={classes.buttonGroup} styles={{width: '80vw'}} variant="contained" aria-label="outlined primary button group">
+          {chapter && <Button className={classes.home} color="secondary" variant="contained" onClick={() => handleChapter()}><AppsIcon/></Button>}
+          {prev && <Button  className={classes.prev} color="secondary" variant="contained" onClick={() => handleChapter(prev)}><SkipPreviousIcon/> {prev}</Button>}
+          {next && <Button  className={classes.next} style={{float: 'right', left: 0}} color="secondary" variant="contained" onClick={() => handleChapter(next)}>{next} <NavigateNextIcon/></Button>}
         </ButtonGroup>
 
         </DialogActions>
