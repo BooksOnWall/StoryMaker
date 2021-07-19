@@ -110,33 +110,33 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const HelpMenu = (menu, scroll, handleScrollName) => {
+const HelpMenu = ({menu, handleScrollName}) => {
   const classes = useStyles();
-  console.log(handleScrollName);
+  console.log('handleScrollName', handleScrollName);
   const [dense, setDense] = useState(false);
   const [secondary, setSecondary] = useState(false);
-
+  const handleClick = (name) => {
+    console.log('name', name);
+    handleScrollName({name});
+  }
   return (
     <div className={classes.menu}>
-       {menu.menu.map((l,i) =>{
+       {menu.map((l,i) =>{
          return (
             <>
-            <Button onClick={(e) => handleScrollName(l.name)} className={classes.menuItem} style={{padding: 0, margin: 0, color: '#FF9900'}}>{l.name}</Button>
+            <Button key={i} onClick={(e) => handleClick(l.name)} className={classes.menuItem} style={{padding: 0, margin: 0, color: '#FF9900'}}>{l.name}</Button>
              {l.children.length > 0 &&
                <>
                <List style={{padding: 0, margin: 0}} dense={dense}>
                {l.children.map((ll,ii) => (
-                 <ListItem style={{padding: 0, margin: 0}}>
-                  <Button onClick={(e) => handleScrollName(ll.name)} className={classes.menuItem} style={{color: '#FF9900',padding: 0, margin: 0}}>{ll.name}</Button>
+                 <ListItem key={ii} style={{padding: 0, margin: 0}}>
+                  <Button onClick={(e) => handleClick(ll.name)} className={classes.menuItem} style={{color: '#FF9900',padding: 0, margin: 0}}>{ll.name}</Button>
                    {ll.children.length > 0 &&
                      <List style={{padding: 0, margin: 0}} dense={dense}>
                       {ll.children.map((lll, iii) => (
-                        <ListItem>
-                         <Button  onClick={(e) => handleScrollName(lll.name)} className={classes.menuItem} style={{color: '#FF9900', padding: 0, margin: 0}}>{lll.name}</Button>
-                         {lll.children.length > 0 &&
-                           <div>toto</div>
-                         }
-                         </ListItem>
+                        <ListItem key={iii} style={{padding: 0, margin: 0}}>
+                         <Button  onClick={(e) => handleClick(lll.name)} className={classes.menuItem} style={{color: '#FF9900', padding: 0, margin: 0}}>{lll.name}</Button>
+                        </ListItem>
                       ))}
                       </List>
                    }
@@ -166,10 +166,10 @@ const Help = ({messages, className}) => {
   const handleClickOpen = () => {
    setOpen(true);
  };
- const handleScrollName = (name) => {
-   console.log('scroll', name)
-   setScrollName(name);
+ const handleScroll = ({name}) => {
+  setScrollName(name);
  }
+
  const {locale} = useIntl();
  const handleClose = () => {
    setOpen(false);
@@ -237,14 +237,12 @@ const Help = ({messages, className}) => {
    }
    if (selectedId && selectedId > 0 && index[(1-selectedId)]) {
      setPrev(index[(1-selectedId)].name);
-   } else {
-     setPrev();
    }
  },[chapter, index, selectedId, locale]);
   const options = {behavior: 'smooth', scrollMode: 'if-needed'}
 
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
-  console.log('scroll', scrollName)
+  console.log('scrollName', scrollName)
   return (
     <>
     <IconButton onClick={handleClickOpen} className={className} style={{fontSize: 12, color: '#FFF',position: 'absolute', zIndex: 1008, right: '8vw'}}><HelpIcon fontSize="large" color="primary"/></IconButton>
@@ -270,7 +268,7 @@ const Help = ({messages, className}) => {
             <>
               {markdown &&
                 <>
-                <HelpMenu handleScrollName={handleScrollName} menu={menu} scroll={scrollName}/>
+                <HelpMenu handleScrollName={handleScroll} menu={menu} />
                 <Markdown
                   children={markdown}
                   options={{
@@ -304,14 +302,14 @@ const Help = ({messages, className}) => {
                             console.log(children[0])
                             handleMenu(children[0],0);
                             p.className = classes.h1;
-                            p.onClick=() => handleScrollName(children[0]);
+                            p.onClick=()=>handleScroll(children[0]);
                             return  <ScrollIntoViewIfNeeded options={options} active={true}>{React.createElement(type, p, children)}</ScrollIntoViewIfNeeded>;
                           }
                           if(type === 'h2') {
                             // separate internal Links that use handleChapter and external ones that use href
                             let p = props;
                             handleMenu(children[0],1);
-                            p.onClick=handleScrollName(children[0]);
+                            p.onClick=()=>handleScroll(children[0]);
                             p.className = classes.h2;
                             return  <ScrollIntoViewIfNeeded options={options}  active={(scrollName === children[0])}>{ React.createElement(type, p, children) }</ScrollIntoViewIfNeeded>;
                           }
@@ -319,7 +317,7 @@ const Help = ({messages, className}) => {
                             // separate internal Links that use handleChapter and external ones that use href
                             let p = props;
                             handleMenu(children[0],2);
-                            p.onClick=handleScrollName(children[0]);
+                            p.onClick=()=>handleScroll(children[0]);
                             p.className = classes.h3;
                             return  <ScrollIntoViewIfNeeded options={options} active={(scrollName === children[0])}>{React.createElement(type, p, children)}</ScrollIntoViewIfNeeded>;
                           }
@@ -327,7 +325,7 @@ const Help = ({messages, className}) => {
                             // separate internal Links that use handleChapter and external ones that use href
                             let p = props;
                             handleMenu(children[0],3);
-                            p.onClick=handleScrollName(children[0]);
+                            p.onClick=()=>handleScroll(children[0]);
                             p.className = classes.h4;
                             return  <ScrollIntoViewIfNeeded options={options} active={(scrollName === children[0])}>{React.createElement(type, p, children)}</ScrollIntoViewIfNeeded>;
                           }
