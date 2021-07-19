@@ -202,6 +202,7 @@ const Help = ({messages, className}) => {
      console.log(e.message);
    }
  };
+
  const handleMenu = (name, depth) => {
    let m = menu;
    let m1Index = undefined;
@@ -253,6 +254,9 @@ const Help = ({messages, className}) => {
      setPrev(index[(1-selectedId)].name);
    }
  },[chapter, index, selectedId, locale]);
+  useEffect(() => {
+    if(menu && menu[0]) setScrollName(menu[0].name);
+  }, [menu])
   const options = {behavior: 'smooth', scrollMode: 'if-needed'}
 
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
