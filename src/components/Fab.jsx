@@ -23,27 +23,29 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     top: 0,
     left: '50vw',
+    margin: 0,
+    padding: 0,
     maxHeight: 308,
     zIndex: 1006,
     transform: 'translateZ(0px)',
     flexGrow: 1,
   },
-  logo:{
-    position: 'absolute',
-    zIndex: '1006',
-    padding: 0,
-    marginTop: 0,
-    marginLeft: '0',
-  },
   logoIcon:{
-    minHeight: 12,
-    minWidth: 12,
+    padding: 0,
+    margin: 0,
+    fontSize: 8,
+    height: 10,
+    width: 10,
     background: '#fff',
     padding: 1
   },
   speedDial: {
     position: 'absolute',
     width: 12,
+    margin:0,
+    padding: 0,
+    fontSize: 8,
+    size: "small",
     zIndex: 1007,
     '&.MuiSpeedDial-directionUp, &.MuiSpeedDial-directionLeft': {
       bottom: theme.spacing(2),
@@ -52,6 +54,8 @@ const useStyles = makeStyles((theme) => ({
     '&.MuiSpeedDial-directionDown, &.MuiSpeedDial-directionRight': {
       top: theme.spacing(2),
       left: theme.spacing(2),
+      margin: 0,
+      padding: 0,
     },
 
 
@@ -100,10 +104,10 @@ const useStyles = makeStyles((theme) => ({
         ariaLabel="Menu"
         className={classes.speedDial}
         hidden={hidden}
+        size={"small"}
+        style={{}}
         direction={'down'}
-        icon={<IconButton className={classes.logo} edge="start"  color="primary" aria-label="menu">
-          <Avatar className={classes.logoIcon} alt="logo" src={logo} />
-        </IconButton>}
+        icon={<Avatar size={"tiny"} style={{fontSize: 9}} className={classes.logoIcon} alt="logo" src={logo} />}
         onClose={handleClose}
         onOpen={handleOpen}
         open={open}
