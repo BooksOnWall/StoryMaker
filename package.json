@@ -54,6 +54,9 @@
     "styled-components": "^4.3.2",
     "three": "^0.120.1"
   },
+  "resolutions": {
+  "@semantic-ui-react/craco-less/craco-less": "1.17.1"
+  },
   "scripts": {
     "start": "craco start",
     "build": "craco --max_old_space_size=8192  build",
