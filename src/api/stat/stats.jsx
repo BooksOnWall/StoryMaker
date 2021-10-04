@@ -24,6 +24,7 @@ class Stats extends Component {
       toggleAuthenticateStatus: this.props.childProps.toggleAuthenticateStatus,
       authenticated: this.props.childProps.authenticated,
     };
+    
     this.handleSort = this.handleSort.bind(this);
     this.listStats = this.listStats.bind(this);
   }
@@ -83,86 +84,103 @@ class Stats extends Component {
   tableRowClickFunc(story) {
     //return this.props.history.push('/stats/'+story.id);
   }
+  
   render() {
-    const { column, data, direction } = this.state;
-    Moment.locale('en');
-    if(data === null) return null;
     return (
+      <>
+      <div className='date' Value={'period' === 'day'}>
+        Day
+      </div>
+      <div className='date' Value={'period' === 'week'}>
+        Week
+      </div>
+      <div className='date' Value={'period' === 'month'}>
+        Month
+      </div>
+      <div className='date' Value={'period' === 'year'}>
+        Year
+      </div>
 
-    <Container className="main" style={{overflow: 'auto'}} fluid>
-      <Dimmer.Dimmable as={Segment} inverted className="view" blurring dimmed={this.state.loading}>
-          <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
-              <Dimmer active={this.state.loading}>
-                <Loader className='loader' active={this.state.loading} >
-              <FormattedMessage id="app.story.stats.getuser"  defaultMessage={'Get users info'} />
-              </Loader>
-              </Dimmer>
-              <Table inverted stripped="true" selectable sortable>
-                <Table.Header className='slide-out' >
-                  <Table.Row>
-                    <Table.HeaderCell
-                      sorted={column === 'id' ? direction : null}
-                      onClick={this.handleSort('id')}
-                      >
-                      <FormattedMessage id="app.story.stats.table.id"  defaultMessage={'Id'} />
-                    </Table.HeaderCell>
-                    <Table.HeaderCell
-                      sorted={column === 'sid' ? direction : null}
-                      onClick={this.handleSort('sid')}
-                      >
-                      Story id
-                    </Table.HeaderCell>
-                    <Table.HeaderCell
-                      sorted={column === 'ssid' ? direction : null}
-                      onClick={this.handleSort('ssid')}
-                      >
-                      Stage id
-                    </Table.HeaderCell>
-                    <Table.HeaderCell
-                      sorted={column === 'name' ? direction : null}
-                      onClick={this.handleSort('name')}
-                      >
-                      Name
-                    </Table.HeaderCell>
-                    <Table.HeaderCell
-                      sorted={column === 'uniqueId' ? direction : null}
-                      onClick={this.handleSort('uniqueId')}
-                      >
-                      Unique Id
-                    </Table.HeaderCell>
-                    <Table.HeaderCell>
-                      MetaData From Server
-                    </Table.HeaderCell>
-                    <Table.HeaderCell>
-                      MetaData From Mobile
-                    </Table.HeaderCell>
-                    <Table.HeaderCell
-                      sorted={column === 'createdAt' ? direction : null}
-                      onClick={this.handleSort('createdAt')}
-                      >
-                      <FormattedMessage id="app.story.stats.table.create"  defaultMessage={'Created'} />
-                    </Table.HeaderCell>
-                    </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                  {_.map(data, ({ id, sid, ssid, name,uniqueId, values, data, createdAt, updatedAt }) => (
-                    <Table.Row className='slide-out'  key={id} onClick={() => this.tableRowClickFunc({id})}>
-                      <Table.Cell>{id}</Table.Cell>
-                      <Table.Cell>{sid}</Table.Cell>
-                      <Table.Cell>{ssid}</Table.Cell>
-                      <Table.Cell>{name}</Table.Cell>
-                      <Table.Cell>{uniqueId}</Table.Cell>
-                      <Table.Cell>{<JSONPretty className="htmlList" style={{maxHeight: '10vh', maxWidth: '25vw'}} data={values} ></JSONPretty>}</Table.Cell>
-                      <Table.Cell>{<JSONPretty className="htmlList" style={{maxHeight: '10vh', maxWidth: '25vw'}} data={data} ></JSONPretty>}</Table.Cell>
-                      <Table.Cell>{Moment(createdAt).format('l HH:mm:ss')}</Table.Cell>
-                    </Table.Row>
-                  ))}
-                </Table.Body>
-              </Table>
-        </Dimmer.Dimmable>
-      </Container>
-
+     </> 
     );
+    // const { column, data, direction } = this.state;
+    // Moment.locale('en');
+    // if(data === null) return null;
+    // return (
+
+    // <Container className="main" style={{overflow: 'auto'}} fluid>
+    //   <Dimmer.Dimmable as={Segment} inverted className="view" blurring dimmed={this.state.loading}>
+    //       <Dimmer active={this.state.loading} onClickOutside={this.handleHide} />
+    //           <Dimmer active={this.state.loading}>
+    //             <Loader className='loader' active={this.state.loading} >
+    //           <FormattedMessage id="app.story.stats.getuser"  defaultMessage={'Get users info'} />
+    //           </Loader>
+    //           </Dimmer>
+    //           <Table inverted stripped="true" selectable sortable>
+    //             <Table.Header className='slide-out' >
+    //               <Table.Row>
+    //                 <Table.HeaderCell
+    //                   sorted={column === 'id' ? direction : null}
+    //                   onClick={this.handleSort('id')}
+    //                   >
+    //                   <FormattedMessage id="app.story.stats.table.id"  defaultMessage={'Id'} />
+    //                 </Table.HeaderCell>
+    //                 <Table.HeaderCell
+    //                   sorted={column === 'sid' ? direction : null}
+    //                   onClick={this.handleSort('sid')}
+    //                   >
+    //                   Story id
+    //                 </Table.HeaderCell>
+    //                 <Table.HeaderCell
+    //                   sorted={column === 'ssid' ? direction : null}
+    //                   onClick={this.handleSort('ssid')}
+    //                   >
+    //                   Stage id
+    //                 </Table.HeaderCell>
+    //                 <Table.HeaderCell
+    //                   sorted={column === 'name' ? direction : null}
+    //                   onClick={this.handleSort('name')}
+    //                   >
+    //                   Name
+    //                 </Table.HeaderCell>
+    //                 <Table.HeaderCell
+    //                   sorted={column === 'uniqueId' ? direction : null}
+    //                   onClick={this.handleSort('uniqueId')}
+    //                   >
+    //                   Unique Id
+    //                 </Table.HeaderCell>
+    //                 <Table.HeaderCell>
+    //                   MetaData From Server
+    //                 </Table.HeaderCell>
+    //                 <Table.HeaderCell>
+    //                   MetaData From Mobile
+    //                 </Table.HeaderCell>
+    //                 <Table.HeaderCell
+    //                   sorted={column === 'createdAt' ? direction : null}
+    //                   onClick={this.handleSort('createdAt')}
+    //                   >
+    //                   <FormattedMessage id="app.story.stats.table.create"  defaultMessage={'Created'} />
+    //                 </Table.HeaderCell>
+    //                 </Table.Row>
+    //             </Table.Header>
+    //             <Table.Body>
+    //               {_.map(data, ({ id, sid, ssid, name,uniqueId, values, data, createdAt, updatedAt }) => (
+    //                 <Table.Row className='slide-out'  key={id} onClick={() => this.tableRowClickFunc({id})}>
+    //                   <Table.Cell>{id}</Table.Cell>
+    //                   <Table.Cell>{sid}</Table.Cell>
+    //                   <Table.Cell>{ssid}</Table.Cell>
+    //                   <Table.Cell>{name}</Table.Cell>
+    //                   <Table.Cell>{uniqueId}</Table.Cell>
+    //                   <Table.Cell>{<JSONPretty className="htmlList" style={{maxHeight: '10vh', maxWidth: '25vw'}} data={values} ></JSONPretty>}</Table.Cell>
+    //                   <Table.Cell>{<JSONPretty className="htmlList" style={{maxHeight: '10vh', maxWidth: '25vw'}} data={data} ></JSONPretty>}</Table.Cell>
+    //                   <Table.Cell>{Moment(createdAt).format('l HH:mm:ss')}</Table.Cell>
+    //                 </Table.Row>
+    //               ))}
+    //             </Table.Body>
+    //           </Table>
+    //     </Dimmer.Dimmable>
+    //   </Container>
+
 
                     
   }

@@ -1,6 +1,5 @@
-import React from 'react';
+import { createContext } from 'react';
 
-const CalendarContext = React.createContext();
-
+const CalendarContext = (period) => createContext(period);
 
 export default CalendarContext;
