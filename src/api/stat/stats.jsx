@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useReducer } from 'react';
 import { Progress, Container, Dimmer, Loader, Segment, Header, Table, Icon, Button } from 'semantic-ui-react';
 import Moment from 'moment';
 import { Link } from 'react-router-dom';
@@ -6,6 +6,7 @@ import { FormattedMessage } from 'react-intl';
 import JSONPretty from 'react-json-pretty';
 import 'react-json-pretty/themes/monikai.css';
 import _ from 'lodash';
+import CalendarContext from './componentsStat/calendar/calendar';
 
 class Stats extends Component {
   constructor(props) {
@@ -163,6 +164,7 @@ class Stats extends Component {
 
     );
 
+                    
   }
 }
 export default Stats;
