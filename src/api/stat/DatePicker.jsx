@@ -3,6 +3,17 @@ import { Menu, Segment, Label,Dimmer, Loader } from 'semantic-ui-react';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import 'react-day-picker/lib/style.css';
 import Helmet from 'react-helmet';
+// Include the locale utils designed for moment
+import MomentLocaleUtils from 'react-day-picker/moment';
+
+// Make sure moment.js has the required locale data
+import 'moment/locale/es';
+import 'moment/locale/en-gb';
+import 'moment/locale/it';
+import 'moment/locale/fr';
+import 'moment/locale/pt';
+
+const getLanguage = () => (navigator.languages && navigator.languages.length) ? navigator.languages[0] : navigator.userLanguage || navigator.language || navigator.browserLanguage || 'en';
 
 const DatePicker = ({period}) => {
   return (
