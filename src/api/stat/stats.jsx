@@ -1,19 +1,22 @@
-import React, { useReducer, useState, useEffect , UseContext} from 'react';
-import { Menu, Container, Dimmer, Loader, Tab  } from 'semantic-ui-react';
-import Moment from 'moment';
-import { Link } from 'react-router-dom';
-import CalendarContext from './componentsStat/calendar/calendar';
-import { utimesSync } from 'fs';
+import React, { useContext, useState, useEffect, createContext } from 'react';
+import { Button, Segment, Label, Icon, Menu, Container, Dimmer, Loader, Tab  } from 'semantic-ui-react';
+import loadable from '@loadable/component';
+import Helmet from 'react-helmet';
 
-export const CalendarContext = React.createContext()
+const General = loadable(() => import('./general'));
+const Stories = loadable(() => import('./stories'));
+const DatePicker = loadable(() => import('./DatePicker'));
 
-export default function app() {
-  const [maxDate, minDate] = useState(true)
-}
-
-  return (
-    <Menu pointing secondary inverted >
-      <Menu.Menu position='right'>
+const CalendarMenu = ({period, handlePeriod, handlePrev, handleNext}) => (
+  <>
+    <Menu secondary inverted stackable style={{position: 'absolute', zIndex: 999, right: '0vw', width: '60vw'}}>
+      <Menu.Menu position='right' style={{right: '0vw', width: '60vw', fontSize: 10, position: 'absolute', zIndex: 999}}>
+        <Menu.Item><DatePicker period={period} /></Menu.Item>
+        <Menu.Item
+          onClick={(e) => handlePrev()}
+        >
+        <Icon name='arrow circle left' />
+        </Menu.Item>
          <Menu.Item
            name='Day'
            active={period === 'day'}
@@ -39,20 +42,49 @@ export default function app() {
            active={period === 'all'}
             onClick={(e) => handlePeriod('all')}
          />
+         <Menu.Item
+           onClick={(e) => handleNext()}
+         >
+          <Icon name='arrow circle right' />
+         </Menu.Item>
+
           </Menu.Menu>
+
        </Menu>
-  )
-}
+       </>
+);
 const Tabs = ({loading}) => {
   const panes = [
     {
       menuItem: 'General',
-      render: () => <Tab.Pane inverted loading={loading}>Tab 1 Content</Tab.Pane>,
+      render: () => <Tab.Pane style={{zIndex: '0 !important'}} inverted loading={loading}><General /></Tab.Pane>,
     },
-    { menuItem: 'Stories', render: () => <Tab.Pane inverted loading={loading} >Tab 2 Content</Tab.Pane> },
+    { menuItem: 'Stories',
+      render: () => <Tab.Pane style={{zIndex: '0 !important'}} inverted loading={loading} ><Stories /></Tab.Pane>,
+    },
   ];
   return (
-    <Tab panes={panes} />
+    <>
+    <Helmet>
+        <style>{`
+          .ui.attached.tabular.menu {
+            z-index: 1;
+            position: relative;
+            padding: .1em;
+            overflow: visible!important;
+          }
+          .ui.attached.tabular.menu .item {
+            font-size: 1em;
+            padding: .5em;
+          }
+          .ui.attached.tabular.menu .item.active {
+            background-color: #000;
+            border-color: #000;
+          }
+          `}</style>
+      </Helmet>
+    <Tab style={{zIndex: '0 !important'}} inverted  panes={panes} />
+    </>
   )
 }
 const Stats = (props) => {
@@ -62,10 +94,25 @@ const Stats = (props) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const authenticated = props.childProps.authenticated;
-  const [period, setPeriod] = UseContext('day');
-  const [min, setMin] = UseContext();
-  const [max, setMax] = UseContext();
+  const [period, setPeriod] = useState('month');
+  const [min, setMin] = useState();
+  const [max, setMax] = useState();
+  const [startDate, setStartDate] = useState(new Date());
+
+const StartDateInput = ({ value, onClick }) => (
+  <Button basic onClick={onClick}>
+    {value}
+  </Button>
+ );
+
+
+  const slidePeriod = (direction) => {
+    console.log(direction);
+    return true;
+  }
   const handlePeriod = (period) => setPeriod(period);
+  const handlePrev = () => slidePeriod('prev');
+  const handleNext = () => slidePeriod('next');
 
   useEffect(() => {
     const listStats = async () => {
@@ -91,10 +138,9 @@ const Stats = (props) => {
         console.log(e.message);
       }
     };
-    props.toggleAuthenticateStatus();
-    //listStats();
+    listStats();
 
-  }, [props,server]);
+  }, [server]);
 
   return (
 
@@ -104,8 +150,8 @@ const Stats = (props) => {
        </Dimmer>
        {!loading &&
          <>
-         <CalendarMenu period={period} min={min} max={max} handlePeriod={handlePeriod}/>
-         <Tabs loading={loading}/>
+          <CalendarMenu period={period} min={min} max={max} handlePeriod={handlePeriod} handleNext={handleNext} handlePrev={handlePrev}/>
+          <Tabs style={{zIndex: '0 !important'}} loading={loading}/>
          </>
        }
      </Container>
