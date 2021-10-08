@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, createContext } from 'react';
-import { Button, Segment, Label, Icon, Menu, Container, Dimmer, Loader, Tab  } from 'semantic-ui-react';
+import { Button, Segment, Label, Icon, Menu, Container, Dimmer, Loader, Tab, Grid } from 'semantic-ui-react';
 import loadable from '@loadable/component';
 import Helmet from 'react-helmet';
 
@@ -9,14 +9,23 @@ const DatePicker = loadable(() => import('./DatePicker'));
 
 const CalendarMenu = ({period, handlePeriod, handlePrev, handleNext}) => (
   <>
-    <Menu secondary inverted stackable style={{position: 'absolute', zIndex: 999, right: '0vw', width: '60vw'}}>
-      <Menu.Menu position='right' style={{right: '0vw', width: '60vw', fontSize: 10, position: 'absolute', zIndex: 999}}>
-        <Menu.Item><DatePicker period={period} /></Menu.Item>
+    <Menu secondary inverted stackable style={{position: 'absolute', zIndex: 999, width: '60vw'}}>
+      <Menu.Menu  style={{right: '0vw', fontSize: 10, position: 'absolute', zIndex: 999}}>
+        
+        <Menu.Item id='stat' className='PickerDate'>
+        <Button icon>
+        <Icon name='arrow left' />
+        </Button>
+          <DatePicker period={period} />
+          <Button icon>
+          <Icon name='arrow right' />
+          </Button>
+          </Menu.Item>
         <Menu.Item
           onClick={(e) => handlePrev()}
         >
-        <Icon name='arrow circle left' />
         </Menu.Item>
+        
          <Menu.Item
            name='Day'
            active={period === 'day'}
@@ -45,11 +54,11 @@ const CalendarMenu = ({period, handlePeriod, handlePrev, handleNext}) => (
          <Menu.Item
            onClick={(e) => handleNext()}
          >
-          <Icon name='arrow circle right' />
          </Menu.Item>
+         
 
           </Menu.Menu>
-
+          
        </Menu>
        </>
 );
@@ -57,10 +66,10 @@ const Tabs = ({loading}) => {
   const panes = [
     {
       menuItem: 'General',
-      render: () => <Tab.Pane style={{zIndex: '0 !important'}} inverted loading={loading}><General /></Tab.Pane>,
+      render: () => <Menu.Item id='stat' className='tabs' style={{zIndex: '0 !important'}} inverted loading={loading}><General /></Menu.Item>,
     },
     { menuItem: 'Stories',
-      render: () => <Tab.Pane style={{zIndex: '0 !important'}} inverted loading={loading} ><Stories /></Tab.Pane>,
+      render: () => <Menu.Item id='stat' className='tabs' style={{zIndex: '0 !important'}} inverted loading={loading} ><Stories /></Menu.Item>,
     },
   ];
   return (
@@ -72,14 +81,20 @@ const Tabs = ({loading}) => {
             position: relative;
             padding: .1em;
             overflow: visible!important;
+            flex: 1,
+            alignItems: 'flex-start',
           }
           .ui.attached.tabular.menu .item {
             font-size: 1em;
             padding: .5em;
           }
           .ui.attached.tabular.menu .item.active {
-            background-color: #000;
-            border-color: #000;
+            background-color: transparent;
+            border-color: transparent;
+            color: #ffffff!important;
+          }
+          .Menu .item{
+            font-size: 18px !important;
           }
           `}</style>
       </Helmet>
@@ -144,7 +159,7 @@ const StartDateInput = ({ value, onClick }) => (
 
   return (
 
-     <Container className="main" style={{ height: '100vh', overflow: 'auto'}} fluid>
+     <Container id='stat' className="main" style={{ height: '100vh', overflow: 'auto'}} fluid>
       <Dimmer active={loading} inverted>
          <Loader disabled={!loading} inverted content='Loading' />
        </Dimmer>

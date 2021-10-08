@@ -32,8 +32,8 @@ const DatePicker = ({period}) => {
       }
       {period != 'day' &&
         <>
-        <Menu.Item style={{fontSize: 10}}  >Start: dd/mm/yy</Menu.Item>
-        <Menu.Item style={{fontSize: 10}}  >End: dd/mm/yy</Menu.Item>
+        <Menu.Item style={{fontSize: 18}}  ><p id='stat' className='startAt'>Start at:</p> dd/mm/yy</Menu.Item>
+        <Menu.Item style={{fontSize: 18}}  ><p id='stat' className='startAt'>End at at:</p> dd/mm/yy</Menu.Item>
         </>
       }
     </>
