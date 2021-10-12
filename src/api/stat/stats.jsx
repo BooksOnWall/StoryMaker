@@ -9,23 +9,24 @@ const DatePicker = loadable(() => import('./DatePicker'));
 
 const CalendarMenu = ({period, handlePeriod, handlePrev, handleNext}) => (
   <>
-    <Menu secondary inverted stackable style={{position: 'absolute', zIndex: 999, width: '60vw'}}>
-      <Menu.Menu  style={{right: '0vw', fontSize: 10, position: 'absolute', zIndex: 999}}>
-        
-        <Menu.Item id='stat' className='PickerDate'>
-        <Button icon>
-        <Icon name='arrow left' />
-        </Button>
-          <DatePicker period={period} />
-          <Button icon>
-          <Icon name='arrow right' />
-          </Button>
+    <Menu secondary inverted stackable style={{position: 'absolute', zIndex: 999, right: '0vw', flex: 1, display: 'flex', justifyContent: 'space-between'}}>
+      <Menu.Menu position='right' style={{right: '0vw', width: '60vw', fontSize: 10, position: 'absolute', zIndex: 999}}>
+    
+        <Menu.Item>
+          <Menu.Item
+            onClick={(e) => handlePrev()}
+            >
+  ​            <Icon name='arrow left' />
           </Menu.Item>
-        <Menu.Item
-          onClick={(e) => handlePrev()}
-        >
+          <DatePicker period={period} />
+          <Menu.Item
+            onClick={(e) => handleNext()}
+            >
+  ​            <Icon name='arrow right' />
+          </Menu.Item>
         </Menu.Item>
         
+        <Menu.Item>
          <Menu.Item
            name='Day'
            active={period === 'day'}
@@ -51,14 +52,10 @@ const CalendarMenu = ({period, handlePeriod, handlePrev, handleNext}) => (
            active={period === 'all'}
             onClick={(e) => handlePeriod('all')}
          />
-         <Menu.Item
-           onClick={(e) => handleNext()}
-         >
-         </Menu.Item>
-         
+        </Menu.Item>
 
           </Menu.Menu>
-          
+
        </Menu>
        </>
 );
@@ -66,10 +63,10 @@ const Tabs = ({loading}) => {
   const panes = [
     {
       menuItem: 'General',
-      render: () => <Menu.Item id='stat' className='tabs' style={{zIndex: '0 !important'}} inverted loading={loading}><General /></Menu.Item>,
+      render: () => <Tab.Pane style={{zIndex: '0 !important'}} inverted loading={loading}><General /></Tab.Pane>,
     },
     { menuItem: 'Stories',
-      render: () => <Menu.Item id='stat' className='tabs' style={{zIndex: '0 !important'}} inverted loading={loading} ><Stories /></Menu.Item>,
+      render: () => <Tab.Pane style={{zIndex: '0 !important'}} inverted loading={loading} ><Stories /></Tab.Pane>,
     },
   ];
   return (
@@ -98,7 +95,7 @@ const Tabs = ({loading}) => {
           }
           `}</style>
       </Helmet>
-    <Tab style={{zIndex: '0 !important'}} inverted  panes={panes} />
+        <Tab style={{zIndex: '0 !important'}} inverted  panes={panes} />
     </>
   )
 }
@@ -165,9 +162,12 @@ const StartDateInput = ({ value, onClick }) => (
        </Dimmer>
        {!loading &&
          <>
+         <div id='menu'>
           <CalendarMenu period={period} min={min} max={max} handlePeriod={handlePeriod} handleNext={handleNext} handlePrev={handlePrev}/>
           <Tabs style={{zIndex: '0 !important'}} loading={loading}/>
+        </div>
          </>
+         
        }
      </Container>
 
