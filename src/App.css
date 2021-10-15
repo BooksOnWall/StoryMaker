@@ -905,11 +905,11 @@ margin-right: -4rem;}
   color: #666 !important;
 }
 
-#stories .TitleStories{
-  background-color: transparent !important;
+#stories .ui.inverted.button {
+  box-shadow: 0px 0px 0px 0px transparent inset !important;
 }
-#stories .ui.segment{
-  border-style: solid !important;
-  border-width: 0px 0px 2px 0px !important;
-  border-color: red !important;
+
+#stories .ui.inverted.button:hover {
+  background: #E42619 !important;
+  color: none;
 }
