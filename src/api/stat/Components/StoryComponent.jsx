@@ -7,29 +7,7 @@ class StoryComponent extends Component {
     render() {
         return(
             <>
-            <Helmet>
-                <style>{`
-                    #stories .headerStories {
-                        display: flex !important;
-                        flex: 1 !important;
-                        justify-content: 'space-between' !important;
-                        flex-wrap: 'wrap-reverse' !important;
-                        background-color: #329303;
-
-                    }
-                    #stories .TitleStories {
-                        flex: 1 !important;
-                        display: flex !important;
-                    }
-                    #stories .buttons {
-                        display: flex !important;
-                        flex: 1 !important;
-                        align-content: 'flex-end' !important,
-                        flex-grow: 0 !important,
-                        flex-shrink: 0 !important,
-                    }
-                `}</style>
-      </Helmet>
+            
                 <div id='stories' className='headerStories' inverted style={{ display: 'flex' ,flex: 1, justifyContent: 'space-between', alignItems: 'flex-start', width: '40%', paddingBottom: '1rem'}}>
                     <div id='stories' className='TitleStories' inverted style={{ display: 'flex' , color: '#6C6C6C', flex: 1}}>
                         ALL STORIES COMMENTS
