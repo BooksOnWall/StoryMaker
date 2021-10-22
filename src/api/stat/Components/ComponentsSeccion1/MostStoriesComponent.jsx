@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Segment, Button, Icon } from 'semantic-ui-react';
+import { Table, Segment, Button, Icon, Secction } from 'semantic-ui-react';
 import loadable from '@loadable/component';
 import Helmet from 'react-helmet';
 
@@ -7,19 +7,19 @@ class MostStoriesComponent extends Component {
     render() {
         return (
             <>
-                <div inverted style={{ borderStyle: 'solid', borderWidth: '1px', borderColor: '#232323' }}>
-                    <div id='stories' className='headerStories' inverted style={{
+                <secction inverted style={{ borderStyle: 'solid', borderWidth: '1px', borderColor: '#232323' }}>
+                    <secction id='stories' className='headerStories' inverted style={{
                         display: 'flex', flex: 1, justifyContent: 'space-between', alignItems: 'flex-start',
                         paddingTop: '5px', paddingButton: '5px'
                     }}>
-                        <div id='stories' className='TitleStories' inverted style={{ display: 'flex', color: '#6C6C6C', flex: '1 1 %50', padding: '8px' }}>
+                        <Segment id='stories' className='TitleStories' inverted style={{ display: 'flex', color: '#6C6C6C', flex: '1 1 %50', padding: '8px', marginBottom: '0px' }}>
                             MOST COMPLETED STORIES
-                        </div>
-                        <div id='stories' className='buttons' inverted style={{ display: 'flex', flex: 1, justifyContent: 'flex-end' }}>
-                            <Button icon inverted style={{ background: '#323232', boxShadow: '0px 0px 0px 0px inset !important', }}><Icon name='angle up' /></Button>
-                            <Button icon inverted style={{ background: '#202020' }}><Icon name='angle down' /></Button>
-                        </div>
-                    </div>
+                        </Segment>
+                        <Segment id='stories' className='buttons' inverted style={{ display: 'flex', flex: '0 1 0', justifyContent: 'flex-end', marginTop: '0px', padding: '0px'}}>
+                            <Button icon inverted style={{boxShadow: '0px 0px 0px 0px inset !important', }}><Icon name='angle up' /></Button>
+                            <Button icon inverted style={{}}><Icon name='angle down' /></Button>
+                        </Segment>
+                    </secction>
                     <Table inverted style={{ borderStyle: 'solid', borderWidth: '1px', borderColor: '#232323' }}>
                         <Table.Body>
                             <Table.Row>
@@ -40,7 +40,7 @@ class MostStoriesComponent extends Component {
                         <Button inverted style={{ background: '#323232', boxShadow: '0px 0px 0px 0px inset !important' }}>LIST</Button>
                         <Button inverted style={{ background: '#202020' }}>CHART</Button>
                     </div>
-                </div>
+                </secction>
             </>
         )
     }

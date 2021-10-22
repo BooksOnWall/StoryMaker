@@ -33,10 +33,10 @@ class DonwloadComponent extends Component {
                         </Table.Row>
                     </Table.Body>
                 </Table>
-                <div id='stories' className='buttons' inverted style={{ padding: '1rem' }}>
+                <Segment id='stories' className='buttons' inverted style={{ padding: '1rem' }}>
                     <Button  inverted style={{ background: '#323232', boxShadow: '0px 0px 0px 0px inset !important' }}>LIST</Button>
                     <Button  inverted style={{ background: '#202020' }}>CHART</Button>
-                </div>
+                </Segment>
             </div>
         )
     }
