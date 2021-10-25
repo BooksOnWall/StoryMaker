@@ -1,20 +1,20 @@
 import React, { Component } from 'react'
-import { Table, Segment, Button, Icon } from 'semantic-ui-react';
+import { Table, Segment, Button, Icon, Secction } from 'semantic-ui-react';
 import loadable from '@loadable/component';
 import Helmet from 'react-helmet';
 
-class StoryScoreComponent extends Component {
-    render() {
-        return (
+class SupportComponent extends Component {
+    render(){
+        return(
             <>
                 <secction inverted style={{ borderStyle: 'solid', borderWidth: '1px', borderColor: '#232323' }}>
                     <secction id='stories' className='headerStories' inverted>
                         <Segment id='stories' className='titleStories' inverted>
-                            STORIES BY SCORE
+                            MOST POPULAR SUPPORTED PROC
                         </Segment>
                         <Segment id='stories' className='buttons' inverted>
                             <Button id='stories' className='bLeft' icon inverted><Icon name='angle up' /></Button>
-                            <Button id='stories' className='bRigth' icon inverted style={{}}><Icon name='angle down' /></Button>
+                            <Button id='stories' className='bRigth' icon inverted ><Icon name='angle down' /></Button>
                         </Segment>
                     </secction>
                     <Table id='stories' className='tableStories' inverted>
@@ -43,4 +43,4 @@ class StoryScoreComponent extends Component {
     }
 }
 
-export default StoryScoreComponent;
+export default SupportComponent;

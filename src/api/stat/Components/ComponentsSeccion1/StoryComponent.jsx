@@ -8,8 +8,8 @@ class StoryComponent extends Component {
         return (
             <>
 
-                <secction id='stories' className='headerStories' inverted style={{ display: 'flex', flex: 1, justifyContent: 'space-between', alignItems: 'flex-start', width: '40%' }}>
-                    <Segment id='stories' className='TitleStories' inverted style={{ display: 'flex', color: '#6C6C6C', flex: 1, marginBottom: '0px' }}>
+                <secction id='stories' className='headerStories' inverted style={{ display: 'flex', flex: 1, justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <Segment id='stories' className='titleStories' inverted >
                         ALL STORIES COMMENTS
                     </Segment>
                     <Segment id='stories' className='buttons' inverted style={{ padding: '1rem', display: 'flex', flex: '0 1 0', marginTop: '0px' }}>
@@ -18,7 +18,7 @@ class StoryComponent extends Component {
                     </Segment>
                 </secction>
 
-                <Table striped inverted style={{ width: '40%', borderStyle: 'solid', borderWidth: '2px', borderColor: '#232323' }}>
+                <Table striped inverted style={{ borderStyle: 'solid', borderWidth: '2px', borderColor: '#232323' }}>
                     <Table.Body>
                         <Table.Row>
                             <Table.Cell>2/10</Table.Cell>

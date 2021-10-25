@@ -5,6 +5,7 @@ import MostStoriesComponent from './ComponentsSeccion1/MostStoriesComponent';
 import StoryScoreComponent from './ComponentsSeccion1/StoryScoreComponent';
 import DonwloadComponent from './ComponentsSeccion1/DonwloadComponent';
 import MostUserComponent from './ComponentsSeccion1/MostUserComponent';
+import { Segment } from 'semantic-ui-react';
 
 class ComponentBig1 extends Component {
     render() {
@@ -12,14 +13,14 @@ class ComponentBig1 extends Component {
             <>
                 <section>
                     <StoryComponent />
-                    <div inverted style={{ display: 'flex', flex: 1, justifyContent: 'space-between', alignItems: 'flex-start', width: '40%' }}>
-                        <MostStoriesComponent inverted style={{ display: 'flex', flex: 1 }}></MostStoriesComponent>
-                        <StoryScoreComponent inverted style={{ display: 'flex', flex: 1, justifyContent: 'flex-end' }}></StoryScoreComponent>
-                    </div>
-                    <div inverted style={{ display: 'flex', flex: 1, justifyContent: 'space-between', alignItems: 'flex-start', width: '40%' }}>
-                        <DonwloadComponent inverted style={{ display: 'flex', flex: 1 }}></DonwloadComponent>
-                        <MostUserComponent inverted style={{ display: 'flex', flex: 1, justifyContent: 'flex-end' }}></MostUserComponent>
-                    </div>
+                    <Segment id='stories' className='componentFila' inverted>
+                        <MostStoriesComponent id='stories' className='Columna1' inverted></MostStoriesComponent>
+                        <StoryScoreComponent id='stories' className='Columna2' inverted ></StoryScoreComponent>
+                    </Segment>
+                    <Segment id='stories' className='componentFila' inverted>
+                        <DonwloadComponent id='stories' className='Columna1' inverted></DonwloadComponent>
+                        <MostUserComponent id='stories' className='Columna2' inverted ></MostUserComponent>
+                    </Segment>
                 </section>
             </>
         )
