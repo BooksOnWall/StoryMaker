@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Segment } from 'semantic-ui-react';
 import DeviceComponent from './ComponentsSeccion2/DeviceComponent';
-import grafica from './ComponentsSeccion2/grafica';
+import Grafica from './ComponentsSeccion2/Grafica';
 import OperativeComponent from './ComponentsSeccion2/OperativeComponent';
 import RamComponent from './ComponentsSeccion2/RamComponent';
 import ScreenComponent from './ComponentsSeccion2/ScreenComponent';
@@ -23,7 +23,7 @@ class ComponentBig2 extends Component {
                         <ScreenComponent id='stories' className='listStories' />
                     </Segment>
                     <Segment>
-                        <graficaComponent />
+                        <grafica />
                     </Segment>
 
                 </secction>
