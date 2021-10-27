@@ -6,6 +6,7 @@ import OperativeComponent from './ComponentsSeccion2/OperativeComponent';
 import RamComponent from './ComponentsSeccion2/RamComponent';
 import ScreenComponent from './ComponentsSeccion2/ScreenComponent';
 import SupportComponent from './ComponentsSeccion2/SupportComponent';
+
 class ComponentBig2 extends Component {
     render() {
         return (
