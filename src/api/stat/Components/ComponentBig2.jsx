@@ -12,18 +12,18 @@ class ComponentBig2 extends Component {
         return (
             <>
                 <secction>
+                    <Segment id='stories' className='grafico'>
+                        <Grafica id='stories' className='grafico' />
+                    </Segment>
                     <Segment id='stories' className='padreStories' inverted>
                         <DeviceComponent id='stories' className='listStories' />
                         <OperativeComponent id='stories' className='listStories' />
                         <SupportComponent id='stories' className='listStories' />
-                        
+
                     </Segment>
                     <Segment id='stories' className='padreStories' inverted>
-                        <RamComponent id='stories' className='listStories' />
-                        <ScreenComponent id='stories' className='listStories' />
-                    </Segment>
-                    <Segment>
-                        <grafica />
+                        <RamComponent id='stories' className='listStories'/>
+                        <ScreenComponent id='stories' className='listStorie'/>
                     </Segment>
 
                 </secction>

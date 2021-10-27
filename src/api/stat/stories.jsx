@@ -7,8 +7,9 @@ const Stories = () => {
   return (
     <>
       <Segment id='stories' className='componentPadre' inverted >
-        <ComponentBig1 id='stories' className='component1' />
         <ComponentBig2 id='stories' className='compoenent2' />
+        <ComponentBig1 id='stories' className='component1' />
+        
       </Segment>
 
     </>

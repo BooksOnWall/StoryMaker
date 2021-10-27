@@ -7,7 +7,7 @@ class ScreenComponent extends Component {
     render(){
         return(
             <>
-            <secction inverted style={{ borderStyle: 'solid', borderWidth: '1px', borderColor: '#232323' }}>
+            <secction inverted style={{ borderStyle: 'solid', borderWidth: '1px', borderColor: '#232323', width: '100%' }}>
                 <secction id='stories' className='headerStories' inverted>
                     <Segment id='stories' className='titleStories' inverted>
                         BY DEVICE BRAND AND MODEL

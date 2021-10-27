@@ -1496,6 +1496,7 @@ input[type="color"] {
   flex: 1;
 }
 
+
 /*FontSize Stories*/
 
 .ui.segments .segment, .ui.segment{
@@ -1538,4 +1539,10 @@ input[type="color"] {
 }
 #stories.componentColumna2{
   justify-content: flex-end;
+}
+
+/*Grafica*/
+
+#stories .grafica{
+  height: 20000vh !important;
 }
