@@ -17,7 +17,7 @@ class ScreenComponent extends Component {
                         <Button id='stories' className='bRigth' icon inverted ><Icon name='angle down' /></Button>
                     </Segment>
                 </secction>
-                <Table id='stories' className='tableStories' inverted>
+                <Table striped id='stories' className='tableStories' inverted>
                     <Table.Body>
                         <Table.Row>
                             <Table.Cell>1 - 2000</Table.Cell>

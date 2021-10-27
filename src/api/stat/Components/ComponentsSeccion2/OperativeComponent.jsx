@@ -3,21 +3,21 @@ import { Table, Segment, Button, Icon, Secction } from 'semantic-ui-react';
 import loadable from '@loadable/component';
 import Helmet from 'react-helmet';
 
-class SupportComponent extends Component {
+class OperativeComponent extends Component {
     render(){
         return(
             <>
                 <secction inverted style={{ borderStyle: 'solid', borderWidth: '1px', borderColor: '#232323' }}>
                     <secction id='stories' className='headerStories' inverted>
                         <Segment id='stories' className='titleStories' inverted>
-                            MOST POPULAR SUPPORTED PROC
+                            BY DEVICE BRAND AND MODEL
                         </Segment>
                         <Segment id='stories' className='buttons' inverted>
                             <Button id='stories' className='bLeft' icon inverted><Icon name='angle up' /></Button>
                             <Button id='stories' className='bRigth' icon inverted ><Icon name='angle down' /></Button>
                         </Segment>
                     </secction>
-                    <Table id='stories' className='tableStories' inverted>
+                    <Table striped id='stories' className='tableStories' inverted>
                         <Table.Body>
                             <Table.Row>
                                 <Table.Cell>1 - 2000</Table.Cell>
@@ -43,4 +43,4 @@ class SupportComponent extends Component {
     }
 }
 
-export default SupportComponent;
+export default OperativeComponent;

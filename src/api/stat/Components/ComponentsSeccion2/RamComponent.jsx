@@ -1,18 +1,20 @@
 import React, { Component } from 'react'
-import { Table, Segment, Button, Icon } from 'semantic-ui-react';
+import { Table, Segment, Button, Icon, Secction } from 'semantic-ui-react';
+import loadable from '@loadable/component';
+import Helmet from 'react-helmet';
 
-class MostUserComponent extends Component {
+class RamComponent extends Component {
     render() {
         return (
             <>
                 <secction inverted style={{ borderStyle: 'solid', borderWidth: '1px', borderColor: '#232323' }}>
                     <secction id='stories' className='headerStories' inverted>
                         <Segment id='stories' className='titleStories' inverted>
-                           MOST USER BY CITY
+                            BY RAM
                         </Segment>
                         <Segment id='stories' className='buttons' inverted>
                             <Button id='stories' className='bLeft' icon inverted><Icon name='angle up' /></Button>
-                            <Button id='stories' className='bRigth' icon inverted><Icon name='angle down' /></Button>
+                            <Button id='stories' className='bRigth' icon inverted ><Icon name='angle down' /></Button>
                         </Segment>
                     </secction>
                     <Table striped id='stories' className='tableStories' inverted>
@@ -31,9 +33,9 @@ class MostUserComponent extends Component {
                             </Table.Row>
                         </Table.Body>
                     </Table>
-                    <Segment id='stories' className='botones' inverted>
-                        <Button id='stories' className='bRigth bmargen' inverted>LIST</Button>
-                        <Button id='stories' className='bLeft bmargen' inverted>CHART</Button>
+                    <Segment id='stories' className='botones' inverted >
+                        <Button id='stories' className='bRigth' inverted>LIST</Button>
+                        <Button id='stories' className='bLeft' inverted>CHART</Button>
                     </Segment>
                 </secction>
             </>
@@ -41,4 +43,4 @@ class MostUserComponent extends Component {
     }
 }
 
-export default MostUserComponent;
+export default RamComponent;

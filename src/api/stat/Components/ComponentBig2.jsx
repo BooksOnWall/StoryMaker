@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Segment } from 'semantic-ui-react';
-import DeviceComponent from './ComonentsSeccion2/DeviceComponent';
-import OperativeComponent from './ComonentsSeccion2/OperativeComponent';
-import RamComponent from './ComonentsSeccion2/RamComponent';
-import ScreenComponent from './ComonentsSeccion2/ScreenComponent';
-import SupportComponent from './ComonentsSeccion2/SupportComponent';
-
+import DeviceComponent from './ComponentsSeccion2/DeviceComponent';
+import grafica from './ComponentsSeccion2/grafica';
+import OperativeComponent from './ComponentsSeccion2/OperativeComponent';
+import RamComponent from './ComponentsSeccion2/RamComponent';
+import ScreenComponent from './ComponentsSeccion2/ScreenComponent';
+import SupportComponent from './ComponentsSeccion2/SupportComponent';
 class ComponentBig2 extends Component {
     render() {
         return (
@@ -20,6 +20,9 @@ class ComponentBig2 extends Component {
                     <Segment id='stories' className='padreStories' inverted>
                         <RamComponent id='stories' className='listStories' />
                         <ScreenComponent id='stories' className='listStories' />
+                    </Segment>
+                    <Segment>
+                        <graficaComponent />
                     </Segment>
 
                 </secction>
