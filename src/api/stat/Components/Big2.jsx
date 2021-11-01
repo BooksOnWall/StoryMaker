@@ -1,12 +1,14 @@
 import React from 'react';
 import { Segment, Container } from 'semantic-ui-react';
 import loadable from '@loadable/component';
+import grafSupport from './Seccion2/grafSupport';
 const Device = loadable(() => import('./Seccion2/Device'));
 const Grafica = loadable(() => import('./Seccion2/Grafica'));
 const Operative = loadable(() => import('./Seccion2/Operative'));
 const Ram = loadable(() => import('./Seccion2/Ram'));
 const Screen = loadable(() => import('./Seccion2/Screen'));
 const Support = loadable(() => import('./Seccion2/Support'));
+const grafDevice = loadable(() => import('./Seccion2/GrafDevice'));
 
 
 const Big2 = ({ id }) => {
@@ -39,6 +41,9 @@ const Big2 = ({ id }) => {
                 </Segment>
 
             </secction>
+            <Segment>
+                <grafDevice>
+            </Segment>
 
         </>
     )
