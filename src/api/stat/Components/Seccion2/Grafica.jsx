@@ -5,7 +5,7 @@ import { Segment } from 'semantic-ui-react';
 
 const Grafica = () => {
     return (
-        <Segment inverted style={{height: '50vh'}}>
+        <Segment inverted style={{height: '50vh', width: '100%'}}>
             <ResponsiveContainer width='100%' height='100%'>
             <Line
                 data={{
@@ -20,8 +20,8 @@ const Grafica = () => {
                         },
                     ],
                 }}
-                height={'350 !important'}
-                width={'150 !important'}
+                height={'150 !important'}
+                width={'125 !important'}
                 options={{
                     maintainAspectRatio: false,
                     scales: {
