@@ -1,52 +1,61 @@
 import React, { Component } from 'react';
-import { Bar, Line, Pie } from 'react-chartjs-2';
+import { Bar, Line, Pie, Doughnut } from 'react-chartjs-2';
+
 import { ResponsiveContainer } from 'recharts/lib/component/ResponsiveContainer';
 import { Segment } from 'semantic-ui-react';
 
-const grafDevice = () => {
-    <Segment inverted style={{ height: '50vh', width: '100%' }}>
-        <ResponsiveContainer width='100%' height='100%'>
-            <Line
-                data={{
-                    labels: ['1', '2', '3', '4'],
-                    datasets: [
-                        {
-                            label: 'dona',
-                            data: [100, 120, 400, 200, 130, 300, 400],
-                            borderColor: [
-                                '#f16623'
-                            ],
-                        },
-                    ],
-                }}
-                height={'150 !important'}
-                width={'125 !important'}
-                options={{
-                    maintainAspectRatio: false,
-                    scales: {
-                        yAxes: [
+const GrafDevice = ({title}) => {
+    return (
+        <Segment inverted style={{ height: '50vh', width: '100vw' }}>
+            <ResponsiveContainer width='100%' height='100%'>
+                <Doughnut
+                    data={{
+                        labels: ['1', '2', '3', '4'],
+                        datasets: [
                             {
-                                ticks: {
-                                    Responsive: true,
-                                    beginAtZero: true,
-                                },
+                                label: 'dona',
+                                data: [100, 120, 400, 200, 130, 300, 400],
+                                backgroundColor: [
+                                    '#E02401',
+                                    '#FF9300',
+                                    '#D44000',
+                                    '#F0A500'
+                                  ],
+                                borderColor: [
+                                    'transparent'
+                                ],
                             },
                         ],
-                    },
-                    layout: {
-                        padding: 0,
-                    },
-                    legend: {
-                        labels: {
-                            fontSize: 25,
+                    }}
+                    height={'150 !important'}
+                    width={'125 !important'}
+                    options={{
+                        maintainAspectRatio: false,
+                        scales: {
+                            yAxes: [
+                                {
+                                    ticks: {
+                                        Responsive: true,
+                                        beginAtZero: true,
+                                    },
+                                },
+                            ],
                         },
-                    },
-                }
-                }
-            />
-        </ResponsiveContainer>
+                        layout: {
+                            padding: 0,
+                        },
+                        legend: {
+                            labels: {
+                                fontSize: 25,
+                            },
+                        },
+                    }
+                    }
+                />
+            </ResponsiveContainer>
 
-    </Segment>
+        </Segment>
+    )
 }
 
-export default grafDevice;
+export default GrafDevice;

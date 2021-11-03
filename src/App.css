@@ -1426,9 +1426,9 @@ input[type="color"] {
 
 /*PAGINA STORIES*/
 /*HEADER STORIES*/
-#stories.headerStories{
-  display: flex; 
-  flex: 1; 
+#stories.headerStories {
+  display: flex;
+  flex: 1;
   justify-content: space-between;
   align-items: flex-start;
   padding-top: 5px;
@@ -1437,30 +1437,32 @@ input[type="color"] {
 
 #stories.titleStories {
   display: flex;
-  color: #6C6C6C !important; 
-  flex: 1 1 50%; 
-  padding: 10px 0px 10px 10px !important; 
+  color: #6c6c6c !important;
+  flex: 1 1 50%;
+  padding: 10px 0px 10px 10px !important;
   margin-bottom: 0px;
   font-weight: bold;
 }
 /*TABLE STORIES*/
-#stories.tableStories{
+#stories.tableStories {
   border-style: solid;
   border-width: 1px;
-  border-color: #232323
+  border-color: #232323;
 }
 /*BOTONES STORIES*/
-.ui.buttons .button, .ui.buttons .or, .ui.button{
+.ui.buttons .button,
+.ui.buttons .or,
+.ui.button {
   font-size: 12px !important;
 }
-.botones{
+.botones {
   margin: 10px 10px 10px 10px !important;
 }
 ]
 #stories .ui.buttons {
   width: 20px;
 }
-#stories .buttons{
+#stories .buttons {
   display: flex;
   flex: 0 1 0;
   justify-content: flex-end;
@@ -1491,25 +1493,24 @@ input[type="color"] {
   flex: 1;
   align-items: flex-start;
 }
-#stories.listStories{
+#stories.listStories {
   display: flex;
   flex: 1;
 }
 
-
 /*FontSize Stories*/
 
-.ui.segments .segment, .ui.segment{
+.ui.segments .segment,
+.ui.segment {
   font-size: 12px !important;
 }
 /*SEGMENT*/
-.segment{
+.segment {
   padding: 0px !important;
 }
-.ui.segment{
+.ui.segment {
   padding: 0px !important;
 }
-
 
 /*Flex Components*/
 
@@ -1518,7 +1519,8 @@ input[type="color"] {
   flex: 1;
   align-items: flex-start;
 }
-#stories.component1, .component2{
+#stories.component1,
+.component2 {
   display: flex;
   flex: 1;
 }
@@ -1528,27 +1530,26 @@ input[type="color"] {
 #stories.componentFila {
   display: flex;
   flex: 1;
-  justify-content: space-between; 
+  justify-content: space-between;
   align-items: flex-start;
   margin: 0px;
 }
 
-#stories.componentColumna1, #stories.componentColumna2{
+#stories.componentColumna1,
+#stories.componentColumna2 {
   display: flex;
   flex: 1;
 }
-#stories.componentColumna2{
+#stories.componentColumna2 {
   justify-content: flex-end;
 }
 
 /*Grafica*/
 
-#stories .grafica{
+#stories .grafica {
   height: 20000vh !important;
 }
 /*HEADER GRAFICA*/
-
-
 
 #stories .containerHeader {
   display: flex;
@@ -1563,7 +1564,7 @@ input[type="color"] {
   color: #666 !important;
   font-weight: bold;
 }
-.total{
+.total {
   display: flex;
   flex: 1;
   justify-content: flex-end;
@@ -1571,4 +1572,42 @@ input[type="color"] {
   margin: 0 !important;
 }
 
+.headerInstall {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  width: 25%;
+}
+.install {
+  display: flex;
+  flex: 1;
+  margin: 0px !important;
+  padding: 0px !important;
+}
+.completed {
+  display: flex;
+  flex: 1;
+  margin: 0px !important;
+  padding: 0px !important;
+}
+.completed,
+.install {
+  color: #666 !important;
+}
 
+.circulo,
+.circuloDos {
+  width: 12px;
+  height: 12px;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  margin-left: 5px;
+  margin-top: 5px;
+}
+.circulo{
+  background: #f16623;
+}
+.circuloDos{
+  background: #ff5300;
+}
