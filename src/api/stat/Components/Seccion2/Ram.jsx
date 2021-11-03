@@ -5,9 +5,7 @@ const GrafDevice = loadable(() => import('./GrafDevice'));
 const Layout = loadable(() => import('./Layout'));
 
 const Header = () => {
-    return (
-        <Layout />
-    )
+    <Layout />
 
 }
 const Ram = ({ id }) => {
