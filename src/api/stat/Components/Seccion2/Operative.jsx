@@ -28,7 +28,7 @@ const Operative = ({ id }) => {
     const handleDisplay = (display) => setDisplay(display);
     return (
         <>
-            <layout id={id} title='BY OPERATIVE SYSTEM' handleDisplay={handleDisplay}>
+            <Layout id={id} title='BY OPERATIVE SYSTEM' handleDisplay={handleDisplay}>
                 {display === 'list' &&
                     <Table striped id={id} className='tableStories' inverted>
                         <Table.Body>
@@ -51,7 +51,7 @@ const Operative = ({ id }) => {
                     <GrafDevice />
                 }
 
-            </layout>
+            </Layout>
 
 
         </>
