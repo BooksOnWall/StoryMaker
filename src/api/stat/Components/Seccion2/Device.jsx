@@ -3,7 +3,7 @@ import { Table, Segment, Button, Icon, Secction } from 'semantic-ui-react';
 import loadable from '@loadable/component';
 const GrafDevice = loadable(() => import('./GrafDevice'));
 
-const layout = ({ title, children, handleDisplay, id}) => {
+const Layout = ({ title, children, handleDisplay, id}) => {
     return (
         <secction inverted style={{ borderStyle: 'solid', borderWidth: '1px', borderColor: '#232323' }}>
             <secction id={id} className='headerStories' inverted>
@@ -59,4 +59,4 @@ const Device = ({ id }) => {
 
 };
 
-export default Device;
+export default Device && Layout;
