@@ -5,8 +5,10 @@ const GrafDevice = loadable(() => import('./GrafDevice'));
 const Layout = loadable(() => import('./Layout'));
 
 const Header = () => {
-    <Layout />
+    return (
+        <Layout />
 
+    )
 }
 const Ram = ({ id }) => {
     const [display, setDisplay] = useState('list');
