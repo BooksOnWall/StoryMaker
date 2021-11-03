@@ -4,16 +4,12 @@ import loadable from '@loadable/component';
 const GrafDevice = loadable(() => import('./GrafDevice'));
 const Layout = loadable(() => import('./Layout'));
 
-const Header = () => {
-    <Layout />
-
-}
 const Screen = ({ id }) => {
     const [display, setDisplay] = useState('list');
     const handleDisplay = (display) => setDisplay(display);
     return (
         <>
-            <Tabla id={id} title='BY OPERATIVE SYSTEM' handleDisplay={handleDisplay}>
+            <Table id={id} title='BY OPERATIVE SYSTEM' handleDisplay={handleDisplay}>
                 {display === 'list' &&
                     <Table striped id={id} className='tableStories' inverted>
                         <Table.Body>
@@ -36,7 +32,7 @@ const Screen = ({ id }) => {
                     <GrafDevice />
                 }
 
-            </Tabla>
+            </Table>
 
 
         </>
@@ -44,4 +40,4 @@ const Screen = ({ id }) => {
 
 };
 
-export default Screen && Header;
+export default Screen;

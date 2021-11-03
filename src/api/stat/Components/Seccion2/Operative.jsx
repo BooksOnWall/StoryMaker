@@ -3,10 +3,7 @@ import { Table, Segment, Button, Icon, Secction } from 'semantic-ui-react';
 import loadable from '@loadable/component';
 const GrafDevice = loadable(() => import('./GrafDevice'));
 const Layout = loadable(() => import('./Layout'));
-const Header = () => {
-    <Layout />
 
-}
 const Operative = ({ id }) => {
     const [display, setDisplay] = useState('list');
     const handleDisplay = (display) => setDisplay(display);
@@ -42,4 +39,4 @@ const Operative = ({ id }) => {
     )
 
 };
-export default Operative && Header;
+export default Operative;

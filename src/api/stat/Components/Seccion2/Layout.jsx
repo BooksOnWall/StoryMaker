@@ -2,6 +2,7 @@ import React from 'react'
 import { Segment, Button, Icon } from 'semantic-ui-react';
 
 const Layout = ({id, title, children, handleDisplay }) => {
+  return (
     <secction inverted style={{ borderStyle: 'solid', borderWidth: '1px', borderColor: '#232323' }}>
         <secction id={id} className='headerStories' inverted>
             <Segment id={id} className='titleStories' inverted>
@@ -18,6 +19,7 @@ const Layout = ({id, title, children, handleDisplay }) => {
             <Button id={id} className='bLeft' onClick={() => handleDisplay('chart')} inverted>CHART</Button>
         </Segment>
     </secction>
+  )
 }
 
 export default Layout
