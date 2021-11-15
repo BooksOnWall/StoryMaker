@@ -3,19 +3,13 @@ import { Table, Segment, Button, Icon, Secction } from 'semantic-ui-react';
 import loadable from '@loadable/component';
 const GrafDevice = loadable(() => import('./GrafDevice'));
 const Layout = loadable(() => import('./Layout'));
-const Header = () => {
-    return (
-        <Layout />
 
-    )
-
-}
 const Operative = ({ id }) => {
     const [display, setDisplay] = useState('list');
     const handleDisplay = (display) => setDisplay(display);
     return (
         <>
-            <Segment id={id} title='BY OPERATIVE SYSTEM' handleDisplay={handleDisplay}>
+            <Layout id={id} title='BY OPERATIVE SYSTEM' handleDisplay={handleDisplay}>
                 {display === 'list' &&
                     <Table striped id={id} className='tableStories' inverted>
                         <Table.Body>
@@ -38,11 +32,11 @@ const Operative = ({ id }) => {
                     <GrafDevice />
                 }
 
-            </Segment>
+            </Layout>
 
 
         </>
     )
 
 };
-export default Operative && Header;
+export default Operative;
