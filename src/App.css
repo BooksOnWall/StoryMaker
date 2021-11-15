@@ -1611,3 +1611,44 @@ input[type="color"] {
 .circuloDos{
   background: #ff5300;
 }
+/*PARAMETROS DE FLEX*/
+.secctionGeneral{
+  display: flex;
+  flex: 1;
+  height: 90vh;
+  overflow-y: scroll;
+}
+.secctionGrafics, .secctionTables{
+  flex: 1;
+  flex-grow: 10;
+}
+.secctionBooks{
+  background-color: black;
+  flex-grow: 1;
+}
+/*PARAMETROS DE FLEX*/
+/*ESTILOS DE SECCTIONBOOKS*/
+.headerBooks{
+  background: transparent !important;
+  margin: 10px !important;
+
+}
+.textHeaderBooks{
+  font-family: sans-serif !important;
+}
+.TableBooks{
+  background: transparent !important;
+}
+.buttonBooks{
+  background: white !important;
+  height: 20px !important;
+  width: 20px !important;
+  text-align: center;
+}
+
+.buttonBooks:hover{
+  border-style: solid !important;
+  border-width: 4px !important;
+  border-color: orange !important;
+}
+/*ESTILOS DE SECCTIONBOOKS*/
