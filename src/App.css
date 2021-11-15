@@ -1652,3 +1652,7 @@ input[type="color"] {
   border-color: orange !important;
 }
 /*ESTILOS DE SECCTIONBOOKS*/
+
+.tablaGeneral{
+  display: flex;
+}

@@ -1,8 +1,13 @@
 import React, { } from 'react';
-import { Segment, Header, Table } from 'semantic-ui-react';
+import { Segment, Header, Table, Form } from 'semantic-ui-react';
 import loadable from '@loadable/component';
 const GraficaGeneral = loadable(() => import('./Components/GraficaGeneral'));
-
+const Barras = loadable(() => import('./Components/Seccion2/Barras'));
+const Story = loadable(() => import('./Components/Seccion1/Story'));
+const MostUser = loadable(() => import('./Components/Seccion1/MostUser'));
+const LastScore = loadable(() => import('./Components/LastScore'));
+const TimeByStage = loadable(() => import('./Components/TimeByStage'));
+const MostUserDevice = loadable(() => import('./Components/MostUserDevice'));
 const General = () => {
   return (
     <secction className='secctionGeneral'>
@@ -15,62 +20,56 @@ const General = () => {
             <Table.Body>
               <Table.Row>
                 <Table.Cell>
-                  <Segment inverted className='buttonBooks' />
-                </Table.Cell>
-                <Table.Cell>
-                  <Segment inverted className='headerBooks'>
-                    <Header className='textHeaderBooks' as='h5'>Fifth Header</Header>
-                  </Segment>
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell>
-                  <Segment inverted className='buttonBooks' />
-                </Table.Cell>
-                <Table.Cell>
-                  <Segment inverted className='headerBooks'>
-                    <Header className='textHeaderBooks' as='h5'>Fifth Header</Header>
-                  </Segment>
+                  <Form>
+                    <Form.Radio
+                      label='Silencio Barbaro'
+                    />
+                  </Form>
                 </Table.Cell>
               </Table.Row>
               <Table.Row>
                 <Table.Cell>
-                  <Segment inverted className='buttonBooks' />
-                </Table.Cell>
-                <Table.Cell>
-                  <Segment inverted className='headerBooks'>
-                    <Header className='textHeaderBooks' as='h5'>Fifth Header</Header>
-                  </Segment>
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell>
-                  <Segment inverted className='buttonBooks' />
-                </Table.Cell>
-                <Table.Cell>
-                  <Segment inverted className='headerBooks'>
-                    <Header className='textHeaderBooks' as='h5'>Fifth Header</Header>
-                  </Segment>
+                  <Form>
+                    <Form.Radio
+                      label='Silencio Barbaro'
+                    />
+                  </Form>
                 </Table.Cell>
               </Table.Row>
               <Table.Row>
                 <Table.Cell>
-                  <Segment inverted className='buttonBooks' />
-                </Table.Cell>
-                <Table.Cell>
-                  <Segment inverted className='headerBooks'>
-                    <Header className='textHeaderBooks' as='h5'>Fifth Header</Header>
-                  </Segment>
+                  <Form>
+                    <Form.Radio
+                      label='Silencio Barbaro'
+                    />
+                  </Form>
                 </Table.Cell>
               </Table.Row>
               <Table.Row>
                 <Table.Cell>
-                  <Segment inverted className='buttonBooks' />
+                  <Form>
+                    <Form.Radio
+                      label='Silencio Barbaro'
+                    />
+                  </Form>
                 </Table.Cell>
+              </Table.Row>
+              <Table.Row>
                 <Table.Cell>
-                  <Segment inverted className='headerBooks'>
-                    <Header className='textHeaderBooks' as='h5'>Fifth Header</Header>
-                  </Segment>
+                  <Form>
+                    <Form.Radio
+                      label='Silencio Barbaro'
+                    />
+                  </Form>
+                </Table.Cell>
+              </Table.Row>
+              <Table.Row>
+                <Table.Cell>
+                  <Form>
+                    <Form.Radio
+                      label='Silencio Barbaro'
+                    />
+                  </Form>
                 </Table.Cell>
               </Table.Row>
             </Table.Body>
@@ -80,10 +79,22 @@ const General = () => {
       <secction className='secctionGrafics'>
         <Segment inverted>
           <GraficaGeneral />
+          <GraficaGeneral />
+          <Barras />
         </Segment>
       </secction>
       <secction className='secctionTables'>
-        <h1>Seccion 3</h1>
+        <Segment inverted>
+          <Story />
+        </Segment>
+        <Segment inverted className='tablaGeneral'>
+          <LastScore className='tablas' />
+          <MostUser className='tablas' />
+        </Segment>
+        <Segment inverted className='tablaGeneral'>
+          <TimeByStage />
+          <MostUserDevice />
+        </Segment>
       </secction>
     </secction>
   )

@@ -6,7 +6,7 @@ import { Segment } from 'semantic-ui-react';
 
 const GrafDevice = ({title}) => {
     return (
-        <Segment inverted style={{ height: '50vh', width: '100vw' }}>
+        <Segment inverted>
             <ResponsiveContainer width='100%' height='100%'>
                 <Doughnut
                     data={{
@@ -27,8 +27,6 @@ const GrafDevice = ({title}) => {
                             },
                         ],
                     }}
-                    height={'150 !important'}
-                    width={'125 !important'}
                     options={{
                         maintainAspectRatio: false,
                         scales: {
@@ -45,6 +43,7 @@ const GrafDevice = ({title}) => {
                             padding: 0,
                         },
                         legend: {
+                            display: false,
                             labels: {
                                 fontSize: 25,
                             },

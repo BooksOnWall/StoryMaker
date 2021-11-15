@@ -15,14 +15,13 @@ const Barras = () => {
                     <Segment inverted className='completed'>Completed <a className='circuloDos'></a></Segment>
                 </Segment>
             </secction>
-            <Segment inverted style={{ height: '35vh', width: '50vw' }}>
+            <Segment inverted>
                 <ResponsiveContainer width='100%' height='100%'>
                     <Bar
                         data={{
                             labels: ['Mon', 'Tue', 'Wen', 'Thu', 'Fry', 'Sat', 'Sun'],
                             datasets: [
                                 {
-                                    label: 'Sougochan',
                                     data: [100, 120, 400, 200, 130, 300, 400],
                                     backgroundColor: [
                                         '#f16623',
@@ -32,8 +31,6 @@ const Barras = () => {
                                 },
                             ],
                         }}
-                        height={'150 !important'}
-                        width={'125 !important'}
                         options={{
                             maintainAspectRatio: false,
                             scales: {
@@ -50,6 +47,11 @@ const Barras = () => {
                                 padding: 0,
                             },
                             legend: {
+                                options:{
+                                    legend: {
+                                        display: false
+                                    }
+                                },
                                 labels: {
                                     fontSize: 25,
                                 },

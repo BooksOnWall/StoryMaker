@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
 import { Table, Segment, Button, Icon, Secction } from 'semantic-ui-react';
 import loadable from '@loadable/component';
-const GrafDevice = loadable(() => import('../Seccion2/GrafDevice'));
-const Layout = loadable(() => import('../Seccion2/Layout'));
+const GrafDevice = loadable(() => import('./Seccion2/GrafDevice'));
+const Layout = loadable(() => import('./Seccion2/Layout'));
 
 
-const MostUser = () => {
+const LastScore = () => {
     const [display, setDisplay] = useState('list');
     const handleDisplay = (display) => setDisplay(display);
     return (
         <>
-            <Layout id='stories' title='MOST USER BY CITY' handleDisplay={handleDisplay}>
+            <Layout id='stories' title='LAST SCORE' handleDisplay={handleDisplay}>
                 {display === 'list' &&
                     <Table striped id='stories' className='tableStories' inverted>
                         <Table.Body>
@@ -41,4 +41,4 @@ const MostUser = () => {
 
 };
 
-export default MostUser;
+export default LastScore;  

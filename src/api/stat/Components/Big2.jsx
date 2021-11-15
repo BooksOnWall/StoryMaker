@@ -7,7 +7,6 @@ const Operative = loadable(() => import('./Seccion2/Operative'));
 const Ram = loadable(() => import('./Seccion2/Ram'));
 const Screen = loadable(() => import('./Seccion2/Screen'));
 const Support = loadable(() => import('./Seccion2/Support'));
-const Barras = loadable(() => import('./Seccion2/Barras'));
 
 const Big2 = ({ id }) => {
     return (
@@ -37,10 +36,6 @@ const Big2 = ({ id }) => {
                     <Ram id={id} className='listStories' />
                     <Screen id={id} className='listStorie' />
                 </Segment>
-                <Segment inverted>
-                    <Barras />
-                </Segment>
-
             </secction>
         </>
     )
