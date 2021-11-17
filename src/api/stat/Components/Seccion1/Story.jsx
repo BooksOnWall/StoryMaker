@@ -14,25 +14,47 @@ const Story = ({ id }) => {
                     <Button id={id} className='bRigth' icon inverted><Icon name='angle down' /></Button>
                 </Segment>
             </secction>
-
-            <Table striped inverted style={{ borderStyle: 'solid', borderWidth: '2px', borderColor: '#232323' }}>
-                <Table.Body>
-                    <Table.Row>
-                        <Table.Cell>2/10</Table.Cell>
-                        <Table.Cell>
-                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Recusandae facere eligendi autem necessitatibus placeat beatae ipsam voluptatum vero provident similique.
-                            <p inverted style={{ color: '#666', marginTop: '1rem' }}>Story Name</p>
-                        </Table.Cell>
-                    </Table.Row>
-                    <Table.Row>
-                        <Table.Cell>2/10</Table.Cell>
-                        <Table.Cell>
-                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Recusandae facere eligendi autem necessitatibus placeat beatae ipsam voluptatum vero provident similique.
-                            <p inverted style={{ color: '#666', marginTop: '1rem' }}>Story Name</p>
-                        </Table.Cell>
-                    </Table.Row>
-                </Table.Body>
-            </Table>
+            <Segment inverted className='alturaTableStory'>
+                <Table striped inverted style={{ borderStyle: 'solid', borderWidth: '2px', borderColor: '#232323' }}>
+                    <Table.Body>
+                        <Table.Row>
+                            <Table.Cell>2/10</Table.Cell>
+                            <Table.Cell>
+                                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Recusandae facere eligendi autem necessitatibus placeat beatae ipsam voluptatum vero provident similique.
+                                <p inverted style={{ color: '#666', marginTop: '1rem' }}>Story Name</p>
+                            </Table.Cell>
+                        </Table.Row>
+                        <Table.Row>
+                            <Table.Cell>2/10</Table.Cell>
+                            <Table.Cell>
+                                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Recusandae facere eligendi autem necessitatibus placeat beatae ipsam voluptatum vero provident similique.
+                                <p inverted style={{ color: '#666', marginTop: '1rem' }}>Story Name</p>
+                            </Table.Cell>
+                        </Table.Row>
+                        <Table.Row>
+                            <Table.Cell>2/10</Table.Cell>
+                            <Table.Cell>
+                                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Recusandae facere eligendi autem necessitatibus placeat beatae ipsam voluptatum vero provident similique.
+                                <p inverted style={{ color: '#666', marginTop: '1rem' }}>Story Name</p>
+                            </Table.Cell>
+                        </Table.Row>
+                        <Table.Row>
+                            <Table.Cell>2/10</Table.Cell>
+                            <Table.Cell>
+                                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Recusandae facere eligendi autem necessitatibus placeat beatae ipsam voluptatum vero provident similique.
+                                <p inverted style={{ color: '#666', marginTop: '1rem' }}>Story Name</p>
+                            </Table.Cell>
+                        </Table.Row>
+                        <Table.Row>
+                            <Table.Cell>2/10</Table.Cell>
+                            <Table.Cell>
+                                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Recusandae facere eligendi autem necessitatibus placeat beatae ipsam voluptatum vero provident similique.
+                                <p inverted style={{ color: '#666', marginTop: '1rem' }}>Story Name</p>
+                            </Table.Cell>
+                        </Table.Row>
+                    </Table.Body>
+                </Table>
+            </Segment>
         </>
     )
 

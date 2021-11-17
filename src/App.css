@@ -1453,6 +1453,10 @@ input[type="color"] {
   height: 30vh;
   overflow-y: scroll;
 }
+.alturaTableStory{
+  height: 18.5vh;
+  overflow-y: scroll;
+}
 /*BOTONES STORIES*/
 .ui.buttons .button,
 .ui.buttons .or,

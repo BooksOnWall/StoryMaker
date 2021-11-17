@@ -5,8 +5,8 @@ import { Segment } from 'semantic-ui-react';
 
 const GraficaGeneral = () => {
     return (
-        <Segment inverted >
-            <ResponsiveContainer width='100%' height='100%'>
+        <Segment inverted style={{height: '30vh'}}>
+            <ResponsiveContainer>
             <Line
                 data={{
                     labels: ['Mon', 'Tue', 'Wen', 'Thu', 'Fry', 'Sat', 'Sun'],
