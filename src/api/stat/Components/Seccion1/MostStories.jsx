@@ -10,24 +10,45 @@ const MostStories = ({ id }) => {
     const handleDisplay = (display) => setDisplay(display);
     return (
         <>
-            <Layout id={id} title='MOST COMPLETED STORIES' handleDisplay={handleDisplay}>
+            <Layout id='stories' title='MOST COMPLETED STORIES' handleDisplay={handleDisplay}>
                 {display === 'list' &&
-                    <Table striped id={id} className='tableStories' inverted>
-                        <Table.Body>
-                            <Table.Row>
-                                <Table.Cell>1 - 2000</Table.Cell>
-                                <Table.Cell>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque, obcaecati?
-                                </Table.Cell>
-                            </Table.Row>
-                            <Table.Row>
-                                <Table.Cell>1 - 2000</Table.Cell>
-                                <Table.Cell>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque, obcaecati?
-                                </Table.Cell>
-                            </Table.Row>
-                        </Table.Body>
-                    </Table>
+                    <Segment inverted className='alturaTable'>
+                        <Table striped id='stories' className='tableStories' inverted>
+                            <Table.Body>
+                                <Table.Row>
+                                    <Table.Cell>1 - 2000</Table.Cell>
+                                    <Table.Cell>
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque, obcaecati?
+                                    </Table.Cell>
+                                </Table.Row>
+                                <Table.Row>
+                                    <Table.Cell>1 - 2000</Table.Cell>
+                                    <Table.Cell>
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque, obcaecati?
+                                    </Table.Cell>
+                                </Table.Row>
+                                <Table.Row>
+                                    <Table.Cell>1 - 2000</Table.Cell>
+                                    <Table.Cell>
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque, obcaecati?
+                                    </Table.Cell>
+                                </Table.Row>
+                                <Table.Row>
+                                    <Table.Cell>1 - 2000</Table.Cell>
+                                    <Table.Cell>
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque, obcaecati?
+                                    </Table.Cell>
+                                </Table.Row>
+                                <Table.Row>
+                                    <Table.Cell>1 - 2000</Table.Cell>
+                                    <Table.Cell>
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque, obcaecati?
+                                    </Table.Cell>
+                                </Table.Row>
+                            </Table.Body>
+                        </Table>
+                    </Segment>
+
                 }
                 {display === 'chart' &&
                     <GrafDevice />

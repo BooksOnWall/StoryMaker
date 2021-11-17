@@ -20,11 +20,7 @@ const GraficaGeneral = () => {
                     ],
                 }}
                 options={{
-                    options: {
-                        legend: {
-                          display: false
-                        }
-                      },
+                        
                     maintainAspectRatio: false,
                     scales: {
                         yAxes: [
@@ -41,6 +37,7 @@ const GraficaGeneral = () => {
                             padding: 0,
                         },
                         legend: {
+                            
                             labels: {
                                 fontSize: 25,
                             },                            

@@ -17,7 +17,7 @@ const General = () => {
         </Segment>
         <Segment inverted className='TableBooks'>
           <Table singleLine inverted className='borderTableBooks'>
-            <Table.Body>
+            <Table.Body style={{color: 'white !important'}}>
               <Table.Row>
                 <Table.Cell>
                   <Form>
@@ -31,7 +31,7 @@ const General = () => {
                 <Table.Cell>
                   <Form>
                     <Form.Radio
-                      label='Silencio Barbaro'
+                      label='Los Cantos Rorados'
                     />
                   </Form>
                 </Table.Cell>
@@ -40,7 +40,7 @@ const General = () => {
                 <Table.Cell>
                   <Form>
                     <Form.Radio
-                      label='Silencio Barbaro'
+                      label='USB Test'
                     />
                   </Form>
                 </Table.Cell>
@@ -49,7 +49,7 @@ const General = () => {
                 <Table.Cell>
                   <Form>
                     <Form.Radio
-                      label='Silencio Barbaro'
+                      label='Salto Prueba'
                     />
                   </Form>
                 </Table.Cell>
@@ -58,16 +58,16 @@ const General = () => {
                 <Table.Cell>
                   <Form>
                     <Form.Radio
-                      label='Silencio Barbaro'
+                      label='NMEC'
                     />
                   </Form>
                 </Table.Cell>
               </Table.Row>
               <Table.Row>
-                <Table.Cell>
-                  <Form>
-                    <Form.Radio
-                      label='Silencio Barbaro'
+                <Table.Cell >
+                  <Form >
+                    <Form.Radio 
+                      label='Doris Caravan'
                     />
                   </Form>
                 </Table.Cell>

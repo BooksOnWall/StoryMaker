@@ -9,11 +9,25 @@ const Donwload = loadable(() => import('./Seccion1/Donwload'));
 const MostUser = loadable(() => import('./Seccion1/MostUser'));
 
 
-const Big1 = ({id}) => {
+const Big1 = ({ id }) => {
 
     return (
         <>
-            <section>
+            <secction className="secctionTablesB1">
+                <Segment inverted>
+                    <Story />
+                </Segment>
+                <Segment inverted className='tablaGeneral'>
+                    <MostStories className='tablas' />
+                    <StoryScore className='tablas' />
+                </Segment>
+                <Segment inverted className='tablaGeneral'>
+                    <Donwload className='tablas' />
+                    <MostUser className='tablas' />
+                </Segment>
+            </secction>
+
+            {/* <section>
                 <Story />
                 <Segment id={id} className='componentFila' inverted>
                     <MostStories id={id} className='Columna1' inverted></MostStories>
@@ -23,7 +37,7 @@ const Big1 = ({id}) => {
                     <Donwload id={id} className='Columna1' inverted></Donwload>
                     <MostUser id={id} className='Columna2' inverted ></MostUser>
                 </Segment>
-            </section>
+            </section> */}
         </>
     )
 };

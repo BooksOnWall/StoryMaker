@@ -4,10 +4,10 @@ import { Bar, Line, Pie, Doughnut } from 'react-chartjs-2';
 import { ResponsiveContainer } from 'recharts/lib/component/ResponsiveContainer';
 import { Segment } from 'semantic-ui-react';
 
-const GrafDevice = ({title}) => {
+const GrafDevice = ({ title }) => {
     return (
         <Segment inverted>
-            <ResponsiveContainer width='100%' height='100%'>
+            <ResponsiveContainer>
                 <Doughnut
                     data={{
                         labels: ['1', '2', '3', '4'],
@@ -20,7 +20,7 @@ const GrafDevice = ({title}) => {
                                     '#FF9300',
                                     '#D44000',
                                     '#F0A500'
-                                  ],
+                                ],
                                 borderColor: [
                                     'transparent'
                                 ],
@@ -28,6 +28,13 @@ const GrafDevice = ({title}) => {
                         ],
                     }}
                     options={{
+                        options: {
+                            plugins: {
+                                legend: {
+                                    display: false,
+                                }
+                            }
+                        },
                         maintainAspectRatio: false,
                         scales: {
                             yAxes: [
@@ -43,10 +50,10 @@ const GrafDevice = ({title}) => {
                             padding: 0,
                         },
                         legend: {
-                            display: false,
                             labels: {
                                 fontSize: 25,
                             },
+
                         },
                     }
                     }

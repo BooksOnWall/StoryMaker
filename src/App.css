@@ -681,7 +681,7 @@ div.DraftEditor-root {
 }
 .ui.main.container {
   padding: 0 !important;
-  max-width: 94.5vw !important;
+  max-width: 95.5vw !important;
   margin: 0 0 0 80px !important;
   width: 100%;
 }
@@ -1449,6 +1449,10 @@ input[type="color"] {
   border-width: 1px;
   border-color: #232323;
 }
+.alturaTable{
+  height: 30vh;
+  overflow-y: scroll;
+}
 /*BOTONES STORIES*/
 .ui.buttons .button,
 .ui.buttons .or,
@@ -1502,7 +1506,7 @@ input[type="color"] {
 
 .ui.segments .segment,
 .ui.segment {
-  font-size: 12px !important;
+  font-size: 11px !important;
 }
 /*SEGMENT*/
 .segment {
@@ -1514,10 +1518,13 @@ input[type="color"] {
 
 /*Flex Components*/
 
-#stories.componentPadre {
+.componentPadre {
   display: flex;
   flex: 1;
   align-items: flex-start;
+  flex-grow: 1;
+  height: 95vh;
+
 }
 #stories.component1,
 .component2 {
@@ -1544,11 +1551,6 @@ input[type="color"] {
   justify-content: flex-end;
 }
 
-/*Grafica*/
-
-#stories .grafica {
-  height: 20000vh !important;
-}
 /*HEADER GRAFICA*/
 
 #stories .containerHeader {
@@ -1615,15 +1617,25 @@ input[type="color"] {
 .secctionGeneral{
   display: flex;
   flex: 1;
-  height: 90vh;
+  height: 95vh;
   overflow-y: scroll;
 }
 .secctionGrafics, .secctionTables{
   flex: 1;
   flex-grow: 10;
 }
+.secctionTablesB1, .secctionTablesB2{
+  flex: 1;
+}
+.secctionTablesB1{
+  flex-grow: 1.2;
+}
+.secctionTablesB2{
+  flex-grow: 2;
+}
+
 .secctionBooks{
-  background-color: black;
+  background: transparent;
   flex-grow: 1;
 }
 /*PARAMETROS DE FLEX*/
@@ -1655,4 +1667,17 @@ input[type="color"] {
 
 .tablaGeneral{
   display: flex;
+}
+
+.ui.segment.active.tab{
+  padding: 0px !important;
+}
+.ui.checkbox input.hidden + label{
+  color: white;
+}
+.ui.checkbox label:hover, .ui.checkbox + label:hover {
+  color: #f16623 !important;
+}
+.ui.checkbox input:focus ~ label{
+  color: #f16623 !important;
 }

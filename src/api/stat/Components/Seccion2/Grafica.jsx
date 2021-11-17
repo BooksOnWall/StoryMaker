@@ -5,35 +5,33 @@ import { Segment } from 'semantic-ui-react';
 
 const Grafica = () => {
     return (
-        <Segment inverted style={{height: '50vh', width: '60vw'}}>
-            <ResponsiveContainer width='100%' height='100%'>
-            <Line
-                data={{
-                    labels: ['Mon', 'Tue', 'Wen', 'Thu', 'Fry', 'Sat', 'Sun'],
-                    datasets: [
-                        {
-                            label: 'pepe',
-                            data: [100, 120, 400, 200, 130, 300, 400],
-                            borderColor: [
-                                '#f16623'
-                            ],
-                        },
-                    ],
-                }}
-                height={'150 !important'}
-                width={'125 !important'}
-                options={{
-                    maintainAspectRatio: false,
-                    scales: {
-                        yAxes: [
+        <Segment inverted style={{height: '21vh'}}>
+            <ResponsiveContainer>
+                <Line
+                    data={{
+                        labels: ['Mon', 'Tue', 'Wen', 'Thu', 'Fry', 'Sat', 'Sun'],
+                        datasets: [
                             {
-                                ticks: {
-                                    Responsive: true,
-                                    beginAtZero: true,
-                                },
+                                label: 'pepe',
+                                data: [100, 120, 400, 200, 130, 300, 400],
+                                borderColor: [
+                                    '#f16623'
+                                ],
                             },
                         ],
-                    },
+                    }}
+                    options={{
+                        maintainAspectRatio: false,
+                        scales: {
+                            yAxes: [
+                                {
+                                    ticks: {
+                                        Responsive: true,
+                                        beginAtZero: true,
+                                    },
+                                },
+                            ],
+                        },
                         layout: {
                             padding: 0,
                         },
@@ -43,11 +41,11 @@ const Grafica = () => {
                             },
                         },
                     }
-                }
-                    />
+                    }
+                />
             </ResponsiveContainer>
-            
-            </Segment>
+
+        </Segment>
     )
 }
 
