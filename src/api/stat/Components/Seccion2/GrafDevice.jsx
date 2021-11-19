@@ -6,7 +6,7 @@ import { Segment } from 'semantic-ui-react';
 
 const GrafDevice = ({ title }) => {
     return (
-        <Segment inverted>
+        <Segment inverted className='graficaDona'>
             <ResponsiveContainer>
                 <Doughnut
                     data={{
@@ -28,11 +28,9 @@ const GrafDevice = ({ title }) => {
                         ],
                     }}
                     options={{
-                        options: {
-                            plugins: {
-                                legend: {
-                                    display: false,
-                                }
+                        plugins: {
+                            legend: {
+                                display: false,
                             }
                         },
                         maintainAspectRatio: false,
@@ -53,10 +51,10 @@ const GrafDevice = ({ title }) => {
                             labels: {
                                 fontSize: 25,
                             },
-
                         },
                     }
                     }
+
                 />
             </ResponsiveContainer>
 

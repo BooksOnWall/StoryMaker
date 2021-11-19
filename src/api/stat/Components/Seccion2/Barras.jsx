@@ -7,7 +7,7 @@ const Barras = () => {
     return (
         <secction>
             <secction>
-                <Segment inverted style={{fontWeight: 'bold'}}>
+                <Segment inverted style={{ fontWeight: 'bold' }}>
                     INSTALL VS COMPLETE
                 </Segment>
                 <Segment inverted className='headerInstall'>
@@ -16,7 +16,7 @@ const Barras = () => {
                 </Segment>
             </secction>
             <Segment inverted>
-                <ResponsiveContainer width='100%' height='100%'>
+                <ResponsiveContainer>
                     <Bar
                         data={{
                             labels: ['Mon', 'Tue', 'Wen', 'Thu', 'Fry', 'Sat', 'Sun'],
@@ -32,6 +32,11 @@ const Barras = () => {
                             ],
                         }}
                         options={{
+                            plugins: {
+                                legend: {
+                                    display: false,
+                                }
+                            },
                             maintainAspectRatio: false,
                             scales: {
                                 yAxes: [
@@ -47,7 +52,7 @@ const Barras = () => {
                                 padding: 0,
                             },
                             legend: {
-                                options:{
+                                options: {
                                     legend: {
                                         display: false
                                     }

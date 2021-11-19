@@ -1450,11 +1450,11 @@ input[type="color"] {
   border-color: #232323;
 }
 .alturaTable{
-  height: 30vh;
+  max-height: 28vh;
   overflow-y: scroll;
 }
 .alturaTableStory{
-  height: 18.5vh;
+  height: 20.5vh;
   overflow-y: scroll;
 }
 /*BOTONES STORIES*/
@@ -1632,10 +1632,10 @@ input[type="color"] {
   flex: 1;
 }
 .secctionTablesB1{
-  flex-grow: 1.2;
+  flex-grow: 1;
 }
 .secctionTablesB2{
-  flex-grow: 2;
+  flex-grow: 1.5;
 }
 
 .secctionBooks{
@@ -1684,4 +1684,8 @@ input[type="color"] {
 }
 .ui.checkbox input:focus ~ label{
   color: #f16623 !important;
+}
+.graficaDona{
+  height: 28vh;
+  width: 18vw;
 }

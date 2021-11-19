@@ -5,7 +5,7 @@ import { Segment } from 'semantic-ui-react';
 
 const Grafica = () => {
     return (
-        <Segment inverted style={{height: '21vh'}}>
+        <Segment inverted style={{ height: '23vh' }}>
             <ResponsiveContainer>
                 <Line
                     data={{
@@ -21,6 +21,11 @@ const Grafica = () => {
                         ],
                     }}
                     options={{
+                        plugins: {
+                            legend: {
+                                display: false,
+                            }
+                        },
                         maintainAspectRatio: false,
                         scales: {
                             yAxes: [
