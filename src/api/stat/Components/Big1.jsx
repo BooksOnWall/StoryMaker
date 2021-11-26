@@ -20,8 +20,6 @@ const Big1 = ({ id }) => {
                 <Segment inverted className='tablaGeneral'>
                     <MostStories className='tablas' />
                     <StoryScore className='tablas' />
-                </Segment>
-                <Segment inverted className='tablaGeneral'>
                     <Donwload className='tablas' />
                     <MostUser className='tablas' />
                 </Segment>

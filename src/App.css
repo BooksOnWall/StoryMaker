@@ -1436,7 +1436,6 @@ input[type="color"] {
 }
 
 #stories.titleStories {
-  display: flex;
   color: #6c6c6c !important;
   flex: 1 1 50%;
   padding: 10px 0px 10px 10px !important;
@@ -1496,15 +1495,6 @@ input[type="color"] {
 
 /*Estilos de ComponentBig2*/
 
-#stories.padreStories {
-  display: flex;
-  flex: 1;
-  align-items: flex-start;
-}
-#stories.listStories {
-  display: flex;
-  flex: 1;
-}
 
 /*FontSize Stories*/
 
@@ -1530,31 +1520,6 @@ input[type="color"] {
   height: 95vh;
 
 }
-#stories.component1,
-.component2 {
-  display: flex;
-  flex: 1;
-}
-
-/*ComponentBig1*/
-
-#stories.componentFila {
-  display: flex;
-  flex: 1;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin: 0px;
-}
-
-#stories.componentColumna1,
-#stories.componentColumna2 {
-  display: flex;
-  flex: 1;
-}
-#stories.componentColumna2 {
-  justify-content: flex-end;
-}
-
 /*HEADER GRAFICA*/
 
 #stories .containerHeader {
@@ -1671,6 +1636,7 @@ input[type="color"] {
 
 .tablaGeneral{
   display: flex;
+  flex-wrap: wrap;
 }
 
 .ui.segment.active.tab{
@@ -1688,4 +1654,28 @@ input[type="color"] {
 .graficaDona{
   height: 28vh;
   width: 18vw;
+}
+.graficoLineal{
+  height: 23vh;
+}
+.layout{
+  width: 33%;
+}
+.layout1{
+  width: 50%;
+}
+@media (max-width: 1080px) {
+  .graficoLineal{
+    width: 90%;
+  }
+  .layout{
+    width: 50%;
+  }
+  .layout1{
+    width: 100%;
+  }
+  .ui.main.container{
+    max-width: 90vw !important;
+  }
+  
 }

@@ -2,7 +2,7 @@ import React, { Component, useState } from 'react'
 import { Table, Segment, Button, Icon, Secction } from 'semantic-ui-react';
 import loadable from '@loadable/component';
 const GrafDevice = loadable(() => import('./Seccion2/GrafDevice'));
-const Layout = loadable(() => import('./Seccion2/Layout'));
+const Layout1 = loadable(() => import('./Seccion1/Layout1'));
 
 
 const MostUserDevice = ({ id }) => {
@@ -10,7 +10,7 @@ const MostUserDevice = ({ id }) => {
     const handleDisplay = (display) => setDisplay(display);
     return (
         <>
-            <Layout id='stories' title='MOST USER DEVICE' handleDisplay={handleDisplay}>
+            <Layout1 id='stories' title='MOST USER DEVICE' handleDisplay={handleDisplay}>
                 {display === 'list' &&
                     <Segment inverted className='alturaTable'>
                         <Table striped id='stories' className='tableStories' inverted>
@@ -54,7 +54,7 @@ const MostUserDevice = ({ id }) => {
                     <GrafDevice />
                 }
 
-            </Layout>
+            </Layout1>
 
 
         </>

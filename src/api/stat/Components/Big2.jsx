@@ -28,14 +28,12 @@ const Big2 = ({ id }) => {
                     </secction>
                 </Segment>
                 <Segment inverted className='tablaGeneral'>
-                    <Operative />
-                    <Device />
-                    <Support />
-                </Segment>
-                <Segment inverted className='tablaGeneral'>
-                    <Ram />
-                    <Screen />
-                    <Screen />
+                    <Operative className='tablas2'/>
+                    <Device className='tablas2'/>
+                    <Support className='tablas2'/>
+                    <Ram className='tablas2'/>
+                    <Screen className='tablas2'/>
+                    <Screen className='tablas2'/>
                 </Segment>
                 {/* <secction className='marginGrafica'>
                     <secction id={id} className='containerHeader'>

@@ -5,7 +5,7 @@ import { Segment } from 'semantic-ui-react';
 
 const Grafica = () => {
     return (
-        <Segment inverted style={{ height: '23vh' }}>
+        <Segment inverted className='graficoLineal' style={{width: '99%'}}>
             <ResponsiveContainer>
                 <Line
                     data={{

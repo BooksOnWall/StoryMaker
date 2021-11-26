@@ -1,9 +1,9 @@
 import React from 'react'
 import { Segment, Button, Icon } from 'semantic-ui-react';
 
-const Layout = ({id, title, children, handleDisplay }) => {
+const Layout1 = ({id, title, children, handleDisplay }) => {
     return (
-        <secction inverted className='layout' style={{ borderStyle: 'solid', borderWidth: '1px', borderColor: '#232323' }}>
+        <secction inverted className='layout1' style={{ borderStyle: 'solid', borderWidth: '1px', borderColor: '#232323' }}>
         <secction id={id} className='headerStories' inverted>
             <Segment id={id} className='titleStories' inverted>
                 {title}
@@ -23,4 +23,4 @@ const Layout = ({id, title, children, handleDisplay }) => {
     
 }
 
-export default Layout
+export default Layout1

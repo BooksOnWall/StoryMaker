@@ -15,7 +15,7 @@ const Barras = () => {
                     <Segment inverted className='completed'>Completed <a className='circuloDos'></a></Segment>
                 </Segment>
             </secction>
-            <Segment inverted>
+            <Segment inverted style={{ height: '30vh'}}>
                 <ResponsiveContainer>
                     <Bar
                         data={{
