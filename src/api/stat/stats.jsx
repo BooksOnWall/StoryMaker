@@ -12,7 +12,7 @@ const CalendarMenu = ({period, handlePeriod, handlePrev, handleNext}) => (
     <Menu secondary inverted stackable style={{position: 'absolute', zIndex: 999, right: '2.5vw', flex: 1, display: 'flex', justifyContent: 'space-between'}}>
       <Menu.Menu position='right' style={{right: '0vw', fontSize: 10, position: 'absolute', zIndex: 999}}>
     
-        <Menu.Item style={{right: '12vw'}}>
+        <Menu.Item className='navbarCenter'>
           <Menu.Item
             onClick={(e) => handlePrev()}
             >
@@ -26,7 +26,7 @@ const CalendarMenu = ({period, handlePeriod, handlePrev, handleNext}) => (
           </Menu.Item>
         </Menu.Item>
         
-        <Menu.Item>
+        <Menu.Item className='navbar'>
          <Menu.Item
            name='Day'
            active={period === 'day'}

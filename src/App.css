@@ -1526,6 +1526,7 @@ input[type="color"] {
   display: flex;
   flex: 1;
   justify-content: space-between;
+  padding-left: 20px;
 }
 .appInstalled {
   display: flex;
@@ -1605,7 +1606,7 @@ input[type="color"] {
 
 .secctionBooks{
   background: transparent;
-  flex-grow: 1;
+  flex-grow: 0;
 }
 /*PARAMETROS DE FLEX*/
 /*ESTILOS DE SECCTIONBOOKS*/
@@ -1656,7 +1657,8 @@ input[type="color"] {
   width: 18vw;
 }
 .graficoLineal{
-  height: 23vh;
+  height: 23.6vh;
+  width: 33vw;
 }
 .layout{
   width: 33%;
@@ -1664,10 +1666,29 @@ input[type="color"] {
 .layout1{
   width: 50%;
 }
+.navbarCenter{
+  right: 12vw;
+}
+.flexdirecction{
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  flex-wrap: wrap;
+}
+.ui.segment{
+  background-color: transparent !important;
+}
+.barraHeader{
+  padding-left: 20px;
+}
+.secctionGeneral{
+  flex-direction: row !important;
+}
+.secctionTables{
+  width: 51.5vw;
+}
 @media (max-width: 1080px) {
-  .graficoLineal{
-    width: 90%;
-  }
+  
   .layout{
     width: 50%;
   }
@@ -1675,7 +1696,32 @@ input[type="color"] {
     width: 100%;
   }
   .ui.main.container{
-    max-width: 90vw !important;
+    max-width: 92vw !important;
+  }
+  .graficaGeneral{
+    height: 50vh;
+  }
+  .navbarCenter{
+    right: -2vw;
+  }
+  .navbar{
+    font-size: 5px !important;
+  }
+  #stat .ui.secondary.inverted.menu a.item{
+    font-size: 14px
+  }
+  .secctionGrafics{
+    flex-wrap: wrap;
+  }
+  .layout2{
+    width: 50%;
+  }
+
+  .flexdirecction{
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    flex-wrap: wrap;
   }
   
 }

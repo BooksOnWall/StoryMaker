@@ -5,12 +5,12 @@ const GrafDevice = loadable(() => import('./Seccion2/GrafDevice'));
 const Layout2 = loadable(() => import('./Layout2'));
 
 
-const LastScore = ({ id }) => {
+const MostUser2 = ({ id }) => {
     const [display, setDisplay] = useState('list');
     const handleDisplay = (display) => setDisplay(display);
     return (
         <>
-            <Layout2 id='stories' title='LAST SCORE' handleDisplay={handleDisplay}>
+            <Layout2 id='stories' title='MOST USER BY CITY' handleDisplay={handleDisplay}>
                 {display === 'list' &&
                     <Segment inverted className='alturaTable'>
                         <Table striped id='stories' className='tableStories' inverted>
@@ -62,4 +62,4 @@ const LastScore = ({ id }) => {
 
 };
 
-export default LastScore;
+export default MostUser2;

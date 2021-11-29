@@ -4,6 +4,7 @@ import loadable from '@loadable/component';
 const GrafDevice = loadable(() => import('../Seccion2/GrafDevice'));
 const Layout1 = loadable(() => import('./Layout1'));
 
+
 const Donwload = ({ id }) => {
     const [display, setDisplay] = useState('list');
     const handleDisplay = (display) => setDisplay(display);

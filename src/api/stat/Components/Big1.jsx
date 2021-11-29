@@ -18,24 +18,12 @@ const Big1 = ({ id }) => {
                     <Story />
                 </Segment>
                 <Segment inverted className='tablaGeneral'>
-                    <MostStories className='tablas' />
-                    <StoryScore className='tablas' />
-                    <Donwload className='tablas' />
-                    <MostUser className='tablas' />
+                    <MostStories />
+                    <StoryScore  />
+                    <Donwload  />
+                    <MostUser />
                 </Segment>
             </secction>
-
-            {/* <section>
-                <Story />
-                <Segment id={id} className='componentFila' inverted>
-                    <MostStories id={id} className='Columna1' inverted></MostStories>
-                    <StoryScore id={id} className='Columna2' inverted ></StoryScore>
-                </Segment>
-                <Segment id={id} className='componentFila' inverted>
-                    <Donwload id={id} className='Columna1' inverted></Donwload>
-                    <MostUser id={id} className='Columna2' inverted ></MostUser>
-                </Segment>
-            </section> */}
         </>
     )
 };

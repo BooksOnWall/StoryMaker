@@ -38,13 +38,14 @@ const Grafica = () => {
                             ],
                         },
                         layout: {
-                            padding: 0,
+                            padding: 20,
                         },
                         legend: {
                             labels: {
                                 fontSize: 25,
                             },
                         },
+                        
                     }
                     }
                 />

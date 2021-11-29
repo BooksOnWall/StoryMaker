@@ -4,7 +4,7 @@ import loadable from '@loadable/component';
 const GraficaGeneral = loadable(() => import('./Components/GraficaGeneral'));
 const Barras = loadable(() => import('./Components/Seccion2/Barras'));
 const Story = loadable(() => import('./Components/Seccion1/Story'));
-const MostUser = loadable(() => import('./Components/Seccion1/MostUser'));
+const MostUser2 = loadable(() => import('./Components/MostUser2'));
 const LastScore = loadable(() => import('./Components/LastScore'));
 const TimeByStage = loadable(() => import('./Components/TimeByStage'));
 const MostUserDevice = loadable(() => import('./Components/MostUserDevice'));
@@ -17,7 +17,7 @@ const General = () => {
         </Segment>
         <Segment inverted className='TableBooks'>
           <Table singleLine inverted className='borderTableBooks'>
-            <Table.Body style={{color: 'white !important'}}>
+            <Table.Body style={{ color: 'white !important' }}>
               <Table.Row>
                 <Table.Cell>
                   <Form>
@@ -66,7 +66,7 @@ const General = () => {
               <Table.Row>
                 <Table.Cell >
                   <Form >
-                    <Form.Radio 
+                    <Form.Radio
                       label='Doris Caravan'
                     />
                   </Form>
@@ -76,25 +76,25 @@ const General = () => {
           </Table>
         </Segment>
       </secction>
-      <secction className='secctionGrafics'>
-        <Segment inverted>
-          <GraficaGeneral />
-          <GraficaGeneral />
-          <Barras />
-        </Segment>
-      </secction>
-      <secction className='secctionTables'>
-        <Segment inverted>
-          <Story />
-        </Segment>
-        <Segment inverted className='tablaGeneral'>
-          <LastScore className='tablas' />
-          <MostUser className='tablas' />
-        </Segment>
-        <Segment inverted className='tablaGeneral'>
-          <TimeByStage />
-          <MostUserDevice />
-        </Segment>
+      <secction className='flexdirecction'>
+        <secction className='secctionGrafics'>
+          <Segment inverted>
+            <GraficaGeneral />
+            <GraficaGeneral />
+            <Barras />
+          </Segment>
+        </secction>
+        <secction className='secctionTables'>
+          <Segment inverted>
+            <Story />
+          </Segment>
+          <Segment inverted className='tablaGeneral'>
+            <LastScore  />
+            <MostUser2 />
+            <TimeByStage />
+            <MostUserDevice />
+          </Segment>
+        </secction>
       </secction>
     </secction>
   )
