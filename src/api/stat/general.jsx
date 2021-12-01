@@ -2,7 +2,7 @@ import React, { } from 'react';
 import { Segment, Header, Table, Form } from 'semantic-ui-react';
 import loadable from '@loadable/component';
 const GraficaGeneral = loadable(() => import('./Components/GraficaGeneral'));
-const Barras = loadable(() => import('./Components/Seccion2/Barras'));
+const Barras = loadable(() => import('./Components/Barras'));
 const Story = loadable(() => import('./Components/Seccion1/Story'));
 const MostUser2 = loadable(() => import('./Components/MostUser2'));
 const LastScore = loadable(() => import('./Components/LastScore'));
@@ -79,7 +79,23 @@ const General = () => {
       <secction className='flexdirecction'>
         <secction className='secctionGrafics'>
           <Segment inverted>
+            <secction id='stories' className='containerHeader'>
+              <Segment inverted id='stories' className='appInstalled'>
+                APP INSTALLED
+              </Segment>
+              <Segment inverted id='stories' className='total'>
+                TOTAL <a>3000</a>
+              </Segment>
+            </secction>
             <GraficaGeneral />
+            <secction id='stories' className='containerHeader'>
+              <Segment inverted id='stories' className='appInstalled'>
+                APP INSTALLED
+              </Segment>
+              <Segment inverted id='stories' className='total'>
+                TOTAL <a>3000</a>
+              </Segment>
+            </secction>
             <GraficaGeneral />
             <Barras />
           </Segment>
@@ -89,7 +105,7 @@ const General = () => {
             <Story />
           </Segment>
           <Segment inverted className='tablaGeneral'>
-            <LastScore  />
+            <LastScore />
             <MostUser2 />
             <TimeByStage />
             <MostUserDevice />

@@ -8,8 +8,8 @@ const Stories = () => {
   return (
     <>
         <Segment id='stories' className='componentPadre' inverted >
-          <Big2 className='big2' />
-          <Big1 className='big1' />
+          <Big2 />
+          <Big1  />
         </Segment>
     </>
   )

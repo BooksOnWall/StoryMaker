@@ -1522,11 +1522,12 @@ input[type="color"] {
 }
 /*HEADER GRAFICA*/
 
-#stories .containerHeader {
+.containerHeader {
   display: flex;
   flex: 1;
   justify-content: space-between;
   padding-left: 20px;
+  padding-right: 20px;
 }
 .appInstalled {
   display: flex;
@@ -1588,11 +1589,14 @@ input[type="color"] {
   display: flex;
   flex: 1;
   height: 95vh;
-  overflow-y: scroll;
+  max-width:96vw ;
 }
-.secctionGrafics, .secctionTables{
-  flex: 1;
-  flex-grow: 10;
+.secctionGrafics{
+  flex-grow: 15;
+  width: 45vw;
+}
+.secctionTables{
+  flex-grow: 1;
 }
 .secctionTablesB1, .secctionTablesB2{
   flex: 1;
@@ -1654,11 +1658,9 @@ input[type="color"] {
 }
 .graficaDona{
   height: 28vh;
-  width: 18vw;
 }
 .graficoLineal{
-  height: 23.6vh;
-  width: 33vw;
+  height: 23.1vh;
 }
 .layout{
   width: 33%;
@@ -1666,14 +1668,15 @@ input[type="color"] {
 .layout1{
   width: 50%;
 }
+.layout2{
+  width: 50%;
+}
 .navbarCenter{
   right: 12vw;
 }
 .flexdirecction{
   display: flex;
-  flex-direction: column;
   flex: 1;
-  flex-wrap: wrap;
 }
 .ui.segment{
   background-color: transparent !important;
@@ -1681,12 +1684,8 @@ input[type="color"] {
 .barraHeader{
   padding-left: 20px;
 }
-.secctionGeneral{
-  flex-direction: row !important;
-}
-.secctionTables{
-  width: 51.5vw;
-}
+
+
 @media (max-width: 1080px) {
   
   .layout{
@@ -1704,9 +1703,7 @@ input[type="color"] {
   .navbarCenter{
     right: -2vw;
   }
-  .navbar{
-    font-size: 5px !important;
-  }
+  
   #stat .ui.secondary.inverted.menu a.item{
     font-size: 14px
   }
@@ -1723,5 +1720,10 @@ input[type="color"] {
     flex: 1;
     flex-wrap: wrap;
   }
-  
+  .navbar{
+    right: 10px;
+  }
+  .graficoLineal{
+    height: 23.6vh;
+  }
 }

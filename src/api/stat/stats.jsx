@@ -10,7 +10,7 @@ const DatePicker = loadable(() => import('./DatePicker'));
 const CalendarMenu = ({period, handlePeriod, handlePrev, handleNext}) => (
   <>
     <Menu secondary inverted stackable style={{position: 'absolute', zIndex: 999, right: '2.5vw', flex: 1, display: 'flex', justifyContent: 'space-between'}}>
-      <Menu.Menu position='right' style={{right: '0vw', fontSize: 10, position: 'absolute', zIndex: 999}}>
+      <Menu.Menu className='navbar' position='right' style={{right: '0vw', fontSize: 10, position: 'absolute', zIndex: 999}}>
     
         <Menu.Item className='navbarCenter'>
           <Menu.Item
@@ -162,10 +162,10 @@ const StartDateInput = ({ value, onClick }) => (
        </Dimmer>
        {!loading &&
          <>
-         <div id='menu'>
+         <Segment id='menu'>
           <CalendarMenu period={period} min={min} max={max} handlePeriod={handlePeriod} handleNext={handleNext} handlePrev={handlePrev}/>
           <Tabs style={{zIndex: '0 !important'}} loading={loading}/>
-        </div>
+        </Segment>
          </>
          
        }
