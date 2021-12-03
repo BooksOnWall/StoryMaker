@@ -1401,8 +1401,6 @@ input[type="color"] {
   font-size: 0.9em !important;
 }
 
-.semantic_ui_range_inner {
-}
 
 #stat .ui.menu {
   margin: 0 0 0 0;
@@ -1438,9 +1436,11 @@ input[type="color"] {
 #stories.titleStories {
   color: #6c6c6c !important;
   flex: 1 1 50%;
-  padding: 10px 0px 10px 10px !important;
+  padding: 10px 0px 0px 10px !important;
   margin-bottom: 0px;
   font-weight: bold;
+  font-family: sans-serif !important;
+  font-size: 14px !important;
 }
 /*TABLE STORIES*/
 #stories.tableStories {
@@ -1500,7 +1500,7 @@ input[type="color"] {
 
 .ui.segments .segment,
 .ui.segment {
-  font-size: 11px !important;
+  font-size: 12px !important;
 }
 /*SEGMENT*/
 .segment {
@@ -1660,7 +1660,7 @@ input[type="color"] {
   height: 28vh;
 }
 .graficoLineal{
-  height: 23.1vh;
+  height: 22.5vh;
 }
 .layout{
   width: 33%;
@@ -1724,6 +1724,10 @@ input[type="color"] {
     right: 10px;
   }
   .graficoLineal{
-    height: 23.6vh;
+    height: 22.8vh;
   }
+
+#stories.titleStories{
+  font-size: 11px !important;
+}
 }
