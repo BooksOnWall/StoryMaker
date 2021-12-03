@@ -1,14 +1,14 @@
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 import { ResponsiveContainer } from 'recharts/lib/component/ResponsiveContainer';
-import { Segment } from 'semantic-ui-react';
+import { Segment, Header } from 'semantic-ui-react';
 
 const Barras = () => {
     return (
         <secction>
             <secction className='barraHeader'>
                 <Segment inverted style={{ fontWeight: 'bold' }}>
-                    INSTALL VS COMPLETE
+                <Header className='titleGrafica' as='h5'>INSTALL VS COMPLETE</Header>
                 </Segment>
                 <Segment inverted className='headerInstall'>
                     <Segment inverted className='install'>Install <a className='circulo'></a></Segment>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Segment, Container, Radio } from 'semantic-ui-react';
+import { Segment, Header } from 'semantic-ui-react';
 import loadable from '@loadable/component';
 const Device = loadable(() => import('./Seccion2/Device'));
 const Grafica = loadable(() => import('./Seccion2/Grafica'));
@@ -16,10 +16,10 @@ const Big2 = ({ id }) => {
                     <secction className='marginGrafica'>
                         <secction id={id} className='containerHeader'>
                             <Segment inverted id={id} className='appInstalled'>
-                                APP INSTALLED
+                                <Header className='titleGrafica' as='h5'>APP INSTALLED</Header>
                             </Segment>
                             <Segment inverted id={id} className='total'>
-                                TOTAL <a>3000</a>
+                            <Header className='titleGrafica' as='h5'>TOTAL <a>3000</a></Header>
                             </Segment>
                         </secction>
                         <Segment id={id} className='grafico'>
@@ -28,12 +28,12 @@ const Big2 = ({ id }) => {
                     </secction>
                 </Segment>
                 <Segment inverted className='tablaGeneral'>
-                    <Operative className='tablas2'/>
-                    <Device className='tablas2'/>
-                    <Support className='tablas2'/>
-                    <Ram className='tablas2'/>
-                    <Screen className='tablas2'/>
-                    <Screen className='tablas2'/>
+                    <Operative className='tablas2' />
+                    <Device className='tablas2' />
+                    <Support className='tablas2' />
+                    <Ram className='tablas2' />
+                    <Screen className='tablas2' />
+                    <Screen className='tablas2' />
                 </Segment>
                 {/* <secction className='marginGrafica'>
                     <secction id={id} className='containerHeader'>

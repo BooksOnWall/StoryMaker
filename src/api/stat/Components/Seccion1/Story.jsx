@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Segment, Button, Icon } from 'semantic-ui-react';
+import { Table, Segment, Button, Icon, Header } from 'semantic-ui-react';
 
 
 const Story = ({ id }) => {
@@ -7,7 +7,7 @@ const Story = ({ id }) => {
         <>
             <secction id='stories' className='headerStories' inverted style={{ display: 'flex', flex: 1, justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <Segment id='stories' className='titleStories' inverted >
-                    ALL STORIES COMMENTS
+                    <Header as='h4'>ALL STORIES COMMENTS</Header>
                 </Segment>
                 <Segment id='stories' className='buttons' inverted>
                     <Button id={id} className='bLeft' icon inverted><Icon name='angle up' /></Button>

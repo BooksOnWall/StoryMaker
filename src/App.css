@@ -1537,6 +1537,9 @@ input[type="color"] {
   color: #666 !important;
   font-weight: bold;
 }
+.titleGrafica{
+  padding-top: 10px !important;
+}
 .total {
   display: flex;
   flex: 1;
@@ -1620,7 +1623,6 @@ input[type="color"] {
 
 }
 .textHeaderBooks{
-  font-family: sans-serif !important;
 }
 .TableBooks{
   background: transparent !important;
@@ -1660,7 +1662,7 @@ input[type="color"] {
   height: 28vh;
 }
 .graficoLineal{
-  height: 22.5vh;
+  height: 22vh;
 }
 .layout{
   width: 33%;
@@ -1724,7 +1726,7 @@ input[type="color"] {
     right: 10px;
   }
   .graficoLineal{
-    height: 22.8vh;
+    height: 22.3vh;
   }
 
 #stories.titleStories{

@@ -81,19 +81,19 @@ const General = () => {
           <Segment inverted>
             <secction id='stories' className='containerHeader'>
               <Segment inverted id='stories' className='appInstalled'>
-                APP INSTALLED
+                <Header className='titleGrafica' as='h5'>APP INSTALLED</Header>
               </Segment>
               <Segment inverted id='stories' className='total'>
-                TOTAL <a>3000</a>
+                <Header className='titleGrafica' as='h5'>TOTAL <a>3000</a></Header>
               </Segment>
             </secction>
             <GraficaGeneral />
             <secction id='stories' className='containerHeader'>
               <Segment inverted id='stories' className='appInstalled'>
-                APP INSTALLED
+                <Header className='titleGrafica' as='h5'>APP INSTALLED</Header>
               </Segment>
               <Segment inverted id='stories' className='total'>
-                TOTAL <a>3000</a>
+                <Header className='titleGrafica' as='h5'>TOTAL <a>3000</a></Header>
               </Segment>
             </secction>
             <GraficaGeneral />
