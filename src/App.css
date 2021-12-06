@@ -1401,7 +1401,6 @@ input[type="color"] {
   font-size: 0.9em !important;
 }
 
-
 #stat .ui.menu {
   margin: 0 0 0 0;
 }
@@ -1422,7 +1421,6 @@ input[type="color"] {
   color: #666 !important;
 }
 
-/*PAGINA STORIES*/
 /*HEADER STORIES*/
 #stories.headerStories {
   display: flex;
@@ -1448,11 +1446,11 @@ input[type="color"] {
   border-width: 1px;
   border-color: #232323;
 }
-.alturaTable{
+.alturaTable {
   max-height: 28vh;
   overflow-y: scroll;
 }
-.alturaTableStory{
+.alturaTableStory {
   height: 20.5vh;
   overflow-y: scroll;
 }
@@ -1465,7 +1463,7 @@ input[type="color"] {
 .botones {
   margin: 10px 10px 10px 10px !important;
 }
-]
+
 #stories .ui.buttons {
   width: 20px;
 }
@@ -1492,10 +1490,6 @@ input[type="color"] {
 #stories .ui.inverted.button {
   box-shadow: 0px 0px 0px 0px transparent inset !important;
 }
-
-/*Estilos de ComponentBig2*/
-
-
 /*FontSize Stories*/
 
 .ui.segments .segment,
@@ -1509,6 +1503,9 @@ input[type="color"] {
 .ui.segment {
   padding: 0px !important;
 }
+.ui.segment {
+  background-color: transparent !important;
+}
 
 /*Flex Components*/
 
@@ -1518,10 +1515,12 @@ input[type="color"] {
   align-items: flex-start;
   flex-grow: 1;
   height: 95vh;
-
 }
 /*HEADER GRAFICA*/
 
+.barraHeader {
+  padding-left: 20px;
+}
 .containerHeader {
   display: flex;
   flex: 1;
@@ -1537,7 +1536,7 @@ input[type="color"] {
   color: #666 !important;
   font-weight: bold;
 }
-.titleGrafica{
+.titleGrafica {
   padding-top: 10px !important;
 }
 .total {
@@ -1570,7 +1569,7 @@ input[type="color"] {
 .install {
   color: #666 !important;
 }
-
+/* CIRCULOS DE INSTALL Y COMPLETED */
 .circulo,
 .circuloDos {
   width: 12px;
@@ -1581,155 +1580,153 @@ input[type="color"] {
   margin-left: 5px;
   margin-top: 5px;
 }
-.circulo{
+.circulo {
   background: #f16623;
 }
-.circuloDos{
+.circuloDos {
   background: #ff5300;
 }
 /*PARAMETROS DE FLEX*/
-.secctionGeneral{
+.secctionGeneral {
   display: flex;
   flex: 1;
   height: 95vh;
-  max-width:96vw ;
+  max-width: 96vw;
 }
-.secctionGrafics{
+.secctionGrafics {
   flex-grow: 15;
   width: 45vw;
 }
-.secctionTables{
+.secctionTables {
   flex-grow: 1;
 }
-.secctionTablesB1, .secctionTablesB2{
+.secctionTablesB1,
+.secctionTablesB2 {
   flex: 1;
 }
-.secctionTablesB1{
+.secctionTablesB1 {
   flex-grow: 1;
 }
-.secctionTablesB2{
+.secctionTablesB2 {
   flex-grow: 1.5;
 }
 
-.secctionBooks{
+.secctionBooks {
   background: transparent;
   flex-grow: 0;
 }
+.flexdirecction {
+  display: flex;
+  flex: 1;
+}
+.tablaGeneral {
+  display: flex;
+  flex-wrap: wrap;
+}
 /*PARAMETROS DE FLEX*/
 /*ESTILOS DE SECCTIONBOOKS*/
-.headerBooks{
+.headerBooks {
   background: transparent !important;
   margin: 10px !important;
+}
 
-}
-.textHeaderBooks{
-}
-.TableBooks{
+.TableBooks {
   background: transparent !important;
 }
-.buttonBooks{
+.buttonBooks {
   background: white !important;
   height: 20px !important;
   width: 20px !important;
   text-align: center;
 }
 
-.buttonBooks:hover{
+.buttonBooks:hover {
   border-style: solid !important;
   border-width: 4px !important;
   border-color: orange !important;
 }
 /*ESTILOS DE SECCTIONBOOKS*/
 
-.tablaGeneral{
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.ui.segment.active.tab{
+.ui.segment.active.tab {
   padding: 0px !important;
 }
-.ui.checkbox input.hidden + label{
+.ui.checkbox input.hidden + label {
   color: white;
 }
-.ui.checkbox label:hover, .ui.checkbox + label:hover {
+.ui.checkbox label:hover,
+.ui.checkbox + label:hover {
   color: #f16623 !important;
 }
-.ui.checkbox input:focus ~ label{
+.ui.checkbox input:focus ~ label {
   color: #f16623 !important;
 }
-.graficaDona{
+.graficaDona {
   height: 28vh;
 }
-.graficoLineal{
+.graficoLineal {
   height: 22vh;
 }
-.layout{
+/* TAMANO DE LAS TABLAS */
+.layout {
   width: 33%;
 }
-.layout1{
+.layout1 {
   width: 50%;
 }
-.layout2{
+.layout2 {
   width: 50%;
 }
-.navbarCenter{
+/* TAMANO DE LAS CARTAS */
+.navbarCenter {
   right: 12vw;
 }
-.flexdirecction{
-  display: flex;
-  flex: 1;
-}
-.ui.segment{
-  background-color: transparent !important;
-}
-.barraHeader{
-  padding-left: 20px;
-}
-
 
 @media (max-width: 1080px) {
-  
-  .layout{
+  /* TAMANO DE LAS TABLAS */
+  .layout {
     width: 50%;
   }
-  .layout1{
+  .layout1 {
     width: 100%;
   }
-  .ui.main.container{
-    max-width: 92vw !important;
-  }
-  .graficaGeneral{
-    height: 50vh;
-  }
-  .navbarCenter{
-    right: -2vw;
-  }
-  
-  #stat .ui.secondary.inverted.menu a.item{
-    font-size: 14px
-  }
-  .secctionGrafics{
-    flex-wrap: wrap;
-  }
-  .layout2{
+  .layout2 {
     width: 50%;
   }
+  /* WIDTH DE LA PAGINA EN GENERAL */
+  .ui.main.container {
+    max-width: 92vw !important;
+  }
+  /* GRAFICAS */
+  .graficoLineal {
+    height: 22.3vh;
+  }
+  .graficaGeneral {
+    height: 50vh;
+  }
+  /* NAVBAR */
+  .navbarCenter {
+    right: -2vw;
+  }
+  .navbar {
+    right: 10px;
+  }
 
-  .flexdirecction{
+  /* FLEX */
+  .secctionGrafics {
+    flex-wrap: wrap;
+  }
+
+  .flexdirecction {
     display: flex;
     flex-direction: row;
     flex: 1;
     flex-wrap: wrap;
   }
-  .navbar{
-    right: 10px;
+ /* FONTSIZE */
+  #stories.titleStories {
+    font-size: 11px !important;
   }
-  .graficoLineal{
-    height: 22.3vh;
+  #stat .ui.secondary.inverted.menu a.item {
+    font-size: 14px;
   }
-
-#stories.titleStories{
-  font-size: 11px !important;
-}
 }

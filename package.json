@@ -6,7 +6,10 @@
   "contributors": "Cristobal Severin",
   "traductors": "Cristobal Severin",
   "dependencies": {
+    "@emotion/react": "^11.7.0",
+    "@emotion/styled": "^11.6.0",
     "@loadable/component": "^5.15.0",
+    "@mui/material": "^5.2.3",
     "chart.js": "^3.6.0",
     "craco-less": "^1.14.4",
     "d3-ease": "^1.0.5",

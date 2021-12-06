@@ -1,6 +1,8 @@
 import React, { } from 'react';
 import { Segment, Header, Table, Form } from 'semantic-ui-react';
 import loadable from '@loadable/component';
+import MenuList from '@mui/material/MenuList';
+import MenuItem from '@mui/material/MenuItem';
 const GraficaGeneral = loadable(() => import('./Components/GraficaGeneral'));
 const Barras = loadable(() => import('./Components/Barras'));
 const Story = loadable(() => import('./Components/Seccion1/Story'));
@@ -11,71 +13,61 @@ const MostUserDevice = loadable(() => import('./Components/MostUserDevice'));
 const General = () => {
   return (
     <secction className='secctionGeneral'>
+      {/* FORMULARIO DE CUENTOS */}
       <secction className='secctionBooks'>
         <Segment inverted className='headerBooks'>
           <Header className='textHeaderBooks' as='h3'>STORIES</Header>
         </Segment>
         <Segment inverted className='TableBooks'>
-          <Table singleLine inverted className='borderTableBooks'>
-            <Table.Body style={{ color: 'white !important' }}>
-              <Table.Row>
-                <Table.Cell>
-                  <Form>
-                    <Form.Radio
-                      label='Silencio Barbaro'
-                    />
-                  </Form>
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell>
-                  <Form>
-                    <Form.Radio
-                      label='Los Cantos Rorados'
-                    />
-                  </Form>
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell>
-                  <Form>
-                    <Form.Radio
-                      label='USB Test'
-                    />
-                  </Form>
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell>
-                  <Form>
-                    <Form.Radio
-                      label='Salto Prueba'
-                    />
-                  </Form>
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell>
-                  <Form>
-                    <Form.Radio
-                      label='NMEC'
-                    />
-                  </Form>
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell >
-                  <Form >
-                    <Form.Radio
-                      label='Doris Caravan'
-                    />
-                  </Form>
-                </Table.Cell>
-              </Table.Row>
-            </Table.Body>
-          </Table>
+          <MenuList>
+            <MenuItem>
+              <Form>
+                <Form.Radio
+                  label='Silencio Barbaro'
+                />
+              </Form>
+            </MenuItem>
+            <MenuItem>
+              <Form>
+                <Form.Radio
+                  label='Los Cantos Rorados'
+                />
+              </Form>
+            </MenuItem>
+            <MenuItem>
+              <Form>
+                <Form.Radio
+                  label='USB Test'
+                />
+              </Form>
+            </MenuItem>
+            <MenuItem>
+              <Form>
+                <Form.Radio
+                  label='Salto Prueba'
+                />
+              </Form>
+            </MenuItem>
+            <MenuItem>
+              <Form>
+                <Form.Radio
+                  label='NMEC'
+                />
+              </Form>
+            </MenuItem>
+            <MenuItem>
+              <Form>
+                <Form >
+                  <Form.Radio
+                    label='Doris Caravan'
+                  />
+                </Form>
+              </Form>
+            </MenuItem>
+          </MenuList>
         </Segment>
       </secction>
+      {/* GRAFICAS */}
       <secction className='flexdirecction'>
         <secction className='secctionGrafics'>
           <Segment inverted>
@@ -100,6 +92,7 @@ const General = () => {
             <Barras />
           </Segment>
         </secction>
+        {/* TABLAS */}
         <secction className='secctionTables'>
           <Segment inverted>
             <Story />

@@ -35,30 +35,6 @@ const Big2 = ({ id }) => {
                     <Screen className='tablas2' />
                     <Screen className='tablas2' />
                 </Segment>
-                {/* <secction className='marginGrafica'>
-                    <secction id={id} className='containerHeader'>
-                        <Segment inverted id={id} className='appInstalled'>
-                            APP INSTALLED
-                        </Segment>
-                        <Segment inverted id={id} className='total'>
-                            TOTAL <a>3000</a>
-                        </Segment>
-                    </secction>
-                    <Segment id={id} className='grafico'>
-                        <Grafica id={id} className='grafico' />
-                    </Segment>
-                </secction>
-
-                <Segment id={id} className='padreStories' inverted>
-                    <Device id={id} className='listStories' />
-                    <Operative id={id} className='listStories' />
-                    <Support id={id} className='listStories' />
-
-                </Segment>
-                <Segment id={id} className='padreStories' inverted>
-                    <Ram id={id} className='listStories' />
-                    <Screen id={id} className='listStorie' />
-                </Segment> */}
             </secction>
         </>
     )
