@@ -1,5 +1,5 @@
-import React, { } from 'react';
-import { Segment, Header, Table, Form } from 'semantic-ui-react';
+import React, {useState, useEffect } from 'react';
+import { Segment, Header, Table, Form, Dimmer, Loader } from 'semantic-ui-react';
 import loadable from '@loadable/component';
 import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
@@ -10,52 +10,92 @@ const MostUser2 = loadable(() => import('./Components/MostUser2'));
 const LastScore = loadable(() => import('./Components/LastScore'));
 const TimeByStage = loadable(() => import('./Components/TimeByStage'));
 const MostUserDevice = loadable(() => import('./Components/MostUserDevice'));
+
 const General = () => {
+  const [loading, setLoading] = useState(false);
+  const [story, setStory] = useState();
+  const [stories, setStories] = useState();
+  const protocol =  process.env.REACT_APP_SERVER_PROTOCOL;
+  const domain = protocol + '://' + process.env.REACT_APP_SERVER_HOST;
+  const server = domain + ':'+ process.env.REACT_APP_SERVER_PORT+'/';
+
+  useEffect(() => {
+    const getStories = async () => {
+      try {
+        setLoading(true);
+        await fetch(server+"stories", {
+          method: 'get',
+          headers: {'Access-Control-Allow-Origin': '*', credentials: 'same-origin', 'Content-Type':'application/json'}
+        })
+        .then(response => {
+          if (response && !response.ok) { throw new Error(response.statusText);}
+          return response.json();
+        })
+        .then(data => {
+            if(data) {
+              const st = data.stories.filter((s,i) => (s.active === true));
+              setStories(st);
+              setLoading(false)
+            } else {
+              console.log('No Data received from the server');
+            }
+        })
+      } catch(e) {
+        console.log(e.message)
+      }
+    }
+      getStories();
+  }, []);
+console.log('stories', stories);
+console.log('loading', loading);
+if(stories && stories.length > 0) console.log('stories length', stories.length);
   return (
-    <secction className='secctionGeneral'>
+    <Segment className='secctionGeneral'>
       {/* FORMULARIO DE CUENTOS */}
-      <secction className='secctionBooks'>
+      <Segment className='secctionBooks'>
         <Segment inverted className='headerBooks'>
           <Header className='textHeaderBooks' as='h3'>STORIES</Header>
         </Segment>
         <Segment inverted className='TableBooks'>
+          <Dimmer active={loading} inverted>
+             <Loader disabled={!loading} inverted content='Loading' />
+          </Dimmer>
           <MenuList>
-            <MenuItem selected={true}>Silencio Barbaro</MenuItem>
-            <MenuItem>Los Cantos Rodados</MenuItem>
-            <MenuItem>USB Test</MenuItem>
-            <MenuItem>Salto Prueba</MenuItem>
-            <MenuItem>NMEC</MenuItem>
-            <MenuItem>Doris Caravan</MenuItem>
+            {!loading && stories && stories.length > 0
+              && stories.map((s,i) => (
+                <MenuItem key={s.id} id={s.id} selected={(s.title === story)} onClick={() => setStory(s.title)}>{s.title}</MenuItem>
+              ))
+            }
           </MenuList>
         </Segment>
-      </secction>
+      </Segment>
       {/* GRAFICAS */}
-      <secction className='flexdirecction'>
-        <secction className='secctionGrafics'>
+      <Segment className='flexdirecction'>
+        <Segment className='secctionGrafics'>
           <Segment inverted>
-            <secction id='stories' className='containerHeader'>
+            <Segment id='stories' className='containerHeader'>
               <Segment inverted id='stories' className='appInstalled'>
                 <Header className='titleGrafica' as='h5'>APP INSTALLED</Header>
               </Segment>
               <Segment inverted id='stories' className='total'>
                 <Header className='titleGrafica' as='h5'>TOTAL <a>3000</a></Header>
               </Segment>
-            </secction>
+            </Segment>
             <GraficaGeneral />
-            <secction id='stories' className='containerHeader'>
+            <Segment id='stories' className='containerHeader'>
               <Segment inverted id='stories' className='appInstalled'>
                 <Header className='titleGrafica' as='h5'>APP INSTALLED</Header>
               </Segment>
               <Segment inverted id='stories' className='total'>
                 <Header className='titleGrafica' as='h5'>TOTAL <a>3000</a></Header>
               </Segment>
-            </secction>
+            </Segment>
             <GraficaGeneral />
             <Barras />
           </Segment>
-        </secction>
+        </Segment>
         {/* TABLAS */}
-        <secction className='secctionTables'>
+        <Segment className='secctionTables'>
           <Segment inverted>
             <Story />
           </Segment>
@@ -65,9 +105,9 @@ const General = () => {
             <TimeByStage />
             <MostUserDevice />
           </Segment>
-        </secction>
-      </secction>
-    </secction>
+        </Segment>
+      </Segment>
+    </Segment>
   )
 }
 

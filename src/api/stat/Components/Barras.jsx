@@ -5,8 +5,8 @@ import { Segment, Header } from 'semantic-ui-react';
 
 const Barras = () => {
     return (
-        <secction>
-            <secction className='barraHeader'>
+        <Segment>
+            <Segment className='barraHeader'>
                 <Segment inverted style={{ fontWeight: 'bold' }}>
                 <Header className='titleGrafica' as='h5'>INSTALL VS COMPLETE</Header>
                 </Segment>
@@ -14,7 +14,7 @@ const Barras = () => {
                     <Segment inverted className='install'>Install <a className='circulo'></a></Segment>
                     <Segment inverted className='completed'>Completed <a className='circuloDos'></a></Segment>
                 </Segment>
-            </secction>
+            </Segment>
             <Segment inverted className='graficoLineal' style={{ height: '30vh'}}>
                 <ResponsiveContainer>
                     <Bar
@@ -67,7 +67,7 @@ const Barras = () => {
                 </ResponsiveContainer>
 
             </Segment>
-        </secction>
+        </Segment>
 
     )
 }

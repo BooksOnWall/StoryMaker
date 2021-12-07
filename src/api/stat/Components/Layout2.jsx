@@ -3,8 +3,8 @@ import { Segment, Button, Icon, Header } from 'semantic-ui-react';
 
 const Layout2 = ({id, title, children, handleDisplay }) => {
     return (
-        <secction inverted className='layout2' style={{ borderStyle: 'solid', borderWidth: '1px', borderColor: '#232323' }}>
-        <secction id={id} className='headerStories' inverted>
+        <Segment inverted className='layout2' style={{ borderStyle: 'solid', borderWidth: '1px', borderColor: '#232323' }}>
+        <Segment id={id} className='headerStories' inverted>
             <Segment id={id} className='titleStories' inverted>
             <Header as='h5'>{title}</Header>
             </Segment>
@@ -12,15 +12,15 @@ const Layout2 = ({id, title, children, handleDisplay }) => {
                 <Button id={id} className='bLeft' icon inverted><Icon name='angle up' /></Button>
                 <Button id={id} className='bRigth' icon inverted ><Icon name='angle down' /></Button>
             </Segment>
-        </secction>
+        </Segment>
         {children}
         <Segment id={id} className='botones' inverted >
             <Button id={id} className='bRigth' onClick={() => handleDisplay('list')} inverted>LIST</Button>
             <Button id={id} className='bLeft' onClick={() => handleDisplay('chart')} inverted>CHART</Button>
         </Segment>
-    </secction>
+    </Segment>
     )
-    
+
 }
 
 export default Layout2

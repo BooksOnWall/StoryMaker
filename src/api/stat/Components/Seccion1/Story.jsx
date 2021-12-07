@@ -5,7 +5,7 @@ import { Table, Segment, Button, Icon, Header } from 'semantic-ui-react';
 const Story = ({ id }) => {
     return (
         <>
-            <secction id='stories' className='headerStories' inverted style={{ display: 'flex', flex: 1, justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <Segment id='stories' className='headerStories' inverted style={{ display: 'flex', flex: 1, justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <Segment id='stories' className='titleStories' inverted >
                     <Header as='h4'>ALL STORIES COMMENTS</Header>
                 </Segment>
@@ -13,7 +13,7 @@ const Story = ({ id }) => {
                     <Button id={id} className='bLeft' icon inverted><Icon name='angle up' /></Button>
                     <Button id={id} className='bRigth' icon inverted><Icon name='angle down' /></Button>
                 </Segment>
-            </secction>
+            </Segment>
             <Segment inverted className='alturaTableStory'>
                 <Table striped inverted style={{ borderStyle: 'solid', borderWidth: '2px', borderColor: '#232323' }}>
                     <Table.Body>
