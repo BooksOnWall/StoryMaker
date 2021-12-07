@@ -20,50 +20,12 @@ const General = () => {
         </Segment>
         <Segment inverted className='TableBooks'>
           <MenuList>
-            <MenuItem>
-              <Form>
-                <Form.Radio
-                  label='Silencio Barbaro'
-                />
-              </Form>
-            </MenuItem>
-            <MenuItem>
-              <Form>
-                <Form.Radio
-                  label='Los Cantos Rorados'
-                />
-              </Form>
-            </MenuItem>
-            <MenuItem>
-              <Form>
-                <Form.Radio
-                  label='USB Test'
-                />
-              </Form>
-            </MenuItem>
-            <MenuItem>
-              <Form>
-                <Form.Radio
-                  label='Salto Prueba'
-                />
-              </Form>
-            </MenuItem>
-            <MenuItem>
-              <Form>
-                <Form.Radio
-                  label='NMEC'
-                />
-              </Form>
-            </MenuItem>
-            <MenuItem>
-              <Form>
-                <Form >
-                  <Form.Radio
-                    label='Doris Caravan'
-                  />
-                </Form>
-              </Form>
-            </MenuItem>
+            <MenuItem selected={true}>Silencio Barbaro</MenuItem>
+            <MenuItem>Los Cantos Rodados</MenuItem>
+            <MenuItem>USB Test</MenuItem>
+            <MenuItem>Salto Prueba</MenuItem>
+            <MenuItem>NMEC</MenuItem>
+            <MenuItem>Doris Caravan</MenuItem>
           </MenuList>
         </Segment>
       </secction>
