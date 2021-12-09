@@ -3,7 +3,7 @@ import { Segment, Button, Icon, Header } from 'semantic-ui-react';
 
 const Layout2 = ({id, title, children, handleDisplay }) => {
     return (
-        <Segment inverted className='layout2' style={{ borderStyle: 'solid', borderWidth: '1px', borderColor: '#232323' }}>
+        <Segment inverted className='layout2' style={{ borderStyle: 'solid', borderWidth: '1px', borderColor: '#232323', margin: "0px" }}>
         <Segment id={id} className='headerStories' inverted>
             <Segment id={id} className='titleStories' inverted>
             <Header as='h5'>{title}</Header>

@@ -1595,7 +1595,7 @@ input[type="color"] {
 }
 .secctionGrafics {
   flex-grow: 15;
-  width: 45vw;
+  width: 35vw;
 }
 .secctionTables {
   flex-grow: 1;
@@ -1664,7 +1664,7 @@ input[type="color"] {
   height: 28vh;
 }
 .graficoLineal {
-  height: 22vh;
+  height: 21.6vh;
 }
 /* TAMANO DE LAS TABLAS */
 .layout {
@@ -1681,6 +1681,12 @@ input[type="color"] {
   right: 12vw;
 }
 
+#menu {
+  margin: 0px !important;
+} 
+.ui.segment{
+  box-shadow: none !important;
+}
 @media (max-width: 1080px) {
   /* TAMANO DE LAS TABLAS */
   .layout {
