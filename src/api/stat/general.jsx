@@ -84,7 +84,7 @@ if(stories && stories.length > 0) console.log('stories length', stories.length);
             <GraficaGeneral />
             <Segment id='stories' className='containerHeader'>
               <Segment inverted id='stories' className='appInstalled'>
-                <Header className='titleGrafica' as='h5'>APP INSTALLED</Header>
+                <Header className='titleGrafica' as='h5'>STORY COMPLETED</Header>
               </Segment>
               <Segment inverted id='stories' className='total'>
                 <Header className='titleGrafica' as='h5'>TOTAL <a>3000</a></Header>
