@@ -31,10 +31,10 @@ Pour chaque évenement on aura donc:
 ##  Documentation utilisateur
 
 * [Événements](Événements)
+* [Éléments](Éléments)
+* [Options](Options)
 * [Layers](Layers)
 * [Timeline](Timeline)
-* [Options](Options)
-* [Éléments](Éléments)
 * [Traduire](Traduire)
 * [Configurer](Configurer)
 * [Sauver](Sauver)
